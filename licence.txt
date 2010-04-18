@@ -1,0 +1,1 @@
+All code in this collection is licenced under GPL v3, see the file gpl-v3.txt for details of the licencing.
