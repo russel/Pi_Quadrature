@@ -1,0 +1,18 @@
+# -*- mode:perl; coding:utf-8; -*-
+
+#  Calculation of Pi using quadrature. Sequential algorithm coded in Hyper-Werx Par++ for Raptor Live.
+#
+#  Copyright © 2009 Russel Winder
+
+#  NB sum is a keyword or function name and so causes a syntax error if used as a variable name.
+
+n = 10000 ; # 100000 times fewer due to performance problems.
+delta = 1.0 / n ;
+accumulator = 0.0 ;
+for ( i = 1 ; i < n + 1 ; i++ ) {
+    x = ( i - 0.5 ) * delta ;
+    accumulator += 1.0 / ( 1.0 + x * x ) ;
+}
+pi = 4.0 * accumulator * delta ;
+print ( "==== Par++ Sequential pi =" , pi ) ;
+print ( "==== Par++ Sequential iteration count =" , n ) ;

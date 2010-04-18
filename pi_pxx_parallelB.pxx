@@ -1,0 +1,24 @@
+# -*- mode:perl; coding:utf-8; -*-
+
+#  Calculation of Pi using quadrature. Parallel algorithms coded in Hyper-Werx Par++ for Raptor Live.
+#
+#  Copyright © 2009 Russel Winder, William Braswell Jr.
+
+#  Minor variation by Russel of Implementation B provided by William inspired by Russel's original
+#  sequential code.
+
+n = 500 ; # needs to be small until new C++ engine is complete
+delta = 1.0 / n ;
+pi = 4.0 * partialSum ( n ) * delta ;
+print ( "==== Par++ Parallel Implementation B pi = " , pi, "\n" ) ;
+print ( "==== Par++ Parallel Implementation B iteration count = " , n, "\n" ) ;
+
+sub partialSum ( numIterations ) {
+    accumulator = add ( evaluate ( @{ i => 0 } , param ( range ( 1 , numIterations ) ) ) ) ;
+    return( accumulator[0][0] ) ;
+}
+
+sub evaluate ( 0 x ) {
+    x = ( x - 0.5 ) * delta ;
+    return ( 1.0 / ( 1.0 + x * x ) ) ;
+}

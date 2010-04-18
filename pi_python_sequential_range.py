@@ -1,0 +1,23 @@
+#! /usr/bin/env python
+# -*- mode:python; coding:utf-8; -*-
+
+#  Calculation of Pi using quadrature. Sequential algorithm.
+#
+#  Copyright © 2008-9 Russel Winder
+
+import time
+
+n = 10000000 # 100 times fewer due to speed issues
+delta = 1.0 / n
+startTime = time.time ( )
+sum = 0.0
+#  This use of range is a very bad move since it creates a list and with numbers this big you really
+#  don't want to do that.  Use xrange or a while loop to avoid the memory usage problems.
+for i in range ( 1 , n + 1 ) :
+  x = ( i - 0.5 ) * delta
+  sum += 1.0 / ( 1.0 + x * x )
+pi = 4.0 * sum * delta
+elapseTime = time.time ( ) - startTime
+print "==== Python Sequential For/Range pi =" , pi
+print "==== Python Sequential For/Range iteration count =" , n
+print "==== Python Sequential For/Range elapse =" , elapseTime
