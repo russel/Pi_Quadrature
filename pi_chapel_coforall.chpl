@@ -1,7 +1,8 @@
 /*
- *  A Chapel program to calculate Pi using quadrature as a coforall-based algorithm.
+ *  A Chapel program to calculate Pi using quadrature as a reduce-based algorithm but with an explicit
+ *  coforall.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009-10 Russel Winder
  */
 
 use Time ;
@@ -12,7 +13,9 @@ def execute ( param numberOfTasks : int ) {
   param sliceSize : int(64) = n / numberOfTasks ;
   const eachProcessor : domain(1) = [ 0 .. ( numberOfTasks - 1 ) ] ;
   const results : [eachProcessor] real ;
-  def partialSum ( const start : int(64) , const end : int(64), const delta : real ) : real {
+  def partialSum ( const id : int ) : real {
+    const start : int(64) = 1 + id * sliceSize ;
+    const end : int(64) = ( id + 1 ) * sliceSize ;
     var sum : real = 0.0 ;
     for i in start .. end {
       sum += 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 ) ;
@@ -21,9 +24,7 @@ def execute ( param numberOfTasks : int ) {
   }
   var timer : Timer ;
   timer.start ( ) ;
-  // Partition the evaluation into an explicit coforall followed by a reduce so as to get multi-threaded
-  // behaviour.  When last checked (2010-04-10 Chapel v1.0), reduce is always single threaded.
-  coforall i in eachProcessor do results[i] = partialSum ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ;
+  coforall i in eachProcessor do results[i] = partialSum ( i ) ;
   const pi = 4.0 * ( + reduce results ) * delta ;
   timer.stop ( ) ;
   writeln ( "==== Chapel Coforall pi = " , pi ) ;
