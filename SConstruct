@@ -152,6 +152,13 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
     executables.append ( addCompileTarget ( environment.Command ( root , item.name , 'ocamlopt -o $TARGET %s $SOURCE' % ( extraOptions ) ) ) )
     SideEffect ( [ root + '.' + extension for extension in [ 'cmi' , 'cmx' , 'o' ] ] , root )
 
+#  Go  ###############################################################################
+
+for item in Glob ( 'pi_go_*.go' ) :
+    root = os.path.splitext ( item.name ) [0]
+    goVariant = '6'
+    executables.append ( addCompileTarget ( environment.Command ( root , environment.Command ( root + '.' + goVariant , root + '.go' , goVariant + 'g -o $TARGET $SOURCE' ) , goVariant + 'l -o $TARGET $SOURCE' ) ) )
+
 ## #################################################################################
 ##  All the native compiled executables are processed the same way.
 ## #################################################################################
