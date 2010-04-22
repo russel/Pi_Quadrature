@@ -11,9 +11,13 @@ import Control.Parallel.Strategies ( rwhnf , parMap )
 piIter :: Integer -> Integer -> Double -> Double -> Double
 piIter  n to delta accumulator
     | n > to = accumulator * delta
-    | otherwise = piIter ( n + 1 ) to delta ( accumulator + 4.0 / ( 1.0 + x * x ) )        
-    where
-      x = ( ( fromIntegral n ) - 0.5 ) * delta
+    | otherwise = 
+        let
+          nPlus1 = n + 1
+          x = ( ( fromIntegral n ) - 0.5 ) * delta
+          value = accumulator + 4.0 / ( 1.0 + x * x )        
+        in
+          piIter nPlus1 to delta value
 
 piQuadSlice :: Double -> Integer -> Integer -> Double
 piQuadSlice delta sliceSize index = piIter start end delta 0.0
