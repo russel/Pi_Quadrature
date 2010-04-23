@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as a threads-based algorithm.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009-10 Russel Winder
  */
 
 #include <stdio.h>
@@ -20,10 +20,11 @@ typedef struct CalculationParameters {
 void * partialSum ( void *const arg  ) {
   const long start = 1 + ( (CalculationParameters *const) arg )->id * ( (CalculationParameters *const) arg )->sliceSize ;
   const long end = ( ( (CalculationParameters *const) arg )->id + 1 ) * ( (CalculationParameters *const) arg )->sliceSize ;
+  const long double delta = ( (CalculationParameters *const) arg )->delta ;
   long double localSum = 0.0 ;
   long i ;
   for ( i = start ; i <= end ; ++i ) {
-    const long double x = ( i - 0.5 ) * ( (CalculationParameters *const) arg )->delta ;
+    const long double x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
   pthread_mutex_lock ( &sumMutex ) ;

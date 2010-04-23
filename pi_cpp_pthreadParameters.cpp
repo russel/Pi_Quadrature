@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as a threads-based algorithm.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009-10 Russel Winder
  */
 
 #include <iostream>
@@ -13,22 +13,25 @@ long double sum ;
 pthread_mutex_t sumMutex ;
 
 struct CalculationParameters {
-  long start ;
-  long end ;
+  long id ;
+  long sliceSize ;
   long double delta ;
-  CalculationParameters ( ) : start ( 0l ) , end ( 0l ) , delta ( 0.0 ) { }
-  CalculationParameters ( const long s , const long e , const long double d ) : start ( s ) , end ( e ) , delta ( d ) { }
+  CalculationParameters ( ) : id ( 0l ) , sliceSize ( 0l ) , delta ( 0.0 ) { }
+  CalculationParameters ( const long i , const long s , const long double d ) : id ( i ) , sliceSize ( s ) , delta ( d ) { }
   CalculationParameters ( const CalculationParameters & x ) {
-    start = x.start ;
-    end = x.end ;
+    id = x.id ;
+    sliceSize = x.sliceSize ;
     delta = x.delta ;
   }
 } ;
 
 void * partialSum ( void *const arg  ) {
+  const long start = 1 + ( (CalculationParameters *const) arg )->id * ( (CalculationParameters *const) arg )->sliceSize ;
+  const long end = ( ( (CalculationParameters *const) arg )->id + 1 ) * ( (CalculationParameters *const) arg )->sliceSize ;
+  const long double delta = ( (CalculationParameters *const) arg )->delta ;
   long double localSum = 0.0 ;
-  for ( long i = ( (CalculationParameters *const) arg )->start ; i <= ( (CalculationParameters *const) arg )->end ; ++i ) {
-    const long double x = ( i - 0.5 ) * ( (CalculationParameters *const) arg )->delta ;
+  for ( long i = start ; i <= end ; ++i ) {
+    const long double x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
   pthread_mutex_lock ( &sumMutex ) ;
@@ -51,7 +54,7 @@ void execute ( const int numberOfThreads ) {
   pthread_t threads[numberOfThreads] ;
   CalculationParameters parameters[numberOfThreads] ;
   for ( int i = 0 ; i < numberOfThreads ; ++i ) {
-    parameters[i] = CalculationParameters ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ;
+    parameters[i] = CalculationParameters ( i , sliceSize , delta ) ;
     pthread_create ( &threads[i] , &attributes , partialSum , (void *) &parameters[i] ) ;
   }
   pthread_attr_destroy ( &attributes ) ;

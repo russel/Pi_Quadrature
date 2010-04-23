@@ -2,7 +2,7 @@
  *  A C++ program to calculate Pi using quadrature.  This uses Anthony Williams' Just::Threads library which
  *  is an implementation of the threads specification of C++0x.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009-10 Russel Winder
  */
 
 #include <iostream>
@@ -14,7 +14,9 @@
 long double sum ;
 std::mutex sumMutex ;
 
-void partialSum ( const long start , const long end , const long double delta ) {
+void partialSum ( const long id , const long sliceSize , const long double delta ) {
+  const long start = 1 + id * sliceSize ;
+  const long end = ( id + 1 ) * sliceSize ;
   long double localSum = 0.0 ;
   for ( long i = start ; i <= end ; ++i ) {
     const long double x = ( i - 0.5 ) * delta ;
@@ -31,7 +33,7 @@ void execute ( const int numberOfThreads ) {
   const long sliceSize = n / numberOfThreads ;
   std::thread threads [ numberOfThreads ] ;
   sum = 0.0 ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) { threads[i] = std::thread ( std::bind ( partialSum , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ) ; }
+  for ( int i = 0 ; i < numberOfThreads ; ++i ) { threads[i] = std::thread ( std::bind ( partialSum , i , sliceSize , delta ) ) ; }
   for ( int i = 0 ; i < numberOfThreads ; ++i ) { threads[i].join ( ) ; }
   const long double pi = 4.0 * sum * delta ;
   const long double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
