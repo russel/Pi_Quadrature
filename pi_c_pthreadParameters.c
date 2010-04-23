@@ -12,15 +12,17 @@ long double sum ;
 pthread_mutex_t sumMutex ;
 
 typedef struct CalculationParameters {
-  long start ;
-  long end ;
+  long id ;
+  long sliceSize ;
   long double delta ;
 } CalculationParameters ;
 
 void * partialSum ( void *const arg  ) {
+  const long start = 1 + ( (CalculationParameters *const) arg )->id * ( (CalculationParameters *const) arg )->sliceSize ;
+  const long end = ( ( (CalculationParameters *const) arg )->id + 1 ) * ( (CalculationParameters *const) arg )->sliceSize ;
   long double localSum = 0.0 ;
   long i ;
-  for ( i = ( (CalculationParameters *const) arg )->start ; i <= ( (CalculationParameters *const) arg )->end ; ++i ) {
+  for ( i = start ; i <= end ; ++i ) {
     const long double x = ( i - 0.5 ) * ( (CalculationParameters *const) arg )->delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
@@ -45,8 +47,8 @@ void execute ( const int numberOfThreads ) {
   CalculationParameters parameters[numberOfThreads] ;
   int i ;
   for ( i = 0 ; i < numberOfThreads ; ++i ) {
-    parameters[i].start = 1 + i * sliceSize ;
-    parameters[i].end = ( i + 1 ) * sliceSize ;
+    parameters[i].id = i ;
+    parameters[i].sliceSize = sliceSize ;
     parameters[i].delta = delta ;
     pthread_create ( &threads[i] , &attributes , partialSum , (void *) &parameters[i] ) ;
   }
