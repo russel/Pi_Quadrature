@@ -1,7 +1,7 @@
 /*
  *  A D program to calculate Pi using quadrature as a sequential algorithm.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009-10 Russel Winder
  */
 
 import std.stdio ;

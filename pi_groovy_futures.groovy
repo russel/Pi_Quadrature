@@ -3,7 +3,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a parallel algorithm based on using Futures.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009-10 Russel Winder
  */
 
 import java.util.concurrent.Callable

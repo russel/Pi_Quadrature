@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as an OpenMPI based algorithm.
  *
- *  Copyright © 2008-9 Russel Winder
+ *  Copyright © 2008-10 Russel Winder
  */
 
 #include <stdio.h>

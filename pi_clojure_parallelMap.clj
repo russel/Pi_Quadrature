@@ -1,6 +1,6 @@
 ;  Calculation of Pi using quadrature. Parallel algorithm using pmap.
 ;
-;  Copyright © 2009 Russel Winder
+;  Copyright © 2009-10 Russel Winder
 
 ( defn partialSum [ parameter ]
   ( let [

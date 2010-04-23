@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with threads and futures (hidden
  *  by using executors) to partition the problem and hence harness all processors available to the JVM.
  *
- *  Copyright © 2008-9 Russel Winder
+ *  Copyright © 2008-10 Russel Winder
  */
 
 import java.util.ArrayList ;

@@ -3,7 +3,7 @@
   Caml implementation of the sequential Pi by Quadrature using a purely applicative style, i.e. iteration
   by tail recursion.
 
-  Copyright © 2009 Russel Winder
+  Copyright © 2009-10 Russel Winder
 
 *)
 

@@ -1,6 +1,6 @@
 !  A Fortran program to calculate Pi using quadrature as a parallel algorithm using OpenMP.
 !
-!  Copyright © 2008-9 Russel Winder
+!  Copyright © 2008-10 Russel Winder
 
 program pi
   implicit none

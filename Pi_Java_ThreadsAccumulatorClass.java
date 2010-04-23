@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a fork/join approach with threads.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009-10 Russel Winder
  */
 
 public class Pi_Java_ThreadsAccumulatorClass {

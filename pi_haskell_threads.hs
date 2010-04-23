@@ -1,6 +1,6 @@
 --  Haskell implementation of Pi by Quadrature.  This uses threads to parallelize.
 --
---  Copyright © 2009 Russel Winder
+--  Copyright © 2009-10 Russel Winder
 
 module Main where
 

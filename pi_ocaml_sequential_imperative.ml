@@ -2,7 +2,7 @@
 
   Caml implementation of the sequential Pi by Quadrature using an imperative approach.
   
-  Copyright © 2009 Russel Winder
+  Copyright © 2009-10 Russel Winder
 
 *)
 

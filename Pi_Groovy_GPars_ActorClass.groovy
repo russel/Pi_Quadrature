@@ -3,7 +3,7 @@
 /*
  *  Calculation of Pi using quadrature realized with GPars actors.  Done with class(es).
  *
- *  Copyright © 2009-10 Russel Winder.  All rights reserved.
+ *  Copyright © 2009-10 Russel Winder.
  */
 
 @Grab ( group = 'org.codehaus.gpars' ,  module = 'gpars' , version = '0.10-beta-1-SNAPSHOT' )

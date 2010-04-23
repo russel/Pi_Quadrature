@@ -1,6 +1,6 @@
 ;  Calculation of Pi using quadrature. Parallel algorithm using futures.
 ;
-;  Copyright © 2009 Russel Winder
+;  Copyright © 2009-10 Russel Winder
 
 ( import '( java.util.concurrent Executors ) )
 

@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with the ForkJoin library of
  *  JSR166y that is destined to be a part of Java 7.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009-10 Russel Winder
  */
 
 import java.util.concurrent.Callable ;
