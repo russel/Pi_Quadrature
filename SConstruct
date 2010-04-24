@@ -242,14 +242,23 @@ for item in Glob ( 'Pi_CS_*.cs' ) :
 
 #  Groovy  ###########################################################################
 
+dependsOnProcessSlice = [ ]
+dependsOnProcessSlice_JCSP = [ ]
 for item in Glob ( '*.groovy' ) :
-    if item.name == 'pi_groovyjava_gpars_CSP.groovy' :
+    root = os.path.splitext ( item.name )[0]
+    runTarget = 'run_' + root
+    bits = root.split ( '_' )
+    if bits[1] == 'groovyjava' :
+        if bits[3] == 'CSP' : dependsOnProcessSlice_JCSP.append ( runTarget )
+        else : dependsOnProcessSlice.append ( runTarget )
+    if len ( bits ) > 3 and bits[3] == 'CSP' :
         jcspJarPath =  environment['ENV']['HOME'] + '/lib/Java/jcsp.jar'
-        addRunTarget ( environment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , 'groovy -cp .:%s ./$SOURCE' % jcspJarPath ) )
-        Depends ( 'run_pi_groovyjava_gpars_CSP' , environment.Java ( '.' , [ 'ProcessSlice_JCSP.java' ] , JAVACLASSPATH = [ jcspJarPath ] ) )
+        addRunTarget ( environment.Command ( runTarget , item.name , 'groovy -cp .:%s ./$SOURCE' % jcspJarPath ) )
     else :    
-        addRunTarget ( environment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , './$SOURCE' ) )
-        Depends ( [ 'run_pi_groovyjava_gpars_actorScript' , 'run_pi_groovyjava_gpars_gparsPool' , 'run_pi_groovyjava_gpars_parallelEnhancer' ] , environment.Java ( '.' , [ 'ProcessSlice.java' ] ) )
+        addRunTarget ( environment.Command ( 'run_' + root , item.name , './$SOURCE' ) )
+        
+Depends ( dependsOnProcessSlice_JCSP , environment.Java ( '.' , [ 'ProcessSlice_JCSP.java' ] , JAVACLASSPATH = [ jcspJarPath ] ) )
+Depends ( dependsOnProcessSlice , environment.Java ( '.' , [ 'ProcessSlice.java' ] ) )
 
 #  Python  ###########################################################################
 

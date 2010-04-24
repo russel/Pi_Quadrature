@@ -22,18 +22,18 @@ void execute ( final int numberOfTasks ) {
   final long sliceSize = n / numberOfTasks
   final channels = Channel.one2oneArray ( numberOfTasks )
   final processes = [ ]
-  for ( int i = 0 ; i < numberOfTasks ; ++i ) { processes << new ProcessSlice_JCSP ( i , sliceSize , delta , channels[i].out ( ) ) }
+  for ( i in 0 ..< numberOfTasks ) { processes << new ProcessSlice_JCSP ( i , sliceSize , delta , channels[i].out ( ) ) }
   processes << new CSProcess ( ) {
     public void run ( ) {
       double sum = 0.0d
       for ( c in channels ) { sum += (double) c.in ( ).read ( ) }
       final double pi = 4.0d * sum * delta
       final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      System.out.println ( "==== Groovy/Java GPars CSP pi = " + pi )
-      System.out.println ( "==== Groovy/Java GPars CSP iteration count = " + n )
-      System.out.println ( "==== Groovy/Java GPars CSP elapse = " + elapseTime )
-      System.out.println ( "==== Groovy/Java GPars CSP processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
-      System.out.println ( "==== Groovy/Java GPars CSP task count = " + numberOfTasks )
+      System.out.println ( "==== Groovy/Java GPars CSP Multiple pi = " + pi )
+      System.out.println ( "==== Groovy/Java GPars CSP Multiple iteration count = " + n )
+      System.out.println ( "==== Groovy/Java GPars CSP Multiple elapse = " + elapseTime )
+      System.out.println ( "==== Groovy/Java GPars CSP Multiple processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
+      System.out.println ( "==== Groovy/Java GPars CSP Multiple task count = " + numberOfTasks )
     }
   } ;
   ( new PAR ( processes ) ).run ( )
