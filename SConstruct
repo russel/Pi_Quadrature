@@ -104,14 +104,14 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 
 #  D  ################################################################################
 
-##  As at 2010-03-02 using D 2.040 the D threads examples does not compile due to a problem that causes an
+##  As at 2010-04-24 using D 2.043 the D threads examples does not compile due to a problem that causes an
 ##  assertion fail in src/phobos/std/traits.d
 
-#for item in Glob ( 'pi_d2_*.d' ) :
-for item in Glob ( 'pi_d2_sequential.d' ) :
+for item in Glob ( 'pi_d2_*.d' ) :
+    if item.name != 'pi_d2_sequential.d' : continue # Temporary hack as the threads stuff won't compile.
     root = os.path.splitext ( item.name ) [0]
-    #  As at 2010-03-03, the standard D tool assumes D v1.0, but we are using an amended version so it correctly finds libphobos2.
-    #  NB as at 2010-03-03 the D systems is only a 32-bit system which generates 32-bit systems.
+    #  As at 2010-03-03, the standard D tool in SCons assumes D v1.0, but we use an amended version so it correctly finds libphobos2.
+    #  NB as at 2010-04-24 (v 2.043) the D systems is only a 32-bit system which generates 32-bit systems.
     executables.append ( addCompileTarget ( environment.Program ( item.name , DFLAGS = [ '-O' ] ) ) )
 
 #  Chapel  ###########################################################################
@@ -120,8 +120,6 @@ for item in Glob ( 'pi_chapel_*.chpl' ) :
     executables.append ( addCompileTarget ( environment.Command ( os.path.splitext ( item.name ) [0] , item.name , 'chpl -o $TARGET -O --fast $SOURCE' ) ) )
 
 #  Haskell  ##########################################################################
-
-##  As at 2010-02-03 using GHC 6.10.4 only the sequential Haskell code compiles :-((
 
 #  Haskell jobs run in a single thread by default (which is what happens here).  Run the executable with
 #  "+RTS -Nx" to run with x OS threads.
