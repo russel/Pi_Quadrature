@@ -22,7 +22,7 @@ void execute ( final int numberOfTasks ) {
   final long sliceSize = n / numberOfTasks
   final channels = Channel.one2oneArray ( numberOfTasks )
   final processes = [ ]
-  for ( int i = 0 ; i < numberOfTasks ; ++i ) {
+  for ( int i in 0 ..< numberOfTasks ) { 
     final int taskId = i
     processes << new CSProcess ( ) {
       public void run ( ) {
@@ -43,11 +43,11 @@ void execute ( final int numberOfTasks ) {
       for ( c in channels ) { sum += (double) c.in ( ).read ( ) }
       final double pi = 4.0d * sum * delta
       final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      System.out.println ( "==== Groovy GPars CSP pi = " + pi )
-      System.out.println ( "==== Groovy GPars CSP iteration count = " + n )
-      System.out.println ( "==== Groovy GPars CSP elapse = " + elapseTime )
-      System.out.println ( "==== Groovy GPars CSP processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
-      System.out.println ( "==== Groovy GPars CSP task count = " + numberOfTasks )
+      System.out.println ( "==== Groovy GPars CSP Multiple pi = " + pi )
+      System.out.println ( "==== Groovy GPars CSP Multiple iteration count = " + n )
+      System.out.println ( "==== Groovy GPars CSP Multiple elapse = " + elapseTime )
+      System.out.println ( "==== Groovy GPars CSP Multiple processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
+      System.out.println ( "==== Groovy GPars CSP Multiple task count = " + numberOfTasks )
     }
   } ;
   ( new PAR ( processes ) ).run ( )
