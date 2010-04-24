@@ -18,9 +18,9 @@ void execute ( int numberOfTasks ) {
   final double delta = 1.0d / n
   final long startTimeNanos = System.nanoTime ( )
   final long sliceSize = n / numberOfTasks
-  final channels = Channel.one2oneArray ( numberOfTasks )
+  final channel = Channel.any2one ( )
   final processes = [ ]
-  for ( int i = 0 ; i < numberOfTasks ; ++i ) {
+  for ( i in 0 ..< numberOfTasks ) {
     final int taskId = i
     processes <<  new CSProcess ( ) {
       public void run ( ) {
@@ -31,21 +31,21 @@ void execute ( int numberOfTasks ) {
           final double x = ( j - 0.5d ) * delta
           sum += 1.0d / ( 1.0d + x * x )
         }
-        channels[taskId].out ( ).write ( sum )
+        channel.out ( ).write ( sum )
       }
     }
   }
   processes << new CSProcess ( ) {
     public void run ( ) {
       double sum = 0.0d
-      for ( c in channels ) { sum += (double) c.in ( ).read ( ) }
+      for (  i in 0 ..< numberOfTasks ) { sum += (double) channel.in ( ).read ( ) }
       final double pi = 4.0d * sum * delta
       final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      System.out.println ( "==== Groovy JCSP pi = " + pi )
-      System.out.println ( "==== Groovy JCSP iteration count = " + n )
-      System.out.println ( "==== Groovy JCSP elapse = " + elapseTime )
-      System.out.println ( "==== Groovy JCSP processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
-      System.out.println ( "==== Groovy JCSP task count = " + numberOfTasks )
+      System.out.println ( "==== Groovy JCSP Single pi = " + pi )
+      System.out.println ( "==== Groovy JCSP Single iteration count = " + n )
+      System.out.println ( "==== Groovy JCSP Single elapse = " + elapseTime )
+      System.out.println ( "==== Groovy JCSP Single processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
+      System.out.println ( "==== Groovy JCSP Single task count = " + numberOfTasks )
     }
   } ;
   ( new Parallel ( processes as CSProcess[] ) ).run ( )
