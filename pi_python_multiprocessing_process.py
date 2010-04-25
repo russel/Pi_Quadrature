@@ -3,26 +3,26 @@
 
 #  Calculation of Pi using quadrature.  Using the multiprocessing package with one process per processor.
 #
-#  Copyright © 2008-9 Russel Winder
+#  Copyright © 2008-10 Russel Winder
 
 import time
 import multiprocessing
 
-def processSlice ( start , end , delta , output ) :
+def processSlice ( id , sliceSize , delta , output ) :
     sum = 0.0
-    for i in xrange ( start , end + 1 ) :
+    for i in xrange ( 1 + id * sliceSize , ( id + 1 ) * sliceSize + 1 ) :
         x = ( i - 0.5 ) * delta
         sum += 1.0 / ( 1.0 + x * x )
     output.put ( sum )
     output.close ( )
 
 def execute ( processCount ) :
-    n = 10000000 # 100 times fewer due to speed issues.
+    n = 100000000 # 10 times fewer due to speed issues.
     delta = 1.0 / n
     startTime = time.time ( )
-    slice = n / processCount
+    sliceSize = n / processCount
     resultsQueue = multiprocessing.Queue ( )
-    processes = [ multiprocessing.Process ( target = processSlice , args = ( 1 + i * slice , ( i + 1 ) * slice , delta , resultsQueue ) ) for i in range ( 0 , processCount ) ]
+    processes = [ multiprocessing.Process ( target = processSlice , args = ( i , sliceSize , delta , resultsQueue ) ) for i in xrange ( 0 , processCount ) ]
     for p in processes : p.start ( )
     for p in processes : p.join ( )
     accumulator = 0.0

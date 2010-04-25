@@ -3,25 +3,25 @@
 
 #  Calculation of Pi using quadrature. Using  the multiprocessing package to provide a process pool.
 #
-#  Copyright © 2008-9 Russel Winder
+#  Copyright © 2008-10 Russel Winder
 
 import time
 import multiprocessing
 
-def processSlice ( start , end , delta ) :
+def processSlice ( id , sliceSize , delta ) :
     sum = 0.0
-    for i in xrange ( start , end + 1 ) :
+    for i in xrange (  1 + id * sliceSize , ( id + 1 ) * sliceSize + 1 ) :
         x = ( i - 0.5 ) * delta
         sum += 1.0 / ( 1.0 + x * x )
     return sum
 
 def execute ( processCount ) :
-    n = 10000000 # 100 times fewer due to speed issues.
+    n = 100000000 # 10 times fewer due to speed issues.
     delta = 1.0 / n
     startTime = time.time ( )
-    slice = n / processCount
+    sliceSize = n / processCount
     pool = multiprocessing.Pool ( processes = processCount )
-    results = [ pool.apply_async ( processSlice , args = ( 1 + i * slice , ( i + 1 ) * slice , delta ) ) for i in range ( 0 , processCount ) ]
+    results = [ pool.apply_async ( processSlice , args = ( i , sliceSize , delta ) ) for i in xrange ( 0 , processCount ) ]
     pool.close ( )
     pool.join ( )
     results = [ item.get ( ) for item in results ]

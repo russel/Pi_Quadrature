@@ -3,32 +3,28 @@
 
 #  Calculation of Pi using quadrature.  Use the Parallel Python package.
 #
-#  Copyright © 2008-9 Russel Winder
+#  Copyright © 2008-10 Russel Winder
 
 import time
 
-#  python-pp only installs version 1.5.6 in Ubuntu Karmic so use my installation of 1.5.7 which has the
-#  Python 2.5 compatibility.
-
 import sys
 import os
-sys.path.insert ( 0 , os.environ['HOME'] + '/lib/Python/lib/python2.6/pp' )
 import pp
 
-def processSlice ( start , end , delta ) :
+def processSlice ( id , sliceSize , delta ) :
     sum = 0.0
-    for i in xrange ( start , end + 1 ) :
+    for i in xrange ( 1 + id * sliceSize , ( id + 1 ) * sliceSize + 1 ) :
         x = ( i - 0.5 ) * delta
         sum += 1.0 / ( 1.0 + x * x )
     return sum
 
 def execute ( processCount ) :
-    n = 10000000 # 100 times fewer due to speed issues.
+    n = 100000000 # 10 times fewer due to speed issues.
     delta = 1.0 / n
     startTime = time.time ( )
-    slice = n / processCount
+    sliceSize = n / processCount
     server = pp.Server ( )
-    jobs = [ server.submit ( processSlice , ( 1 + i * slice , ( i + 1 ) * slice , delta ) ) for i in range ( 0, processCount ) ]
+    jobs = [ server.submit ( processSlice , ( i , sliceSize , delta ) ) for i in xrange ( 0, processCount ) ]
     results = [ job ( ) for job in jobs ]
     pi = 4.0 * sum ( results ) * delta
     elapseTime = time.time ( ) - startTime

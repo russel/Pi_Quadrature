@@ -3,7 +3,7 @@
 
 #  Calculation of Pi using quadrature. Sequential algorithm.
 #
-#  Copyright © 2008-9 Russel Winder
+#  Copyright © 2008-10 Russel Winder
 
 import time
 

@@ -3,7 +3,7 @@
 
 #  Calculation of Pi using quadrature.  Using the python-csp package by Sarah Mount.
 #
-#  Copyright © 2009 Russel Winder
+#  Copyright © 2009-10 Russel Winder
 
 import time
 import multiprocessing
@@ -11,9 +11,9 @@ import multiprocessing
 from csp.cspprocess import *
 
 @process
-def calculator ( channel , start , end , delta , _process = None ) :
+def calculator ( channel , id , sliceSize , delta , _process = None ) :
     sum = 0.0
-    for i in xrange ( start , end + 1 ) :
+    for i in xrange ( 1 + id * sliceSize , ( id + 1 ) * sliceSize + 1 ) :
         x = ( i - 0.5 ) * delta
         sum += 1.0 / ( 1.0 + x * x )
     channel.write ( sum )
@@ -22,23 +22,23 @@ def calculator ( channel , start , end , delta , _process = None ) :
 def accumulator ( channels , n , delta , startTime , processCount , _process = None ) :
     pi = 4.0 * sum ( [ channel.read ( ) for channel in channels ] ) * delta
     elapseTime = time.time ( ) - startTime
-    print "==== Python CSP pi =" , pi
-    print "==== Python CSP iteration count =", n
-    print "==== Python CSP elapse =" , elapseTime
-    print "==== Python CSP process count = ", processCount
-    print "==== Python CSP processor count =" , multiprocessing.cpu_count ( )
+    print "==== Python CSP Multiple pi =" , pi
+    print "==== Python CSP Multiple iteration count =", n
+    print "==== Python CSP Multiple elapse =" , elapseTime
+    print "==== Python CSP Multiple process count = ", processCount
+    print "==== Python CSP Multiple processor count =" , multiprocessing.cpu_count ( )
 
 def execute ( processCount ) :
-    n = 10000000 # 100 times fewer due to speed issues.
+    n = 100000000 # 10 times fewer due to speed issues.
     delta = 1.0 / n
     startTime = time.time ( )
     slice = n / processCount
     channels = [ ]
     processes = [ ] 
-    for i in range ( 0 , processCount ) :
+    for i in xrange ( 0 , processCount ) :
         channel = Channel ( )
         channels.append ( channel )
-        processes.append ( calculator ( channel , 1 + i * slice , ( i + 1 ) * slice , delta ) )
+        processes.append ( calculator ( channel , i , slice , delta ) )
     processes.append ( accumulator ( channels , n , delta , startTime , processCount ) )
     Par ( *processes ).start ( )
 

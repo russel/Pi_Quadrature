@@ -3,7 +3,7 @@
 
 #  Calculation of Pi using quadrature.  Using the python-csp package by Sarah Mount.
 #
-#  Copyright © 2009 Russel Winder
+#  Copyright © 2009-10 Russel Winder
 
 import time
 import multiprocessing
@@ -16,16 +16,16 @@ def execute ( processCount ) :
     startTime = time.time ( )
     slice = n / processCount
     channels = [ ]
-    processes = [ ] 
     @process
     def accumulator ( _process = None ) :
         pi = 4.0 * sum ( [ channel.read ( ) for channel in channels ] ) * delta
         elapseTime = time.time ( ) - startTime
-        print "==== Python CSP pi =" , pi
-        print "==== Python CSP iteration count =", n
-        print "==== Python CSP elapse =" , elapseTime
-        print "==== Python CSP process count = ", processCount
-        print "==== Python CSP processor count =" , multiprocessing.cpu_count ( )
+        print "==== Python CSP Multiple NestedDeep pi =" , pi
+        print "==== Python CSP Multiple NestedDeep iteration count =", n
+        print "==== Python CSP Multiple NestedDeep elapse =" , elapseTime
+        print "==== Python CSP Multiple NestedDeep process count = ", processCount
+        print "==== Python CSP Multiple NestedDeep processor count =" , multiprocessing.cpu_count ( )
+    processes = [ ] 
     for i in range ( 0 , processCount ) :
         channel = Channel ( )
         channels.append ( channel )

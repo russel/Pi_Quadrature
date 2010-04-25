@@ -3,7 +3,7 @@
 
 #  Calculation of Pi using quadrature.  Using the python-csp package by Sarah Mount.
 #
-#  Copyright © 2009 Russel Winder
+#  Copyright © 2009-10 Russel Winder
 
 import time
 import multiprocessing
@@ -14,13 +14,12 @@ def execute ( processCount ) :
     n = 10000000 # 100 times fewer due to speed issues.
     delta = 1.0 / n
     startTime = time.time ( )
-    slice = n / processCount
+    sliceSize = n / processCount
     channels = [ ]
-    processes = [ ] 
     @process
-    def calculator ( channel , start , end , _process = None ) :
+    def calculator ( channel , id , _process = None ) :
         sum = 0.0
-        for i in xrange ( start , end + 1 ) :
+        for i in xrange ( 1 + id * sliceSize ,  ( id + 1 ) * sliceSize + 1 ) :
             x = ( i - 0.5 ) * delta
             sum += 1.0 / ( 1.0 + x * x )
         channel.write ( sum )
@@ -28,15 +27,16 @@ def execute ( processCount ) :
     def accumulator ( _process = None ) :
         pi = 4.0 * sum ( [ channel.read ( ) for channel in channels ] ) * delta
         elapseTime = time.time ( ) - startTime
-        print "==== Python CSP pi =" , pi
-        print "==== Python CSP iteration count =", n
-        print "==== Python CSP elapse =" , elapseTime
-        print "==== Python CSP process count = ", processCount
-        print "==== Python CSP processor count =" , multiprocessing.cpu_count ( )
+        print "==== Python CSP Multiple NestedShallow pi =" , pi
+        print "==== Python CSP Multiple NestedShallow iteration count =", n
+        print "==== Python CSP Multiple NestedShallow elapse =" , elapseTime
+        print "==== Python CSP Multiple NestedShallow process count = ", processCount
+        print "==== Python CSP Multiple NestedShallow processor count =" , multiprocessing.cpu_count ( )
+    processes = [ ] 
     for i in range ( 0 , processCount ) :
         channel = Channel ( )
         channels.append ( channel )
-        processes.append ( calculator ( channel , 1 + i * slice , ( i + 1 ) * slice ) )
+        processes.append ( calculator ( channel , i ) )
     processes.append ( accumulator ( ) )
     Par ( *processes ).start ( )
 

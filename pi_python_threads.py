@@ -9,21 +9,21 @@ import time
 import threading
 import Queue
 
-def processSlice ( start , end , delta ) :
+def processSlice ( id , sliceSize , delta ) :
     sum = 0.0
-    for i in xrange ( start , end + 1 ) :
+    for i in xrange ( 1 + id * sliceSize , ( id + 1 ) * sliceSize + 1 ) :
         x = ( i - 0.5 ) * delta
         sum += 1.0 / ( 1.0 + x * x )
     results.append ( sum )
 
 def execute ( threadCount ) :
-    n = 10000000 # 100 times fewer due to speed issues.
+    n = 100000000 # 10 times fewer due to speed issues.
     delta = 1.0 / n
     startTime = time.time ( )
-    slice = n / threadCount
+    sliceSize = n / threadCount
     global results
     results = [ ]
-    threads = [ threading.Thread ( target = processSlice , args = ( 1 + i * slice , ( i + 1 ) * slice , delta ) ) for i in range ( 0 , threadCount ) ]
+    threads = [ threading.Thread ( target = processSlice , args = ( i , sliceSize , delta ) ) for i in xrange ( 0 , threadCount ) ]
     for thread in threads : thread.start ( )
     for thread in threads : thread.join ( )
     pi =  4.0 * sum ( results ) * delta
