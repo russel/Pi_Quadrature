@@ -32,13 +32,13 @@ def execute ( processCount ) :
     n = 100000000 # 10 times fewer due to speed issues.
     delta = 1.0 / n
     startTime = time.time ( )
-    slice = n / processCount
+    sliceSize = n / processCount
     channels = [ ]
     processes = [ ] 
-    for i in xrange ( 0 , processCount ) :
+    for i in xrange ( 0 , processCount ) : 
         channel = Channel ( )
         channels.append ( channel )
-        processes.append ( calculator ( channel , i , slice , delta ) )
+        processes.append ( calculator ( channel , i , sliceSize , delta ) )
     processes.append ( accumulator ( channels , n , delta , startTime , processCount ) )
     Par ( *processes ).start ( )
 
