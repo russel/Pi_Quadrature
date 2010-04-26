@@ -8,7 +8,7 @@ import Data.Time.Clock ( getCurrentTime , diffUTCTime )
 import GHC.Conc ( numCapabilities )
 import Control.Parallel.Strategies ( rwhnf , parMap )
 
-piIter :: Integer -> Integer -> Double -> Double -> Double
+piIter :: Int -> Int -> Double -> Double -> Double
 piIter  n to delta accumulator
     | n > to = accumulator * delta
     | otherwise = 
@@ -19,13 +19,13 @@ piIter  n to delta accumulator
         in
           piIter nPlus1 to delta value
 
-piQuadSlice :: Double -> Integer -> Integer -> Double
+piQuadSlice :: Double -> Int -> Int -> Double
 piQuadSlice delta sliceSize index = piIter start end delta 0.0
     where
       start = 1 +  index * sliceSize
       end =  ( index + 1 ) * sliceSize
 
-execute :: Integer -> IO ( )
+execute :: Int -> IO ( )
 execute numberOfSlices = do
   let n = 1000000000
   let delta = 1.0 / ( fromIntegral n )

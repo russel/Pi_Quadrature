@@ -6,13 +6,13 @@ module Main where
 
 import Data.Time.Clock ( getCurrentTime , diffUTCTime )
 
-piIter :: Integer -> Double -> Double -> Double
+piIter :: Int -> Double -> Double -> Double
 piIter 0 delta accumulator = 4.0 * accumulator * delta
 piIter n delta accumulator = piIter ( n - 1 ) delta ( accumulator + 1.0 / ( 1.0 + x * x )  )
     where
       x = ( ( fromIntegral n ) - 0.5 ) * delta
 
-piQuad :: Integer -> Double
+piQuad :: Int -> Double
 piQuad n = piIter n ( 1.0 / ( fromIntegral n ) ) 0.0
 
 main :: IO ( )

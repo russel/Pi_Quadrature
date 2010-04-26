@@ -6,7 +6,7 @@ module Main where
 
 import Data.Time.Clock ( getCurrentTime , diffUTCTime )
 
-piIter :: Integer -> Double -> Double -> Double
+piIter :: Int -> Double -> Double -> Double
 piIter 0 delta accumulator = 4.0 * accumulator * delta
 piIter n delta accumulator =
     let
@@ -16,7 +16,7 @@ piIter n delta accumulator =
     in
       nMinus1 `seq` x `seq` value `seq` piIter nMinus1 delta value
  
-piQuad :: Integer -> Double
+piQuad :: Int -> Double
 piQuad n = piIter n ( 1.0 / ( fromIntegral n ) ) 0.0
 
 main :: IO ( )

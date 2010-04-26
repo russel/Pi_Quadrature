@@ -8,7 +8,7 @@ import Data.Time.Clock ( getCurrentTime , diffUTCTime )
 import GHC.Conc ( numCapabilities )
 import Control.Concurrent ( forkIO , newEmptyMVar , putMVar, takeMVar )
 
-piIter :: Integer -> Integer -> Double -> Double -> Double
+piIter :: Int -> Int -> Double -> Double -> Double
 piIter  n to delta accumulator
     | n > to = 4.0 * accumulator * delta
     | otherwise = 
@@ -19,7 +19,7 @@ piIter  n to delta accumulator
         in
           piIter nPlus1 to delta value
 
-spawnWorkersAndSum :: Integer -> Double -> Integer -> IO ( Double )
+spawnWorkersAndSum :: Int -> Double -> Int -> IO ( Double )
 spawnWorkersAndSum 0 _ _ = return ( 0.0 )
 spawnWorkersAndSum i delta sliceSize = do
   forkedWorkerValue <- newEmptyMVar
@@ -32,7 +32,7 @@ spawnWorkersAndSum i delta sliceSize = do
   x <- takeMVar forkedWorkerValue
   return ( x + y )
 
-execute :: Integer -> IO ( )
+execute :: Int -> IO ( )
 execute numberOfSlices = do
   let n = 1000000000
   let delta = 1.0 / ( fromIntegral n )
