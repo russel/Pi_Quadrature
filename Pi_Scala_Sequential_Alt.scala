@@ -5,9 +5,10 @@
  *  Copyright © 2009-10 Russel Winder
  */
 //
-//  Because of the way variables are represented as methods when using the idiom of extending Application to
-//  create a main procedure, performance plummets.  We cannot afford this performance degredation so
-//  use the "write a main method" idiom.
+//  This version shows the effect of variables being represented as methods when using the idiom of
+//  extending Application to create a main procedure, performance plummets.  We cannot afford this
+//  performance degredation so use the "write a main method" idiom for the main code.  Keep this as evidence
+//  though.
 //
 object Pi_Scala_Sequential_Alt {
   def main ( args : Array[String] ) {
