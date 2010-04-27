@@ -7,7 +7,7 @@
 
 import time
 
-n = 10000000 # 100 times fewer due to speed issues
+n = 10000000 # 100 times fewer due to speed issues.
 delta = 1.0 / n
 startTime = time.time ( )
 sum = 0.0
