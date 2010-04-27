@@ -52,6 +52,11 @@ public class Pi_Java_Futures {
     System.out.println ( "==== Java Futures thread count = " + numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
+    //  It seems we have to run the function twice to warm up the JVM :-(
+    Pi_Java_Futures.execute ( 8 ) ;
+    System.out.println ( ) ;
+    Pi_Java_Futures.execute ( 8 ) ;
+    System.out.println ( ) ;
     Pi_Java_Futures.execute ( 1 ) ;
     System.out.println ( ) ;
     Pi_Java_Futures.execute ( 2 ) ;
