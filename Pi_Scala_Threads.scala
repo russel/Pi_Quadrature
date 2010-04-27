@@ -4,7 +4,7 @@
  *  Copyright © 2009-10 Russel Winder
  */
 
-import scala.concurrent.SyncVar
+import scala.concurrent.Lock
 
 object Pi_Scala_Threads extends  Application {
   def execute ( numberOfTasks : Int ) {
@@ -12,8 +12,8 @@ object Pi_Scala_Threads extends  Application {
     val delta = 1.0 / n
     val startTimeNanos = System.nanoTime
     val sliceSize = n / numberOfTasks
-    var sum = new SyncVar[Double]
-    sum set 0.0
+    var sum = 0.0
+    val lock = new Lock ( )
     var threads = for ( index <- 0 until numberOfTasks ) yield
       new Thread ( new Runnable {
         def run ( ) {
@@ -25,12 +25,14 @@ object Pi_Scala_Threads extends  Application {
             localSum += 1.0 / ( 1.0 + x * x )
             i += 1
           }
-          sum set sum.get + localSum
+          lock.acquire
+          sum += localSum
+          lock.release
         }
       } )
     threads.foreach ( t => t.start )
     threads.foreach ( t => t.join )
-    val pi = 4.0 * sum.get * delta
+    val pi = 4.0 * sum * delta
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
     println ( "==== Scala Threads pi = " + pi )
     println ( "==== Scala Threads iteration count = " + n )
