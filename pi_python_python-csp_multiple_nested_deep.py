@@ -30,13 +30,13 @@ def execute ( processCount ) :
         channel = Channel ( )
         channels.append ( channel )
         @process
-        def calculator ( _process = None ) :
+        def calculator ( channel , _process = None ) :
             sum = 0.0
             for j in xrange ( 1 + i * slice , ( i + 1 ) * slice ) :
                 x = ( j - 0.5 ) * delta
                 sum += 1.0 / ( 1.0 + x * x )
-            channels[i].write ( sum )
-        processes.append ( calculator ( ) )
+            channel.write ( sum )
+        processes.append ( calculator ( channels[i] ) )
     processes.append ( accumulator ( ) )
     Par ( *processes ).start ( )
 
