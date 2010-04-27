@@ -35,7 +35,7 @@ def execute ( processCount ) :
             for i in xrange ( 1 + id * sliceSize , ( id + 1 ) * sliceSize ) :
                 x = ( i - 0.5 ) * delta
                 sum += 1.0 / ( 1.0 + x * x )
-            channels[index].write ( sum )
+            channels[id].write ( sum )
         processes.append ( calculator ( i ) )
     processes.append ( accumulator ( ) )
     Par ( *processes ).start ( )
