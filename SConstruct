@@ -263,7 +263,16 @@ Depends ( dependsOnProcessSlice , environment.Java ( '.' , [ 'ProcessSlice.java'
 #  Python  ###########################################################################
 
 for item in Glob ( 'pi_python*.py' ) :
-    addRunTarget ( environment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , './$SOURCE' ) )
+    target = 'run_' + os.path.splitext ( item.name ) [0]
+    if item.name == 'pi_python_python-csp_single_c.py' :
+        Depends ( target , environment.SharedLibrary ( '_processSlice_c' , 'processSlice_c.c' , CFLAGS = ccFlags ) )
+        addRunTarget ( environment.Command ( target , item.name , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
+    elif item.name == 'pi_python_python-csp_single_cpp.py' :
+        Depends ( target , environment.SharedLibrary ( '_processSlice_cpp' , 'processSlice_cpp.cpp' , CXXFLAGS = ccFlags ) )
+        addRunTarget ( environment.Command ( target , item.name , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
+    else :
+        addRunTarget ( environment.Command ( target , item.name , './$SOURCE' ) )
+
 
 #  Ruby  #############################################################################
 
