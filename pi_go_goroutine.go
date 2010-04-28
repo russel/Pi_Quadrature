@@ -12,9 +12,9 @@ import (
 	"runtime"
 )
 
-func processSlice ( id int , sliceSize int64 , delta float64 , channel chan float64 ) {
-	start := 1 + int64 ( id ) * sliceSize
-	end := int64 ( id + 1 ) * sliceSize
+func processSlice ( id int , sliceSize int , delta float64 , channel chan float64 ) {
+	start := 1 + id * sliceSize
+	end := ( id + 1 ) * sliceSize
 	sum := float64 ( 0.0 )
 	for i := start ; i <= end ; i++ {
 		x := ( float64 ( i ) - 0.5 ) * delta
@@ -24,11 +24,11 @@ func processSlice ( id int , sliceSize int64 , delta float64 , channel chan floa
 }
 
 func execute ( numberOfTasks int ) {
-	const n = int64 ( 1000000000 )
+	const n = 1000000000
 	const delta = 1.0 / float64 ( n )
 	startTime := time.Nanoseconds ( )
 	runtime.GOMAXPROCS ( numberOfTasks ) // Temporary hack
-	sliceSize := n / int64 ( numberOfTasks )
+	sliceSize := n / numberOfTasks
 	channel := make ( chan float64 , numberOfTasks )
 	for i := 0 ; i < numberOfTasks ; i++ { go processSlice ( i , sliceSize , delta , channel ) }
 	sum := float64 ( 0.0 )

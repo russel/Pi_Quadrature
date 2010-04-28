@@ -12,11 +12,11 @@ import (
 )
 
 func main ( ) {
-	const n = int64 ( 1000000000 )
+	const n = 1000000000
 	const delta = 1.0 / float64 ( n )
 	startTime := time.Nanoseconds ( )
 	sum := float64 ( 0.0 )
-	for  i := int64 ( 1 ) ; i <= n ; i++ {
+	for  i := 1 ; i <= n ; i++ {
 		x := ( float64 ( i ) - 0.5 ) * delta
 		sum += 1.0 / ( 1.0 + x * x )
 	}
