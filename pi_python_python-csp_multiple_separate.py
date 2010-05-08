@@ -29,7 +29,7 @@ def accumulator ( channels , n , delta , startTime , processCount , _process = N
     print "==== Python CSP Multiple Separate processor count =" , multiprocessing.cpu_count ( )
 
 def execute ( processCount ) :
-    n = 100000000 # 10 times fewer due to speed issues.
+    n = 10000000 # 100 times fewer due to speed issues.
     delta = 1.0 / n
     startTime = time.time ( )
     sliceSize = n / processCount
