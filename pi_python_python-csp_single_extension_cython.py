@@ -7,26 +7,24 @@
 
 import time
 import multiprocessing
-import ctypes
+
+from processSlice_cython import processSlice
 
 from csp.cspprocess import *
 
 @process
 def calculator ( channel , id , sliceSize , delta , _process = None ) :
-    processSlice = ctypes.cdll.LoadLibrary ( 'lib_processSlice_cpp.so' )
-    processSlice.processSlice.argtypes = [ ctypes.c_long , ctypes.c_long , ctypes.c_double ]
-    processSlice.processSlice.restype = ctypes.c_double
-    channel.write ( processSlice.processSlice ( id , sliceSize , delta ) )
+    channel.write ( processSlice ( id , sliceSize , delta ) )
         
 @process
 def accumulator ( channel , n , delta , startTime , processCount , _process = None ) :
     pi = 4.0 * sum ( [ channel.read ( ) for i in xrange ( 0 , processCount ) ] ) * delta
     elapseTime = time.time ( ) - startTime
-    print "==== Python CSP Single C++ pi =" , pi
-    print "==== Python CSP Single C++ iteration count =", n
-    print "==== Python CSP Single C++ elapse =" , elapseTime
-    print "==== Python CSP Single C++ process count = ", processCount
-    print "==== Python CSP Single C++ processor count =" , multiprocessing.cpu_count ( )
+    print "==== Python CSP Single Cython Extension pi =" , pi
+    print "==== Python CSP Single Cython Extension iteration count =", n
+    print "==== Python CSP Single Cython Extension elapse =" , elapseTime
+    print "==== Python CSP Single Cython Extension process count = ", processCount
+    print "==== Python CSP Single Cython Extension processor count =" , multiprocessing.cpu_count ( )
 
 def execute ( processCount ) :
     n = 1000000000

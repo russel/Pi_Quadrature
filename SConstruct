@@ -262,14 +262,45 @@ Depends ( dependsOnProcessSlice , environment.Java ( '.' , [ 'ProcessSlice.java'
 
 #  Python  ###########################################################################
 
+extensionRoot = 'processSlice'
+extensionsData = {
+    'c' : {
+        'CPPPATH' : [ ] ,
+        'CFLAGS' : ccFlags ,
+        'LINKFLAGS' : [ ]
+        } ,
+    'cpp' : {
+        'CPPPATH' : [ ] ,
+        'CFLAGS' : ccFlags ,
+        'LINKFLAGS' : [ ]
+        } ,
+    'pyrex' : {
+        'CPPPATH' : [ '/usr/include/python2.6' ] ,
+        'CFLAGS' : ccFlags + [ '-fno-strict-aliasing' , '-DNDEBUG' , '-fwrapv' , '-Wstrict-prototypes' ] ,
+        'LINKFLAGS' : [ '-Wl,-O1' ,  '-Wl,-Bsymbolic-functions' ] ,
+        'COMMAND' : 'pyrexc'
+        } ,
+    'cython' : {
+        'CPPPATH' : [ '/usr/include/python2.6' ] ,
+        'CFLAGS' : ccFlags + [ '-fno-strict-aliasing' , '-DNDEBUG' , '-fwrapv' , '-Wstrict-prototypes' ] ,
+        'LINKFLAGS' : [ '-Wl,-O1' ,  '-Wl,-Bsymbolic-functions' ] ,
+        'COMMAND' : 'cython'
+        } ,
+    }
+
 for item in Glob ( 'pi_python*.py' ) :
-    target = 'run_' + os.path.splitext ( item.name ) [0]
-    if item.name == 'pi_python_python-csp_single_c.py' :
-        Depends ( target , environment.SharedLibrary ( '_processSlice_c' , 'processSlice_c.c' , CFLAGS = ccFlags ) )
-        addRunTarget ( environment.Command ( target , item.name , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
-    elif item.name == 'pi_python_python-csp_single_cpp.py' :
-        Depends ( target , environment.SharedLibrary ( '_processSlice_cpp' , 'processSlice_cpp.cpp' , CXXFLAGS = ccFlags ) )
-        addRunTarget ( environment.Command ( target , item.name , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
+    root = os.path.splitext ( item.name ) [0]
+    target = 'run_' + root
+    bits = root.split ( '_' )
+    if len ( bits ) > 5 and bits[4] == 'extension' :
+        extension = bits[5]
+        assert item.name == ( 'pi_python_python-csp_single_extension_%s.py' % extension )
+        addRunTarget ( environment.Command ( target , [ item.name , environment.SharedLibrary ( '%s_%s' % ( extensionRoot , extension ) ,
+                environment.Command ( '%s_%s.c' % ( extensionRoot , extension ) , '%s_%s.pyx' % ( extensionRoot , extension ) ,
+                        extensionsData[extension]['COMMAND'] + ' $SOURCE' ) if extension in [ 'pyrex' , 'cython' ]
+                        else  '%s_%s.%s' % ( extensionRoot , extension , extension ) ,
+                CPPPATH = extensionsData[extension]['CPPPATH'] , CFLAGS = extensionsData[extension]['CFLAGS'] , SHLIBPREFIX = '' ,
+                LINKFLAGS = extensionsData[extension]['LINKFLAGS'] ) ] , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
     else :
         addRunTarget ( environment.Command ( target , item.name , './$SOURCE' ) )
 

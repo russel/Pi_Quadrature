@@ -13,7 +13,7 @@ from csp.cspprocess import *
 
 @process
 def calculator ( channel , id , sliceSize , delta , _process = None ) :
-    processSlice = ctypes.cdll.LoadLibrary ( 'lib_processSlice_c.so' )
+    processSlice = ctypes.cdll.LoadLibrary ( 'processSlice_c.so' )
     processSlice.processSlice.argtypes = [ ctypes.c_long , ctypes.c_long , ctypes.c_double ]
     processSlice.processSlice.restype = ctypes.c_double
     channel.write ( processSlice.processSlice ( id , sliceSize , delta ) )
@@ -22,11 +22,11 @@ def calculator ( channel , id , sliceSize , delta , _process = None ) :
 def accumulator ( channel , n , delta , startTime , processCount , _process = None ) :
     pi = 4.0 * sum ( [ channel.read ( ) for i in xrange ( 0 , processCount ) ] ) * delta
     elapseTime = time.time ( ) - startTime
-    print "==== Python CSP Single C pi =" , pi
-    print "==== Python CSP Single C iteration count =", n
-    print "==== Python CSP Single C elapse =" , elapseTime
-    print "==== Python CSP Single C process count = ", processCount
-    print "==== Python CSP Single C processor count =" , multiprocessing.cpu_count ( )
+    print "==== Python CSP Single C Extension pi =" , pi
+    print "==== Python CSP Single C Extension iteration count =", n
+    print "==== Python CSP Single C Extension elapse =" , elapseTime
+    print "==== Python CSP Single C Extension process count = ", processCount
+    print "==== Python CSP Single C Extension processor count =" , multiprocessing.cpu_count ( )
 
 def execute ( processCount ) :
     n = 1000000000
