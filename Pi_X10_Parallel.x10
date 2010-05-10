@@ -26,6 +26,7 @@ public class Pi_X10_Parallel {
       }
       sum
     } ;
+    //  This operation is map not lift.
     val sums = ( new Array[Double] ( numberOfTasks) ).lift ( computeSlice ) ;
     val pi : double = 4.0 * sums.reduce ( Double.+ , 0.0 ) * delta ;
     val elapseTime : double = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
