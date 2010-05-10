@@ -233,7 +233,7 @@ for item in Glob ( 'Pi_X10_*.x10' ) :
     # C++ backend bits.
     #
     cppClassFileName = className + '.x10_cpp'
-    compileTargets.append ( className )
+    compileTargets.append ( cppClassFileName )
     addRunTarget ( environment.Command ( 'run_' + className + '_Cpp' , environment.Command ( cppClassFileName , item.name , 'x10c++ -O -o ' + cppClassFileName + ' ' + item.name ) , 'runx10 ' + cppClassFileName ) )
     SideEffect ( [ className + '.' + extension for extension in [ 'cc' , 'h' , 'inc' ] ] , item.name )
 
