@@ -14,12 +14,12 @@
 #include<future>
 #include "microsecondTime.h"
 
-long double partialSum ( const long id , const long sliceSize , const long double delta ) {
+double partialSum ( const long id , const long sliceSize , const double delta ) {
   const long start = 1 + id * sliceSize ;
   const long end = ( id + 1 ) * sliceSize ;
-  long double sum = 0.0 ;
+  double sum = 0.0 ;
   for ( long i = start ; i <= end ; ++i ) {
-    const long double x = ( i - 0.5 ) * delta ;
+    const double x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
   return sum ;
@@ -27,20 +27,20 @@ long double partialSum ( const long id , const long sliceSize , const long doubl
 
 void execute ( const int numberOfThreads ) {
   const long n = 1000000000l ;
-  const long double delta = 1.0 / n ;
+  const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
   const long sliceSize = n / numberOfThreads ;
-  std::packaged_task<long double ( )> tasks [ numberOfThreads ] ;
+  std::packaged_task<double ( )> tasks [ numberOfThreads ] ;
   for ( int i = 0 ; i < numberOfThreads ; ++i ) {
-    tasks[i] = std::packaged_task<long double ( )> ( std::bind ( partialSum , i , sliceSize , delta ) ) ;
+    tasks[i] = std::packaged_task<double ( )> ( std::bind ( partialSum , i , sliceSize , delta ) ) ;
     std::thread taskThread ( std::ref ( tasks[i] ) ) ;
     taskThread.detach ( ) ;
   }
-  long double sum = 0.0 ;
+  double sum = 0.0 ;
   for ( int i = 0 ; i < numberOfThreads ; ++i ) { sum += tasks[i].get_future ( ).get ( ) ; }
-  const long double pi = 4.0 * sum * delta ;
-  const long double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
-  std::cout << "==== C++ Just::Thread futures AW pi = " << std::setprecision ( 25 ) << pi << std::endl ;
+  const double pi = 4.0 * sum * delta ;
+  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  std::cout << "==== C++ Just::Thread futures AW pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ Just::Thread futures AW iteration count = " << n << std::endl ;
   std::cout << "==== C++ Just::Thread futures AW elapse = " << elapseTime << std::endl ;
   std::cout << "==== C++ Just::Thread futures AW threadCount = " <<  numberOfThreads << std::endl ;

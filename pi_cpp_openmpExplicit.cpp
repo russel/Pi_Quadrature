@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as an OpenMP annotated algorithm.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009-10 Russel Winder
  */
 
 #include <iostream>
@@ -11,22 +11,22 @@
 
 void execute ( const int numberOfThreads ) {
   const long n = 1000000000l ;
-  const long double delta = 1.0 / n ;
+  const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
   const long sliceSize =  n / numberOfThreads ;
-  long double sum = 0.0 ;
+  double sum = 0.0 ;
 #pragma omp parallel for reduction ( + : sum )
   for ( int i = 0 ; i < numberOfThreads ; ++i ) {
     const long start = 1 + i * sliceSize ;
     const long end = ( i + 1 ) * sliceSize ;
     for ( long j = start ; j <= end ; ++j ) {
-      const long double x = ( j - 0.5 ) * delta ;
+      const double x = ( j - 0.5 ) * delta ;
       sum += 1.0 / ( 1.0 + x * x ) ;
     }
   }
-  const long double pi = 4.0 * sum * delta ;
-  const long double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
-  std::cout << "==== C++ OpenMP Explicit pi = " << std::setprecision ( 25 ) << pi << std::endl ;
+  const double pi = 4.0 * sum * delta ;
+  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  std::cout << "==== C++ OpenMP Explicit pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ OpenMP Explicit iteration count = " << n << std::endl ;
   std::cout << "==== C++ OpenMP Explicit elapse = "  << elapseTime << std::endl ;
   std::cout << "==== C++ OpenMP Explicit threadCount = " <<  numberOfThreads << std::endl ;

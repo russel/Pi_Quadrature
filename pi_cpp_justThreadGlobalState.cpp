@@ -11,15 +11,15 @@
 #include<mutex>
 #include "microsecondTime.h"
 
-long double sum ;
+double sum ;
 std::mutex sumMutex ;
 
-void partialSum ( const long id , const long sliceSize , const long double delta ) {
+void partialSum ( const long id , const long sliceSize , const double delta ) {
   const long start = 1 + id * sliceSize ;
   const long end = ( id + 1 ) * sliceSize ;
-  long double localSum = 0.0 ;
+  double localSum = 0.0 ;
   for ( long i = start ; i <= end ; ++i ) {
-    const long double x = ( i - 0.5 ) * delta ;
+    const double x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
   std::lock_guard<std::mutex> lock ( sumMutex ) ;
@@ -28,16 +28,16 @@ void partialSum ( const long id , const long sliceSize , const long double delta
 
 void execute ( const int numberOfThreads ) {
   const long n = 1000000000l ;
-  const long double delta = 1.0 / n ;
+  const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
   const long sliceSize = n / numberOfThreads ;
   std::thread threads [ numberOfThreads ] ;
   sum = 0.0 ;
   for ( int i = 0 ; i < numberOfThreads ; ++i ) { threads[i] = std::thread ( std::bind ( partialSum , i , sliceSize , delta ) ) ; }
   for ( int i = 0 ; i < numberOfThreads ; ++i ) { threads[i].join ( ) ; }
-  const long double pi = 4.0 * sum * delta ;
-  const long double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
-  std::cout << "==== C++ Just::Thread threads pi = " << std::setprecision ( 25 ) << pi << std::endl ;
+  const double pi = 4.0 * sum * delta ;
+  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  std::cout << "==== C++ Just::Thread threads pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ Just::Thread threads iteration count = " << n << std::endl ;
   std::cout << "==== C++ Just::Thread threads elapse = " << elapseTime << std::endl ;
   std::cout << "==== C++ Just::Thread threads threadCount = " <<  numberOfThreads << std::endl ;

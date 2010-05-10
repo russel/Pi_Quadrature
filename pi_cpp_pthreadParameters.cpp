@@ -9,15 +9,15 @@
 #include <pthread.h>
 #include "microsecondTime.h"
 
-long double sum ;
+double sum ;
 pthread_mutex_t sumMutex ;
 
 struct CalculationParameters {
   long id ;
   long sliceSize ;
-  long double delta ;
+  double delta ;
   CalculationParameters ( ) : id ( 0l ) , sliceSize ( 0l ) , delta ( 0.0 ) { }
-  CalculationParameters ( const long i , const long s , const long double d ) : id ( i ) , sliceSize ( s ) , delta ( d ) { }
+  CalculationParameters ( const long i , const long s , const double d ) : id ( i ) , sliceSize ( s ) , delta ( d ) { }
   CalculationParameters ( const CalculationParameters & x ) {
     id = x.id ;
     sliceSize = x.sliceSize ;
@@ -28,10 +28,10 @@ struct CalculationParameters {
 void * partialSum ( void *const arg  ) {
   const long start = 1 + ( (CalculationParameters *const) arg )->id * ( (CalculationParameters *const) arg )->sliceSize ;
   const long end = ( ( (CalculationParameters *const) arg )->id + 1 ) * ( (CalculationParameters *const) arg )->sliceSize ;
-  const long double delta = ( (CalculationParameters *const) arg )->delta ;
-  long double localSum = 0.0 ;
+  const double delta = ( (CalculationParameters *const) arg )->delta ;
+  double localSum = 0.0 ;
   for ( long i = start ; i <= end ; ++i ) {
-    const long double x = ( i - 0.5 ) * delta ;
+    const double x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
   pthread_mutex_lock ( &sumMutex ) ;
@@ -43,7 +43,7 @@ void * partialSum ( void *const arg  ) {
 
 void execute ( const int numberOfThreads ) {
   const long n = 1000000000l ;
-  const long double delta = 1.0 / n ;
+  const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
   const long sliceSize = n / numberOfThreads ;
   pthread_mutex_init ( &sumMutex , NULL ) ;
@@ -60,9 +60,9 @@ void execute ( const int numberOfThreads ) {
   pthread_attr_destroy ( &attributes ) ;
   int status ;
   for ( int i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
-  const long double pi = 4.0 * sum * delta ;
-  const long double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
-  std::cout << "==== C++ PThread parameters pi = " << std::setprecision ( 25 ) << pi << std::endl ;
+  const double pi = 4.0 * sum * delta ;
+  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  std::cout << "==== C++ PThread parameters pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ PThread parameters iteration count = " << n << std::endl ;
   std::cout << "==== C++ PThread parameters elapse = " << elapseTime << std::endl ;
   std::cout << "==== C++ PThread parameters thread count = " <<  numberOfThreads << std::endl ;

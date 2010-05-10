@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as a threads-based algorithm.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009-10 Russel Winder
  */
 
 #include <iostream>
@@ -10,11 +10,11 @@
 #include "microsecondTime.h"
 
 const long n = 1000000000l ;
-const long double delta = 1.0 / n ;
+const double delta = 1.0 / n ;
 
 long sliceSize  ;
 
-long double sum ;
+double sum ;
 pthread_mutex_t sumMutex ;
 
 /*
@@ -31,9 +31,9 @@ typedef int integerFromVoidStar ;
 void * partialSum ( void *const arg  ) {
   const long start = 1 + ( (integerFromVoidStar) arg ) * sliceSize ;
   const long end = ( ( (integerFromVoidStar) arg ) + 1 ) * sliceSize ;
-  long double localSum = 0.0 ;
+  double localSum = 0.0 ;
   for ( long i = start ; i <= end ; ++i ) {
-    const long double x = ( i - 0.5 ) * delta ;
+    const double x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
   pthread_mutex_lock ( &sumMutex ) ;
@@ -56,9 +56,9 @@ void execute ( const int numberOfThreads ) {
   pthread_attr_destroy ( &attributes ) ;
   int status ;
   for ( int i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
-  const long double pi = 4.0 * sum * delta ;
-  const long double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
-  std::cout << "==== C++ PThread global pi = " << std::setprecision ( 25 ) << pi << std::endl ;
+  const double pi = 4.0 * sum * delta ;
+  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  std::cout << "==== C++ PThread global pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ PThread global iteration count = " << n << std::endl ;
   std::cout << "==== C++ PThread global elapse = " << elapseTime << std::endl ;
   std::cout << "==== C++ PThread global thread count = " <<  numberOfThreads << std::endl ;
