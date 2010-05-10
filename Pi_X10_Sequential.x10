@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a basic sequential algorithm.
  *
- *  As at version 2.0.2, X10 fails to terminate compilation in the presence of the copyright symbol as a
+ *  As at versions 2.0.[23], X10 fails to terminate compilation in the presence of the copyright symbol as a
  *  UTF-8 encoded Unicode codepoint.  See XTENLANG-1236, http://jira.codehaus.org/browse/XTENLANG-1236.
  *
  *  Copyright (c) 2009-10 Russel Winder

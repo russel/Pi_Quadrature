@@ -213,18 +213,29 @@ for item in Glob ( 'Pi_Scala_*.scala' ) :
 
 Clean ( '.' , Glob ( '*.class' ) )
 
-
 #  X10  ##############################################################################
 
-####  The X10 compiler takes an infinite amount of time to compile even trivial programs, so take it out of
-####  the equation.
+####  With X10 2.0.[23] things compile using the Java backend but the sequential code seems to cause all
+####  cores to go to 90% for what appears to be forever.  Making use instead of the C++ backend which has
+####  had much more work done on it allows the code to run. The parallel code doesn't work as yet due to
+####  some class cast problem.
 
 for item in Glob ( 'Pi_X10_*.x10' ) :
     className = os.path.splitext ( item.name ) [0]
-    compiledFileName = className + '.class'
-    compileTargets.append ( compiledFileName )
-    addRunTarget ( environment.Command ( 'run_' + className , environment.Command ( compiledFileName , item.name , 'x10c ' + item.name ) , 'x10 ' + className ) )
+    #
+    #  Java backend bits.
+    #
+    javaClassFileName = className + '.class'
+    compileTargets.append ( javaClassFileName )
+    addRunTarget ( environment.Command ( 'run_' + className + '_Java' , environment.Command ( javaClassFileName , item.name , 'x10c -O ' + item.name ) , 'x10 ' + className ) )
     SideEffect ( [ className + '.java' ] , item.name )
+    #
+    # C++ backend bits.
+    #
+    cppClassFileName = className + '.x10_cpp'
+    compileTargets.append ( className )
+    addRunTarget ( environment.Command ( 'run_' + className + '_Cpp' , environment.Command ( cppClassFileName , item.name , 'x10c++ -O -o ' + cppClassFileName + ' ' + item.name ) , 'runx10 ' + cppClassFileName ) )
+    SideEffect ( [ className + '.' + extension for extension in [ 'cc' , 'h' , 'inc' ] ] , item.name )
 
 #  Clojure  ##########################################################################
 
