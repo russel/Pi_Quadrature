@@ -42,7 +42,7 @@ let execute numberOfThreads =
   Array.iter Thread.join processes ;
   let pi = 4.0 *. accumulator#get *. delta  in
   let elapseTime = Sys.time ( ) -. startTime in
-  Printf.printf "==== OCaml Threads Imperative pi = %.25f\n" pi ;
+  Printf.printf "==== OCaml Threads Imperative pi = %.18f\n" pi ;
   Printf.printf "==== OCaml Threads Imperative iteration count = %d\n" n ;
   Printf.printf "==== OCaml Threads Imperative elapse time = %f\n" elapseTime ;
   Printf.printf "==== OCaml Threads Imperative number of threads = %d\n" numberOfThreads ;;

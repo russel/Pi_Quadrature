@@ -17,7 +17,7 @@ let main ( ) =
   done ;
   let pi = 4.0 *. ! sum *. delta  in
   let elapseTime = Sys.time ( ) -. startTime in
-  Printf.printf "==== OCaml Sequential Imperative pi = %.25f\n" pi ;
+  Printf.printf "==== OCaml Sequential Imperative pi = %.18f\n" pi ;
   Printf.printf "==== OCaml Sequential Imperative iteration count = %d\n" n ;
   Printf.printf "==== OCaml Sequential Imperative elapse time = %f\n" elapseTime ;
   exit 0 ;;

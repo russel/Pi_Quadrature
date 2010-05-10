@@ -17,7 +17,7 @@ let main ( ) =
   let startTime = Sys.time ( ) in
   let pi = 4.0 *. ( compute n delta 0.0 ) *. delta  in
   let elapseTime = Sys.time ( ) -. startTime in
-  Printf.printf "==== OCaml Sequential Applicative pi = %.25f\n" pi ;
+  Printf.printf "==== OCaml Sequential Applicative pi = %.18f\n" pi ;
   Printf.printf "==== OCaml Sequential Applicative iteration count = %d\n" n ;
   Printf.printf "==== OCaml Sequential Applicative elapse time = %f\n" elapseTime ;
   exit 0 ;;

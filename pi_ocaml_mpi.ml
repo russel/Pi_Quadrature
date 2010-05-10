@@ -29,7 +29,7 @@ let main ( ) =
   if myId == 0 then
     let pi = 4.0 *. sum *. delta  in
     let elapseTime = Unix.gettimeofday ( ) -. startTime in
-    Printf.printf "==== OCaml MPI pi = %.25f\n" pi ;
+    Printf.printf "==== OCaml MPI pi = %.18f\n" pi ;
     Printf.printf "==== OCaml MPI iteration count = %d\n" n ;
     Printf.printf "==== OCaml MPI elapse time = %f\n" elapseTime ;
     Printf.printf "==== OCaml MPI processor count = %d\n" nProcessors ;;
