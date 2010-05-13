@@ -25,7 +25,7 @@ comm.Reduce ( ( localSum , MPI.DOUBLE ) , ( sum , MPI.DOUBLE ) )
 if myId == 0 :
     pi = 4.0 * sum[0] * delta
     elapseTime = time.time ( ) - startTime
-    print "==== Python MPI pi =" , pi
-    print "==== Python MPI iteration count =" , n
-    print "==== Python MPI elapse =" , elapseTime
-    print "==== Python MPI processorCount =" , nProcessors
+    print ( "==== Python MPI pi = " + str ( pi ) )
+    print ( "==== Python MPI iteration count = " + str ( n ) )
+    print ( "==== Python MPI elapse = " + str ( elapseTime ) )
+    print ( "==== Python MPI processorCount = " + str ( nProcessors ) )

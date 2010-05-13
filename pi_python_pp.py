@@ -28,11 +28,11 @@ def execute ( processCount ) :
     results = [ job ( ) for job in jobs ]
     pi = 4.0 * sum ( results ) * delta
     elapseTime = time.time ( ) - startTime
-    print "==== Python PP pi =" , pi
-    print "==== Python PP iteration count =", n
-    print "==== Python PP elapse =" , elapseTime
-    print "==== Python PP process count =" , processCount
-    print "==== Python PP processor count =" , server.get_ncpus ( )
+    print ( "==== Python PP pi = " + str ( pi ) )
+    print ( "==== Python PP iteration count = "+ str ( n ) )
+    print ( "==== Python PP elapse = " + str ( elapseTime ) )
+    print ( "==== Python PP process count = " + str ( processCount ) )
+    print ( "==== Python PP processor count = " + str ( server.get_ncpus ( ) ) )
     server.print_stats ( )
     
 if __name__ == '__main__' :

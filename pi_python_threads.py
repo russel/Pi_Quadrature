@@ -28,10 +28,10 @@ def execute ( threadCount ) :
     for thread in threads : thread.join ( )
     pi =  4.0 * sum ( results ) * delta
     elapseTime = time.time ( ) - startTime
-    print "==== Python Threads pi =" , pi
-    print "==== Python Threads iteration count =" , n
-    print "==== Python Threads elapse =" , elapseTime
-    print "==== Python Threads thread count = ", threadCount
+    print ( "==== Python Threads pi = " + str ( pi ) )
+    print ( "==== Python Threads iteration count = " + str ( n ) )
+    print ( "==== Python Threads elapse = " + str ( elapseTime ) )
+    print ( "==== Python Threads thread count = "+ str ( threadCount ) )
 
 if __name__ == '__main__' :
     execute ( 1 )

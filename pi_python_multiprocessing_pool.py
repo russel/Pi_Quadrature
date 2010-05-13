@@ -27,11 +27,11 @@ def execute ( processCount ) :
     results = [ item.get ( ) for item in results ]
     pi = 4.0 * sum ( results ) * delta
     elapseTime = time.time ( ) - startTime
-    print "==== Python Multiprocessing Pool pi =" , pi
-    print "==== Python Multiprocessing Pool iteration count =", n
-    print "==== Python Multiprocessing Pool elapse =" , elapseTime
-    print "==== Python Multiprocessing Pool process count =" , processCount
-    print "==== Python Multiprocessing Pool processor count =" , multiprocessing.cpu_count ( )
+    print ( "==== Python Multiprocessing Pool pi = " + str ( pi ) )
+    print ( "==== Python Multiprocessing Pool iteration count = "+ str ( n ) )
+    print ( "==== Python Multiprocessing Pool elapse = " + str ( elapseTime ) )
+    print ( "==== Python Multiprocessing Pool process count = " + str ( processCount ) )
+    print ( "==== Python Multiprocessing Pool processor count = " + str ( multiprocessing.cpu_count ( ) ) )
 
 if __name__ == '__main__' :
     execute ( 1 )

@@ -22,11 +22,11 @@ def calculator ( channel , id , sliceSize , delta , _process = None ) :
 def accumulator ( channel , n , delta , startTime , processCount , _process = None ) :
     pi = 4.0 * sum ( [ channel.read ( ) for i in xrange ( 0 , processCount ) ] ) * delta
     elapseTime = time.time ( ) - startTime
-    print "==== Python CSP Single C++ Extension pi =" , pi
-    print "==== Python CSP Single C++ Extension iteration count =", n
-    print "==== Python CSP Single C++ Extension elapse =" , elapseTime
-    print "==== Python CSP Single C++ Extension process count = ", processCount
-    print "==== Python CSP Single C++ Extension processor count =" , multiprocessing.cpu_count ( )
+    print ( "==== Python CSP Single C++ Extension pi = " + str ( pi ) )
+    print ( "==== Python CSP Single C++ Extension iteration count = "+ str ( n ) )
+    print ( "==== Python CSP Single C++ Extension elapse = " + str ( elapseTime ) )
+    print ( "==== Python CSP Single C++ Extension process count = "+ str ( processCount ) )
+    print ( "==== Python CSP Single C++ Extension processor count = " + str ( multiprocessing.cpu_count ( ) ) )
 
 def execute ( processCount ) :
     n = 1000000000

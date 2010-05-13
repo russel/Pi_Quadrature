@@ -29,11 +29,11 @@ def execute ( processCount ) :
     while not resultsQueue.empty ( ) : accumulator += resultsQueue.get ( )
     pi = 4.0 * accumulator * delta
     elapseTime = time.time ( ) - startTime
-    print "==== Python Multiprocessing Process pi =" , pi
-    print "==== Python Multiprocessing Process iteration count =", n
-    print "==== Python Multiprocessing Process elapse =" , elapseTime
-    print "==== Python Multiprocessing Process process count = ", processCount
-    print "==== Python Multiprocessing Process processor count =" , multiprocessing.cpu_count ( )
+    print ( "==== Python Multiprocessing Process pi = " + str ( pi ) )
+    print ( "==== Python Multiprocessing Process iteration count = "+ str ( n ) )
+    print ( "==== Python Multiprocessing Process elapse = " + str ( elapseTime ) )
+    print ( "==== Python Multiprocessing Process process count = "+ str ( processCount ) )
+    print ( "==== Python Multiprocessing Process processor count = " + str ( multiprocessing.cpu_count ( ) ) )
 
 if __name__ == '__main__' :
     execute ( 1 )

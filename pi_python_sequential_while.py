@@ -18,6 +18,6 @@ while i < n + 1 :
   i += 1
 pi = 4.0 * sum * delta
 elapseTime = time.time ( ) - startTime
-print "==== Python Sequential While pi =" , pi
-print "==== Python Sequential While iteration count =" , n
-print "==== Python Sequential While elapse =" , elapseTime
+print ( "==== Python Sequential While pi = " + str ( pi ) )
+print ( "==== Python Sequential While iteration count = " + str ( n ) )
+print ( "==== Python Sequential While elapse = " + str ( elapseTime ) )
