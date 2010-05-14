@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# -*- coding: utf-8 -*-
 
 #  Calculation of Pi using quadrature. Sequential algorithm.
 #
@@ -19,5 +20,5 @@ end
 pi = 4.0 * sum * delta
 elapseTime = Time.now - startTime
 puts( "==== Ruby Sequential Iteration pi = " + pi.to_s )
-puts( "==== Python Sequential Iteration iteration count = " + n.to_s )
-puts( "==== Python Sequential Iteration elapse = " + elapseTime.to_s )
+puts( "==== Ruby Sequential Iteration iteration count = " + n.to_s )
+puts( "==== Ruby Sequential Iteration elapse = " + elapseTime.to_s )
