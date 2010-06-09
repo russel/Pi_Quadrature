@@ -8,7 +8,10 @@
  *
  *  The number of iterations used here is probably far more than is needed to cause the
  *  accuracy of the result not to be representable in the hardware floating point numbers
- *  being employed.   
+ *  being employed.
+ *
+ *  A Bazaar branch of this and many other versions in many other languages is held at
+ *  http://www.russel.org.uk/Bazaar/Pi_Quadrature.
  *
  *  Copyright © 2010 Russel Winder
  */
