@@ -1,7 +1,8 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature.  Use the Parallel Python package.
+#  Calculation of Pi using quadrature.  Use the Parallel Python package.  Parallel Python appears not to be
+#  packaged for use with Python 3 in the Ubuntu package repository.
 #
 #  Copyright © 2008-10 Russel Winder
 
@@ -23,7 +24,7 @@ def execute ( processCount ) :
     delta = 1.0 / n
     startTime = time.time ( )
     sliceSize = n / processCount
-    server = pp.Server ( )
+    server = pp.Server ( secret = 'blahblahblah' )
     jobs = [ server.submit ( processSlice , ( i , sliceSize , delta ) ) for i in xrange ( 0, processCount ) ]
     results = [ job ( ) for job in jobs ]
     pi = 4.0 * sum ( results ) * delta

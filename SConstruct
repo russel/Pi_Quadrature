@@ -66,22 +66,25 @@ def cppRule ( globPattern , compiler = 'g++' , cpppath = [ ] , cxxflags = ccFlag
 cppRule ( 'pi_cpp_sequential*.cpp' )
 cppRule ( 'pi_cpp_pthread*.cpp' , libs = [ 'pthread' ] )
 cppRule ( 'pi_cpp_mpi*.cpp' , compiler = 'mpic++' )  #  This MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_c_mpi" to run the code on N processors.
-cppRule ( 'pi_cpp_openmp*.cpp' , cxxflags = ccFlags + [ '-fopenmp' ] , libs = [ 'gomp' ] )  #  Assumes gcc
-#  is 4.2.0 or greater since that is when gomp was included.  Ubuntu 9.10 Karmic Koala has Boost 1.38 as
-#  default but 1.40 is available -- use 1.40 in preference to 1.38.  Ubuntu 10.4 Lucind Lynx has Boost 1.40
-#  as default but 1.41 is available and this is the one to use in preference.
+cppRule ( 'pi_cpp_openmp*.cpp' , cxxflags = ccFlags + [ '-fopenmp' ] , libs = [ 'gomp' ] ) #  Assumes gcc is 4.2.0 or greater since that is when gomp was included.
+#  Ubuntu 9.10 Karmic Koala has Boost 1.38 as default but 1.40 is available -- use 1.40 in preference to
+#  1.38.  Ubuntu 10.4 Lucid Lynx has Boost 1.40 as default but 1.41 is available and this is the one to use
+#  in preference.  There is however a problem, Boost.MPI . . . 
 cppRule ( 'pi_cpp_boostThread*.cpp' , libs = [ 'boost_thread' ] ) 
-#  As at 2010-03-04 15:56+00:00, the Boost MPI library is not in Lucid -- neither the 1.40 or 1.41 are there.
+#  As at 2010-03-04 15:56+00:00, the Boost MPI library is not in Lucid -- neither the 1.40 or 1.41 are
+#  there.  As is document in Launchpad (https://bugs.launchpad.net/ubuntu/+source/boost-defaults/+bug/531973
+#  and https://bugs.launchpad.net/ubuntu/+source/boost1.42/+bug/582420), Boost.MPI has been ejected from
+#  Ubuntu!!!!!!!!
+#
 ####cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , libs = [ 'boost_mpi' ] ) # This MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_cpp_boostMPI" to run the code on N processors.
-
+#
 #  Using Anthony Williams' Just::Thread library as an implementation of C++0x threads and things.  Use the
 #  standard deb file.
 cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ '/usr/include/justthread' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libs = [ 'justthread' , 'rt' ] )
-
 #  Intel's Threading Building Blocks (TBB) is provided only with dynamic libraries, there are no static
 #  libraries, so we have to get into the hassle of specifying a LD_LIBRARY_PATH since the location is not in
-#  the standard path :-( "LD_LIBRARY_PATH=/opt/TBB pi_cpp_tbb . . . "
-tbbPath = '/opt/TBB'
+#  the standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb . . . "
+tbbPath = os.environ['TBB_HOME']
 cppRule (  'pi_cpp_tbb*.cpp' , cpppath = [ tbbPath + '/include' ] , libpath = [ tbbPath ] , libs = [ 'tbb' ] )
 
 #  Fortran  ##########################################################################
@@ -146,7 +149,7 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
     extraOptions = ''
     variant = root.split ( '_' )[2]
     if variant == 'threads' : extraOptions = '-thread unix.cmxa threads.cmxa'
-    if variant == 'mpi' : extraOptions = '-I /opt/OCamlMPI mpi.cmxa unix.cmxa' #  These programs get run as sequential ones from SCons.  Use the command "mpirun -np N . . . " to run the code on N processors.
+    if variant == 'mpi' : extraOptions = '-I ' + os.environ['OCAMLMPI_HOME'] + ' mpi.cmxa unix.cmxa' #  These programs get run as sequential ones from SCons.  Use the command "mpirun -np N . . . " to run the code on N processors.
     executables.append ( addCompileTarget ( environment.Command ( root , item.name , 'ocamlopt -o $TARGET %s $SOURCE' % ( extraOptions ) ) ) )
     SideEffect ( [ root + '.' + extension for extension in [ 'cmi' , 'cmx' , 'o' ] ] , root )
 
@@ -154,7 +157,8 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
 
 for item in Glob ( 'pi_go_*.go' ) :
     root = os.path.splitext ( item.name ) [0]
-    goVariant = '6'
+    if os.uname ( ) [4] == 'x86_64' : goVariant = '6'
+    else : goVariant = '8'
     executables.append ( addCompileTarget ( environment.Command ( root , environment.Command ( root + '.' + goVariant , root + '.go' , goVariant + 'g -o $TARGET $SOURCE' ) , goVariant + 'l -o $TARGET $SOURCE' ) ) )
 
 ## #################################################################################
@@ -305,7 +309,7 @@ for item in Glob ( 'pi_python*.py' ) :
     bits = root.split ( '_' )
     if len ( bits ) > 5 and bits[4] == 'extension' :
         extension = bits[5]
-        assert item.name == ( 'pi_python_python-csp_single_extension_%s.py' % extension )
+        assert item.name.find ( extension ) != -1
         addRunTarget ( environment.Command ( target , [ item.name , environment.SharedLibrary ( '%s_%s' % ( extensionRoot , extension ) ,
                 environment.Command ( '%s_%s.c' % ( extensionRoot , extension ) , '%s_%s.pyx' % ( extensionRoot , extension ) ,
                         extensionsData[extension]['COMMAND'] + ' $SOURCE' ) if extension in [ 'pyrex' , 'cython' ]

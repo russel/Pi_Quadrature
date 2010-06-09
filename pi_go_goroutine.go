@@ -1,5 +1,14 @@
-/*
- *  A Go program to calculate Pi using quadrature as a sequential algorithm.
+/* 
+ *  A Go program to calculate Pi using quadrature as a potentially parallel algorithm
+ *  employing goroutines and channels.
+ *
+ *  This is an embarrassingly parallel (i.e. scatter/gather) algorithm so the more processors
+ *  you have, the faster it can go, hopefully speed up is linear.  Obviously if you use more
+ *  processes than you have processors there will be no extra speed up.
+ *
+ *  The number of iterations used here is probably far more than is needed to cause the
+ *  accuracy of the result not to be representable in the hardware floating point numbers
+ *  being employed.   
  *
  *  Copyright © 2010 Russel Winder
  */
