@@ -67,25 +67,35 @@ cppRule ( 'pi_cpp_sequential*.cpp' )
 cppRule ( 'pi_cpp_pthread*.cpp' , libs = [ 'pthread' ] )
 cppRule ( 'pi_cpp_mpi*.cpp' , compiler = 'mpic++' )  #  This MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_c_mpi" to run the code on N processors.
 cppRule ( 'pi_cpp_openmp*.cpp' , cxxflags = ccFlags + [ '-fopenmp' ] , libs = [ 'gomp' ] ) #  Assumes gcc is 4.2.0 or greater since that is when gomp was included.
-#  Ubuntu 9.10 Karmic Koala has Boost 1.38 as default but 1.40 is available -- use 1.40 in preference to
-#  1.38.  Ubuntu 10.4 Lucid Lynx has Boost 1.40 as default but 1.41 is available and this is the one to use
-#  in preference.  There is however a problem, Boost.MPI . . . 
-cppRule ( 'pi_cpp_boostThread*.cpp' , libs = [ 'boost_thread' ] ) 
-#  As at 2010-03-04 15:56+00:00, the Boost MPI library is not in Lucid -- neither the 1.40 or 1.41 are
-#  there.  As is document in Launchpad (https://bugs.launchpad.net/ubuntu/+source/boost-defaults/+bug/531973
-#  and https://bugs.launchpad.net/ubuntu/+source/boost1.42/+bug/582420), Boost.MPI has been ejected from
+
+#  As from 2010-03-04 15:56+00:00, the Boost MPI library is not in Lucid.  As is document in Launchpad
+#  (https://bugs.launchpad.net/ubuntu/+source/boost-defaults/+bug/531973 and
+#  https://bugs.launchpad.net/ubuntu/+source/boost1.42/+bug/582420), Boost.MPI has been ejected from
 #  Ubuntu!!!!!!!!
 #
-####cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , libs = [ 'boost_mpi' ] ) # This MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_cpp_boostMPI" to run the code on N processors.
-#
-#  Using Anthony Williams' Just::Thread library as an implementation of C++0x threads and things.  Use the
-#  standard deb file.
+#  NB The MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_cpp_boostMPI" to
+#  run the code on N processors.
+if not os.path.isfile ( '/usr/lib/libboost_mpi.so' ) :
+    boostHome = os.environ['BOOST_HOME']
+    boostInclude = boostHome + '/include'
+    boostLib = boostHome + '/lib'
+    cppRule ( 'pi_cpp_boostThread*.cpp' , cpppath = [ boostInclude ] , libpath = [ boostLib ] , libs = [ 'boost_thread' ] ) 
+    cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , cpppath = [ boostInclude ] , libpath = [ boostLib ] , libs = [ 'boost_mpi' , 'boost_serialization' ] )
+else :
+    cppRule ( 'pi_cpp_boostThread*.cpp' , libs = [ 'boost_thread' ] ) 
+    cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , libs = [ 'boost_mpi' ] )
+
+#  Using Anthony Williams' Just::Thread library as an implementation of C++0x threads and things.
 cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ '/usr/include/justthread' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libs = [ 'justthread' , 'rt' ] )
-#  Intel's Threading Building Blocks (TBB) is provided only with dynamic libraries, there are no static
-#  libraries, so we have to get into the hassle of specifying a LD_LIBRARY_PATH since the location is not in
-#  the standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb . . . "
-tbbPath = os.environ['TBB_HOME']
-cppRule (  'pi_cpp_tbb*.cpp' , cpppath = [ tbbPath + '/include' ] , libpath = [ tbbPath ] , libs = [ 'tbb' ] )
+
+if not os.path.isfile ( '/usr/lib/libtbb.so.3' ) :
+    #  Intel's Threading Building Blocks (TBB) is provided only with dynamic libraries, there are no static
+    #  libraries, so we have to get into the hassle of specifying a LD_LIBRARY_PATH since the location is
+    #  not in the standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb . . . "
+    tbbHome = os.environ['TBB_HOME']
+    cppRule (  'pi_cpp_tbb*.cpp' , cpppath = [ tbbHome + '/include' ] , libpath = [ tbbHome ] , libs = [ 'tbb' ] )
+else :
+    cppRule (  'pi_cpp_tbb*.cpp' , libs = [ 'tbb' ] )
 
 #  Fortran  ##########################################################################
 
@@ -107,8 +117,13 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 
 #  D  ################################################################################
 
+##  NB As at 2010-06-21 the D compiler is a 32-bit application that generates 32-bit code.  So on 64-bit
+##  platforms special care is needed.
+
 ##  As at 2010-04-24 using D 2.043 the D threads examples does not compile due to a problem that causes an
 ##  assertion fail in src/phobos/std/traits.d
+
+##  As at 2010-06-21 on Debian Squeeze AMD64 it seems GCC cannot find the 32-bit pthreads :-((
 
 for item in Glob ( 'pi_d2_*.d' ) :
     if item.name != 'pi_d2_sequential.d' : continue # Temporary hack as the threads stuff won't compile.
