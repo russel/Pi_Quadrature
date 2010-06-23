@@ -68,12 +68,12 @@ cppRule ( 'pi_cpp_pthread*.cpp' , libs = [ 'pthread' ] )
 cppRule ( 'pi_cpp_mpi*.cpp' , compiler = 'mpic++' )  #  This MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_c_mpi" to run the code on N processors.
 cppRule ( 'pi_cpp_openmp*.cpp' , cxxflags = ccFlags + [ '-fopenmp' ] , libs = [ 'gomp' ] ) #  Assumes gcc is 4.2.0 or greater since that is when gomp was included.
 
-#  As from 2010-03-04 15:56+00:00, the Boost MPI library is not in Lucid.  As is document in Launchpad
-#  (https://bugs.launchpad.net/ubuntu/+source/boost-defaults/+bug/531973 and
+#  As from 2010-03-04 15:56+00:00, the Boost MPI library is not in Lucid.  As is document in the bug tracker
+#  on Launchpad (https://bugs.launchpad.net/ubuntu/+source/boost-defaults/+bug/531973 and
 #  https://bugs.launchpad.net/ubuntu/+source/boost1.42/+bug/582420), Boost.MPI has been ejected from
 #  Ubuntu!!!!!!!!
 #
-#  NB The MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_cpp_boostMPI" to
+#  NB The MPI execution targets runs things sequentially.  Use the command "mpirun -np N pi_cpp_boostMPI" to
 #  run the code on N processors.
 if not os.path.isfile ( '/usr/lib/libboost_mpi.so' ) :
     boostHome = os.environ['BOOST_HOME']
@@ -85,13 +85,19 @@ else :
     cppRule ( 'pi_cpp_boostThread*.cpp' , libs = [ 'boost_thread' ] ) 
     cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , libs = [ 'boost_mpi' ] )
 
-#  Using Anthony Williams' Just::Thread library as an implementation of C++0x threads and things.
+#  Use Anthony Williams' Just::Thread library as an implementation of C++0x threads and things.  Anthony's
+#  Ubuntu Lucid deb seems to work fine on Debian Squeeze, which is good.  In order to use the standard
+#  naming in the source code we have to augment the include path.  Must also inform GCC that we are using
+#  the next standard.
 cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ '/usr/include/justthread' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libs = [ 'justthread' , 'rt' ] )
 
+#  TBB 2.2 is present packaged in Ubuntu Lucid and Debian Squeeze, but TBB 3 is now out and compiled up in
+#  some location known to the shell.
 if not os.path.isfile ( '/usr/lib/libtbb.so.3' ) :
-    #  Intel's Threading Building Blocks (TBB) is provided only with dynamic libraries, there are no static
-    #  libraries, so we have to get into the hassle of specifying a LD_LIBRARY_PATH since the location is
-    #  not in the standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb . . . "
+    #  Intel's Threading Building Blocks (TBB) only provides dynamic libraries, there are no static
+    #  libraries, so we have to get into the hassle of specifying a LD_LIBRARY_PATH to run the constructed
+    #  executable since the location is not in the standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb
+    #  . . . "
     tbbHome = os.environ['TBB_HOME']
     cppRule (  'pi_cpp_tbb*.cpp' , cpppath = [ tbbHome + '/include' ] , libpath = [ tbbHome ] , libs = [ 'tbb' ] )
 else :
@@ -117,19 +123,17 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 
 #  D  ################################################################################
 
-##  NB As at 2010-06-21 the D compiler is a 32-bit application that generates 32-bit code.  So on 64-bit
-##  platforms special care is needed.
+##  NB As at 2010-06-21 the D compiler (2.047) is a 32-bit application that generates 32-bit code.  So on
+##  64-bit platforms special care is needed.
 
 ##  As at 2010-04-24 using D 2.043 the D threads examples does not compile due to a problem that causes an
 ##  assertion fail in src/phobos/std/traits.d
 
-##  As at 2010-06-21 on Debian Squeeze AMD64 it seems GCC cannot find the 32-bit pthreads :-((
-
 for item in Glob ( 'pi_d2_*.d' ) :
     if item.name != 'pi_d2_sequential.d' : continue # Temporary hack as the threads stuff won't compile.
     root = os.path.splitext ( item.name ) [0]
-    #  As at 2010-03-03, the standard D tool in SCons assumes D v1.0, but we use an amended version so it correctly finds libphobos2.
-    #  NB as at 2010-04-24 (v 2.043) the D systems is only a 32-bit system which generates 32-bit systems.
+    #  As at 2010-06-23, the standard D tool in SCons assumes D v1.0, but we use an amended version (that
+    #  has yet to be merged in :-( so it correctly finds libphobos2.
     executables.append ( addCompileTarget ( environment.Program ( item.name , DFLAGS = [ '-O' ] ) ) )
 
 #  Chapel  ###########################################################################
