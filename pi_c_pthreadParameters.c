@@ -22,8 +22,7 @@ void * partialSum ( void *const arg  ) {
   const long end = ( ( (CalculationParameters *const) arg )->id + 1 ) * ( (CalculationParameters *const) arg )->sliceSize ;
   const double delta = ( (CalculationParameters *const) arg )->delta ;
   double localSum = 0.0 ;
-  long i ;
-  for ( i = start ; i <= end ; ++i ) {
+  for ( long i = start ; i <= end ; ++i ) {
     const double x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
@@ -46,8 +45,7 @@ void execute ( const int numberOfThreads ) {
   sum = 0.0 ; // Only one thread at this point so safe to access without locking.
   pthread_t threads[numberOfThreads] ;
   CalculationParameters parameters[numberOfThreads] ;
-  int i ;
-  for ( i = 0 ; i < numberOfThreads ; ++i ) {
+  for ( int i = 0 ; i < numberOfThreads ; ++i ) {
     parameters[i].id = i ;
     parameters[i].sliceSize = sliceSize ;
     parameters[i].delta = delta ;
@@ -55,7 +53,7 @@ void execute ( const int numberOfThreads ) {
   }
   pthread_attr_destroy ( &attributes ) ;
   int status ;
-  for ( i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
+  for ( int i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
   const double pi = 4.0 * sum * delta ;
   const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   printf ( "==== C PThread parameters pi = %.18lf\n" , pi ) ;

@@ -17,11 +17,10 @@ double sum ;
 pthread_mutex_t sumMutex ;
 
 void * partialSum ( void *const arg  ) {
-  const long start = 1 + ( (int) arg ) * sliceSize ;
-  const long end = ( ( (int) arg ) + 1 ) * sliceSize ;
+  const long start = 1 + ( (long) arg ) * sliceSize ;
+  const long end = ( ( (long) arg ) + 1 ) * sliceSize ;
   double localSum = 0.0 ;
-  long i ;
-  for ( i = start ; i <= end ; ++i ) {
+  for ( long i = start ; i <= end ; ++i ) {
     const double x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
@@ -41,11 +40,10 @@ void execute ( const int numberOfThreads ) {
   pthread_attr_init ( &attributes ) ;
   pthread_attr_setdetachstate ( &attributes , PTHREAD_CREATE_JOINABLE ) ;
   pthread_t threads[numberOfThreads] ;
-  int i ;
-  for ( i = 0 ; i < numberOfThreads ; ++i ) { pthread_create ( &threads[i] , &attributes , partialSum , (void *) i ) ; }
+  for ( long i = 0 ; i < numberOfThreads ; ++i ) { pthread_create ( &threads[i] , &attributes , partialSum , (void *) i ) ; }
   pthread_attr_destroy ( &attributes ) ;
   int status ;
-  for ( i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
+  for ( int i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
   const double pi = 4.0 * sum * delta ;
   const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   printf ( "==== C PThread global pi = %.18lf\n" , pi ) ;

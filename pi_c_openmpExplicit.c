@@ -14,13 +14,11 @@ void execute ( const int numberOfThreads ) {
   const long long startTimeMicros = microsecondTime ( ) ;
   const long sliceSize =  n / numberOfThreads ;
   double sum = 0.0 ;
-  int i ;
-#pragma omp parallel for private ( i ) reduction ( + : sum )
-  for ( i = 0 ; i < numberOfThreads ; ++i ) {
+#pragma omp parallel for reduction ( + : sum )
+  for ( int i = 0 ; i < numberOfThreads ; ++i ) {
     const long start = 1 + i * sliceSize ;
     const long end = ( i + 1 ) * sliceSize ;
-    long j ;
-    for ( j = start ; j <= end ; ++j ) {
+    for ( long j = start ; j <= end ; ++j ) {
       const double x = ( j - 0.5 ) * delta ;
       sum += 1.0 / ( 1.0 + x * x ) ;
     }

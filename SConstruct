@@ -42,7 +42,7 @@ def cRule ( globPattern , compiler = 'gcc' , cpppath = [ ] , cflags = ccFlags , 
             addCompileTarget (
                 environment.Program (
                     os.path.splitext ( item.name ) [0] , [ item.name , microsecondTimeC ] ,
-                    CC = compiler , CPPPATH = [ '../Timing' ] + cpppath , CFLAGS = cflags , LINKFLAGS= linkflags , LIBPATH = libpath , LIBS = libs )
+                    CC = compiler , CPPPATH = [ '../Timing' ] + cpppath , CFLAGS = cflags + [ '-std=c99' ] , LINKFLAGS= linkflags , LIBPATH = libpath , LIBS = libs )
                 )
             )
 

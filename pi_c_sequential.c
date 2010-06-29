@@ -12,8 +12,7 @@ int main ( ) {
   const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
   double sum = 0.0 ;
-  long i ;
-  for ( i = 1 ; i <= n ; ++i ) {
+  for ( long i = 1 ; i <= n ; ++i ) {
     const double x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }

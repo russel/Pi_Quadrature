@@ -20,8 +20,7 @@ int main ( int ac , char ** av ) { // MPI requires write access to ac and av :-(
   const long start = 1 + myId * sliceSize ;
   const long end = ( myId + 1 ) * sliceSize ;
   double localSum = 0.0 ;
-  long i ;
-  for ( i = start ; i <= end ; ++i ) {
+  for ( long i = start ; i <= end ; ++i ) {
     const double x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
