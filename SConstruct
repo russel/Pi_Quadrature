@@ -300,7 +300,7 @@ extensionRoot = 'processSlice'
 extensionsData = {
     'c' : {
         'CPPPATH' : [ ] ,
-        'CFLAGS' : ccFlags ,
+        'CFLAGS' : ccFlags + [ '-std=c99' ] ,
         'LINKFLAGS' : [ ]
         } ,
     'cpp' : {
@@ -333,8 +333,9 @@ for item in Glob ( 'pi_python*.py' ) :
                 environment.Command ( '%s_%s.c' % ( extensionRoot , extension ) , '%s_%s.pyx' % ( extensionRoot , extension ) ,
                         extensionsData[extension]['COMMAND'] + ' $SOURCE' ) if extension in [ 'pyrex' , 'cython' ]
                         else  '%s_%s.%s' % ( extensionRoot , extension , extension ) ,
-                CPPPATH = extensionsData[extension]['CPPPATH'] , CFLAGS = extensionsData[extension]['CFLAGS'] , SHLIBPREFIX = '' ,
-                LINKFLAGS = extensionsData[extension]['LINKFLAGS'] ) ] , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
+                CPPPATH = extensionsData[extension]['CPPPATH'] ,
+                CFLAGS = extensionsData[extension]['CFLAGS'] , CXXFLAGS = extensionsData[extension]['CFLAGS'] ,
+                SHLIBPREFIX = '' , LINKFLAGS = extensionsData[extension]['LINKFLAGS'] ) ] , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
     else :
         addRunTarget ( environment.Command ( target , item.name , './$SOURCE' ) )
 
