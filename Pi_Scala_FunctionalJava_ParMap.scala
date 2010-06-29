@@ -18,8 +18,8 @@ object Pi_Scala_FunctionalJava_ParMap extends Application {
     val delta = 1.0 / n
     val startTimeNanos = System.nanoTime
     val sliceSize = n / numberOfThreads
-    val partialSum = new F[Integer,Double] {
-      def f ( indexOfWrongType : Integer ) : Double = {
+    val partialSum = new F[java.lang.Integer,Double] {
+      def f ( indexOfWrongType : java.lang.Integer ) : Double = {
         val index : Int = indexOfWrongType.intValue
         var i = 1 + index * sliceSize
         val end = ( index + 1 ) * sliceSize 
