@@ -30,6 +30,11 @@ def addRunTarget ( target ) :
 
 executables = [ ]
 
+##  NB We must avoid amending the globally shared environment with language or specific program dependent
+##  changes to keys used by other languages or other programs.  By specifying key/value pairs explicitly in
+##  the Program calls, a new temporary clone environment is created a so everything proceeds as expected in
+##  the C and C++ case below.  A problem arises with the D tool though.  See below.
+
 #  C  ################################################################################
 
 ccFlags = [ '-O3' , '-Wall' ]
@@ -129,13 +134,17 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 ##  As at 2010-04-24 using D 2.043 the D threads examples does not compile due to a problem that causes an
 ##  assertion fail in src/phobos/std/traits.d
 
+##  The D tool amends the 'LIBS' key in the environment used.  To avoid this polluting other link phases,
+##  ensure to use a distinct clone for all the D compilation and linking.
+
+dEnvironment = environment.Clone ( )
+
 for item in Glob ( 'pi_d2_*.d' ) :
-    continue # Temporary hack because the D tool amends LIBS which ruins later C linking.
     if item.name != 'pi_d2_sequential.d' : continue # Temporary hack as the threads stuff won't compile.
     root = os.path.splitext ( item.name ) [0]
     #  As at 2010-06-23, the standard D tool in SCons assumes D v1.0, but we use an amended version (that
     #  has yet to be merged in :-( so it correctly finds libphobos2.
-    executables.append ( addCompileTarget ( environment.Program ( item.name , DFLAGS = [ '-O' ] ) ) )
+    executables.append ( addCompileTarget ( dEnvironment.Program ( item.name , DFLAGS = [ '-O' ] ) ) )
 
 #  Chapel  ###########################################################################
 
