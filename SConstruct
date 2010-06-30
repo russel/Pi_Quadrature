@@ -130,6 +130,7 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 ##  assertion fail in src/phobos/std/traits.d
 
 for item in Glob ( 'pi_d2_*.d' ) :
+    continue # Temporary hack because the D tool amends LIBS which ruins later C linking.
     if item.name != 'pi_d2_sequential.d' : continue # Temporary hack as the threads stuff won't compile.
     root = os.path.splitext ( item.name ) [0]
     #  As at 2010-06-23, the standard D tool in SCons assumes D v1.0, but we use an amended version (that
@@ -322,6 +323,8 @@ extensionsData = {
         } ,
     }
 
+sharedLibraries = [ ]
+
 for item in Glob ( 'pi_python*.py' ) :
     root = os.path.splitext ( item.name ) [0]
     target = 'run_' + root
@@ -329,16 +332,18 @@ for item in Glob ( 'pi_python*.py' ) :
     if len ( bits ) > 5 and bits[4] == 'extension' :
         extension = bits[5]
         assert item.name.find ( extension ) != -1
-        addRunTarget ( environment.Command ( target , [ item.name , environment.SharedLibrary ( '%s_%s' % ( extensionRoot , extension ) ,
-                environment.Command ( '%s_%s.c' % ( extensionRoot , extension ) , '%s_%s.pyx' % ( extensionRoot , extension ) ,
-                        extensionsData[extension]['COMMAND'] + ' $SOURCE' ) if extension in [ 'pyrex' , 'cython' ]
-                        else  '%s_%s.%s' % ( extensionRoot , extension , extension ) ,
-                CPPPATH = extensionsData[extension]['CPPPATH'] ,
-                CFLAGS = extensionsData[extension]['CFLAGS'] , CXXFLAGS = extensionsData[extension]['CFLAGS'] ,
-                SHLIBPREFIX = '' , LINKFLAGS = extensionsData[extension]['LINKFLAGS'] ) ] , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
+        sharedLibrary =  environment.SharedLibrary ( '%s_%s' % ( extensionRoot , extension ) ,
+            environment.Command ( '%s_%s.c' % ( extensionRoot , extension ) , '%s_%s.pyx' % ( extensionRoot , extension ) ,
+                extensionsData[extension]['COMMAND'] + ' $SOURCE' ) if extension in [ 'pyrex' , 'cython' ] else  '%s_%s.%s' % ( extensionRoot , extension , extension ) ,
+            CPPPATH = extensionsData[extension]['CPPPATH'] ,
+            CFLAGS = extensionsData[extension]['CFLAGS'] , CXXFLAGS = extensionsData[extension]['CFLAGS'] ,
+            SHLIBPREFIX = '' , LINKFLAGS = extensionsData[extension]['LINKFLAGS'] )
+        sharedLibraries.append ( sharedLibrary )
+        addRunTarget ( environment.Command ( target , [ item.name , sharedLibrary ] , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
     else :
         addRunTarget ( environment.Command ( target , item.name , './$SOURCE' ) )
 
+compilePythonExtensions = Alias ( 'compilePythonExtensions' , sharedLibraries )
 
 #  Ruby  #############################################################################
 
@@ -366,7 +371,7 @@ for item in Glob ( 'pi_erlang_*.erl' ) :
 ####################################################################################
 ####################################################################################
 
-addCompileTarget ( Alias ( 'compile' , compileTargets ) )
+addCompileTarget ( Alias ( 'compile' , compileTargets + compilePythonExtensions ) )
 
 addRunTarget ( Alias ( 'run' , runTargets ) )
 
