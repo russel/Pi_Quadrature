@@ -1,0 +1,67 @@
+#INCLUDE "course.module"
+
+PROC calculator ( CHAN REAL64 out ! , VAL INT id , VAL INT sliceSize , VAL REAL64 delta )
+  REAL64 sum :
+  INT start :
+  INT end :
+  SEQ
+    start := 1 + ( id * sliceSize )
+    end :=  ( ( id + 1 ) * sliceSize ) + 1
+    sum := 0.0
+    SEQ i = start FOR end - start
+      REAL64 x :
+      SEQ
+        x := ( ( REAL64 ROUND i ) - 0.5 ) * delta
+        sum := sum + ( 1.0 / ( 1.0 + ( x * x ) ) )
+    out ! sum
+:
+
+PROC execute ( VAL INT numberOfProcesses , CHAN BYTE out ! )
+  VAL n IS 100000000 : -- 10 times fewer due to speed issues.
+  REAL64 delta :
+  INT sliceSize :
+  TIMER time :
+  INT startTime :
+  INT endTime :
+  REAL64 elapseTime :
+  [40]CHAN REAL64 queues : -- Arrays must be of size specified by a constant :-((
+  REAL64 sum :
+  SEQ
+    time ? startTime
+    delta := 1.0 / ( REAL64 ROUND n )
+    sliceSize := n / numberOfProcesses
+    PAR
+      SEQ
+        sum := 0.0
+        SEQ i = 0 FOR numberOfProcesses
+          REAL64 item :
+          SEQ
+            queues[i] ? item
+            sum := sum + item
+      PAR i = 0 FOR numberOfProcesses
+        calculator ( queues[i] ! , i , sliceSize , delta )
+    sum := 4.0 * ( sum * delta )
+    time ? endTime
+    elapseTime := ( REAL64 ROUND ( endTime - startTime ) ) / 1000000.0
+    out.string ( "==== occam Multiple Channels pi = " , 0 , out ! )
+    out.real64 ( sum , 0 , 0 , out ! )
+    out.string ( "*n==== occam Multiple Channels iteration count = " , 0 , out ! )
+    out.int ( n , 0 , out ! )
+    out.string ( "*n==== occam Multiple Channels elapse = " , 0 , out ! )
+    out.real64 ( elapseTime , 0 , 0 , out ! )
+    out.string ( "*n==== occam Multiple Channels process count = " , 0 , out ! )
+    out.int ( numberOfProcesses , 0 , out ! )
+    out.string ( "*n==== occam Multiple Channels processor count = " , 0 , out ! )
+    out.string ( "*n" , 0 , out ! )
+:
+  
+PROC main ( CHAN BYTE out ! )
+  SEQ
+    execute ( 1 , out ! )
+    out.string ( "*n" , 0 , out ! )
+    execute ( 2 , out ! )
+    out.string ( "*n" , 0 , out ! )
+    execute ( 8 , out ! )
+    out.string ( "*n" , 0 , out ! )
+    execute ( 32 , out ! )
+:

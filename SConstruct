@@ -96,13 +96,12 @@ else :
 #  the next standard.
 cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ '/usr/include/justthread' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libs = [ 'justthread' , 'rt' ] )
 
-#  TBB 2.2 is present packaged in Ubuntu Lucid and Debian Squeeze, but TBB 3 is now out and compiled up in
-#  some location known to the shell.
+#  TBB 2.2 is packaged in Ubuntu Lucid and Debian Squeeze, but TBB 3 is now out and compiled up in some
+#  location known to the shell.
 if not os.path.isfile ( '/usr/lib/libtbb.so.3' ) :
     #  Intel's Threading Building Blocks (TBB) only provides dynamic libraries, there are no static
     #  libraries, so we have to get into the hassle of specifying a LD_LIBRARY_PATH to run the constructed
-    #  executable since the location is not in the standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb
-    #  . . . "
+    #  executable if the TBB libraries are not in the standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb . . . "
     tbbHome = os.environ['TBB_HOME']
     cppRule (  'pi_cpp_tbb*.cpp' , cpppath = [ tbbHome + '/include' ] , libpath = [ tbbHome ] , libs = [ 'tbb' ] )
 else :
@@ -190,9 +189,20 @@ for item in Glob ( 'pi_go_*.go' ) :
     else : goVariant = '8'
     executables.append ( addCompileTarget ( environment.Command ( root , environment.Command ( root + '.' + goVariant , root + '.go' , goVariant + 'g -o $TARGET $SOURCE' ) , goVariant + 'l -o $TARGET $SOURCE' ) ) )
 
-## #################################################################################
+#  occam  ############################################################################
+
+#  As far as is known there is no occam implementation packaged in Debian Squeeze or Ubuntu Lucid.  We
+#  therefore use KRoC which will be installed somewhere known to the shell.  It doesn't seem obvious how to
+#  get a successful static link, so need to ensure LD_LIBRARY_PATH is correctly set to run the resulting
+#  executable.
+
+for item in Glob ( 'pi_occam*.occ' ) :
+    root = os.path.splitext ( item.name ) [0]
+    executables.append ( addCompileTarget ( environment.Command ( root , item.name , 'kroc -o $TARGET $SOURCE' ) ) )
+
+## ###################################################################################
 ##  All the native compiled executables are processed the same way.
-## #################################################################################
+## ###################################################################################
 
 for item in executables :
     addRunTarget ( environment.Command ( 'run_' + item[0].name , item , './' + item[0].name ) )
