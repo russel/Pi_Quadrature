@@ -8,7 +8,7 @@
  */
 
 @Grab ( group = 'org.codehaus.jcsp' , module = 'jcsp' , version = '1.1-rc5-SNAPSHOT' )
-@Grab ( group = 'org.codehaus.gpars' , module = 'gpars' , version = '0.10-beta-1-SNAPSHOT' )
+@Grab ( group = 'org.codehaus.gpars' , module = 'gpars' , version = '0.10' )
 
 import org.jcsp.lang.Channel
 import org.jcsp.lang.CSProcess

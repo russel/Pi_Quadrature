@@ -7,7 +7,7 @@
  *  Copyright © 2010 Russel Winder
  */
 
-@Grab ( group = 'org.codehaus.gpars' , module = 'gpars' , version = '0.10-beta-1-SNAPSHOT' )
+@Grab ( group = 'org.codehaus.gpars' , module = 'gpars' , version = '0.10' )
 
 import groovyx.gpars.GParsPool
 
