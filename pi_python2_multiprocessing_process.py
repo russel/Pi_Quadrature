@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature.  Using the multiprocessing package with one process per processor.
+#  Calculation of Pi using quadrature.  Using the multiprocessing package with processes sending messages to
+#  a collecting queue.
 #
 #  Copyright © 2008-10 Russel Winder
 
