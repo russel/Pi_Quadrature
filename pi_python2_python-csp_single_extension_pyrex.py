@@ -10,7 +10,7 @@ import multiprocessing
 
 from processSlice_pyrex import processSlice
 
-from csp.cspprocess import *
+from csp.os_process import *
 
 @process
 def calculator ( channel , id , sliceSize , delta , _process = None ) :
