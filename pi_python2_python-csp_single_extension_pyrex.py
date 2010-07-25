@@ -13,11 +13,11 @@ from processSlice_pyrex import processSlice
 from csp.os_process import *
 
 @process
-def calculator ( channel , id , sliceSize , delta , _process = None ) :
+def calculator ( channel , id , sliceSize , delta ) :
     channel.write ( processSlice ( id , sliceSize , delta ) )
         
 @process
-def accumulator ( channel , n , delta , startTime , processCount , _process = None ) :
+def accumulator ( channel , n , delta , startTime , processCount ) :
     pi = 4.0 * sum ( [ channel.read ( ) for i in xrange ( 0 , processCount ) ] ) * delta
     elapseTime = time.time ( ) - startTime
     print ( "==== Python CSP Single Pyrex Extension pi = " + str ( pi ) )

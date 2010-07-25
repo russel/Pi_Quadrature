@@ -17,7 +17,7 @@ def execute ( processCount ) :
     sliceSize = n / processCount
     channels = [ ]
     @process
-    def accumulator ( _process = None ) :
+    def accumulator ( ) :
         pi = 4.0 * sum ( [ channel.read ( ) for channel in channels ] ) * delta
         elapseTime = time.time ( ) - startTime
         print ( "==== Python CSP Multiple NestedDeep pi = " + str ( pi ) )
@@ -30,7 +30,7 @@ def execute ( processCount ) :
         channel = Channel ( )
         channels.append ( channel )
         @process
-        def calculator ( id , _process = None ) :
+        def calculator ( id ) :
             sum = 0.0
             for i in xrange ( 1 + id * sliceSize , ( id + 1 ) * sliceSize ) :
                 x = ( i - 0.5 ) * delta

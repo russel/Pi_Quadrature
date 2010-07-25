@@ -12,14 +12,14 @@ import ctypes
 from csp.os_process import *
 
 @process
-def calculator ( channel , id , sliceSize , delta , _process = None ) :
+def calculator ( channel , id , sliceSize , delta ) :
     processSlice = ctypes.cdll.LoadLibrary ( 'processSlice_c.so' )
     processSlice.processSlice.argtypes = [ ctypes.c_long , ctypes.c_long , ctypes.c_double ]
     processSlice.processSlice.restype = ctypes.c_double
     channel.write ( processSlice.processSlice ( id , sliceSize , delta ) )
         
 @process
-def accumulator ( channel , n , delta , startTime , processCount , _process = None ) :
+def accumulator ( channel , n , delta , startTime , processCount ) :
     pi = 4.0 * sum ( [ channel.read ( ) for i in xrange ( 0 , processCount ) ] ) * delta
     elapseTime = time.time ( ) - startTime
     print ( "==== Python CSP Single C Extension pi = " + str ( pi ) )
