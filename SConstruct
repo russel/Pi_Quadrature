@@ -37,7 +37,7 @@ executables = [ ]
 
 #  C  ################################################################################
 
-ccFlags = [ '-O3' , '-Wall' ]
+ccFlags = [ '-O3' , '-Wall' , '-Wextra' ]
 
 microsecondTimeC = Object ( '../Timing/microsecondTime.c' , CFLAGS = ccFlags )
 
@@ -316,6 +316,20 @@ Depends ( dependsOnProcessSlice , environment.Java ( '.' , [ 'ProcessSlice.java'
 
 #  Python  ###########################################################################
 
+#  Some of the Python code relies on extensions written in various languages.  Because we have both Python 3
+#  and Python 2 versions this means that two targets are specifying the same extension, which leads SCons to
+#  deduce a "warning: Two different environments were specified for target . . . "  So we have to protect
+#  against trying to issue two SharedLibrary calls for the same extensions.  This leads to apparent
+#  inefficiency in handling the libraries due to wanting to use node references for dependency handling.
+#
+#  Cython and Pyrex need access to the Python headers when compiling the generated C and so are Python
+#  version dependent.
+#
+#  This is all grossly over-complicated and needs a complete rethink.
+
+cythonPyrexCcFlags =  ccFlags + [ '-fno-strict-aliasing' , '-DNDEBUG' , '-fwrapv' , '-Wstrict-prototypes' ]
+cythonPyrexLinkFlags =  [ '-Wl,-O1' ,  '-Wl,-Bsymbolic-functions' ]
+
 extensionRoot = 'processSlice'
 extensionsData = {
     'c' : {
@@ -328,25 +342,31 @@ extensionsData = {
         'CFLAGS' : ccFlags ,
         'LINKFLAGS' : [ ]
         } ,
-    'pyrex' : {
+    'pyrex_py2' : {
         'CPPPATH' : [ '/usr/include/python2.6' ] ,
-        'CFLAGS' : ccFlags + [ '-fno-strict-aliasing' , '-DNDEBUG' , '-fwrapv' , '-Wstrict-prototypes' ] ,
-        'LINKFLAGS' : [ '-Wl,-O1' ,  '-Wl,-Bsymbolic-functions' ] ,
+        'CFLAGS' : cythonPyrexCcFlags ,
+        'LINKFLAGS' : cythonPyrexLinkFlags ,
         'COMMAND' : 'pyrexc'
         } ,
-    'cython' : {
+    'pyrex_py3' : {
+        'CPPPATH' : [ '/usr/include/python3.1' ] ,
+        'CFLAGS' : cythonPyrexCcFlags ,
+        'LINKFLAGS' : cythonPyrexLinkFlags ,
+        'COMMAND' : 'pyrexc'
+        } ,
+    'cython_py2' : {
         'CPPPATH' : [ '/usr/include/python2.6' ] ,
-        'CFLAGS' : ccFlags + [ '-fno-strict-aliasing' , '-DNDEBUG' , '-fwrapv' , '-Wstrict-prototypes' ] ,
-        'LINKFLAGS' : [ '-Wl,-O1' ,  '-Wl,-Bsymbolic-functions' ] ,
+        'CFLAGS' : cythonPyrexCcFlags ,
+        'LINKFLAGS' :cythonPyrexLinkFlags ,
+        'COMMAND' : 'cython'
+        } ,
+    'cython_py3' : {
+        'CPPPATH' : [ '/usr/include/python3.1' ] ,
+        'CFLAGS' : cythonPyrexCcFlags ,
+        'LINKFLAGS' : cythonPyrexLinkFlags ,
         'COMMAND' : 'cython'
         } ,
     }
-
-#  Some of the Python code relies on extensions written in various languages.  Because we have both Python 3
-#  and Python 2 versions this means that two targets are specifying the same extension, which leads SCons to
-#  deduce a "warning: Two different environments were specified for target . . . "  So we have to protect
-#  against trying to issue two SharedLibrary calls for the same extensions.  This leads to apparent
-#  inefficiency in handling the libraries due to wanting to use node references for dependency handling.
 
 extensionsSpecified = [ ]
 sharedLibraries = [ ]
@@ -358,11 +378,18 @@ for item in Glob ( 'pi_python*.py' ) :
     if len ( bits ) > 5 and bits[4] == 'extension' :
         extension = bits[5]
         assert item.name.find ( extension ) != -1
+        if extension in [ 'cython' , 'pyrex' ] :
+            majorVersion = bits[1][-1:]
+            ##
+            ##  Cython 0.11.2 and Pyrex 0.9.8.5 generate C that cannot be compiled against Python 3.1
+            ##
+            if majorVersion == '3' : continue
+            extension += '_py' + majorVersion
         extensionName =  '%s_%s' % ( extensionRoot , extension )
         if extensionName not in extensionsSpecified : 
             sharedLibrary =  environment.SharedLibrary ( extensionName ,
                                         environment.Command ( '%s_%s.c' % ( extensionRoot , extension ) , '%s_%s.pyx' % ( extensionRoot , extension ) ,
-                                          extensionsData[extension]['COMMAND'] + ' $SOURCE' ) if extension in [ 'pyrex' , 'cython' ] else  '%s_%s.%s' % ( extensionRoot , extension , extension ) ,
+                                          extensionsData[extension]['COMMAND'] + ' $SOURCE' ) if extension.split ( '_' )[0] in [ 'pyrex' , 'cython' ] else  '%s_%s.%s' % ( extensionRoot , extension , extension ) ,
                                         CPPPATH = extensionsData[extension]['CPPPATH'] ,
                                         CFLAGS = extensionsData[extension]['CFLAGS'] , CXXFLAGS = extensionsData[extension]['CFLAGS'] ,
                                         SHLIBPREFIX = '' , LINKFLAGS = extensionsData[extension]['LINKFLAGS'] )

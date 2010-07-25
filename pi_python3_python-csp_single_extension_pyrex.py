@@ -8,7 +8,7 @@
 import time
 import multiprocessing
 
-from processSlice_pyrex import processSlice
+from processSlice_pyrex_py3 import processSlice
 
 from csp.os_process import *
 

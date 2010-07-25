@@ -8,7 +8,7 @@
 import time
 import multiprocessing
 
-from processSlice_cython import processSlice
+from processSlice_cython_py2 import processSlice
 
 from csp.os_process import *
 
