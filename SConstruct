@@ -327,8 +327,14 @@ Depends ( dependsOnProcessSlice , environment.Java ( '.' , [ 'ProcessSlice.java'
 #
 #  This is all grossly over-complicated and needs a complete rethink.
 
-cythonPyrexCcFlags =  ccFlags + [ '-fno-strict-aliasing' , '-DNDEBUG' , '-fwrapv' , '-Wstrict-prototypes' ]
-cythonPyrexLinkFlags =  [ '-Wl,-O1' ,  '-Wl,-Bsymbolic-functions' ]
+#  At some point it was believed that these options were needed for building the Pyrex and Cython
+#  extensions, but they are not.  Leave them here as reminders.
+#
+#  -Bsymbolic-functions is a Posix ld option only relevant for ELF shared libraries.  -O1 is a Posix ld
+#  option for optimization level and only relevant to ELF shared libraries.
+
+#cythonPyrexCcFlags =  ccFlags + [ '-fno-strict-aliasing' , '-DNDEBUG' , '-fwrapv' , '-Wstrict-prototypes' ]
+#cythonPyrexLinkFlags =  [ '-Wl,-O1' ,  '-Wl,-Bsymbolic-functions' ]
 
 extensionRoot = 'processSlice'
 extensionsData = {
@@ -344,26 +350,26 @@ extensionsData = {
         } ,
     'pyrex_py2' : {
         'CPPPATH' : [ '/usr/include/python2.6' ] ,
-        'CFLAGS' : cythonPyrexCcFlags ,
-        'LINKFLAGS' : cythonPyrexLinkFlags ,
+        'CFLAGS' : ccFlags ,
+        'LINKFLAGS' : [ ] ,
         'COMMAND' : 'pyrexc'
         } ,
     'pyrex_py3' : {
         'CPPPATH' : [ '/usr/include/python3.1' ] ,
-        'CFLAGS' : cythonPyrexCcFlags ,
-        'LINKFLAGS' : cythonPyrexLinkFlags ,
+        'CFLAGS' : ccFlags ,
+        'LINKFLAGS' :  [ ] ,
         'COMMAND' : 'pyrexc'
         } ,
     'cython_py2' : {
         'CPPPATH' : [ '/usr/include/python2.6' ] ,
-        'CFLAGS' : cythonPyrexCcFlags ,
-        'LINKFLAGS' :cythonPyrexLinkFlags ,
+        'CFLAGS' : ccFlags ,
+        'LINKFLAGS' : [ ] ,
         'COMMAND' : 'cython'
         } ,
     'cython_py3' : {
         'CPPPATH' : [ '/usr/include/python3.1' ] ,
-        'CFLAGS' : cythonPyrexCcFlags ,
-        'LINKFLAGS' : cythonPyrexLinkFlags ,
+        'CFLAGS' : ccFlags ,
+        'LINKFLAGS' : [ ] ,
         'COMMAND' : 'cython'
         } ,
     }
