@@ -22,7 +22,7 @@ def execute ( threadCount ) :
     n = 10000000 # 100 times fewer due to speed issues.
     delta = 1.0 / n
     startTime = time.time ( )
-    sliceSize = n // threadCount
+    sliceSize = n / threadCount
     global results
     results = [ ]
     threads = [ threading.Thread ( target = processSlice , args = ( i , sliceSize , delta ) ) for i in xrange ( 0 , threadCount ) ]
