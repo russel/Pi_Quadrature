@@ -12,7 +12,7 @@ int main ( string[] args ) {
   invariant delta = 1.0 / n ;
   invariant startTime = getUTCtime ( ) ;
   real sum = 0.0 ;
-  for ( auto i = 1L ; i <= n ; ++i ) {
+  foreach ( i ; 1 .. n ) {
     invariant x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
