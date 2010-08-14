@@ -10,13 +10,12 @@ import std.stdio ;
 
 import core.thread ;
 
-real sum ;
-Object sumMutex ;
+shared real sum ;
+shared Object sumMutex ;
 
 void partialSum ( const long start , const long end , const real delta ) {
-  auto localSum = 0.0 ;
-  //  Have to have long here not auto to avoid the pi_d2_threads.d(18): Error: variable pi_d2_threads.partialSum.i cannot modify const
-  for ( long i = start ; i <= end ; ++i ) {
+  auto localSum = 0.0L ; // Using a real here rather than a double makes things twice as fast!!!!!
+  foreach ( i ; start .. end ) {
     invariant x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
@@ -24,13 +23,14 @@ void partialSum ( const long start , const long end , const real delta ) {
 }
 
 void execute ( const int numberOfThreads ) {
-  invariant n = 1000000000L ;
-  invariant delta = 1.0 / n ;
+  invariant n = 1000000000L ; // Using int here instead of long would make this 40% faster but C and C++ use long.
+  invariant delta = 1.0 / n ; //  Using 1.0L makes things twice as slow if sum is real.
+  invariant startTime = getUTCtime ( ) ;
   invariant sliceSize = n / numberOfThreads ;
   auto threads = new Thread[numberOfThreads] ;  
-  invariant startTime = getUTCtime ( ) ;
-  for ( auto i = 0 ; i < numberOfThreads ; ++i ) { new Thread ( bind ( & partialSum , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ) ; }
-  foreach ( thread ; threads ) { thread.wait ( ) ; }
+  foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( bind ( & partialSum , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ) ; }
+  foreach ( thread ; threads ) { thread.start ( ) ; }
+  foreach ( thread ; threads ) { thread.join ( ) ; }
   invariant pi = 4.0 * sum * delta ;
   invariant elapseTime = ( cast (real) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
   writefln ( "==== D Threads pi = %f" , pi ) ;

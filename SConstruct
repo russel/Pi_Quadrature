@@ -127,19 +127,23 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 
 #  D  ################################################################################
 
-##  NB As at 2010-06-21 the D compiler (2.047) is a 32-bit application that generates 32-bit code.  So on
+##  NB As at 2010-08-14 the D compiler (2.048) is a 32-bit application that generates 32-bit code.  So on
 ##  64-bit platforms special care is needed.
 
-##  As at 2010-04-24 using D 2.043 the D threads examples does not compile due to a problem that causes an
+##  As at 2010-08-14 using D 2.048 the D threads examples does not compile due to a problem that causes an
 ##  assertion fail in src/phobos/std/traits.d
 
-##  The D tool amends the 'LIBS' key in the environment used.  To avoid this polluting other link phases,
+######
+##
+##  NB The D tool amends the 'LIBS' key in the environment used.  To avoid this polluting other link phases,
 ##  ensure to use a distinct clone for all the D compilation and linking.
+##
+######
 
 dEnvironment = environment.Clone ( )
 
 for item in Glob ( 'pi_d2_*.d' ) :
-    if item.name != 'pi_d2_sequential.d' : continue # Temporary hack as the threads stuff won't compile.
+    if item.name == 'pi_d2_threads.d' : continue # Temporary hack as the threads stuff won't compile.
     root = os.path.splitext ( item.name ) [0]
     #  As at 2010-06-23, the standard D tool in SCons assumes D v1.0, but we use an amended version (that
     #  has yet to be merged in :-( so it correctly finds libphobos2.
