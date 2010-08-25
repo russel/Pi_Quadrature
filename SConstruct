@@ -7,6 +7,8 @@
 import os
 import sys
 
+import platform
+
 environment = Environment (
     tools = [ 'default' , 'csharp' , 'erlang' , 'haskell' ] ,
     ENV = os.environ ,
@@ -72,6 +74,10 @@ cppRule ( 'pi_cpp_sequential*.cpp' )
 cppRule ( 'pi_cpp_pthread*.cpp' , libs = [ 'pthread' ] )
 cppRule ( 'pi_cpp_mpi*.cpp' , compiler = 'mpic++' )  #  This MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_c_mpi" to run the code on N processors.
 cppRule ( 'pi_cpp_openmp*.cpp' , cxxflags = ccFlags + [ '-fopenmp' ] , libs = [ 'gomp' ] ) #  Assumes gcc is 4.2.0 or greater since that is when gomp was included.
+
+osName , _ , _ , _ , platformVersion , _ = platform.uname ( )
+
+cppRule ( 'pi_cpp_cppcsp2.cpp' , cpppath = [ os.environ['HOME'] +'/include' ] , libpath = [ os.environ['HOME'] +'/lib.' + osName + '.' + platformVersion ] , libs = [ 'cppcsp2' , 'pthread' ] )
 
 #  As from 2010-03-04 15:56+00:00, the Boost MPI library is not in Lucid.  As is document in the bug tracker
 #  on Launchpad (https://bugs.launchpad.net/ubuntu/+source/boost-defaults/+bug/531973 and
