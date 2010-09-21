@@ -10,7 +10,7 @@ import sys
 import platform
 
 environment = Environment (
-    tools = [ 'default' , 'csharp' , 'erlang' , 'haskell' ] ,
+    tools = [ 'default' , 'csharp' , 'erlang' , 'haskell' , 'go' ] ,
     ENV = os.environ ,
     PATH = os.environ['PATH']
     )
@@ -195,9 +195,7 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
 
 for item in Glob ( 'pi_go_*.go' ) :
     root = os.path.splitext ( item.name ) [0]
-    if os.uname ( ) [4] == 'x86_64' : goVariant = '6'
-    else : goVariant = '8'
-    executables.append ( addCompileTarget ( environment.Command ( root , environment.Command ( root + '.' + goVariant , root + '.go' , goVariant + 'g -o $TARGET $SOURCE' ) , goVariant + 'l -o $TARGET $SOURCE' ) ) )
+    executables.append ( addCompileTarget ( environment.GoProgram ( root , item ) ) )
 
 #  occam  ############################################################################
 
