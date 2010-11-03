@@ -195,7 +195,9 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
 
 for item in Glob ( 'pi_go_*.go' ) :
     root = os.path.splitext ( item.name ) [0]
-    executables.append ( addCompileTarget ( environment.GoProgram ( root , item ) ) )
+    executable = environment.GoProgram ( root , item )
+    SideEffect ( 'scons-go-helper' , executables )
+    executables.append ( addCompileTarget ( executable ) )
 
 #  occam  ############################################################################
 
