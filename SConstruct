@@ -209,6 +209,12 @@ for item in Glob ( 'pi_go_*.go' ) :
 for item in Glob ( 'pi_occam*.occ' ) :
     root = os.path.splitext ( item.name ) [0]
     executables.append ( addCompileTarget ( environment.Command ( root , item.name , 'kroc -o $TARGET $SOURCE' ) ) )
+    
+#  Clay  ############################################################################
+
+for item in Glob ( 'pi_clay_*.clay' ) :
+    root = os.path.splitext ( item.name ) [0]
+    executables.append ( addCompileTarget ( environment.Command ( root , item.name , 'clay -o $TARGET $SOURCE' ) ) )
 
 ## ###################################################################################
 ##  All the native compiled executables are processed the same way.
