@@ -41,13 +41,15 @@ executables = [ ]
 
 ccFlags = [ '-O3' , '-Wall' , '-Wextra' ]
 
-microsecondTimeC = Object ( '../Timing/microsecondTime.c' , CFLAGS = ccFlags )
+cEnvironment = Environment ( tools = [ 'cc' , 'link' ] )
+
+microsecondTimeC = cEnvironment.Object ( '../Timing/microsecondTime.c' , CFLAGS = ccFlags )
 
 def cRule ( globPattern , compiler = 'gcc' , cpppath = [ ] , cflags = ccFlags , linkflags = [ ] , libpath = [ ] , libs = [ ] ) :
     for item in Glob ( globPattern ) :
         executables.append (
             addCompileTarget (
-                environment.Program (
+                cEnvironment.Program (
                     os.path.splitext ( item.name ) [0] , [ item.name , microsecondTimeC ] ,
                     CC = compiler , CPPPATH = [ '../Timing' ] + cpppath , CFLAGS = cflags + [ '-std=c99' ] , LINKFLAGS= linkflags , LIBPATH = libpath , LIBS = libs )
                 )
@@ -60,11 +62,13 @@ cRule ( 'pi_c_openmp*.c' , cflags = ccFlags + [ '-fopenmp' ] , libs = [ 'gomp' ]
 
 #  C++  ##############################################################################
 
+cppEnvironment = Environment ( tools = [ 'c++' , 'link' ] )
+
 def cppRule ( globPattern , compiler = 'g++' , cpppath = [ ] , cxxflags = ccFlags , linkflags = [ ] , libpath = [ ] , libs = [ ] ) :
     for item in Glob ( globPattern ) :
         executables.append (
             addCompileTarget (
-                environment.Program (
+                cppEnvironment.Program (
                     os.path.splitext ( item.name ) [0] , [ item.name , microsecondTimeC ] ,
                     CXX = compiler , CPPPATH = [ '../Timing' ] + cpppath , CXXFLAGS = cxxflags , LINKFLAGS= linkflags , LIBPATH = libpath , LIBS = libs )
                 )
@@ -117,11 +121,13 @@ else :
 
 fortranFlags = [ '-O3' , '-std=f2003' , '-ffree-form' , '-pedantic' , '-Wall' ]
 
+fortranEnvironment = Environment ( tools = [ 'fortran' , 'link' ] )
+
 def fortranRule ( globPattern , compiler = 'gfortran' , fortranflags = fortranFlags , linkflags = [ ] , libpath = [ ] , libs = [ ] ) :
     for item in Glob ( globPattern ) :
         executables.append (
             addCompileTarget (
-                environment.Program (
+                fortranEnvironment.Program (
                     os.path.splitext ( item.name ) [0] , item.name ,
                     FORTRAN = compiler , FORTRANFLAGS = fortranflags , LINKFLAGS= linkflags , LIBPATH = libpath , LIBS = libs )
                 )
@@ -133,10 +139,10 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 
 #  D  ################################################################################
 
-##  NB As at 2010-08-14 the D compiler (2.048) is a 32-bit application that generates 32-bit code.  So on
+##  NB As at 2010-11-04 the D compiler (2.050) is a 32-bit application that generates 32-bit code.  So on
 ##  64-bit platforms special care is needed.
 
-##  As at 2010-08-14 using D 2.048 the D threads examples does not compile due to a problem that causes an
+##  As at 2010-11-04 using D 2.050 the D threads examples does not compile due to a problem that causes an
 ##  assertion fail in src/phobos/std/traits.d
 
 ######
@@ -146,7 +152,7 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 ##
 ######
 
-dEnvironment = environment.Clone ( )
+dEnvironment = Environment ( tools = [ 'dmd' , 'link' ] )
 
 for item in Glob ( 'pi_d2_*.d' ) :
     if item.name == 'pi_d2_threads.d' : continue # Temporary hack as the threads stuff won't compile.
@@ -157,13 +163,17 @@ for item in Glob ( 'pi_d2_*.d' ) :
 
 #  Chapel  ###########################################################################
 
+chapelEnvironment = Environment ( ENV = os.environ )
+
 for item in Glob ( 'pi_chapel_*.chpl' ) :
-    executables.append ( addCompileTarget ( environment.Command ( os.path.splitext ( item.name ) [0] , item.name , 'chpl -o $TARGET -O --fast $SOURCE' ) ) )
+    executables.append ( addCompileTarget ( chapelEnvironment.Command ( os.path.splitext ( item.name ) [0] , item.name , 'chpl -o $TARGET -O --fast $SOURCE' ) ) )
 
 #  Haskell  ##########################################################################
 
 #  Haskell jobs run in a single thread by default (which is what happens here).  Run the executable with
 #  "+RTS -Nx" to run with x OS threads.
+
+haskellEnvironment = Environment ( tools = [ 'haskell' ] )
 
 for item in Glob ( 'pi_haskell_*.hs' ) :
     root = os.path.splitext ( item.name ) [0]
@@ -175,12 +185,14 @@ for item in Glob ( 'pi_haskell_*.hs' ) :
         options.append ( '-threaded' )
         options.append ( '-fdph-par' )
     if True :
-        executables.append ( addCompileTarget ( environment.Command ( root , item.name , 'ghc --make -O -o $TARGET' + ''.join ( [ ' ' + x for x in options ] ) + ' $SOURCE' ) ) )
+        executables.append ( addCompileTarget ( haskellEnvironment.Command ( root , item.name , 'ghc --make -O -o $TARGET' + ''.join ( [ ' ' + x for x in options ] ) + ' $SOURCE' ) ) )
         SideEffect ( [  root + ext for ext in [ '.hi' , '.o' , '.hp' , '.ps' , '.aux' ] ] ,  root )
     else :
-        executables.append ( addCompileTarget ( environment.HaskellProgram ( item , HSLINKFLAGS = [ '--make' ] ) ) )
+        executables.append ( addCompileTarget ( haskellEnvironment.HaskellProgram ( item , HSLINKFLAGS = [ '--make' ] ) ) )
 
 #  OCaml  ############################################################################
+
+ocamlEnvironment = Environment ( tools = [ ] ) # , ENV = os.environ )
 
 for item in Glob ( 'pi_ocaml_*.ml' ) :
     root = os.path.splitext ( item.name ) [0]
@@ -188,14 +200,16 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
     variant = root.split ( '_' )[2]
     if variant == 'threads' : extraOptions = '-thread unix.cmxa threads.cmxa'
     if variant == 'mpi' : extraOptions = '-I ' + os.environ['OCAMLMPI_HOME'] + ' mpi.cmxa unix.cmxa' #  These programs get run as sequential ones from SCons.  Use the command "mpirun -np N . . . " to run the code on N processors.
-    executables.append ( addCompileTarget ( environment.Command ( root , item.name , 'ocamlopt -o $TARGET %s $SOURCE' % ( extraOptions ) ) ) )
+    executables.append ( addCompileTarget ( ocamlEnvironment.Command ( root , item.name , 'ocamlopt -o $TARGET %s $SOURCE' % ( extraOptions ) ) ) )
     SideEffect ( [ root + '.' + extension for extension in [ 'cmi' , 'cmx' , 'o' ] ] , root )
 
 #  Go  ###############################################################################
 
+goEnvironment = Environment ( tools = [ 'go' ] )
+
 for item in Glob ( 'pi_go_*.go' ) :
     root = os.path.splitext ( item.name ) [0]
-    executable = environment.GoProgram ( root , item )
+    executable = goEnvironment.GoProgram ( root , item )
     SideEffect ( 'scons-go-helper' , executables )
     executables.append ( addCompileTarget ( executable ) )
 
@@ -206,15 +220,19 @@ for item in Glob ( 'pi_go_*.go' ) :
 #  get a successful static link, so need to ensure LD_LIBRARY_PATH is correctly set to run the resulting
 #  executable.
 
+occamEnvironment = Environment ( tools = [ ] , ENV = os.environ )
+
 for item in Glob ( 'pi_occam*.occ' ) :
     root = os.path.splitext ( item.name ) [0]
     executables.append ( addCompileTarget ( environment.Command ( root , item.name , 'kroc -o $TARGET $SOURCE' ) ) )
     
 #  Clay  ############################################################################
 
+clayEnvironment = Environment ( tools = [ ] , ENV = os.environ )
+
 for item in Glob ( 'pi_clay_*.clay' ) :
     root = os.path.splitext ( item.name ) [0]
-    executables.append ( addCompileTarget ( environment.Command ( root , item.name , 'clay -o $TARGET $SOURCE' ) ) )
+    executables.append ( addCompileTarget ( clayEnvironment.Command ( root , item.name , 'clay -o $TARGET $SOURCE' ) ) )
 
 ## ###################################################################################
 ##  All the native compiled executables are processed the same way.
@@ -225,35 +243,46 @@ for item in executables :
 
 #  Java  #############################################################################
 
+javaEnvironment = Environment ( tools = [ 'javac' ] )
+
 for item in Glob ( 'Pi_Java_*.java' ) :
     className = os.path.splitext ( item.name ) [0]
     compileTargets.append ( className + '.class' )
     variant = className.split ( '_' )[2]
     if variant == 'DataRush' :
         dataRushHome = os.environ['HOME'] + '/lib/Java/datarush'
-        compiledBits = environment.Java ( target = '.' , source = item , JAVACLASSPATH = [ f.path for f in Glob ( dataRushHome + '/lib/*.jar' ) ] )
+        compiledBits = javaEnvironment.Java ( target = '.' , source = item , JAVACLASSPATH = [ f.path for f in Glob ( dataRushHome + '/lib/*.jar' ) ] )
         javaCommand = dataRushHome + '/bin/dr '
     elif variant == 'JCSP' :
         jcspJarPath = os.environ['HOME'] + '/lib/Java/jcsp.jar'
-        compiledBits = environment.Java ( target = '.' , source = item , JAVACLASSPATH = [ jcspJarPath ] )
+        compiledBits = javaEnvironment.Java ( target = '.' , source = item , JAVACLASSPATH = [ jcspJarPath ] )
         javaCommand = 'java -cp .:' + jcspJarPath
     elif variant == 'ForkJoinBasic' or variant == 'ForkJoinCollection' :
         jsr166yJarPath = os.environ['HOME'] + '/lib/Java/jsr166y.jar'
-        compiledBits = environment.Java ( target = '.' , source = item , JAVACLASSPATH = [ jsr166yJarPath ] )
+        compiledBits = javaEnvironment.Java ( target = '.' , source = item , JAVACLASSPATH = [ jsr166yJarPath ] )
         javaCommand = 'java -cp .:' + jsr166yJarPath
     elif variant == 'ParallelArray' :
         jsr166yJarPath = os.environ['HOME'] + '/lib/Java/jsr166y.jar'
         extra166yJarPath = os.environ['HOME'] + '/lib/Java/extra166y.jar'
-        compiledBits = environment.Java ( target = '.' , source = item , JAVACLASSPATH = [ jsr166yJarPath , extra166yJarPath ] )
+        compiledBits = javaEnvironment.Java ( target = '.' , source = item , JAVACLASSPATH = [ jsr166yJarPath , extra166yJarPath ] )
         javaCommand = 'java -cp .:' + jsr166yJarPath + ':' + extra166yJarPath
     elif variant == 'FunctionalJava' :
         jarPath = os.environ['HOME'] + '/lib/Java/functionaljava.jar'
-        compiledBits = environment.Java ( target = '.' , source = item , JAVACLASSPATH = [ jarPath ] )
+        compiledBits = javaEnvironment.Java ( target = '.' , source = item , JAVACLASSPATH = [ jarPath ] )
         javaCommand = 'java -cp .:' + jarPath
     else :
-        compiledBits = environment.Java ( target = '.' , source = item )
+        compiledBits = javaEnvironment.Java ( target = '.' , source = item )
         javaCommand = 'java'
-    addRunTarget ( environment.Command ( 'run_' + className , compiledBits , javaCommand + ' ' + className ) )
+    addRunTarget ( javaEnvironment.Command ( 'run_' + className , compiledBits , javaCommand + ' ' + className ) )
+
+##  NB The Java builder does not track all the classes generated by the compilation so not all class files
+##  get automatically removed during clean.  The same applies to the Scala compilation.
+
+Clean ( '.' , Glob ( '*.class' ) )
+
+#  Scala  #############################################################################
+
+scalaEnvironment = Environment ( tools = [ ] , ENV = os.environ )
 
 for item in Glob ( 'Pi_Scala_*.scala' ) :
     if item.name == 'Pi_Scala_FunctionalJava_ParMap.scala' : continue #  Hack because there is a compilation error.
@@ -267,12 +296,11 @@ for item in Glob ( 'Pi_Scala_*.scala' ) :
     elif variant == 'Scalaz' :
         extraStuff = '-cp .:%s/lib/Java/scalaz-core.jar' % ( os.environ['HOME'] , )
     compileTargets.append ( compiledFileName )
-    addRunTarget ( environment.Command ( 'run_' + className , environment.Command ( compiledFileName , item.name , ( ( 'scalac %s -optimise ' + item.name ) % ( extraStuff , ) ) ) , ( ( 'scala %s ' + className ) % ( extraStuff , ) ) ) )
+    addRunTarget ( scalaEnvironment.Command ( 'run_' + className , scalaEnvironment.Command ( compiledFileName , item.name , ( ( 'scalac %s -optimise ' + item.name ) % ( extraStuff , ) ) ) , ( ( 'scala %s ' + className ) % ( extraStuff , ) ) ) )
 
-##  NB The Java builder does not track all the classes generated by the compilation so not all class files
-##  get automatically removed during clean.  The same applies to the Scala compilation.
-
-Clean ( '.' , Glob ( '*.class' ) )
+##  As the clean rule for removing all the class files has already been set since the Java builder does not
+##  track all the classes generated by the compilation so not all class files get automatically removed
+##  during clean, it doesn't have to be done again for Scala.
 
 #  X10  ##############################################################################
 
@@ -281,23 +309,23 @@ Clean ( '.' , Glob ( '*.class' ) )
 ####  had much more work done on it allows the code to run. The parallel code doesn't work as yet due to
 ####  some class cast problem.
 
+x10Environment = Environment ( tools = [ 'x10' ] , ENV = os.environ )
+
 for item in Glob ( 'Pi_X10_*.x10' ) :
-    className = os.path.splitext ( item.name ) [0]
+    x10ClassName = os.path.splitext ( item.name ) [0]
     #
     #  Java backend bits.
     #
-    javaClassFileName = className + '.class'
-    compileTargets.append ( javaClassFileName )
-    addRunTarget ( environment.Command ( 'run_' + className + '_Java' , environment.Command ( javaClassFileName , item.name , 'x10c -O ' + item.name ) , 'x10 ' + className ) )
-    SideEffect ( [ className + '.java' ] , item.name )
+    x10ClassFile = x10Environment.X10Classes ( item )
+    compileTargets.append ( x10ClassFile[0].name )
+    addRunTarget ( x10Environment.Command ( 'run_' + x10ClassName + '_Java' , x10ClassFile , 'x10 ' + x10ClassName ) )
     #
     # C++ backend bits.
     #
-    cppClassFileName = className + '.x10_cpp'
-    compileTargets.append ( cppClassFileName )
-    addRunTarget ( environment.Command ( 'run_' + className + '_Cpp' , environment.Command ( cppClassFileName , item.name , 'x10c++ -O -o ' + cppClassFileName + ' ' + item.name ) , 'runx10 ' + cppClassFileName ) )
-    SideEffect ( [ className + '.' + extension for extension in [ 'cc' , 'h' , 'inc' ] ] , item.name )
-
+    x10Executable = x10Environment.X10Program ( item , X10FLAGS = [ '-O' ] )
+    compileTargets.append ( x10Executable[0].name )
+    addRunTarget ( x10Environment.Command ( 'run_' + x10ClassName + '_Cpp' , x10Executable , 'runx10 ' + x10ClassName ) )
+    
 #  Clojure  ##########################################################################
 
 for item in Glob ( '*.clj' ) :
