@@ -163,10 +163,10 @@ for item in Glob ( 'pi_d2_*.d' ) :
 
 #  Chapel  ###########################################################################
 
-chapelEnvironment = Environment ( ENV = os.environ )
+chapelEnvironment = Environment ( tools = [ 'chapel' ] , ENV = os.environ )
 
 for item in Glob ( 'pi_chapel_*.chpl' ) :
-    executables.append ( addCompileTarget ( chapelEnvironment.Command ( os.path.splitext ( item.name ) [0] , item.name , 'chpl -o $TARGET -O --fast $SOURCE' ) ) )
+    executables.append ( addCompileTarget ( chapelEnvironment.ChapelProgram ( item , CHPLFLAGS = [ '-O' , '--fast' ] ) ) )
 
 #  Haskell  ##########################################################################
 
