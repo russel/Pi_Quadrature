@@ -3,7 +3,8 @@
  *
  *  As at versions 2.0.[23], X10 fails to terminate compilation in the presence of the copyright symbol as a
  *  UTF-8 encoded Unicode codepoint.  See XTENLANG-1236, http://jira.codehaus.org/browse/XTENLANG-1236.
- *
+ *  Version 2.1.0 terminates but gives an error message of bizarre nature.
+ * 
  *  Copyright (c) 2009-10 Russel Winder
  */
 
@@ -26,15 +27,15 @@ public class Pi_X10_Parallel {
       }
       sum
     } ;
-    //  This operation is map not lift.
-    val sums = ( new Array[Double] ( numberOfTasks) ).lift ( computeSlice ) ;
+    val sums = DistArray.make[Double] ( Dist.makeBlock ( 0 .. ( numberOfTasks - 1 ) ) , computeSlice ) ;
     val pi : double = 4.0 * sums.reduce ( Double.+ , 0.0 ) * delta ;
     val elapseTime : double = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    Console.OUT.println ( "==== X10 Sequential pi = " + pi ) ;
-    Console.OUT.println ( "==== X10 Sequential iteration count = " + n ) ;
-    Console.OUT.println ( "==== X10 Sequential elapse = " + elapseTime ) ;
+    Console.OUT.println ( "==== X10 Parallel pi = " + pi ) ;
+    Console.OUT.println ( "==== X10 Parallel iteration count = " + n ) ;
+    Console.OUT.println ( "==== X10 Parallel elapse = " + elapseTime ) ;
+    Console.OUT.println ( "==== X10 Parallel task count = " + numberOfTasks ) ;
   }
-  public static def main ( args : Rail[String] ! ) : void {
+  public static def main ( args : Array[String] ) : void {
     execute ( 1 ) ;
     Console.OUT.println ( ) ;
     execute ( 2 ) ;

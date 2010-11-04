@@ -3,6 +3,7 @@
  *
  *  As at versions 2.0.[23], X10 fails to terminate compilation in the presence of the copyright symbol as a
  *  UTF-8 encoded Unicode codepoint.  See XTENLANG-1236, http://jira.codehaus.org/browse/XTENLANG-1236.
+ *  Version 2.1.0 terminates but gives an error message of bizarre nature.
  *
  *  Copyright (c) 2009-10 Russel Winder
  */
@@ -10,7 +11,7 @@
 import x10.io.Console ;
 
 public class Pi_X10_Sequential {
-  public static def main ( args : Rail[String] ! ) : void {
+  public static def main ( args : Array[String] ) : void {
     val n : long = 1000000000l ;
     val delta : double = 1.0 / n ;
     val startTimeNanos : long = System.nanoTime ( ) ;
