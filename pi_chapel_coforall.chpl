@@ -10,6 +10,8 @@ use Time ;
 def execute ( param numberOfTasks : int ) {
   param n : int(64) = 1000000000 ;
   const delta : real = 1.0 / n ;
+  var timer : Timer ;
+  timer.start ( ) ;
   param sliceSize : int(64) = n / numberOfTasks ;
   const eachProcessor : domain(1) = [ 0 .. ( numberOfTasks - 1 ) ] ;
   const results : [eachProcessor] real ;
@@ -22,8 +24,6 @@ def execute ( param numberOfTasks : int ) {
     }
     return sum ;
   }
-  var timer : Timer ;
-  timer.start ( ) ;
   coforall i in eachProcessor do results[i] = partialSum ( i ) ;
   const pi = 4.0 * ( + reduce results ) * delta ;
   timer.stop ( ) ;

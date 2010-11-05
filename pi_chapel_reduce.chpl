@@ -9,9 +9,10 @@ use Time ;
 def execute ( param numberOfTasks : int ) {
   param n : int(64) = 1000000000 ;
   const delta : real = 1.0 / n ;
+  var timer : Timer ;
+  timer.start ( ) ;
   param sliceSize : int(64) = n / numberOfTasks ;
   const eachProcessor : domain(1) = [ 0 .. ( numberOfTasks - 1 ) ] ;
-  const results : [eachProcessor] real ;
   def partialSum ( const id : int ) : real {
     const start : int(64) = 1 + id * sliceSize ;
     const end : int(64) = ( id + 1 ) * sliceSize ;
@@ -21,10 +22,8 @@ def execute ( param numberOfTasks : int ) {
     }
     return sum ;
   }
-  var timer : Timer ;
-  timer.start ( ) ;
   // Prior to version 1.1 of Chapel, this is always handled in a single thread.
-  // From version 1.1, it is correctly parallelized,
+  // From version 1.1, it is correctly parallelized.
   const pi = 4.0 * ( + reduce [ i in eachProcessor ] partialSum ( i ) ) * delta ;
   timer.stop ( ) ;
   writeln ( "==== Chapel Reduce pi = " , pi ) ;
