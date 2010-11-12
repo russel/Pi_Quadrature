@@ -152,10 +152,19 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 ##
 ######
 
-dEnvironment = Environment ( tools = [ 'dmd' , 'link' ] )
+#  The dmd tool fails to set up the environment correctly to do linking on Ubuntu unless there is a compiler
+#  tool specified in order to determine the linker AND the dmd tool is included after the link and compiler
+#  tools. Also the dmd compiler is not in the bootstrap path.
+
+dEnvironment = Environment (
+    tools = [ 'gcc' , 'gnulink' , 'dmd' ] , # NB dmd must follow gcc and gnulink.
+    ENV = os.environ , # dmd is not in the standard place.
+    DFLAGS = [ '-O' , '-release' , '-inline' ] ,
+    )
 
 for item in Glob ( 'pi_d2_*.d' ) :
     if item.name == 'pi_d2_threads.d' : continue # Temporary hack as the threads stuff won't compile.
+    if item.name == 'pi_d2_parallelMap.d' : continue # Temporary hack as the tuples stuff won't compile.
     root = os.path.splitext ( item.name ) [0]
     #  As at 2010-06-23, the standard D tool in SCons assumes D v1.0, but we use an amended version (that
     #  has yet to be merged in :-( so it correctly finds libphobos2.
@@ -308,6 +317,9 @@ for item in Glob ( 'Pi_Scala_*.scala' ) :
 ####  cores to go to 90% for what appears to be forever.  Making use instead of the C++ backend which has
 ####  had much more work done on it allows the code to run. The parallel code doesn't work as yet due to
 ####  some class cast problem.
+
+####  With X10 2.1.0 everything seems to be working as it should be once the various Rail -> Array changes
+####  and use of DistArray has been sorted.
 
 x10Environment = Environment ( tools = [ 'x10' ] , ENV = os.environ )
 

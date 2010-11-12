@@ -7,17 +7,17 @@
 import std.date ;
 import std.stdio ;
 
-int main ( string[] args ) {
-  invariant n = 1000000000L ;  //  Using int here instead of long would make this 40% faster but C and C++ use long.
-  invariant delta = 1.0 / n ;  //  Using 1.0L makes things twice as slow if sum is real rather than double.
-  invariant startTime = getUTCtime ( ) ;
-  auto sum = 0.0L ;  //  Using a real here rather than a double makes things twice as fast!!!!!
+int main ( immutable string[] args ) {
+  immutable n = 1000000000L ;
+  immutable delta = 1.0 / n ;
+  immutable startTime = getUTCtime ( ) ;
+  auto sum = 0.0L ;
   foreach ( i ; 1 .. n ) {
-    invariant x = ( i - 0.5 ) * delta ;
+    immutable x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
-  invariant pi = 4.0 * sum * delta ;
-  invariant elapseTime = ( cast (real) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
+  immutable pi = 4.0 * sum * delta ;
+  immutable elapseTime = ( cast (real) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
   writefln ( "==== D Sequential pi = %.18f" , pi ) ;
   writefln ( "==== D Sequential iteration count = %d" , n ) ;
   writefln ( "==== D Sequential elapse = %f" , elapseTime ) ;

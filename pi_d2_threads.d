@@ -13,33 +13,33 @@ import core.thread ;
 shared real sum ;
 shared Object sumMutex ;
 
-void partialSum ( const long start , const long end , const real delta ) {
-  auto localSum = 0.0L ; // Using a real here rather than a double makes things twice as fast!!!!!
+void partialSum ( immutable long start , immutable long end , immutable real delta ) {
+  auto localSum = 0.0L ;
   foreach ( i ; start .. end ) {
-    invariant x = ( i - 0.5 ) * delta ;
+    immutable x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
   synchronized ( sumMutex ) { sum += localSum ; }
 }
 
-void execute ( const int numberOfThreads ) {
-  invariant n = 1000000000L ; // Using int here instead of long would make this 40% faster but C and C++ use long.
-  invariant delta = 1.0 / n ; //  Using 1.0L makes things twice as slow if sum is real.
-  invariant startTime = getUTCtime ( ) ;
-  invariant sliceSize = n / numberOfThreads ;
+void execute ( immutable int numberOfThreads ) {
+  immutable n = 1000000000L ;
+  immutable delta = 1.0 / n ;
+  immutable startTime = getUTCtime ( ) ;
+  immutable sliceSize = n / numberOfThreads ;
   auto threads = new Thread[numberOfThreads] ;  
   foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( bind ( & partialSum , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ) ; }
   foreach ( thread ; threads ) { thread.start ( ) ; }
   foreach ( thread ; threads ) { thread.join ( ) ; }
-  invariant pi = 4.0 * sum * delta ;
-  invariant elapseTime = ( cast (real) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
+  immutable pi = 4.0 * sum * delta ;
+  immutable elapseTime = ( cast (real) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
   writefln ( "==== D Threads pi = %f" , pi ) ;
   writefln ( "==== D Threads iteration count = %d" , n ) ;
   writefln ( "==== D Threads elapse = %f" , elapseTime ) ;
   writefln ( "==== D Threads thread count = %d" , numberOfThreads ) ;
 }
 
-int main ( string[] args ) {
+int main ( immutable string[] args ) {
   execute ( 1 ) ;
   writeln ( ) ;
   execute ( 2 ) ;
