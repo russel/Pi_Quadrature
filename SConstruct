@@ -205,7 +205,7 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
 
 #  Go  ###############################################################################
 
-goEnvironment = Environment ( tools = [ 'go' ] , GOFLAGS = [ '--optimize' ] )
+goEnvironment = Environment ( tools = [ 'go' ] )
 
 for item in Glob ( 'pi_go_*.go' ) :
     root = os.path.splitext ( item.name ) [0]
@@ -240,6 +240,16 @@ for item in Glob ( 'pi_clay_*.clay' ) :
 
 for item in executables :
     addRunTarget ( Command ( 'run_' + item[0].name , item , './' + item[0].name ) )
+
+#  C#  ###############################################################################
+
+cSharpEnvironment = Environment ( tools = [ 'csharp' ] )
+
+for item in Glob ( 'Pi_CS_*.cs' ) :
+    compiledFile = cSharpEnvironment.CLIProgram ( item )
+    compiledFileName = compiledFile[0].name
+    compileTargets.append ( compiledFileName )
+    addRunTarget ( cSharpEnvironment.Command ( 'run_' + compiledFileName.replace ( '.exe' , '' ) , compiledFile , 'mono ' + compiledFileName ) )
 
 #  Java  #############################################################################
 
@@ -339,16 +349,6 @@ for item in Glob ( '*.clj' ) :
 #  Use the Java environment to compile this as there are Groovy dependencies as well as Clojure ones.
 
 Depends ( 'run_pi_clojure_processSlice' , javaEnvironment.Java ( '.' , 'ProcessSlice.java' ) )
-
-#  C#  ###############################################################################
-
-cSharpEnvironment = Environment ( tools = [ 'csharp' ] )
-
-for item in Glob ( 'Pi_CS_*.cs' ) :
-    compiledFile = cSharpEnvironment.CLIProgram ( item )
-    compiledFileName = compiledFile[0].name
-    compileTargets.append ( compiledFileName )
-    addRunTarget ( cSharpEnvironment.Command ( 'run_' + compiledFileName.replace ( '.exe' , '' ) , compiledFile , 'mono ' + compiledFileName ) )
 
 #  Groovy  ###########################################################################
 
@@ -491,7 +491,10 @@ for item in Glob ( '*.fss' ) :
 
 erlangEnvironment = Environment ( tools = [ 'erlang' ] )
 
-microsecondTimeErlang = erlangEnvironment.Erlang ( '../Timing/microsecondTime.erl' ,  OUTPUT = '.' )
+#  The trailing slash on the OUTPUT is critical for the way the erlang tool works :-(
+
+microsecondTimeErlang = erlangEnvironment.Erlang ( '../Timing/microsecondTime.erl' ,  OUTPUT = './' )
+
 for item in Glob ( 'pi_erlang_*.erl' ) :
     root = os.path.splitext ( item.name ) [0]
     addRunTarget ( erlangEnvironment.Command ( 'run_' + root , [ addCompileTarget ( erlangEnvironment.Erlang ( item ) ) , microsecondTimeErlang ] , '$ERL -noshell -s %s -smp' % ( root ) ) )
