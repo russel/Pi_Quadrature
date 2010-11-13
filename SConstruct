@@ -163,12 +163,10 @@ dEnvironment = Environment (
     )
 
 for item in Glob ( 'pi_d2_*.d' ) :
-    if item.name == 'pi_d2_threads.d' : continue # Temporary hack as the threads stuff won't compile.
+    #if item.name == 'pi_d2_threads.d' : continue # Temporary hack as the threads stuff won't compile.
     if item.name == 'pi_d2_parallelMap.d' : continue # Temporary hack as the tuples stuff won't compile.
     root = os.path.splitext ( item.name ) [0]
-    #  As at 2010-06-23, the standard D tool in SCons assumes D v1.0, but we use an amended version (that
-    #  has yet to be merged in :-( so it correctly finds libphobos2.
-    executables.append ( addCompileTarget ( dEnvironment.Program ( item.name , DFLAGS = [ '-O' , '-release' , '-inline' ] ) ) )
+    executables.append ( addCompileTarget ( dEnvironment.Program ( item.name ) ) )
 
 #  Chapel  ###########################################################################
 

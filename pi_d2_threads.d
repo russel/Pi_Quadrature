@@ -4,7 +4,10 @@
  *  Copyright © 2009-10 Russel Winder
  */
 
-import std.bind ;
+//  Partial application using std.bind.bind fails to work in D 2.050 and earlier.  So we make use of an
+//  anonymous function as a "delegate."
+
+//import std.bind ;
 import std.date ;
 import std.stdio ;
 
@@ -28,11 +31,12 @@ void execute ( immutable int numberOfThreads ) {
   immutable startTime = getUTCtime ( ) ;
   immutable sliceSize = n / numberOfThreads ;
   auto threads = new Thread[numberOfThreads] ;  
-  foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( bind ( & partialSum , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ) ; }
+  //foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( bind ( & partialSum , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ) ; }
+  foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( ( ) { return partialSum ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ; } ) ; }
   foreach ( thread ; threads ) { thread.start ( ) ; }
   foreach ( thread ; threads ) { thread.join ( ) ; }
   immutable pi = 4.0 * sum * delta ;
-  immutable elapseTime = ( cast (real) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
+  immutable elapseTime = ( cast ( real ) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
   writefln ( "==== D Threads pi = %f" , pi ) ;
   writefln ( "==== D Threads iteration count = %d" , n ) ;
   writefln ( "==== D Threads elapse = %f" , elapseTime ) ;
