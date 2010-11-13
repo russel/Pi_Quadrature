@@ -9,12 +9,6 @@ import sys
 
 import platform
 
-environment = Environment (
-    tools = [ 'default' , 'csharp' , 'erlang' , 'haskell' , 'go' ] ,
-    ENV = os.environ ,
-    PATH = os.environ['PATH']
-    )
-
 compileTargets = [ ]
 def addCompileTarget ( target ) :
     global compileTargets
@@ -211,7 +205,7 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
 
 #  Go  ###############################################################################
 
-goEnvironment = Environment ( tools = [ 'go' ] )
+goEnvironment = Environment ( tools = [ 'go' ] , GOFLAGS = [ '--optimize' ] )
 
 for item in Glob ( 'pi_go_*.go' ) :
     root = os.path.splitext ( item.name ) [0]
@@ -230,7 +224,7 @@ occamEnvironment = Environment ( tools = [ ] , ENV = os.environ )
 
 for item in Glob ( 'pi_occam*.occ' ) :
     root = os.path.splitext ( item.name ) [0]
-    executables.append ( addCompileTarget ( environment.Command ( root , item.name , 'kroc -o $TARGET $SOURCE' ) ) )
+    executables.append ( addCompileTarget ( occamEnvironment.Command ( root , item.name , 'kroc -o $TARGET $SOURCE' ) ) )
     
 #  Clay  ############################################################################
 
@@ -245,7 +239,7 @@ for item in Glob ( 'pi_clay_*.clay' ) :
 ## ###################################################################################
 
 for item in executables :
-    addRunTarget ( environment.Command ( 'run_' + item[0].name , item , './' + item[0].name ) )
+    addRunTarget ( Command ( 'run_' + item[0].name , item , './' + item[0].name ) )
 
 #  Java  #############################################################################
 
@@ -337,19 +331,28 @@ for item in Glob ( 'Pi_X10_*.x10' ) :
     
 #  Clojure  ##########################################################################
 
+clojureEnvironment = Environment ( tools = [ 'javac' ] )
+
 for item in Glob ( '*.clj' ) :
-    addRunTarget ( environment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , 'java -cp .:%s/lib/Java/clojure/clojure.jar clojure.main $SOURCE' % ( os.environ['HOME'] ) ) )
-    Depends ( 'run_pi_clojure_processSlice' , environment.Java ( '.' , 'ProcessSlice.java' ) )
+    addRunTarget ( clojureEnvironment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , 'java -cp .:%s/lib/Java/clojure/clojure.jar clojure.main $SOURCE' % ( os.environ['HOME'] ) ) )
+
+#  Use the Java environment to compile this as there are Groovy dependencies as well as Clojure ones.
+
+Depends ( 'run_pi_clojure_processSlice' , javaEnvironment.Java ( '.' , 'ProcessSlice.java' ) )
 
 #  C#  ###############################################################################
 
+cSharpEnvironment = Environment ( tools = [ 'csharp' ] )
+
 for item in Glob ( 'Pi_CS_*.cs' ) :
-    compiledFile = environment.CLIProgram ( item )
+    compiledFile = cSharpEnvironment.CLIProgram ( item )
     compiledFileName = compiledFile[0].name
     compileTargets.append ( compiledFileName )
-    addRunTarget ( environment.Command ( 'run_' + compiledFileName.replace ( '.exe' , '' ) , compiledFile , 'mono ' + compiledFileName ) )
+    addRunTarget ( cSharpEnvironment.Command ( 'run_' + compiledFileName.replace ( '.exe' , '' ) , compiledFile , 'mono ' + compiledFileName ) )
 
 #  Groovy  ###########################################################################
+
+groovyEnvironment = Environment ( tools = [ 'javac' ] , ENV = os.environ )
 
 dependsOnProcessSlice = [ ]
 dependsOnProcessSlice_JCSP = [ ]
@@ -361,13 +364,15 @@ for item in Glob ( '*.groovy' ) :
         if bits[3] == 'CSP' : dependsOnProcessSlice_JCSP.append ( runTarget )
         else : dependsOnProcessSlice.append ( runTarget )
     if len ( bits ) > 3 and bits[3] == 'CSP' :
-        jcspJarPath =  environment['ENV']['HOME'] + '/lib/Java/jcsp.jar'
-        addRunTarget ( environment.Command ( runTarget , item.name , 'groovy -cp .:%s ./$SOURCE' % jcspJarPath ) )
+        jcspJarPath =  groovyEnvironment['ENV']['HOME'] + '/lib/Java/jcsp.jar'
+        addRunTarget ( groovyEnvironment.Command ( runTarget , item.name , 'groovy -cp .:%s ./$SOURCE' % jcspJarPath ) )
     else :    
-        addRunTarget ( environment.Command ( 'run_' + root , item.name , './$SOURCE' ) )
+        addRunTarget ( groovyEnvironment.Command ( 'run_' + root , item.name , './$SOURCE' ) )
         
-Depends ( dependsOnProcessSlice_JCSP , environment.Java ( '.' , [ 'ProcessSlice_JCSP.java' ] , JAVACLASSPATH = [ jcspJarPath ] ) )
-Depends ( dependsOnProcessSlice , environment.Java ( '.' , [ 'ProcessSlice.java' ] ) )
+#  Use the Java environment to compile these as there are Clojure dependencies as well as Groovy ones.
+
+Depends ( dependsOnProcessSlice_JCSP , javaEnvironment.Java ( '.' , [ 'ProcessSlice_JCSP.java' ] , JAVACLASSPATH = [ jcspJarPath ] ) )
+Depends ( dependsOnProcessSlice , javaEnvironment.Java ( '.' , [ 'ProcessSlice.java' ] ) )
 
 #  Python  ###########################################################################
 
@@ -432,6 +437,8 @@ extensionsData = {
 extensionsSpecified = [ ]
 sharedLibraries = [ ]
 
+pythonEnvironment = Environment ( )
+
 for item in Glob ( 'pi_python*.py' ) :
     root = os.path.splitext ( item.name ) [0]
     target = 'run_' + root
@@ -448,40 +455,46 @@ for item in Glob ( 'pi_python*.py' ) :
             extension += '_py' + majorVersion
         extensionName =  '%s_%s' % ( extensionRoot , extension )
         if extensionName not in extensionsSpecified : 
-            sharedLibrary =  environment.SharedLibrary ( extensionName ,
-                                        environment.Command ( '%s_%s.c' % ( extensionRoot , extension ) , '%s_%s.pyx' % ( extensionRoot , extension ) ,
+            sharedLibrary =  pythonEnvironment.SharedLibrary ( extensionName ,
+                                        pythonEnvironment.Command ( '%s_%s.c' % ( extensionRoot , extension ) , '%s_%s.pyx' % ( extensionRoot , extension ) ,
                                           extensionsData[extension]['COMMAND'] + ' $SOURCE' ) if extension.split ( '_' )[0] in [ 'pyrex' , 'cython' ] else  '%s_%s.%s' % ( extensionRoot , extension , extension ) ,
                                         CPPPATH = extensionsData[extension]['CPPPATH'] ,
                                         CFLAGS = extensionsData[extension]['CFLAGS'] , CXXFLAGS = extensionsData[extension]['CFLAGS'] ,
                                         SHLIBPREFIX = '' , LINKFLAGS = extensionsData[extension]['LINKFLAGS'] )
             sharedLibraries.append ( sharedLibrary )
-            addRunTarget ( environment.Command ( target , [ item.name , sharedLibrary ] , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
+            addRunTarget ( pythonEnvironment.Command ( target , [ item.name , sharedLibrary ] , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
             extensionsSpecified.append ( extensionName )
     else :
-        addRunTarget ( environment.Command ( target , item.name , './$SOURCE' ) )
+        addRunTarget ( pythonEnvironment.Command ( target , item.name , './$SOURCE' ) )
 
 compilePythonExtensions = addCompileTarget ( Alias ( 'compilePythonExtensions' , sharedLibraries ) )
 
 #  Ruby  #############################################################################
 
+rubyEnvironment = Environment ( )
+
 for item in Glob ( '*.rb' ) :
-    addRunTarget ( environment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , './$SOURCE' ) )
+    addRunTarget ( rubyEnvironment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , './$SOURCE' ) )
 
 #  Fortress  #########################################################################
 
+fortressEnvironment = Environment ( tools = [ 'latex' ] , ENV = os.environ )
+
 for item in Glob ( '*.fss' ) :
     fortressCodeRoot = os.path.splitext ( item.name ) [0]
-    addRunTarget ( environment.Command ( 'run_' + fortressCodeRoot , item.name , 'fortress $SOURCE' ) )
-    pdfDocument = environment.PDF ( fortressCodeRoot + '_document.ltx' )
-    Depends ( pdfDocument , environment.Command ( fortressCodeRoot + '.tex' , item.name , 'fortify $SOURCE' ) )
+    addRunTarget ( fortressEnvironment.Command ( 'run_' + fortressCodeRoot , item.name , 'fortress $SOURCE' ) )
+    pdfDocument = fortressEnvironment.PDF ( fortressCodeRoot + '_document.ltx' )
+    Depends ( pdfDocument , fortressEnvironment.Command ( fortressCodeRoot + '.tex' , item.name , 'fortify $SOURCE' ) )
     addCompileTarget ( Alias ( 'typesetFortress' , pdfDocument ) )
 
 #  Erlang  ###########################################################################
 
-microsecondTimeErlang = environment.Erlang ( '../Timing/microsecondTime.erl' ,  OUTPUT = '.' )
+erlangEnvironment = Environment ( tools = [ 'erlang' ] )
+
+microsecondTimeErlang = erlangEnvironment.Erlang ( '../Timing/microsecondTime.erl' ,  OUTPUT = '.' )
 for item in Glob ( 'pi_erlang_*.erl' ) :
     root = os.path.splitext ( item.name ) [0]
-    addRunTarget ( environment.Command ( 'run_' + root , [ addCompileTarget ( environment.Erlang ( item ) ) , microsecondTimeErlang ] , '$ERL -noshell -s %s -smp' % ( root ) ) )
+    addRunTarget ( erlangEnvironment.Command ( 'run_' + root , [ addCompileTarget ( erlangEnvironment.Erlang ( item ) ) , microsecondTimeErlang ] , '$ERL -noshell -s %s -smp' % ( root ) ) )
     #  Executing an Erlang program can result in a crash dump file so let SCons know this.
     SideEffect (  'erl_crash.dump' ,  'run_' + root )
 
