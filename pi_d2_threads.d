@@ -13,11 +13,14 @@ import std.stdio ;
 
 import core.thread ;
 
-shared real sum ;
+//  As at 2010-11-13 D 2.050 is a 32-bit system generating 32-bit code.  Using long rather than int makes
+//  this quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
+
+shared double sum ;
 shared Object sumMutex ;
 
-void partialSum ( immutable long start , immutable long end , immutable real delta ) {
-  auto localSum = 0.0L ;
+void partialSum ( immutable int start , immutable int end , immutable double delta ) {
+  auto localSum = 0.0 ;
   foreach ( i ; start .. end ) {
     immutable x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
@@ -26,7 +29,7 @@ void partialSum ( immutable long start , immutable long end , immutable real del
 }
 
 void execute ( immutable int numberOfThreads ) {
-  immutable n = 1000000000L ;
+  immutable n = 1000000000 ;
   immutable delta = 1.0 / n ;
   immutable startTime = getUTCtime ( ) ;
   immutable sliceSize = n / numberOfThreads ;
@@ -36,8 +39,8 @@ void execute ( immutable int numberOfThreads ) {
   foreach ( thread ; threads ) { thread.start ( ) ; }
   foreach ( thread ; threads ) { thread.join ( ) ; }
   immutable pi = 4.0 * sum * delta ;
-  immutable elapseTime = ( cast ( real ) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
-  writefln ( "==== D Threads pi = %f" , pi ) ;
+  immutable elapseTime = ( cast ( double ) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
+  writefln ( "==== D Threads pi = %.18f" , pi ) ;
   writefln ( "==== D Threads iteration count = %d" , n ) ;
   writefln ( "==== D Threads elapse = %f" , elapseTime ) ;
   writefln ( "==== D Threads thread count = %d" , numberOfThreads ) ;
