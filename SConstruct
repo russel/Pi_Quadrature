@@ -35,7 +35,7 @@ executables = [ ]
 
 ccFlags = [ '-O3' , '-Wall' , '-Wextra' ]
 
-cEnvironment = Environment ( tools = [ 'cc' , 'link' ] )
+cEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' ] )
 
 microsecondTimeC = cEnvironment.Object ( '../Timing/microsecondTime.c' , CFLAGS = ccFlags )
 
@@ -56,7 +56,7 @@ cRule ( 'pi_c_openmp*.c' , cflags = ccFlags + [ '-fopenmp' ] , libs = [ 'gomp' ]
 
 #  C++  ##############################################################################
 
-cppEnvironment = Environment ( tools = [ 'c++' , 'link' ] )
+cppEnvironment = Environment ( tools = [ 'g++' , 'gnulink' ] )
 
 def cppRule ( globPattern , compiler = 'g++' , cpppath = [ ] , cxxflags = ccFlags , linkflags = [ ] , libpath = [ ] , libs = [ ] ) :
     for item in Glob ( globPattern ) :
@@ -115,7 +115,7 @@ else :
 
 fortranFlags = [ '-O3' , '-std=f2003' , '-ffree-form' , '-pedantic' , '-Wall' ]
 
-fortranEnvironment = Environment ( tools = [ 'fortran' , 'link' ] )
+fortranEnvironment = Environment ( tools = [ 'gfortran' , 'gnulink' ] )
 
 def fortranRule ( globPattern , compiler = 'gfortran' , fortranflags = fortranFlags , linkflags = [ ] , libpath = [ ] , libs = [ ] ) :
     for item in Glob ( globPattern ) :
