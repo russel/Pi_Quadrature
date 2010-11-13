@@ -163,8 +163,7 @@ dEnvironment = Environment (
     )
 
 for item in Glob ( 'pi_d2_*.d' ) :
-    #if item.name == 'pi_d2_threads.d' : continue # Temporary hack as the threads stuff won't compile.
-    if item.name == 'pi_d2_parallelMap.d' : continue # Temporary hack as the tuples stuff won't compile.
+    #if item.name == 'pi_d2_parallelMap.d' : continue # Temporary hack as the tuples stuff won't compile.
     root = os.path.splitext ( item.name ) [0]
     executables.append ( addCompileTarget ( dEnvironment.Program ( item.name ) ) )
 
