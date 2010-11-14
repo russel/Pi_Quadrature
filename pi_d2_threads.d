@@ -33,9 +33,10 @@ void execute ( immutable int numberOfThreads ) {
   immutable delta = 1.0 / n ;
   immutable startTime = getUTCtime ( ) ;
   immutable sliceSize = n / numberOfThreads ;
+  sum = 0.0 ;
   auto threads = new Thread[numberOfThreads] ;  
   //foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( bind ( & partialSum , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ) ; }
-  foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( ( ) { return partialSum ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ; } ) ; }
+  foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( ( ) { partialSum ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ; } ) ; }
   foreach ( thread ; threads ) { thread.start ( ) ; }
   foreach ( thread ; threads ) { thread.join ( ) ; }
   immutable pi = 4.0 * sum * delta ;
@@ -47,6 +48,7 @@ void execute ( immutable int numberOfThreads ) {
 }
 
 int main ( immutable string[] args ) {
+  sumMutex = new shared ( Object ) ;
   execute ( 1 ) ;
   writeln ( ) ;
   execute ( 2 ) ;
