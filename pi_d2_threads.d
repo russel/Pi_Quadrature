@@ -36,7 +36,13 @@ void execute ( immutable int numberOfThreads ) {
   sum = 0.0 ;
   auto threads = new Thread[numberOfThreads] ;  
   //foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( bind ( & partialSum , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ) ; }
-  foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( ( ) { partialSum ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ; } ) ; }
+  foreach ( i ; 0 .. numberOfThreads ) {
+    void delegate ( ) closedPartialSum ( ) {
+      immutable id = i ;
+      return ( ) { partialSum ( 1 + id * sliceSize , ( id + 1 ) * sliceSize , delta ) ; } ;
+    }
+    threads[i] = new Thread ( closedPartialSum ) ;
+  }
   foreach ( thread ; threads ) { thread.start ( ) ; }
   foreach ( thread ; threads ) { thread.join ( ) ; }
   immutable pi = 4.0 * sum * delta ;
