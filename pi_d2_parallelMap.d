@@ -38,10 +38,19 @@ void execute ( immutable int numberOfTasks ) {
   //      Error: template instance std.typecons.tuple!(int,int,immutable(double)) error instantiating
   //
   foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , cast ( double ) ( delta ) ) ; }
+  /*
+   *  David Simcha reports that the following is not the right way to set up this sort of computation, that
+   *  explicit TaskPool creation is only for special cases.
+   *
   auto pool = new TaskPool ( ) ;
   auto outputData = pool.map ! ( partialSum ) ( inputData ) ;
   immutable pi = 4.0 * pool.reduce ! ( "a + b" ) ( 0.0 , outputData ) * delta ;
   pool.waitStop ( ) ;
+  *
+  *  He comments that using the lazy, singleton taskPool is the right way of handling this.
+  */
+  auto outputData = taskPool.map ! ( partialSum ) ( inputData ) ;
+  immutable pi = 4.0 * taskPool.reduce ! ( "a + b" ) ( 0.0 , outputData ) * delta ;
   immutable elapseTime = ( cast ( double ) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
   writefln ( "==== D Parallel Map pi = %.18f" , pi ) ;
   writefln ( "==== D Parallel Map iteration count = %d" , n ) ;
