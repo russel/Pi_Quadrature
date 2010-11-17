@@ -159,7 +159,12 @@ dEnvironment = Environment (
 for item in Glob ( 'pi_d2_*.d' ) :
     #if item.name == 'pi_d2_parallelMap.d' : continue # Temporary hack as the tuples stuff won't compile.
     root = os.path.splitext ( item.name ) [0]
-    executables.append ( addCompileTarget ( dEnvironment.Program ( item.name ) ) )
+    if root.split ( '_' )[2] == 'parallelMap' :
+        #  The dmd tool is seriously broken in that DPATH, LIBPATH, LIBS, etc. don't append, they replace :-((((  It also removes the -m32 :-(((((  Not to mention the -I. :-(((((((((
+        dLibDir = os.environ['HOME'] + '/lib/D'
+        executables.append ( addCompileTarget ( dEnvironment.Program ( item.name , DPATH = [ '.' , dLibDir ] , LINKFLAGS =  [ '-m32' ] , LIBPATH = [ dLibDir + '/std' , os.environ['DMD2_HOME'] + '/lib' ] , LIBS = [ 'parallelism' , 'phobos2' , 'pthread' , 'm' ] ) ) )
+    else :
+        executables.append ( addCompileTarget ( dEnvironment.Program ( item.name ) ) )
 
 #  Chapel  ###########################################################################
 

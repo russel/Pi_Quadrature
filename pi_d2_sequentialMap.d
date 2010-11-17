@@ -1,14 +1,12 @@
 /*
- *  A D program to calculate Pi using quadrature as a parallel map algorithm.
+ *  A D program to calculate Pi using quadrature as a sequential map algorithm.  This is really just here as
+ *  a comparison against the parallel map version.
  *
  *  Copyright © 2010 Russel Winder
  */
 
-//  std.parallelism is currently not in Phobos2, so ensure the compilation command takes care of all the
-//  factors to include the library.
-
+import std.algorithm ;
 import std.date ;
-import std.parallelism ;
 import std.stdio ;
 import std.typecons ;
 
@@ -38,15 +36,13 @@ void execute ( immutable int numberOfTasks ) {
   //      Error: template instance std.typecons.tuple!(int,int,immutable(double)) error instantiating
   //
   foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , cast ( double ) ( delta ) ) ; }
-  auto pool = new TaskPool ( ) ;
-  auto outputData = pool.map ! ( partialSum ) ( inputData ) ;
-  immutable pi = 4.0 * pool.reduce ! ( "a + b" ) ( 0.0 , outputData ) * delta ;
-  pool.waitStop ( ) ;
+  auto outputData = map ! ( partialSum ) ( inputData ) ;
+  immutable pi = 4.0 * reduce ! ( "a + b" ) ( 0.0 , outputData ) * delta ;
   immutable elapseTime = ( cast ( double ) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
-  writefln ( "==== D Parallel Map pi = %.18f" , pi ) ;
-  writefln ( "==== D Parallel Map iteration count = %d" , n ) ;
-  writefln ( "==== D Parallel Map elapse = %f" , elapseTime ) ;
-  writefln ( "==== D Parallel Map task count = %d" , numberOfTasks ) ;
+  writefln ( "==== D Sequential Map pi = %.18f" , pi ) ;
+  writefln ( "==== D Sequential Map iteration count = %d" , n ) ;
+  writefln ( "==== D Sequential Map elapse = %f" , elapseTime ) ;
+  writefln ( "==== D Sequential Map task count = %d" , numberOfTasks ) ;
 }
 
 int main ( immutable string[] args ) {
