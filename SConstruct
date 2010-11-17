@@ -5,9 +5,13 @@
 #  Copyright © 2008-10 Russel Winder 
 
 import os
+import platform
+import re
 import sys
 
-import platform
+osName , _ , _ , _ , platformVersion , _ = platform.uname ( )
+platformVersion = re.sub ( 'i.86' , 'ix86' , platformVersion )
+extraLibName = os.environ['HOME'] + '/lib.' + osName + '.' + platformVersion
 
 compileTargets = [ ]
 def addCompileTarget ( target ) :
@@ -73,9 +77,7 @@ cppRule ( 'pi_cpp_pthread*.cpp' , libs = [ 'pthread' ] )
 cppRule ( 'pi_cpp_mpi*.cpp' , compiler = 'mpic++' )  #  This MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_c_mpi" to run the code on N processors.
 cppRule ( 'pi_cpp_openmp*.cpp' , cxxflags = ccFlags + [ '-fopenmp' ] , libs = [ 'gomp' ] ) #  Assumes gcc is 4.2.0 or greater since that is when gomp was included.
 
-osName , _ , _ , _ , platformVersion , _ = platform.uname ( )
-
-cppRule ( 'pi_cpp_cppcsp2.cpp' , cpppath = [ os.environ['HOME'] +'/include' ] , libpath = [ os.environ['HOME'] +'/lib.' + osName + '.' + platformVersion ] , libs = [ 'cppcsp2' , 'pthread' ] )
+cppRule ( 'pi_cpp_cppcsp2.cpp' , cpppath = [ os.environ['HOME'] +'/include' ] , libpath = [ extraLibName ] , libs = [ 'cppcsp2' , 'pthread' ] )
 
 #  As from 2010-03-04 15:56+00:00, the Boost MPI library is not in Lucid.  As is document in the bug tracker
 #  on Launchpad (https://bugs.launchpad.net/ubuntu/+source/boost-defaults/+bug/531973 and
@@ -162,7 +164,7 @@ for item in Glob ( 'pi_d2_*.d' ) :
     if root.split ( '_' )[2] == 'parallelMap' :
         #  The dmd tool is seriously broken in that DPATH, LIBPATH, LIBS, etc. don't append, they replace :-((((  It also removes the -m32 :-(((((  Not to mention the -I. :-(((((((((
         dLibDir = os.environ['HOME'] + '/lib/D'
-        executables.append ( addCompileTarget ( dEnvironment.Program ( item.name , DPATH = [ '.' , dLibDir ] , LINKFLAGS =  [ '-m32' ] , LIBPATH = [ dLibDir + '/std' , os.environ['DMD2_HOME'] + '/lib' ] , LIBS = [ 'parallelism' , 'phobos2' , 'pthread' , 'm' ] ) ) )
+        executables.append ( addCompileTarget ( dEnvironment.Program ( item.name , DPATH = [ '.' , dLibDir ] , LINKFLAGS =  [ '-m32' ] , LIBPATH = [ extraLibName , os.environ['DMD2_HOME'] + '/lib' ] , LIBS = [ 'parallelism' , 'phobos2' , 'pthread' , 'm' ] ) ) )
     else :
         executables.append ( addCompileTarget ( dEnvironment.Program ( item.name ) ) )
 
@@ -488,9 +490,11 @@ fortressEnvironment = Environment ( tools = [ 'latex' ] , ENV = os.environ )
 for item in Glob ( '*.fss' ) :
     fortressCodeRoot = os.path.splitext ( item.name ) [0]
     addRunTarget ( fortressEnvironment.Command ( 'run_' + fortressCodeRoot , item.name , 'fortress $SOURCE' ) )
-    pdfDocument = fortressEnvironment.PDF ( fortressCodeRoot + '_document.ltx' )
-    Depends ( pdfDocument , fortressEnvironment.Command ( fortressCodeRoot + '.tex' , item.name , 'fortify $SOURCE' ) )
-    addCompileTarget ( Alias ( 'typesetFortress' , pdfDocument ) )
+    #  For the moment LaTeX doesn't work correctly on Mac OS X :-(((
+    if osName != 'Darwin' :
+        pdfDocument = fortressEnvironment.PDF ( fortressCodeRoot + '_document.ltx' )
+        Depends ( pdfDocument , fortressEnvironment.Command ( fortressCodeRoot + '.tex' , item.name , 'fortify $SOURCE' ) )
+        addCompileTarget ( Alias ( 'typesetFortress' , pdfDocument ) )
 
 #  Erlang  ###########################################################################
 
