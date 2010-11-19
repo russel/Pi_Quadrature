@@ -7,7 +7,7 @@
  *  Copyright © 2010 Russel Winder
  */
 
-@Grab ( group = 'org.codehaus.gpars' , module = 'gpars' , version = '0.10' )
+@Grab ( group = 'org.codehaus.gpars' , module = 'gpars' , version = '0.11-beta-1-SNAPSHOT' )
 
 import groovyx.gpars.ParallelEnhancer
 
@@ -29,11 +29,11 @@ void execute ( final int numberOfTasks ) {
     sum
   }.sumParallel ( )
   final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  System.out.println ( "==== Groovy GPars ParallelEnhancer pi = " + pi )
-  System.out.println ( "==== Groovy GPars ParallelEnhancer iteration count = " + n )
-  System.out.println ( "==== Groovy GPars ParallelEnhancer elapse = " + elapseTime )
-  System.out.println ( "==== Groovy GPars ParallelEnhancer processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
-  System.out.println ( "==== Groovy GPars ParallelEnhancer task count = " + numberOfTasks )
+  println ( "==== Groovy GPars ParallelEnhancer pi = " + pi )
+  println ( "==== Groovy GPars ParallelEnhancer iteration count = " + n )
+  println ( "==== Groovy GPars ParallelEnhancer elapse = " + elapseTime )
+  println ( "==== Groovy GPars ParallelEnhancer processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
+  println ( "==== Groovy GPars ParallelEnhancer task count = " + numberOfTasks )
 }
 
 execute ( 1 )

@@ -153,7 +153,7 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 #  tools. Also the dmd compiler is not in the bootstrap path.
 
 dEnvironment = Environment (
-    tools = [ 'gcc' , 'gnulink' , 'dmd' ] , # NB dmd must follow gcc and gnulink.
+    tools = [ 'gcc' , 'gnulink' , 'dmd_new' ] , # NB dmd must follow gcc and gnulink.
     ENV = os.environ , # dmd is not in the standard place.
     DFLAGS = [ '-O' , '-release' , '-inline' ] ,
     )
@@ -285,6 +285,10 @@ for item in Glob ( 'Pi_Java_*.java' ) :
         javaCommand = 'java -cp .:' + jsr166yJarPath + ':' + extra166yJarPath
     elif variant == 'FunctionalJava' :
         jarPath = os.environ['HOME'] + '/lib/Java/functionaljava.jar'
+        compiledBits = javaEnvironment.Java ( target = '.' , source = item , JAVACLASSPATH = [ jarPath ] )
+        javaCommand = 'java -cp .:' + jarPath
+    elif variant == 'GPars' :
+        jarPath = os.environ['HOME'] + '/lib/Java/gpars.jar:' + os.environ['HOME'] + '/lib/Java/groovy-all.jar:'
         compiledBits = javaEnvironment.Java ( target = '.' , source = item , JAVACLASSPATH = [ jarPath ] )
         javaCommand = 'java -cp .:' + jarPath
     else :

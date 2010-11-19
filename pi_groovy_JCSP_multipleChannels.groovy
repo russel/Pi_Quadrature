@@ -7,7 +7,7 @@
  *  Copyright © 2010 Russel Winder
  */
 
-@Grab ( group = 'org.codehaus.jcsp' , module = 'jcsp' , version = '1.1-rc5-SNAPSHOT' )
+@Grab ( group = 'org.codehaus.jcsp' , module = 'jcsp' , version = '1.1-rc5' )
 
 import org.jcsp.lang.Channel
 import org.jcsp.lang.CSProcess
@@ -41,11 +41,11 @@ void execute ( int numberOfTasks ) {
       for ( c in channels ) { sum += (double) c.in ( ).read ( ) }
       final double pi = 4.0d * sum * delta
       final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      System.out.println ( "==== Groovy JCSP Multiple pi = " + pi )
-      System.out.println ( "==== Groovy JCSP Multiple iteration count = " + n )
-      System.out.println ( "==== Groovy JCSP Multiple elapse = " + elapseTime )
-      System.out.println ( "==== Groovy JCSP Multiple processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
-      System.out.println ( "==== Groovy JCSP Multiple task count = " + numberOfTasks )
+      println ( "==== Groovy JCSP Multiple pi = " + pi )
+      println ( "==== Groovy JCSP Multiple iteration count = " + n )
+      println ( "==== Groovy JCSP Multiple elapse = " + elapseTime )
+      println ( "==== Groovy JCSP Multiple processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
+      println ( "==== Groovy JCSP Multiple task count = " + numberOfTasks )
     }
   } ;
   ( new Parallel ( processes as CSProcess[] ) ).run ( )
