@@ -9,7 +9,7 @@
 //  This code provided by Václav Pech but private email.  It is based on the pre-existing Groovy/Java
 //  examples and makes use of the Java coded ProcessSlice class.
 
-@Grab ( group = 'org.codehaus.gpars' , module = 'gpars' , version = '0.11-beta-1' )
+@Grab ( 'org.codehaus.gpars:gpars:0.11-beta-3' )
 
 import groovyx.gpars.actor.Actors
 import groovyx.gpars.actor.DynamicDispatchActor
@@ -40,11 +40,11 @@ void execute ( final int actorCount ) {
   accumulator.join ( )
   final double pi = 4.0d * accumulator.sum * delta
   final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  println ( "==== Groovy/Java GPars DynamicDispatchActorScript pi = " + pi )
-  println ( "==== Groovy/Java GPars DynamicDispatchActorScript iteration count = " + n )
-  println ( "==== Groovy/Java GPars DynamicDispatchActorScript elapse = " + elapseTime )
-  println ( "==== Groovy/Java GPars DynamicDispatchActorScript processor count = " + Runtime.runtime.availableProcessors ( ) )
-  println ( "==== Groovy/Java GPars DynamicDispatchActorScript actor count = " + actorCount )
+  println ( '==== Groovy/Java GPars DynamicDispatchActorScript pi = ' + pi )
+  println ( '==== Groovy/Java GPars DynamicDispatchActorScript iteration count = ' + n )
+  println ( '==== Groovy/Java GPars DynamicDispatchActorScript elapse = ' + elapseTime )
+  println ( '==== Groovy/Java GPars DynamicDispatchActorScript processor count = ' + Runtime.runtime.availableProcessors ( ) )
+  println ( '==== Groovy/Java GPars DynamicDispatchActorScript actor count = ' + actorCount )
 }
 
 execute ( 1 )

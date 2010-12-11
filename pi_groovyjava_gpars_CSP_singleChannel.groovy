@@ -7,8 +7,8 @@
  *  Copyright © 2010 Russel Winder
  */
 
-@Grab ( group = 'org.codehaus.jcsp' , module = 'jcsp' , version = '1.1-rc5' )
-@Grab ( group = 'org.codehaus.gpars' , module = 'gpars' , version = '0.11-beta-1' )
+@Grab ( 'org.codehaus.jcsp:jcsp:1.1-rc5' )
+@Grab ( 'org.codehaus.gpars:gpars:0.11-beta-3' )
 
 import org.jcsp.lang.Channel
 import org.jcsp.lang.CSProcess
@@ -29,11 +29,11 @@ void execute ( final int numberOfTasks ) {
       for ( i in 0 ..< numberOfTasks ) { sum += (double) channel.in ( ).read ( ) }
       final double pi = 4.0d * sum * delta
       final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      println ( "==== Groovy/Java GPars CSP Single pi = " + pi )
-      println ( "==== Groovy/Java GPars CSP Single iteration count = " + n )
-      println ( "==== Groovy/Java GPars CSP Single elapse = " + elapseTime )
-      println ( "==== Groovy/Java GPars CSP Single processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
-      println ( "==== Groovy/Java GPars CSP Single task count = " + numberOfTasks )
+      println ( '==== Groovy/Java GPars CSP Single pi = ' + pi )
+      println ( '==== Groovy/Java GPars CSP Single iteration count = ' + n )
+      println ( '==== Groovy/Java GPars CSP Single elapse = ' + elapseTime )
+      println ( '==== Groovy/Java GPars CSP Single processor count = ' + Runtime.getRuntime ( ).availableProcessors ( ) )
+      println ( '==== Groovy/Java GPars CSP Single task count = ' + numberOfTasks )
     }
   } ;
   ( new PAR ( processes ) ).run ( )

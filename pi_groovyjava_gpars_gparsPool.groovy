@@ -7,7 +7,7 @@
  *  Copyright © 2010 Russel Winder
  */
 
-@Grab ( group = 'org.codehaus.gpars' , module = 'gpars' , version = '0.11-beta-1' )
+@Grab ( 'org.codehaus.gpars:gpars:0.11-beta-3' )
 
 import groovyx.gpars.GParsPool
 
@@ -22,11 +22,11 @@ void execute ( final int numberOfTasks ) {
       ( new ProcessSlice ( taskId , sliceSize , delta ) ).compute ( )
     }.sumParallel ( )
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-    println ( "==== Groovy/Java GPars GParsPool pi = " + pi )
-    println ( "==== Groovy/Java GPars GParsPool iteration count = " + n )
-    println ( "==== Groovy/Java GPars GParsPool elapse = " + elapseTime )
-    println ( "==== Groovy/Java GPars GParsPool processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
-    println ( "==== Groovy/Java GPars GParsPool task count = " + numberOfTasks )
+    println ( '==== Groovy/Java GPars GParsPool pi = ' + pi )
+    println ( '==== Groovy/Java GPars GParsPool iteration count = ' + n )
+    println ( '==== Groovy/Java GPars GParsPool elapse = ' + elapseTime )
+    println ( '==== Groovy/Java GPars GParsPool processor count = ' + Runtime.getRuntime ( ).availableProcessors ( ) )
+    println ( '==== Groovy/Java GPars GParsPool task count = ' + numberOfTasks )
   }
 }
 

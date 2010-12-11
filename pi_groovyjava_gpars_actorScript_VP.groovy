@@ -8,7 +8,7 @@
 
 //  This variant provided by Václav Pech by private email.
 
-@Grab ( group = 'org.codehaus.gpars' ,  module = 'gpars' , version = '0.11-beta-1' )
+@Grab ( 'org.codehaus.gpars:gpars:0.11-beta-3' )
 
 import groovyx.gpars.actor.Actors
 import groovyx.gpars.actor.DefaultActor
@@ -42,11 +42,11 @@ void execute ( final int actorCount ) {
   accumulator.join ( )
   final double pi = 4.0d * accumulator.sum * delta
   final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  println ( "==== Groovy/Java GPars ActorScript pi = " + pi )
-  println ( "==== Groovy/Java GPars ActorScript iteration count = " + n )
-  println ( "==== Groovy/Java GPars ActorScript elapse = " + elapseTime )
-  println ( "==== Groovy/Java GPars ActorScript processor count = " + Runtime.runtime.availableProcessors ( ) )
-  println ( "==== Groovy/Java GPars ActorScript actor count = " + actorCount )
+  println ( '==== Groovy/Java GPars ActorScript pi = ' + pi )
+  println ( '==== Groovy/Java GPars ActorScript iteration count = ' + n )
+  println ( '==== Groovy/Java GPars ActorScript elapse = ' + elapseTime )
+  println ( '==== Groovy/Java GPars ActorScript processor count = ' + Runtime.runtime.availableProcessors ( ) )
+  println ( '==== Groovy/Java GPars ActorScript actor count = ' + actorCount )
 }
 
 execute ( 1 )
