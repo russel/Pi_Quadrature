@@ -23,7 +23,7 @@ void execute ( final int actorCount ) {
     int count = 0
     when { double result ->
       sum += result
-      if ( ++count == computors.size ( ) ) {
+      if ( ++count == actorCount ) {
         final double pi = 4.0d * sum * delta
         final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
         println ( '==== Groovy GPars ActorScript pi = ' + pi )
@@ -36,10 +36,10 @@ void execute ( final int actorCount ) {
     }
   }
   for ( index in 0l..< actorCount ) {
-    final long start = 1l + index * sliceSize
-    final long end = ( index + 1l ) * sliceSize
     computors.add (
       group.actor {
+        final long start = 1l + index * sliceSize
+        final long end = ( index + 1l ) * sliceSize
         double sum = 0.0d
         for ( long i = start ; i <= end ; ++i ) {
           final double x = ( i - 0.5d ) * delta

@@ -17,9 +17,9 @@ public class Pi_Java_Sequential_WarmUp {
     }
     final double pi = 4.0 * sum * delta ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    System.out.println ( "==== Java Sequential pi = " + pi ) ;
-    System.out.println ( "==== Java Sequential iteration count = " + n ) ;
-    System.out.println ( "==== Java Sequential elapse = " + elapseTime ) ;
+    System.out.println ( "==== Java Sequential Warm Up pi = " + pi ) ;
+    System.out.println ( "==== Java Sequential Warm Up iteration count = " + n ) ;
+    System.out.println ( "==== Java Sequential Warm Up elapse = " + elapseTime ) ;
   }
   public static void main ( final String[] args ) {
     execute ( ) ;

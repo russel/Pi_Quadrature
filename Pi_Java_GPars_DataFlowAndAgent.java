@@ -31,7 +31,7 @@ public class Pi_Java_GPars_DataFlowAndAgent {
     for ( int i = 0 ; i < numberOfTasks ; ++i ) {
       final int id = i ;
       tasks[id] = DataFlow.task ( new Runnable ( ) {
-          public void run ( ) {
+          @Override public void run ( ) {
             final long start = 1 + id * sliceSize ;
             final long end = (id + 1) * sliceSize ;
             double localSum = 0.0 ;
@@ -41,8 +41,7 @@ public class Pi_Java_GPars_DataFlowAndAgent {
             }
             final double currentSum = localSum ;
             sum.send ( new MessagingRunnable<Accumulator> ( ) {
-                @Override
-                 protected void doRun ( final Accumulator t ) {
+                @Override protected void doRun ( final Accumulator t ) {
                   t.add ( currentSum ) ;
                 }
               } ) ;

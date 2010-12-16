@@ -25,7 +25,7 @@ void execute ( final int numberOfTasks ) {
   for ( int i in 0 ..< numberOfTasks ) { 
     final int taskId = i
     processes << new CSProcess ( ) {
-      public void run ( ) {
+      @Override public void run ( ) {
         double sum = 0.0 ;
         final long start = 1 + taskId * sliceSize
         final long end = ( taskId + 1 ) * sliceSize
@@ -38,7 +38,7 @@ void execute ( final int numberOfTasks ) {
     }
   }
   processes << new CSProcess ( ) {
-    public void run ( ) {
+    @Override public void run ( ) {
       double sum = 0.0d
       for ( int i in 0 ..< numberOfTasks ) { sum += (double) channel.in ( ).read ( ) }
       final double pi = 4.0d * sum * delta

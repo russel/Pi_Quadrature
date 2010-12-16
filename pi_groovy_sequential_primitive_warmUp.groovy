@@ -25,9 +25,9 @@ def execute ( ) {
   for ( int i in 1..n ) { sum += 1.0d / ( 1.0d + ( ( i - 0.5d ) * delta ) ** 2i ) }
   final double pi = 4.0d * sum * delta
   final double elapseTime =   ( System.nanoTime ( ) - startTime ) / 1e9
-  println ( "==== Groovy Sequential Primitives pi = " + pi )
-  println ( "==== Groovy Sequential Primitives iteration count = " + n ) 
-  println ( "==== Groovy Sequential Primitives elapse = " + elapseTime )
+  println ( "==== Groovy Sequential Primitives Warm Up pi = " + pi )
+  println ( "==== Groovy Sequential Primitives Warm Up iteration count = " + n ) 
+  println ( "==== Groovy Sequential Primitives Warm Up elapse = " + elapseTime )
 }
 
 execute ( )

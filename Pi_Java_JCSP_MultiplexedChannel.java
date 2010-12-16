@@ -25,7 +25,7 @@ public class Pi_Java_JCSP_MultiplexedChannel {
     for ( int i = 0 ; i < numberOfTasks ; ++i ) {
       final int taskId = i ;
       processes.add ( new CSProcess ( ) {
-          public void run ( ) {
+          @Override public void run ( ) {
             final long start = 1 + taskId * sliceSize ;
             final long end = ( taskId + 1 ) * sliceSize ;
             double sum = 0.0 ;
@@ -38,7 +38,7 @@ public class Pi_Java_JCSP_MultiplexedChannel {
         } ) ;
     }
     processes.add ( new CSProcess ( ) {
-        public void run ( ) {
+        @Override public void run ( ) {
           double sum = 0.0 ;
           for ( int i = 0 ; i < numberOfTasks ; ++i ) {  sum += channel.in ( ).read ( ) ; }
           final double pi = 4.0 * sum * delta ;

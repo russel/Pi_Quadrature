@@ -24,7 +24,7 @@ void execute ( final int numberOfTasks ) {
   final processes = [ ]
   for ( i in 0 ..< numberOfTasks ) { processes << new ProcessSlice_JCSP ( i , sliceSize , delta , channel.out ( ) ) }
   processes << new CSProcess ( ) {
-    public void run ( ) {
+    @Override public void run ( ) {
       double sum = 0.0d
       for ( i in 0 ..< numberOfTasks ) { sum += (double) channel.in ( ).read ( ) }
       final double pi = 4.0d * sum * delta

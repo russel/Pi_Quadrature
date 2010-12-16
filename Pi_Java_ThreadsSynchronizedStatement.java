@@ -21,7 +21,7 @@ public class Pi_Java_ThreadsSynchronizedStatement {
     for ( int i = 0 ; i < numberOfTasks ; ++i ) {
       final int id = i ;
       threads[id] = new Thread ( new Runnable ( ) {
-          public void run ( ) {
+          @Override public void run ( ) {
             final long start = 1 + id * sliceSize ;
             final long end = ( id + 1 ) * sliceSize ;
             double localSum = 0.0 ;

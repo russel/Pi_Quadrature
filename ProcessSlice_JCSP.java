@@ -18,7 +18,7 @@ public class ProcessSlice_JCSP implements CSProcess {
     this.delta = delta ;
     this.out = out ;
   }  
-  public void run ( ) {
+  @Override public void run ( ) {
     final long start = 1 + taskId * sliceSize ;
     final long end = ( taskId + 1 ) * sliceSize ;
     double sum = 0.0 ;

@@ -24,16 +24,17 @@ def execute ( final int numberOfTasks ) {
   final ExecutorService executor = new ScheduledThreadPoolExecutor ( numberOfTasks )
   final Future<Double>[] futures = new Future<Double> [ numberOfTasks ]
   for ( int i = 0l ; i < numberOfTasks ; ++i ) {
-    final long start = 1l + i * sliceSize
-    final long end = ( i + 1l ) * sliceSize
+    final taskId = i
     futures[i] = executor.submit ( new Callable<Double> ( ) {
-                                     public Double call ( ) {
+                                     @Override public Double call ( ) {
+                                       final long start = 1l + taskId * sliceSize
+                                       final long end = ( taskId + 1l ) * sliceSize
                                        double sum = 0.0d ;
                                        for ( long j = start ; j <= end ; ++j ) {
-                                         final double x = ( j - 0.5d ) * delta ;
-                                         sum += 1.0d / ( 1.0d + x * x ) ;
+                                         final double x = ( j - 0.5d ) * delta
+                                         sum += 1.0d / ( 1.0d + x * x )
                                        }
-                                       return sum ;
+                                       return sum
                                      }
                                    } )
   }

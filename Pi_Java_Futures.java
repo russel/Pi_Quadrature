@@ -24,7 +24,7 @@ public class Pi_Java_Futures {
     for ( int i = 0 ; i < numberOfTasks ; ++i ) {
       final int id = i ;
       futures.add ( executor.submit ( new Callable<Double> ( ) {
-            public Double call ( ) {
+            @Override public Double call ( ) {
               final long start = 1 + id * sliceSize ;
               final long end = ( id + 1 ) * sliceSize ;
               double sum = 0.0 ;

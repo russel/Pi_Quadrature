@@ -22,7 +22,7 @@ public class Pi_Java_FunctionalJava_ParMap {
     final long sliceSize = n / numberOfTasks ;
     final Array<Integer> inputData = Array.range ( 0 , numberOfTasks ) ;
     final F<Integer,Double> sliceCalculator = new F<Integer,Double> ( ) {
-      public Double f ( final Integer taskId ) {
+      @Override public Double f ( final Integer taskId ) {
         final long start = 1 + taskId * sliceSize ;
         final long end = ( taskId + 1 ) * sliceSize ;
         double sum = 0.0 ;
@@ -34,7 +34,7 @@ public class Pi_Java_FunctionalJava_ParMap {
       }
     } ;
     final F2<Double,Double,Double> add = new F2<Double,Double,Double> ( ) {
-      public Double f ( final Double a , final Double b ) { return a + b ; }
+      @Override public Double f ( final Double a , final Double b ) { return a + b ; }
     } ;
     //final Strategy<Unit> strategy = Strategy.executorStrategy ( Executors.newCachedThreadPool ( ) ) ;
     final Strategy<Unit> strategy = Strategy.simpleThreadStrategy ( ) ;

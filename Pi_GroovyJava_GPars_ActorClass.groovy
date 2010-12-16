@@ -11,27 +11,30 @@
 import java.util.List
 
 import groovyx.gpars.actor.Actor
-import groovyx.gpars.actor.AbstractPooledActor
+import groovyx.gpars.actor.DefaultActor
+import groovyx.gpars.actor.DynamicDispatchActor
 
 public class Pi_GroovyJava_GPars_ActorClass {
 
-  private static class  ComputeActor extends AbstractPooledActor {
+  private static class  ComputeActor extends DefaultActor {
     private ProcessSlice sliceProcessor
     private Actor accumulator
     ComputeActor ( final int taskId , final long sliceSize , final double delta , final Actor accumulator ) {
       this.sliceProcessor = new ProcessSlice ( taskId , sliceSize , delta )
       this.accumulator = accumulator
     }
-    @Override protected void act ( ) {
-      accumulator << sliceProcessor.compute ( )
-    }
+    @Override protected void act ( ) { accumulator << sliceProcessor.compute ( ) }
   }
   
-  private static class AccumulatorActor extends AbstractPooledActor {
+  private static class AccumulatorActor extends DynamicDispatchActor {
     private List<Actor> sources
     private double sum = 0.0d
+    private int count = 0
     AccumulatorActor ( final List<Actor> s ) { sources = s }
-    @Override protected void act ( ) { for ( s in sources ) { receive { sum +=  it } } }
+    @Override protected void onMessage ( final Double result ) {
+      sum +=  result
+      if ( ++count == sources.size ( ) ) { terminate ( ) }
+    }
     public double getSum ( ) { return sum }
   }
 

@@ -260,7 +260,7 @@ for item in Glob ( 'Pi_CS_*.cs' ) :
 
 #  Java  #############################################################################
 
-javaEnvironment = Environment ( tools = [ 'javac' ] )
+javaEnvironment = Environment ( tools = [ 'javac' ] , JAVACFLAGS = [ '-encoding' , 'utf-8' ] )
 
 for item in Glob ( 'Pi_Java_*.java' ) :
     className = os.path.splitext ( item.name ) [0]

@@ -19,10 +19,9 @@ final class DDAAccumulator extends DynamicDispatchActor {
   def sum = 0.0
   private def counter = 0
   def DDAAccumulator ( actorCount ) { this.actorCount = actorCount }
-  void onMessage ( value ) {
+  @Override void onMessage ( value ) {
     sum += value
-    counter += 1
-    if ( counter == actorCount ) { terminate ( ) }
+    if ( ++counter == actorCount ) { terminate ( ) }
   }
 }
 
