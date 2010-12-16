@@ -301,6 +301,12 @@ for item in Glob ( 'Pi_Java_*.java' ) :
 
 Clean ( '.' , Glob ( '*.class' ) )
 
+##  Some of the Closure and Groovy versions use a Java class.  This class has to be compiled, so do it with
+##  the Java environment.  The source code is UTF-8 encoded no matter what the environment of build.
+
+processSliceClasses =  javaEnvironment.Java ( '.' , [ 'ProcessSlice.java' ]  , JAVACFLAGS = [ '-encoding' , 'utf-8' ] )
+processSliceJCSPClasses = javaEnvironment.Java ( '.' , [ 'ProcessSlice_JCSP.java' ] , JAVACFLAGS = [ '-encoding' , 'utf-8' ] , JAVACLASSPATH = [ jcspJarPath ] ) 
+
 #  Scala  #############################################################################
 
 scalaEnvironment = Environment ( tools = [ ] , ENV = os.environ )
@@ -357,9 +363,7 @@ clojureEnvironment = Environment ( tools = [ 'javac' ] )
 for item in Glob ( '*.clj' ) :
     addRunTarget ( clojureEnvironment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , 'java -cp .:%s/lib/Java/clojure/clojure.jar clojure.main $SOURCE' % ( os.environ['HOME'] ) ) )
 
-#  Use the Java environment to compile this as there are Groovy dependencies as well as Clojure ones.
-
-Depends ( 'run_pi_clojure_processSlice' , javaEnvironment.Java ( '.' , 'ProcessSlice.java' ) )
+Depends ( 'run_pi_clojure_processSlice' , processSliceClasses )
 
 #  Groovy  ###########################################################################
 
@@ -380,11 +384,9 @@ for item in Glob ( '*.groovy' ) :
         addRunTarget ( groovyEnvironment.Command ( runTarget , item.name , 'groovy -cp .:%s ./$SOURCE' % jcspJarPath ) )
     else :    
         addRunTarget ( groovyEnvironment.Command ( 'run_' + root , item.name , './$SOURCE' ) )
-        
-#  Use the Java environment to compile these as there are Clojure dependencies as well as Groovy ones.
 
-Depends ( dependsOnProcessSlice_JCSP , javaEnvironment.Java ( '.' , [ 'ProcessSlice_JCSP.java' ] , JAVACLASSPATH = [ jcspJarPath ] ) )
-Depends ( dependsOnProcessSlice , javaEnvironment.Java ( '.' , [ 'ProcessSlice.java' ] ) )
+Depends ( dependsOnProcessSlice_JCSP , processSliceJCSPClasses )
+Depends ( dependsOnProcessSlice , processSliceClasses )
 
 #  Python  ###########################################################################
 
