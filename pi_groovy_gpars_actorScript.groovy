@@ -6,9 +6,10 @@
  *  Copyright © 2009-10 Russel Winder.
  */
 
-@Grab ( 'org.codehaus.gpars:gpars:0.11-beta-3' )
+@Grab ( 'org.codehaus.gpars:gpars:0.11-beta-4' )
 
 import groovyx.gpars.group.DefaultPGroup
+import groovyx.gpars.actor.AbstractPooledActor
 
 void execute ( final int actorCount ) {
   final long n = 100000000l // 10 times fewer due to speed issues.
@@ -17,7 +18,8 @@ void execute ( final int actorCount ) {
   final long startTimeNanos = System.nanoTime ( )
   final computors = [ ]
   final group = new DefaultPGroup ( actorCount + 1 )
-  final accumulator = group.actor {
+  final accumulator = new AbstractPooledActor ( ) {
+    public void act ( ) {
       double sum = 0.0d
       for ( c in computors ) { receive { sum +=  it } }
       final double pi = 4.0d * sum * delta
@@ -27,7 +29,7 @@ void execute ( final int actorCount ) {
       println ( '==== Groovy GPars ActorScript elapse = ' + elapseTime )
       println ( '==== Groovy GPars ActorScript processor count = ' + Runtime.runtime.availableProcessors ( ) ) ;
       println ( '==== Groovy GPars ActorScript actor count = ' + actorCount )
-      //}
+    }
   }
   for ( index in 0l..< actorCount ) {
     final long start = 1l + index * sliceSize
