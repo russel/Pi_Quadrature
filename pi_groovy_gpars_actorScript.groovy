@@ -8,8 +8,8 @@
 
 @Grab ( 'org.codehaus.gpars:gpars:0.11-beta-4' )
 
+import groovyx.gpars.actor.Actor
 import groovyx.gpars.group.DefaultPGroup
-import groovyx.gpars.actor.AbstractPooledActor
 
 void execute ( final int actorCount ) {
   final long n = 100000000l // 10 times fewer due to speed issues.
@@ -18,17 +18,21 @@ void execute ( final int actorCount ) {
   final long startTimeNanos = System.nanoTime ( )
   final computors = [ ]
   final group = new DefaultPGroup ( actorCount + 1 )
-  final accumulator = new AbstractPooledActor ( ) {
-    public void act ( ) {
-      double sum = 0.0d
-      for ( c in computors ) { receive { sum +=  it } }
-      final double pi = 4.0d * sum * delta
-      final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      println ( '==== Groovy GPars ActorScript pi = ' + pi )
-      println ( '==== Groovy GPars ActorScript iteration count = ' + n )
-      println ( '==== Groovy GPars ActorScript elapse = ' + elapseTime )
-      println ( '==== Groovy GPars ActorScript processor count = ' + Runtime.runtime.availableProcessors ( ) ) ;
-      println ( '==== Groovy GPars ActorScript actor count = ' + actorCount )
+  final accumulator = group.messageHandler {
+    double sum = 0.0d
+    int count = 0
+    when { double result ->
+      sum += result
+      if ( ++count == computors.size ( ) ) {
+        final double pi = 4.0d * sum * delta
+        final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
+        println ( '==== Groovy GPars ActorScript pi = ' + pi )
+        println ( '==== Groovy GPars ActorScript iteration count = ' + n )
+        println ( '==== Groovy GPars ActorScript elapse = ' + elapseTime )
+        println ( '==== Groovy GPars ActorScript processor count = ' + Runtime.runtime.availableProcessors ( ) ) ;
+        println ( '==== Groovy GPars ActorScript actor count = ' + actorCount )
+        terminate ( )
+      }
     }
   }
   for ( index in 0l..< actorCount ) {
@@ -45,7 +49,6 @@ void execute ( final int actorCount ) {
       }
     )    
   }
-  accumulator.start ( )
   accumulator.join ( )
 }
 
