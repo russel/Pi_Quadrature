@@ -8,7 +8,7 @@
 
 //  This variant provided by Václav Pech by private email.
 
-@Grab ( 'org.codehaus.gpars:gpars:0.11-beta-4' )
+@Grab ( 'org.codehaus.gpars:gpars:0.11' )
 
 import groovyx.gpars.actor.Actors
 import groovyx.gpars.actor.DefaultActor

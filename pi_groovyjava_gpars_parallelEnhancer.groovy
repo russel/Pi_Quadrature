@@ -7,7 +7,7 @@
  *  Copyright © 2010 Russel Winder
  */
 
-@Grab ( 'org.codehaus.gpars:gpars:0.11-beta-4' )
+@Grab ( 'org.codehaus.gpars:gpars:0.11' )
 
 import groovyx.gpars.ParallelEnhancer
 
