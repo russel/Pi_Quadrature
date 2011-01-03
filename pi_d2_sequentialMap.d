@@ -2,7 +2,7 @@
  *  A D program to calculate Pi using quadrature as a sequential map algorithm.  This is really just here as
  *  a comparison against the parallel map version.
  *
- *  Copyright © 2010 Russel Winder
+ *  Copyright © 2010-11Russel Winder
  */
 
 import std.algorithm ;
@@ -10,8 +10,8 @@ import std.date ;
 import std.stdio ;
 import std.typecons ;
 
-//  As at 2010-11-13 D 2.050 is a 32-bit system generating 32-bit code.  Using long rather than int makes
-//  this quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
+//  As at version 2.051 D is a 32-bit system generating 32-bit code.  Using long rather than int makes this
+//  quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
 
 real partialSum ( immutable Tuple ! ( int , int , double ) data ) { 
   auto sum = 0.0 ;
@@ -29,12 +29,12 @@ void execute ( immutable int numberOfTasks ) {
   immutable sliceSize = n / numberOfTasks ;
   auto inputData = new Tuple ! ( int , int , double ) [ numberOfTasks ] ;
   //
-  //  There is a problem with the tuple creation using the plain types of the variables.  Apparently the D
-  //  compiler cannot handle tuples with elements of immutable type.  So without the cast, the following
-  //  error message is emitted:
+  //  The D compiler cannot currently (2.051) handle tuples with elements of immutable type.  So without the
+  //  cast, the following error message is emitted:
   //
   //      Error: template instance std.typecons.tuple!(int,int,immutable(double)) error instantiating
   //
+  //foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ; }
   foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , cast ( double ) ( delta ) ) ; }
   auto outputData = map ! ( partialSum ) ( inputData ) ;
   immutable pi = 4.0 * reduce ! ( "a + b" ) ( 0.0 , outputData ) * delta ;

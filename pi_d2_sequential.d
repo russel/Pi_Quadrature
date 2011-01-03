@@ -1,14 +1,14 @@
 /*
  *  A D program to calculate Pi using quadrature as a sequential algorithm.
  *
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009-11 Russel Winder
  */
 
 import std.date ;
 import std.stdio ;
 
-//  As at 2010-11-13 D 2.050 is a 32-bit system generating 32-bit code.  Using long rather than int makes
-//  this quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
+//  As at version 2.050 D is a 32-bit system generating 32-bit code.  Using long rather than int makes this
+//  quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
 
 int main ( immutable string[] args ) {
   immutable n = 1000000000 ;

@@ -1,20 +1,16 @@
 /*
  *  A D program to calculate Pi using quadrature as a threads-based algorithm.
  *
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009-11 Russel Winder
  */
 
-//  Partial application using std.bind.bind fails to work in D 2.050 and earlier.  So we make use of an
-//  anonymous function as a "delegate."
-
-//import std.bind ;
 import std.date ;
 import std.stdio ;
 
 import core.thread ;
 
-//  As at 2010-11-13 D 2.050 is a 32-bit system generating 32-bit code.  Using long rather than int makes
-//  this quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
+//  As at version 2.051 D is a 32-bit system generating 32-bit code.  Using long rather than int makes this
+//  quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
 
 shared double sum ;
 shared Object sumMutex ;
@@ -35,8 +31,12 @@ void execute ( immutable int numberOfThreads ) {
   immutable sliceSize = n / numberOfThreads ;
   sum = 0.0 ;
   auto threads = new Thread[numberOfThreads] ;  
-  //foreach ( i ; 0 .. numberOfThreads ) { threads[i] = new Thread ( bind ( & partialSum , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ) ; }
   foreach ( i ; 0 .. numberOfThreads ) {
+    //
+    //  In order to capture the value of i it is necessary to create a function that returns a delegate to
+    //  be used as the function to pass in to the thread object.  This is analogous to what has to be done
+    //  in Python, but it wopuld be much better if it were simpler as in Groovy or Ruby.
+    //
     void delegate ( ) closedPartialSum ( ) {
       immutable id = i ;
       return ( ) { partialSum ( 1 + id * sliceSize , ( id + 1 ) * sliceSize , delta ) ; } ;

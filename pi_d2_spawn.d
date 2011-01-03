@@ -2,15 +2,15 @@
  *  A D program to calculate Pi using quadrature as a spawn-based algorithm.  Make use of Actor Model
  *  message passing capability.
  *
- *  Copyright © 2010 Russel Winder
+ *  Copyright © 2010-11 Russel Winder
  */
 
 import std.concurrency ;
 import std.date ;
 import std.stdio ;
 
-//  As at 2010-11-13 D 2.050 is a 32-bit system generating 32-bit code.  Using long rather than int makes
-//  this quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
+//  As at version 2.051 D is a 32-bit system generating 32-bit code.  Using long rather than int makes this
+//  quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
 
 void partialSum ( Tid parent , immutable int start , immutable int end , immutable double delta ) {
   auto sum = 0.0 ;
