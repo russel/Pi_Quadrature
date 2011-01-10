@@ -1,12 +1,17 @@
+import time ;
+
 main ( ) {
     var n = 1000000000 ;
     var delta = 1.0 / n ;
+    var startTime = time.time ( ) ;
     var sum = 0.0 ;
     for ( i in range ( n ) ) {
         var x = ( i + 0.5 ) * delta ;
         sum += 1.0 / ( 1.0 + x * x ) ;
     }
     var pi = 4.0 * sum * delta ;
+    var elapseTime = time.time ( ) - startTime ;
     println ( "==== Clay Sequential pi = " , pi ) ;
     println ( "==== Clay Sequential iteration count = " , n ) ;
+    println ( "==== Clay Sequential elapse = " , elapseTime ) ;
 }
