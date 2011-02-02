@@ -23,7 +23,7 @@ import com.pervasive.datarush.ports.DoubleOutput ;
  *  @author Matt Walker
  *  @author Russel Winder
  */
-public class Pi_Java_DataRush extends DataflowGraphBase {
+public class Pi_Java_DataRush4 extends DataflowGraphBase {
   private static final long n = 1000000000l;
   private static final double delta = 1.0 / n;
   private double sum = 0.0 ;
@@ -63,7 +63,7 @@ public class Pi_Java_DataRush extends DataflowGraphBase {
       }
     }
   }
-  public Pi_Java_DataRush ( final int numberOfTasks ) {
+  public Pi_Java_DataRush4 ( final int numberOfTasks ) {
     final long sliceSize = n / numberOfTasks ;
     final DoubleFlow[] results = new DoubleFlow[numberOfTasks] ;
     for ( int i = 0 ; i < numberOfTasks ; ++i ) {
@@ -75,7 +75,7 @@ public class Pi_Java_DataRush extends DataflowGraphBase {
   private static void execute ( final int numberOfTasks ) {
     final long startTimeNanos = System.nanoTime ( ) ;
     final ApplicationGraph applicationGraph = OperatorFactory.newApplicationGraph ( "pi" ) ;
-    final Pi_Java_DataRush piDR = applicationGraph.add ( new Pi_Java_DataRush ( numberOfTasks ) , "piDataRush" ) ;
+    final Pi_Java_DataRush4 piDR = applicationGraph.add ( new Pi_Java_DataRush4 ( numberOfTasks ) , "piDataRush" ) ;
     applicationGraph.run ( ) ;
     final double pi = 4.0 * piDR.sum * delta ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
@@ -86,12 +86,12 @@ public class Pi_Java_DataRush extends DataflowGraphBase {
     System.out.println("==== Java DataRush task count = " + ( numberOfTasks + 1 ) ) ;
   }
   public static void main ( final String[] args ) {
-    Pi_Java_DataRush.execute ( 1 ) ;
+    Pi_Java_DataRush4.execute ( 1 ) ;
     System.out.println ( ) ;
-    Pi_Java_DataRush.execute ( 2 ) ;
+    Pi_Java_DataRush4.execute ( 2 ) ;
     System.out.println ( ) ;
-    Pi_Java_DataRush.execute ( 8 ) ;
+    Pi_Java_DataRush4.execute ( 8 ) ;
     System.out.println ( ) ;
-    Pi_Java_DataRush.execute ( 32 ) ;
+    Pi_Java_DataRush4.execute ( 32 ) ;
   }
 }
