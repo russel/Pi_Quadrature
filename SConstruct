@@ -2,7 +2,7 @@
 
 #  Calculation of Pi using quadrature.
 #
-#  Copyright © 2008-10 Russel Winder 
+#  Copyright © 2008-11 Russel Winder 
 
 import os
 import platform
@@ -349,9 +349,10 @@ for item in Glob ( 'Pi_X10_*.x10' ) :
     # C++ backend bits.
     #
     x10Executable = x10Environment.X10Program ( item , X10FLAGS = [ '-O' ] )
+    SideEffect ( 'xxx_main_xxx.cc' , x10Executable )
     compileTargets.append ( x10Executable[0].name )
     addRunTarget ( x10Environment.Command ( 'run_' + x10ClassName + '_Cpp' , x10Executable , 'runx10 ' + x10ClassName ) )
-    
+
 #  Clojure  ##########################################################################
 
 clojureEnvironment = Environment ( tools = [ 'javac' ] )
