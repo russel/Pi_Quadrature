@@ -1,9 +1,10 @@
 #! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature. Using mpi4py.
+#  A Python program to calculate Pi using quadrature.  This is an SPMD realization using OpenMPI under the
+#  mpi4py package that provides Python binding to MPI.
 #
-#  Copyright © 2010 Russel Winder
+#  Copyright © 2010-2011 Russel Winder
 
 import time
 from mpi4py import MPI

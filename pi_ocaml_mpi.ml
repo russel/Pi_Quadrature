@@ -1,9 +1,9 @@
 (*
 
-  Caml implementation of the Pi by Quadrature using the MPI binding to get multi-process parallelism SPMD
-  style.
+  An OCaml program to calculate Pi using quadrature.  This is an SPMD realization using OpenMPI under the
+  OCaml MPI bindings.
 
-  Copyright © 2010 Russel Winder
+  Copyright © 2010-2011 Russel Winder
 
 *)
 

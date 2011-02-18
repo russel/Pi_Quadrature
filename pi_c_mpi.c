@@ -1,14 +1,14 @@
 /*
- *  A C program to calculate Pi using quadrature as an OpenMPI based algorithm.
+ *  A C program to calculate Pi using quadrature.  This is an SPMD realization using OpenMPI.
  *
- *  Copyright © 2008-10 Russel Winder
+ *  Copyright © 2008-2011 Russel Winder
  */
 
 #include <stdio.h>
 #include <mpi.h>
 #include "microsecondTime.h"
 
-int main ( int ac , char ** av ) { // MPI requires write access to ac and av :-(
+int main ( int ac , char ** av ) { // MPI requires write access to these parameters!
   const long n = 1000000000l ;
   const double delta = 1.0 / n ;
   int nProcessors , myId ;

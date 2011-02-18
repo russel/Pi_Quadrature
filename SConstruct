@@ -135,22 +135,25 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 
 #  D  ################################################################################
 
-##  NB As at 2010-11-04 the D compiler (2.050) is a 32-bit application that generates 32-bit code.  So on
-##  64-bit platforms special care is needed.
+##  NB Until 2011-02-18 (1.066, 2.051) the D compiler was a 32-bit application that generated 32-bit code --
+##  so on 64-bit platforms special care was needed.  As of 2011-02-18 (1.067, 2.052) the D compiler is able
+##  to generate 64-bit code on a Linux machine.
 
 ##  As at 2010-11-04 using D 2.050 the D threads examples does not compile due to a problem that causes an
 ##  assertion fail in src/phobos/std/traits.d
 
 ######
 ##
-##  NB The D tool amends the 'LIBS' key in the environment used.  To avoid this polluting other link phases,
-##  ensure to use a distinct clone for all the D compilation and linking.
+##  NB The D tool amends the 'LIBS' key in the environment used.  To avoid this polluting link phases for
+##  other languages, ensure to use a distinct clone for all the D compilation and linking.  As this is done
+##  for all the languages anyway there is no problem :-)
 ##
 ######
 
-#  The dmd tool fails to set up the environment correctly to do linking on Ubuntu unless there is a compiler
-#  tool specified in order to determine the linker AND the dmd tool is included after the link and compiler
-#  tools. Also the dmd compiler is not in the bootstrap path.
+#  The dmd tool fails to set up the environment correctly to do linking on Ubuntu and Debian unless there is
+#  a compiler tool specified in order to determine the linker AND the dmd tool is included after the link
+#  and compiler tools. Also the dmd compiler is not in the bootstrap path, so amend the path to ensure it is
+#  found.
 
 dEnvironment = Environment (
     tools = [ 'gcc' , 'gnulink' , 'dmd_new' ] , # NB dmd must follow gcc and gnulink.
