@@ -2,8 +2,8 @@
  *  Calculation of Pi using quadrature realized with a dataflow architecture implemented by Pervasive
  *  DataRush.
  *
- *  Copyright (c) 2009 Pervasive Software Inc.
  *  Copyright (c) 2009-10 Russel Winder
+ *  Copyright (c) 2009 Pervasive Software Inc.
  */
 
 import com.pervasive.datarush.flows.DoubleFlow ;
@@ -18,10 +18,10 @@ import com.pervasive.datarush.ports.DoubleOutput ;
 /**
  *  The original version of this DataRush version was written by Matt Walker (of Pervasive Software) based
  *  on the Pi_Java_sequential.java and Pi_Java_futures.java written by Russel Winder.  Russel Winder then
- *  added various bits and pieces and reformatted to be in a style consistent with the other versions.
+ *  added various bits and pieces and reformatted it to be in a style consistent with the other versions.
  *
- *  @author Matt Walker
  *  @author Russel Winder
+ *  @author Matt Walker
  */
 public class Pi_Java_DataRush4 extends DataflowGraphBase {
   private static final long n = 1000000000l;
@@ -79,11 +79,11 @@ public class Pi_Java_DataRush4 extends DataflowGraphBase {
     applicationGraph.run ( ) ;
     final double pi = 4.0 * piDR.sum * delta ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    System.out.println("==== Java DataRush pi = " + pi ) ;
-    System.out.println("==== Java DataRush iteration count = " + n ) ;
-    System.out.println("==== Java DataRush elapse = " + elapseTime ) ;
-    System.out.println("==== Java DataRush processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-    System.out.println("==== Java DataRush task count = " + ( numberOfTasks + 1 ) ) ;
+    System.out.println("==== Java DataRush4 pi = " + pi ) ;
+    System.out.println("==== Java DataRush4 iteration count = " + n ) ;
+    System.out.println("==== Java DataRush4 elapse = " + elapseTime ) ;
+    System.out.println("==== Java DataRush4 processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
+    System.out.println("==== Java DataRush4 task count = " + ( numberOfTasks + 1 ) ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_DataRush4.execute ( 1 ) ;
