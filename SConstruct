@@ -149,37 +149,28 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 
 #  The dmd tool fails to set up the environment correctly to do linking on Ubuntu and Debian unless there is
 #  a compiler tool specified in order to determine the linker AND the dmd tool is included after the link
-#  and compiler tools. Also the dmd compiler is not in the bootstrap path, so amend the path to ensure it is
-#  found.
+#  and compiler tools. Also the dmd compiler is not in the bootstrap path on RW's set up, so amend the path
+#  to ensure it is found.
 
-dEnvironment = Environment (
-    tools = [ 'gcc' , 'gnulink' , 'dmd_new' ] , # NB dmd must follow gcc and gnulink.
-    ENV = os.environ , # dmd is not in the standard place.
-    DFLAGS = [ '-O' , '-release' , '-inline' ] ,
-    )
+dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'dmd_new' ] , ENV = os.environ , DFLAGS = [ '-O' , '-release' , '-inline' ] )
 
 for item in Glob ( 'pi_d2_*.d' ) :
-    #if item.name == 'pi_d2_parallelMap.d' : continue # Temporary hack as the tuples stuff won't compile.
     root = os.path.splitext ( item.name ) [0]
+    environment = dEnvironment
     if root.split ( '_' )[2] == 'parallelMap' :
-        #  The dmd tool is seriously broken in that DPATH, LIBPATH, LIBS, etc. don't append, they replace :-((((  It also removes the -m32 :-(((((  Not to mention the -I. :-(((((((((
-        dLibDir = os.environ['HOME'] + '/lib/D'
-        if os.uname ( ) [4] == 'x86_64' :
-            linkOption = '-m64'
-            libComponent = 'lib64'
-        else :
-            linkOption = '-m32'
-            libComponent = 'lib32'
-        executables.append ( addCompileTarget ( dEnvironment.Program ( item.name , DPATH = [ '.' , dLibDir ] , LINKFLAGS =  [ linkOption ] , LIBPATH = [ extraLibName , os.environ['DMD2_HOME'] + '/' + libComponent ] , LIBS = [ 'parallelism' , 'phobos2' , 'pthread' , 'm' , 'rt' ] ) ) )
-    else :
-        executables.append ( addCompileTarget ( dEnvironment.Program ( item.name ) ) )
+        environment = dEnvironment.Clone ( )
+        environment.Append (
+            DPATH =  [ os.environ['HOME'] + '/lib/D' ] ,
+            LIBPATH = [ extraLibName ] ,
+            LIBS = [ 'parallelism' ] )
+    executables.append ( addCompileTarget ( environment.Program ( item.name ) ) )
 
 #  Chapel  ###########################################################################
 
-chapelEnvironment = Environment ( tools = [ 'chapel' ] , ENV = os.environ )
+chapelEnvironment = Environment ( tools = [ 'chapel' ] , ENV = os.environ , CHPLFLAGS = [ '-O' , '--fast' ] )
 
 for item in Glob ( 'pi_chapel_*.chpl' ) :
-    executables.append ( addCompileTarget ( chapelEnvironment.ChapelProgram ( item , CHPLFLAGS = [ '-O' , '--fast' ] ) ) )
+    executables.append ( addCompileTarget ( chapelEnvironment.ChapelProgram ( item ) ) )
 
 #  Haskell  ##########################################################################
 
