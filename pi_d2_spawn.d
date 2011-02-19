@@ -2,17 +2,14 @@
  *  A D program to calculate Pi using quadrature as a spawn-based algorithm.  Make use of Actor Model
  *  message passing capability.
  *
- *  Copyright © 2010-11 Russel Winder
+ *  Copyright © 2010--2011 Russel Winder
  */
 
 import std.concurrency ;
-import std.date ;
+import std.datetime ;
 import std.stdio ;
 
-//  As at version 2.051 D is a 32-bit system generating 32-bit code.  Using long rather than int makes this
-//  quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
-
-void partialSum ( Tid parent , immutable int start , immutable int end , immutable double delta ) {
+void partialSum ( Tid parent , immutable long start , immutable long end , immutable double delta ) {
   auto sum = 0.0 ;
   foreach ( i ; start .. end ) {
     immutable x = ( i - 0.5 ) * delta ;
@@ -24,14 +21,16 @@ void partialSum ( Tid parent , immutable int start , immutable int end , immutab
 void execute ( immutable int numberOfTasks ) {
   immutable n = 1000000000 ;
   immutable delta = 1.0 / n ;
-  immutable startTime = getUTCtime ( ) ;
+  StopWatch stopWatch ;
+  stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
   auto tasks = new Tid[numberOfTasks] ;  
   foreach ( i ; 0 .. numberOfTasks ) { tasks[i] = spawn ( & partialSum , thisTid , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ; }
   auto sum = 0.0 ;
   foreach ( task ; tasks ) { sum += receiveOnly ! double ( ) ; }
   immutable pi = 4.0 * sum * delta ;
-  immutable elapseTime = ( cast ( double ) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
+  stopWatch.stop ( ) ;
+  immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Spawn pi = %.18f" , pi ) ;
   writefln ( "==== D Spawn iteration count = %d" , n ) ;
   writefln ( "==== D Spawn elapse = %f" , elapseTime ) ;

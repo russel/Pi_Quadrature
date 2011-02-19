@@ -1,21 +1,18 @@
 /*
  *  A D program to calculate Pi using quadrature as a threads-based algorithm.
  *
- *  Copyright © 2009-11 Russel Winder
+ *  Copyright © 2009--2011 Russel Winder
  */
 
-import std.date ;
+import std.datetime ;
 import std.stdio ;
 
 import core.thread ;
 
-//  As at version 2.051 D is a 32-bit system generating 32-bit code.  Using long rather than int makes this
-//  quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
-
 shared double sum ;
 shared Object sumMutex ;
 
-void partialSum ( immutable int start , immutable int end , immutable double delta ) {
+void partialSum ( immutable long start , immutable long end , immutable double delta ) {
   auto localSum = 0.0 ;
   foreach ( i ; start .. end ) {
     immutable x = ( i - 0.5 ) * delta ;
@@ -27,7 +24,8 @@ void partialSum ( immutable int start , immutable int end , immutable double del
 void execute ( immutable int numberOfThreads ) {
   immutable n = 1000000000 ;
   immutable delta = 1.0 / n ;
-  immutable startTime = getUTCtime ( ) ;
+  StopWatch stopWatch ;
+  stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfThreads ;
   sum = 0.0 ;
   auto threads = new Thread[numberOfThreads] ;  
@@ -46,7 +44,8 @@ void execute ( immutable int numberOfThreads ) {
   foreach ( thread ; threads ) { thread.start ( ) ; }
   foreach ( thread ; threads ) { thread.join ( ) ; }
   immutable pi = 4.0 * sum * delta ;
-  immutable elapseTime = ( cast ( double ) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
+  stopWatch.stop ( ) ;
+  immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Threads pi = %.18f" , pi ) ;
   writefln ( "==== D Threads iteration count = %d" , n ) ;
   writefln ( "==== D Threads elapse = %f" , elapseTime ) ;

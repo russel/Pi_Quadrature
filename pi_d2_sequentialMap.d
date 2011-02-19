@@ -2,11 +2,11 @@
  *  A D program to calculate Pi using quadrature as a sequential map algorithm.  This is really just here as
  *  a comparison against the parallel map version.
  *
- *  Copyright © 2010-11Russel Winder
+ *  Copyright © 2010--2011 Russel Winder
  */
 
 import std.algorithm ;
-import std.date ;
+import std.datetime ;
 import std.stdio ;
 import std.typecons ;
 
@@ -25,11 +25,12 @@ real partialSum ( immutable Tuple ! ( int , int , double ) data ) {
 void execute ( immutable int numberOfTasks ) {
   immutable n = 1000000000 ;
   immutable delta = 1.0 / n ;
-  immutable startTime = getUTCtime ( ) ;
+  StopWatch stopWatch ;
+  stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
   auto inputData = new Tuple ! ( int , int , double ) [ numberOfTasks ] ;
   //
-  //  The D compiler cannot currently (2.051) handle tuples with elements of immutable type.  So without the
+  //  The D compiler cannot currently (2.052) handle tuples with elements of immutable type.  So without the
   //  cast, the following error message is emitted:
   //
   //      Error: template instance std.typecons.tuple!(int,int,immutable(double)) error instantiating
@@ -38,7 +39,8 @@ void execute ( immutable int numberOfTasks ) {
   foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , cast ( double ) ( delta ) ) ; }
   auto outputData = map ! ( partialSum ) ( inputData ) ;
   immutable pi = 4.0 * reduce ! ( "a + b" ) ( 0.0 , outputData ) * delta ;
-  immutable elapseTime = ( cast ( double ) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
+  stopWatch.stop ( ) ;
+  immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Sequential Map pi = %.18f" , pi ) ;
   writefln ( "==== D Sequential Map iteration count = %d" , n ) ;
   writefln ( "==== D Sequential Map elapse = %f" , elapseTime ) ;

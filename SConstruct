@@ -139,9 +139,6 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 ##  so on 64-bit platforms special care was needed.  As of 2011-02-18 (1.067, 2.052) the D compiler is able
 ##  to generate 64-bit code on a Linux machine.
 
-##  As at 2010-11-04 using D 2.050 the D threads examples does not compile due to a problem that causes an
-##  assertion fail in src/phobos/std/traits.d
-
 ######
 ##
 ##  NB The D tool amends the 'LIBS' key in the environment used.  To avoid this polluting link phases for
@@ -167,7 +164,13 @@ for item in Glob ( 'pi_d2_*.d' ) :
     if root.split ( '_' )[2] == 'parallelMap' :
         #  The dmd tool is seriously broken in that DPATH, LIBPATH, LIBS, etc. don't append, they replace :-((((  It also removes the -m32 :-(((((  Not to mention the -I. :-(((((((((
         dLibDir = os.environ['HOME'] + '/lib/D'
-        executables.append ( addCompileTarget ( dEnvironment.Program ( item.name , DPATH = [ '.' , dLibDir ] , LINKFLAGS =  [ '-m32' ] , LIBPATH = [ extraLibName , os.environ['DMD2_HOME'] + '/lib' ] , LIBS = [ 'parallelism' , 'phobos2' , 'pthread' , 'm' ] ) ) )
+        if os.uname ( ) [4] == 'x86_64' :
+            linkOption = '-m64'
+            libComponent = 'lib64'
+        else :
+            linkOption = '-m32'
+            libComponent = 'lib32'
+        executables.append ( addCompileTarget ( dEnvironment.Program ( item.name , DPATH = [ '.' , dLibDir ] , LINKFLAGS =  [ linkOption ] , LIBPATH = [ extraLibName , os.environ['DMD2_HOME'] + '/' + libComponent ] , LIBS = [ 'parallelism' , 'phobos2' , 'pthread' , 'm' , 'rt' ] ) ) )
     else :
         executables.append ( addCompileTarget ( dEnvironment.Program ( item.name ) ) )
 

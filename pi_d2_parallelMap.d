@@ -1,13 +1,13 @@
 /*
  *  A D program to calculate Pi using quadrature as a parallel map algorithm.
  *
- *  Copyright © 2010-11 Russel Winder
+ *  Copyright © 2010--2011 Russel Winder
  */
 
 //  std.parallelism is currently not in Phobos2, though it is being voted on for inclusion in Phobos2, so
 //  ensure the compilation command takes care of all the factors to include the library.
 
-import std.date ;
+import std.datetime ;
 import std.parallelism ;
 import std.stdio ;
 import std.typecons ;
@@ -27,11 +27,12 @@ real partialSum ( immutable Tuple ! ( int , int , double ) data ) {
 void execute ( immutable int numberOfTasks ) {
   immutable n = 1000000000 ;
   immutable delta = 1.0 / n ;
-  immutable startTime = getUTCtime ( ) ;
+  StopWatch stopWatch ;
+  stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
   auto inputData = new Tuple ! ( int , int , double ) [ numberOfTasks ] ;
   //
-  //  The D compiler cannot currently (2.051) handle tuples with elements of immutable type.  So without the cast, the following
+  //  The D compiler cannot currently (2.052) handle tuples with elements of immutable type.  So without the cast, the following
   //  error message is emitted:
   //
   //      Error: template instance std.typecons.tuple!(int,int,immutable(double)) error instantiating
@@ -44,7 +45,8 @@ void execute ( immutable int numberOfTasks ) {
   //
   auto outputData = taskPool.map ! ( partialSum ) ( inputData ) ;
   immutable pi = 4.0 * taskPool.reduce ! ( "a + b" ) ( 0.0 , outputData ) * delta ;
-  immutable elapseTime = ( cast ( double ) ( getUTCtime ( ) - startTime ) ) / ticksPerSecond ;
+  stopWatch.stop ( ) ;
+  immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Parallel Map pi = %.18f" , pi ) ;
   writefln ( "==== D Parallel Map iteration count = %d" , n ) ;
   writefln ( "==== D Parallel Map elapse = %f" , elapseTime ) ;
