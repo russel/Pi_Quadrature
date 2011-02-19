@@ -12,10 +12,7 @@ import std.parallelism ;
 import std.stdio ;
 import std.typecons ;
 
-//  As at version 2.051 D is a 32-bit system generating 32-bit code.  Using long rather than int makes this
-//  quite a lot slower than the equivalents in C and C++.  64-bit D is due "very soon now".
-
-real partialSum ( immutable Tuple ! ( int , int , double ) data ) { 
+real partialSum ( immutable Tuple ! ( long , long , double ) data ) { 
   auto sum = 0.0 ;
   foreach ( i ; data[0] .. data[1] ) {
     immutable x = ( i - 0.5 ) * data[2] ;
@@ -30,7 +27,7 @@ void execute ( immutable int numberOfTasks ) {
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
-  auto inputData = new Tuple ! ( int , int , double ) [ numberOfTasks ] ;
+  auto inputData = new Tuple ! ( long , long , double ) [ numberOfTasks ] ;
   //
   //  The D compiler cannot currently (2.052) handle tuples with elements of immutable type.  So without the cast, the following
   //  error message is emitted:
@@ -39,6 +36,10 @@ void execute ( immutable int numberOfTasks ) {
   //
   //foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ; }
   foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , cast ( double ) ( delta ) ) ; }
+  //
+  //  Cannot have outputData be immutable as this results in the compiler saying:
+  //
+  //    Error: cannot implicitly convert expression (map(inputData)) of type Map!(partialSum,Tuple!(long,long,double)[]) to immutable(Map!(partialSum,Tuple!(long,long,double)[]))
   //
   //  David Simcha reports that using explicit TaskPool creation is only for special cases, that using the
   //  lazy, singleton taskPool is the right way of handling this sort of map use.
