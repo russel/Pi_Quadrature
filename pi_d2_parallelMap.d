@@ -44,6 +44,13 @@ void execute ( immutable int numberOfTasks ) {
   //  David Simcha reports that using explicit TaskPool creation is only for special cases, that using the
   //  lazy, singleton taskPool is the right way of handling this sort of map use.
   //
+  //  There is a known problem with core.cpuid (http://d.puremagic.com/issues/show_bug.cgi?id=5612) that
+  //  means that the detection of the number of cores doesn't work properly.  It seems more problematic in
+  //  64-bit working than 32-bit working.  Fortunately the number of threads in the pool can be forced by
+  //  statement such as the following.  
+  //
+  defaultPoolThreads = 8 ;
+  //
   auto outputData = taskPool.map ! ( partialSum ) ( inputData ) ;
   immutable pi = 4.0 * taskPool.reduce ! ( "a + b" ) ( 0.0 , outputData ) * delta ;
   stopWatch.stop ( ) ;
