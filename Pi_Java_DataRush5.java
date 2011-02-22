@@ -1,0 +1,114 @@
+/*
+ *  Calculation of Pi using quadrature realized with a dataflow architecture implemented using Pervasive
+ *  DataRush 5.
+ *
+ *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009 Pervasive Software Inc.
+ */
+
+import com.pervasive.datarush.flows.ScalarFlow ;
+import com.pervasive.datarush.graphs.ApplicationGraph;
+import com.pervasive.datarush.operators.CompositionContext ;
+import com.pervasive.datarush.operators.DataflowOperator ;
+import com.pervasive.datarush.operators.DataflowProcess ;
+import com.pervasive.datarush.operators.GraphFactory ;
+import com.pervasive.datarush.ports.DoubleInput ;
+import com.pervasive.datarush.ports.DoubleOutput ;
+
+/**
+ *  The original DataRush 4 version was created by Matt Walker (of Pervasive Software) based on the
+ *  Pi_Java_Sequential.java and Pi_Java_Futures.java written by Russel Winder.  Russel Winder then added
+ *  various bits and pieces and reformatted the DataRush 4 to be in a style consistent with the various
+ *  other Java versions.  Russel Winder then did the port from DataRush 4 to DataRush 5 when that was
+ *  released 2011-02-02.  This turned into more than just a port and refactor, it became a fairly
+ *  comprehensive rewrite.
+ *
+ *  @author Russel Winder
+ *  @author Matt Walker
+ */
+public class Pi_Java_DataRush5 {
+  private static final long n = 1000000000l;
+  private static final double delta = 1.0 / n;
+  private static final class ComputeProcess extends DataflowProcess {
+    private final long id ;
+    private final long sliceSize ;
+    private final DoubleOutput output ;
+    public ComputeProcess ( final CompositionContext context , final long id , final long sliceSize ) {
+      super ( context ) ;
+      this.id = id ;
+      this.sliceSize = sliceSize ;
+      output = newDoubleOutput ( "output" ) ;
+    }
+    public ScalarFlow getOutput ( ) { return getFlow ( output ) ; }    
+    @Override public void execute ( ) {
+      final long start = 1 + id * sliceSize ;
+      final long end = ( id + 1 ) * sliceSize ;
+      double sum = 0.0 ;
+      for ( long i = start ; i <= end ; ++i ) {
+        final double x = ( i - 0.5 ) * delta ;
+        sum += 1.0 / ( 1.0 + x * x ) ;
+      }
+      output.push ( sum ) ;
+      output.pushEndOfData ( ) ;
+    }
+  }
+  private static final class AccumulatorProcess extends DataflowProcess {
+    private final DoubleInput[] inputs ;
+    private final long startTimeNanos ;
+    public AccumulatorProcess ( final CompositionContext context , final ScalarFlow[] flows , final long startTimeNanos ) {
+      super ( context ) ;
+      inputs = new DoubleInput[flows.length] ;
+      for ( int i = 0 ; i < flows.length ; ++i ) { inputs[i] = newDoubleInput ( flows[i] , "input" ) ; }
+      this.startTimeNanos = startTimeNanos ;
+    }
+    @Override public void execute ( ) {
+      double sum = 0.0 ;
+      for ( final DoubleInput input : inputs ) {
+        input.stepNext ( ) ;
+        sum += input.asDouble ( ) ;
+        input.stepNext ( ) ; // Should be at EOD
+      }
+      final double pi = 4.0 * sum * delta ;
+      final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
+      System.out.println("==== Java DataRush5 pi = " + pi ) ;
+      System.out.println("==== Java DataRush5 iteration count = " + n ) ;
+      System.out.println("==== Java DataRush5 elapse = " + elapseTime ) ;
+      System.out.println("==== Java DataRush5 processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
+      System.out.println("==== Java DataRush5 task count = " + ( inputs.length + 1 ) ) ;
+    }
+  }
+  private static final class PiOperator extends DataflowOperator {
+    private final long sliceSize ;
+    private final int numberOfTasks ;
+    private final long startTimeNanos ;
+    public PiOperator ( final long sliceSize , final int numberOfTasks , final long startTimeNanos ) {
+      this.sliceSize = sliceSize ;
+      this.numberOfTasks = numberOfTasks ;
+      this.startTimeNanos = startTimeNanos ;
+    }
+    @Override public void compose ( final CompositionContext context ) {
+      final ScalarFlow[] results = new ScalarFlow[numberOfTasks] ;
+      for ( int i = 0 ; i < numberOfTasks ; ++i ) {
+        final ComputeProcess computeProcess = context.add ( new ComputeProcess ( context , i , sliceSize ) , "task" + i ) ;
+        results[i] = computeProcess.getOutput ( ) ;
+      }
+      context.add ( new AccumulatorProcess ( context , results , startTimeNanos ) , "sum" ) ;
+    }
+  }
+  private static void execute ( final int numberOfTasks ) {
+    final long startTimeNanos = System.nanoTime ( ) ;
+    final long sliceSize = n / numberOfTasks ;
+    final ApplicationGraph applicationGraph = GraphFactory.newApplicationGraph ( "pi" ) ;
+    applicationGraph.add ( new PiOperator ( sliceSize , numberOfTasks , startTimeNanos ) ) ;
+    applicationGraph.run ( ) ;
+  }
+  public static void main ( final String[] args ) {
+    Pi_Java_DataRush5.execute ( 1 ) ;
+    System.out.println ( ) ;
+    Pi_Java_DataRush5.execute ( 2 ) ;
+    System.out.println ( ) ;
+    Pi_Java_DataRush5.execute ( 8 ) ;
+    System.out.println ( ) ;
+    Pi_Java_DataRush5.execute ( 32 ) ;
+  }
+}
