@@ -1,6 +1,6 @@
 /*
  *  Calculation of Pi using quadrature realized with a dataflow architecture implemented by Pervasive
- *  DataRush.
+ *  DataRush 4.
  *
  *  Copyright (c) 2009-10 Russel Winder
  *  Copyright (c) 2009 Pervasive Software Inc.
