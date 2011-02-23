@@ -281,7 +281,7 @@ for item in Glob ( 'Pi_Java_*.java' ) :
     if variant in [ 'DataRush4' , 'DataRush5' ] :
         dataRushHome = os.environ['HOME'] + '/lib/Java/' + variant
         compiledBits = javaEnvironment.Java ( target = '.' , source = item , JAVACLASSPATH = [ f.path for f in Glob ( dataRushHome + '/lib/*.jar' ) ] )
-        javaCommand = 'JAVA_HOME=' + os.environ['JAVA_HOME'] + ' ' + dataRushHome + '/bin/dr '
+        javaCommand = 'JAVA_HOME=' + os.environ['JAVA_HOME'] + ' ' + dataRushHome + '/bin/dr -cp . '
     elif variant in classpathEntries.keys ( ) :
         compiledBits = javaEnvironment.Java ( target = '.' , source = item , JAVACLASSPATH = classpathEntries[variant] )
         javaCommand += ' -cp .:' + ':'.join ( classpathEntries[variant] )

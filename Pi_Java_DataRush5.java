@@ -81,8 +81,8 @@ public class Pi_Java_DataRush5 {
     private final long sliceSize ;
     private final int numberOfTasks ;
     private final long startTimeNanos ;
-    public PiOperator ( final long sliceSize , final int numberOfTasks , final long startTimeNanos ) {
-      this.sliceSize = sliceSize ;
+    public PiOperator ( final int numberOfTasks , final long startTimeNanos ) {
+      this.sliceSize = n / numberOfTasks ;
       this.numberOfTasks = numberOfTasks ;
       this.startTimeNanos = startTimeNanos ;
     }
@@ -97,9 +97,8 @@ public class Pi_Java_DataRush5 {
   }
   private static void execute ( final int numberOfTasks ) {
     final long startTimeNanos = System.nanoTime ( ) ;
-    final long sliceSize = n / numberOfTasks ;
     final ApplicationGraph applicationGraph = GraphFactory.newApplicationGraph ( "pi" ) ;
-    applicationGraph.add ( new PiOperator ( sliceSize , numberOfTasks , startTimeNanos ) ) ;
+    applicationGraph.add ( new PiOperator ( numberOfTasks , startTimeNanos ) ) ;
     applicationGraph.run ( ) ;
   }
   public static void main ( final String[] args ) {
