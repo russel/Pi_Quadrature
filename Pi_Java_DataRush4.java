@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a dataflow architecture implemented by Pervasive
  *  DataRush 4.
  *
- *  Copyright (c) 2009-10 Russel Winder
+ *  Copyright (c) 2009--2011 Russel Winder
  *  Copyright (c) 2009 Pervasive Software Inc.
  */
 
@@ -18,24 +18,23 @@ import com.pervasive.datarush.ports.DoubleOutput ;
 /**
  *  The original version of this DataRush version was written by Matt Walker (of Pervasive Software) based
  *  on the Pi_Java_sequential.java and Pi_Java_futures.java written by Russel Winder.  Russel Winder then
- *  added various bits and pieces and reformatted it to be in a style consistent with the other versions.
+ *  added various bits and pieces and reformatted it to be in a style consistent with the other Java versions,
+ *  not to mention later giving it a restructuring to get rid of the global variable -- even though it
+ *  wasn't shared.
  *
  *  @author Russel Winder
  *  @author Matt Walker
  */
-public class Pi_Java_DataRush4 extends DataflowGraphBase {
+public class Pi_Java_DataRush4 {
   private static final long n = 1000000000l;
   private static final double delta = 1.0 / n;
-  private double sum = 0.0 ;
   private static final class Task extends DataflowNodeBase {
     private final long id ;
     private final long sliceSize ;
-    private final double delta ;  
     private final DoubleOutput output ;
-    public Task ( final long id , final long sliceSize , final double delta ) {
+    public Task ( final long id , final long sliceSize ) {
       this.id = id ;
       this.sliceSize = sliceSize ;
-      this.delta = delta ;
       output = newDoubleOutput ( "output" ) ;
     }
     @Override public void execute ( ) {
@@ -50,40 +49,45 @@ public class Pi_Java_DataRush4 extends DataflowGraphBase {
       output.pushEndOfData ( ) ;
     }
   }
-  private final class Accumulator extends DataflowNodeBase {
+  private static final class Accumulator extends DataflowNodeBase {
     private final DoubleInput[] inputs ;
-    public Accumulator ( final DoubleFlow[] flows ) {
+    private final long startTimeNanos ;
+    public Accumulator ( final DoubleFlow[] flows , final long startTimeNanos ) {
+      this.startTimeNanos = startTimeNanos ;
       inputs = new PortArrayOperatorsFactory ( this ).newDoubleInputs ( "input" , flows ) ;
     }
     @Override public void execute ( ) {
+      double sum = 0.0 ;
       for ( final DoubleInput input : inputs ) {
         input.stepNext ( ) ;
         sum += input.asDouble ( ) ;
         input.stepNext ( ) ; // Should be at EOD
       }
+      final double pi = 4.0 * sum * delta ;
+      final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
+      System.out.println ( "==== Java DataRush4 pi = " + pi ) ;
+      System.out.println ( "==== Java DataRush4 iteration count = " + n ) ;
+      System.out.println ( "==== Java DataRush4 elapse = " + elapseTime ) ;
+      System.out.println ( "==== Java DataRush4 processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
+      System.out.println ( "==== Java DataRush4 task count = " + ( inputs.length + 1 ) ) ;
     }
   }
-  public Pi_Java_DataRush4 ( final int numberOfTasks ) {
-    final long sliceSize = n / numberOfTasks ;
-    final DoubleFlow[] results = new DoubleFlow[numberOfTasks] ;
-    for ( int i = 0 ; i < numberOfTasks ; ++i ) {
-      final Task task = add ( new Task ( i , sliceSize , delta ) , "task" + i ) ;
-      results[i] = task.output.getFlow ( ) ;
+  private static final class PiGraphNode extends DataflowGraphBase {
+    public PiGraphNode ( final int numberOfTasks , final long startTimeNanos ) {
+      final long sliceSize = n / numberOfTasks ;
+      final DoubleFlow[] results = new DoubleFlow[numberOfTasks] ;
+      for ( int i = 0 ; i < numberOfTasks ; ++i ) {
+        final Task task = add ( new Task ( i , sliceSize) , "task " + i ) ;
+        results[i] = task.output.getFlow ( ) ;
+      }
+      add ( new Accumulator ( results , startTimeNanos ) , "sum" ) ;
     }
-    add ( new Accumulator ( results ) , "sum" ) ;
   }
   private static void execute ( final int numberOfTasks ) {
     final long startTimeNanos = System.nanoTime ( ) ;
     final ApplicationGraph applicationGraph = OperatorFactory.newApplicationGraph ( "pi" ) ;
-    final Pi_Java_DataRush4 piDR = applicationGraph.add ( new Pi_Java_DataRush4 ( numberOfTasks ) , "piDataRush" ) ;
+    applicationGraph.add ( new PiGraphNode ( numberOfTasks , startTimeNanos ) , "pi" ) ;
     applicationGraph.run ( ) ;
-    final double pi = 4.0 * piDR.sum * delta ;
-    final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    System.out.println("==== Java DataRush4 pi = " + pi ) ;
-    System.out.println("==== Java DataRush4 iteration count = " + n ) ;
-    System.out.println("==== Java DataRush4 elapse = " + elapseTime ) ;
-    System.out.println("==== Java DataRush4 processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-    System.out.println("==== Java DataRush4 task count = " + ( numberOfTasks + 1 ) ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_DataRush4.execute ( 1 ) ;

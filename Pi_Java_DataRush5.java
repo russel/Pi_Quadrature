@@ -19,9 +19,9 @@ import com.pervasive.datarush.ports.DoubleOutput ;
  *  The original DataRush 4 version was created by Matt Walker (of Pervasive Software) based on the
  *  Pi_Java_Sequential.java and Pi_Java_Futures.java written by Russel Winder.  Russel Winder then added
  *  various bits and pieces and reformatted the DataRush 4 to be in a style consistent with the various
- *  other Java versions.  Russel Winder then did the port from DataRush 4 to DataRush 5 when that was
- *  released 2011-02-02.  This turned into more than just a port and refactor, it became a fairly
- *  comprehensive rewrite.
+ *  other Java versions, not to mention later giving it a restructuring to get rid of the global variable --
+ *  even though it wasn't shared.  Russel Winder then did the port from DataRush 4 to DataRush 5 when that
+ *  was released 2011-02-02.
  *
  *  @author Russel Winder
  *  @author Matt Walker
