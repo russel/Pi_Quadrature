@@ -264,11 +264,11 @@ for item in Glob ( 'Pi_CS_*.cs' ) :
 javaEnvironment = Environment ( tools = [ 'javac' ] , JAVACFLAGS = [ '-source' , '6' , '-encoding' , 'utf-8' ] )
 
 classpathEntries = {
-    'JCSP' : ( os.environ['HOME'] + '/lib/Java/jcsp.jar' ) ,
-    'ForkJoinBasic' : ( os.environ['HOME'] + '/lib/Java/jsr166y.jar' ) ,
-    'ForkJoinCollection' : ( os.environ['HOME'] + '/lib/Java/jsr166y.jar' ) ,
+    'JCSP' : ( os.environ['HOME'] + '/lib/Java/jcsp.jar' , ) ,
+    'ForkJoinBasic' : ( os.environ['HOME'] + '/lib/Java/jsr166y.jar' , ) ,
+    'ForkJoinCollection' : ( os.environ['HOME'] + '/lib/Java/jsr166y.jar' , ) ,
     'ParallelArray' : ( os.environ['HOME'] + '/lib/Java/jsr166y.jar' , os.environ['HOME'] + '/lib/Java/extra166y.jar' ) ,
-    'FunctionalJava' : ( os.environ['HOME'] + '/lib/Java/functionaljava.jar' ) ,
+    'FunctionalJava' : ( os.environ['HOME'] + '/lib/Java/functionaljava.jar' , ) ,
     'GPars' : ( os.environ['HOME'] + '/lib/Java/gpars.jar' , os.environ['HOME'] + '/lib/Java/groovy-all.jar' ) ,
     }
 
@@ -298,7 +298,9 @@ Clean ( '.' , Glob ( '*.class' ) )
 ##  the Java environment.  The source code is UTF-8 encoded no matter what the environment of build.
 
 processSliceClasses =  javaEnvironment.Java ( '.' , [ 'ProcessSlice.java' ] )
-processSliceJCSPClasses = javaEnvironment.Java ( '.' , [ 'ProcessSlice_JCSP.java' ] , JAVACLASSPATH = [ classpathEntries['JCSP'] ] ) 
+processSliceJCSPClasses = javaEnvironment.Java ( '.' , [ 'ProcessSlice_JCSP.java' ] , JAVACLASSPATH = [ classpathEntries['JCSP'] ] )
+
+Alias ( 'compileJavaProcessSlicesForGroovy' , [ processSliceClasses , processSliceJCSPClasses ] )
 
 #  Scala  #############################################################################
 
@@ -332,6 +334,13 @@ for item in Glob ( 'Pi_Scala_*.scala' ) :
 ####  With X10 2.1.0 everything seems to be working as it should be once the various Rail -> Array changes
 ####  and use of DistArray has been sorted.
 
+####  For some forgotten reason 2.1.1 failed to work as required and was ignored.
+
+####  2.1.2 seems to work sort of but the old runx10 command that was used to launch the C++ target
+####  versions has been removed, the generated executables are native executables that are MPI aware.  So
+####  they run on 1 core unless the mpirun command is used.  One downside though the Java backend version
+####  appears to show no scaling at all.  And the MPI execution is bizarre, and shows no scaling at all.
+
 x10Environment = Environment ( tools = [ 'x10' ] , ENV = os.environ )
 
 for item in Glob ( 'Pi_X10_*.x10' ) :
@@ -348,7 +357,7 @@ for item in Glob ( 'Pi_X10_*.x10' ) :
     x10Executable = x10Environment.X10Program ( item , X10FLAGS = [ '-O' ] )
     SideEffect ( 'xxx_main_xxx.cc' , x10Executable )
     compileTargets.append ( x10Executable[0].name )
-    addRunTarget ( x10Environment.Command ( 'run_' + x10ClassName + '_Cpp' , x10Executable , 'runx10 ' + x10ClassName ) )
+    addRunTarget ( x10Environment.Command ( 'run_' + x10ClassName + '_Cpp' , x10Executable , x10ClassName ) )
 
 #  Clojure  ##########################################################################
 
