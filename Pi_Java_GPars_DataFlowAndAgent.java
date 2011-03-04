@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with GPars data flow tasks and an agent.
  *
- *  Copyright © 2010 Russel Winder
+ *  Copyright © 2010--2011 Russel Winder
  */
 
 /*
@@ -22,20 +22,20 @@ public class Pi_Java_GPars_DataFlowAndAgent {
   }
   private static Agent<Accumulator> sum ;
   private static void execute ( final int numberOfTasks ) throws InterruptedException {
-    final long n = 1000000000l ;
+    final int n = 1000000000 ;
     final double delta = 1.0 / n ;
     final long startTimeNanos = System.nanoTime ( ) ;
-    final long sliceSize = n / numberOfTasks ;
+    final int sliceSize = n / numberOfTasks ;
     final DataFlowVariable<?>[] tasks = new DataFlowVariable[numberOfTasks] ;
     sum = new Agent<Accumulator> ( new Accumulator ( ) ) ;
     for ( int i = 0 ; i < numberOfTasks ; ++i ) {
-      final int id = i ;
-      tasks[id] = DataFlow.task ( new Runnable ( ) {
+      final int taskId = i ;
+      tasks[taskId] = DataFlow.task ( new Runnable ( ) {
           @Override public void run ( ) {
-            final long start = 1 + id * sliceSize ;
-            final long end = (id + 1) * sliceSize ;
+            final int start = 1 + taskId * sliceSize ;
+            final int end = (taskId + 1) * sliceSize ;
             double localSum = 0.0 ;
-            for ( long i = start ; i <= end ; ++i ) {
+            for ( int i = start ; i <= end ; ++i ) {
               final double x = ( i - 0.5d ) * delta ;
               localSum += 1.0 / ( 1.0 + x * x ) ;
             }
@@ -61,9 +61,6 @@ public class Pi_Java_GPars_DataFlowAndAgent {
     System.out.println ( "==== Java GPars Dataflow/Agent thread count = " + numberOfTasks ) ;
   }
   public static void main ( final String[] args) throws InterruptedException {
-    //  If running this seriously as a microbenchmark the JVM must be warmed up :-(
-    //Pi_Java_GPars_DataFlowAndAgent.execute ( 1 ) ;
-    //Pi_Java_GPars_DataFlowAndAgent.execute ( 1 ) ;
     Pi_Java_GPars_DataFlowAndAgent.execute ( 1 ) ;
     System.out.println ( ) ;
     Pi_Java_GPars_DataFlowAndAgent.execute ( 2 ) ;

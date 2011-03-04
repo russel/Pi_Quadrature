@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with an approached based on using parallel map from
  *  Functional Java.
  *
- *  Copyright © 2010 Russel Winder
+ *  Copyright © 2010--2011 Russel Winder
  */
 
 import fj.F ;
@@ -12,21 +12,21 @@ import fj.data.Array ;
 import fj.control.parallel.ParModule ;
 import fj.control.parallel.Strategy ;
 
-import java.util.concurrent.Executors ;
+//import java.util.concurrent.Executors ;
 
 public class Pi_Java_FunctionalJava_ParMap {
   private static void execute ( final int numberOfTasks ) {
-    final long n = 1000000000l ;
+    final int n = 1000000000 ;
     final double delta = 1.0 / n ;
     final long startTimeNanos = System.nanoTime ( ) ;
-    final long sliceSize = n / numberOfTasks ;
+    final int sliceSize = n / numberOfTasks ;
     final Array<Integer> inputData = Array.range ( 0 , numberOfTasks ) ;
     final F<Integer,Double> sliceCalculator = new F<Integer,Double> ( ) {
       @Override public Double f ( final Integer taskId ) {
-        final long start = 1 + taskId * sliceSize ;
-        final long end = ( taskId + 1 ) * sliceSize ;
+        final int start = 1 + taskId * sliceSize ;
+        final int end = ( taskId + 1 ) * sliceSize ;
         double sum = 0.0 ;
-        for ( long i = start ; i <= end ; ++i ) {
+        for ( int i = start ; i <= end ; ++i ) {
           final double x = ( i - 0.5 ) * delta ;
           sum += 1.0 / ( 1.0 + x * x ) ;
         }

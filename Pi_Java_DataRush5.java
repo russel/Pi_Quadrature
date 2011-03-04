@@ -27,24 +27,24 @@ import com.pervasive.datarush.ports.DoubleOutput ;
  *  @author Matt Walker
  */
 public class Pi_Java_DataRush5 {
-  private static final long n = 1000000000l;
-  private static final double delta = 1.0 / n;
+  private static final int n = 1000000000 ;
+  private static final double delta = 1.0 / n ;
   private static final class ComputeProcess extends DataflowProcess {
-    private final long id ;
-    private final long sliceSize ;
+    private final int taskId ;
+    private final int sliceSize ;
     private final DoubleOutput output ;
-    public ComputeProcess ( final CompositionContext context , final long id , final long sliceSize ) {
+    public ComputeProcess ( final CompositionContext context , final int taskId , final int sliceSize ) {
       super ( context ) ;
-      this.id = id ;
+      this.taskId = taskId ;
       this.sliceSize = sliceSize ;
       output = newDoubleOutput ( "output" ) ;
     }
     public ScalarFlow getOutput ( ) { return getFlow ( output ) ; }    
     @Override public void execute ( ) {
-      final long start = 1 + id * sliceSize ;
-      final long end = ( id + 1 ) * sliceSize ;
+      final int start = 1 + taskId * sliceSize ;
+      final int end = ( taskId + 1 ) * sliceSize ;
       double sum = 0.0 ;
-      for ( long i = start ; i <= end ; ++i ) {
+      for ( int i = start ; i <= end ; ++i ) {
         final double x = ( i - 0.5 ) * delta ;
         sum += 1.0 / ( 1.0 + x * x ) ;
       }
@@ -78,7 +78,7 @@ public class Pi_Java_DataRush5 {
     }
   }
   private static final class PiOperator extends DataflowOperator {
-    private final long sliceSize ;
+    private final int sliceSize ;
     private final int numberOfTasks ;
     private final long startTimeNanos ;
     public PiOperator ( final int numberOfTasks , final long startTimeNanos ) {
