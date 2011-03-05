@@ -3,10 +3,10 @@
 /*
  *  Calculation of Pi using quadrature realized with GPars actors.  Done with class(es).
  *
- *  Copyright © 2009-10 Russel Winder.
+ *  Copyright © 2009--2011 Russel Winder.
  */
 
-@Grab ( 'org.codehaus.gpars:gpars:0.11' )
+@Grab ( 'org.codehaus.gpars:gpars:0.12-beta-1-SNAPSHOT' )
 
 import java.util.List
 
@@ -18,20 +18,20 @@ public class Pi_Groovy_GPars_ActorClass {
 
   private static class  ComputeActor extends DefaultActor {
     private int taskId
-    private long sliceSize
+    private int sliceSize
     private double delta
     private Actor accumulator
-    ComputeActor ( final int taskId , final long sliceSize , final double delta , final Actor accumulator ) {
+    ComputeActor ( final int taskId , final int sliceSize , final double delta , final Actor accumulator ) {
       this.taskId = taskId
       this.sliceSize = sliceSize
       this.delta = delta
       this.accumulator = accumulator
     }
     @Override protected void act ( ) {
-      final long start = 1l + taskId * sliceSize
-      final long end = ( taskId + 1l ) * sliceSize 
+      final int start = 1i + taskId * sliceSize
+      final int end = ( taskId + 1i ) * sliceSize 
       double sum = 0.0d
-      for ( long i = start ; i <= end ; ++i ) {
+      for ( int i in start .. end ) {
         double x = ( i - 0.5d ) * delta
         sum += 1.0d / ( 1.0d + x * x )
       }
@@ -42,7 +42,7 @@ public class Pi_Groovy_GPars_ActorClass {
   private static class AccumulatorActor extends DynamicDispatchActor {
     private List<Actor> sources
     private double sum = 0.0d
-    private int count = 0
+    private int count = 0i
     AccumulatorActor ( final List<Actor> s ) { sources = s }
     @Override protected void onMessage ( final Double result ) {
       sum +=  result
@@ -52,17 +52,17 @@ public class Pi_Groovy_GPars_ActorClass {
   }
 
   private static void execute ( final int actorCount ) {
-    final long n = 100000000l // 10 times fewer due to speed issues.
+    final int n = 100000000i // 10 times fewer due to speed issues.
     final double delta = 1.0d / n
-    final long sliceSize = n / actorCount
-    final long startTimeNanos = System.nanoTime ( )
+    final startTimeNanos = System.nanoTime ( )
+    final int sliceSize = n / actorCount
     final computors = [ ]
     final accumulator = new  AccumulatorActor ( computors )
-    for ( i in 0 ..< actorCount ) { computors.add ( new ComputeActor ( i , sliceSize , delta , accumulator ) ) }
+    for ( int i in 0i ..< actorCount ) { computors.add ( new ComputeActor ( i , sliceSize , delta , accumulator ) ) }
     accumulator.start ( )
     for ( c in computors ) { c.start ( ) }
     accumulator.join ( )
-    final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
+    final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
     println ( '==== Groovy GPars ActorClass pi = ' + 4.0d * accumulator.sum * delta )
     println ( '==== Groovy GPars ActorClass iteration count = ' + n )
     println ( '==== Groovy GPars ActorClass elapse = ' + elapseTime )

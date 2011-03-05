@@ -4,11 +4,11 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with GPars CSP to partition the
  *  problem and hence harness all processors available to the JVM.
  *
- *  Copyright © 2010 Russel Winder
+ *  Copyright © 2010--2011 Russel Winder
  */
 
 @Grab ( 'org.codehaus.jcsp:jcsp:1.1-rc5' )
-@Grab ( 'org.codehaus.gpars:gpars:0.11' )
+@Grab ( 'org.codehaus.gpars:gpars:0.12-beta-1-SNAPSHOT' )
 
 import org.jcsp.lang.Channel
 import org.jcsp.lang.CSProcess
@@ -16,19 +16,19 @@ import org.jcsp.lang.CSProcess
 import groovyx.gpars.csp.PAR
 
 void execute ( final int numberOfTasks ) {
-  final long n = 1000000000l
+  final int n = 1000000000i
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
-  final long sliceSize = n / numberOfTasks
+  final int sliceSize = n / numberOfTasks
   final channel = Channel.any2one ( )
   final processes = [ ]
-  for ( i in 0 ..< numberOfTasks ) { processes << new ProcessSlice_JCSP ( i , sliceSize , delta , channel.out ( ) ) }
+  for ( int i in 0i ..< numberOfTasks ) { processes << new ProcessSlice_JCSP ( i , sliceSize , delta , channel.out ( ) ) }
   processes << new CSProcess ( ) {
     @Override public void run ( ) {
       double sum = 0.0d
-      for ( i in 0 ..< numberOfTasks ) { sum += (double) channel.in ( ).read ( ) }
+      for ( int i in 0i ..< numberOfTasks ) { sum += (double) channel.in ( ).read ( ) }
       final double pi = 4.0d * sum * delta
-      final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
+      final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
       println ( '==== Groovy/Java GPars CSP Single pi = ' + pi )
       println ( '==== Groovy/Java GPars CSP Single iteration count = ' + n )
       println ( '==== Groovy/Java GPars CSP Single elapse = ' + elapseTime )

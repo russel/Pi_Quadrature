@@ -3,7 +3,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a basic sequential algorithm.
  *
- *  Copyright © 2008-10 Russel Winder
+ *  Copyright © 2008--2010 Russel Winder
  */
 
 def n = 10000000 // 100 times fewer due to speed issues.

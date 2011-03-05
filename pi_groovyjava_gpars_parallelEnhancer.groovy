@@ -4,24 +4,24 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with GPars ParallelEnhancer to
  *  partition the problem and hence harness all processors available to the JVM.
  *
- *  Copyright © 2010 Russel Winder
+ *  Copyright © 2010--2011 Russel Winder
  */
 
-@Grab ( 'org.codehaus.gpars:gpars:0.11' )
+@Grab ( 'org.codehaus.gpars:gpars:0.12-beta-1-SNAPSHOT' )
 
 import groovyx.gpars.ParallelEnhancer
 
 void execute ( final int numberOfTasks ) {
-  final long n = 1000000000l
+  final int n = 1000000000i
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
-  final long sliceSize = n / numberOfTasks
-  final items = [ ] ; for ( i in 0 ..< numberOfTasks ) { items << i }
+  final int sliceSize = n / numberOfTasks
+  final items = [ ] ; for ( int i in 0i ..< numberOfTasks ) { items << i }
   ParallelEnhancer.enhanceInstance ( items )
   final pi = 4.0d * delta * items.collectParallel { taskId ->
     ( new ProcessSlice ( taskId , sliceSize , delta ) ).compute ( )
   }.sumParallel ( )
-  final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
+  final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   println ( '==== Groovy/Java GPars ParallelEnhancer pi = ' + pi )
   println ( '==== Groovy/Java GPars ParallelEnhancer iteration count = ' + n )
   println ( '==== Groovy/Java GPars ParallelEnhancer elapse = ' + elapseTime )

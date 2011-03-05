@@ -3,12 +3,16 @@
 /*
  *  Calculation of Pi using quadrature realized with GPars actors. Scripty.  With Java computation.
  *
- *  Copyright © 2010 Russel Winder.
+ *  Copyright © 2010--2011 Russel Winder.
  */
 
 //  This variant provided by Václav Pech by private email.
+//
+//  There appears to be what looks like the use of recursion in AccumulatorClass.handleMessage.  This is
+//  effectively tail recursion implemented in the GPars actor messager handler -- neither Java nor Groovy
+//  support tail recursion of course.
 
-@Grab ( 'org.codehaus.gpars:gpars:0.11' )
+@Grab ( 'org.codehaus.gpars:gpars:0.12-beta-1-SNAPSHOT' )
 
 import groovyx.gpars.actor.Actors
 import groovyx.gpars.actor.DefaultActor
@@ -29,10 +33,10 @@ final class AccumulatorActor extends DefaultActor {
 }
 
 void execute ( final int actorCount ) {
-  final long n = 1000000000l
+  final int n = 1000000000i
   final double delta = 1.0d / n
-  private final long sliceSize = n / actorCount
-  final long startTimeNanos = System.nanoTime ( )
+  final startTimeNanos = System.nanoTime ( )
+  final int sliceSize = n / actorCount
   final accumulator = new AccumulatorActor ( actorCount )
   accumulator.start ( )
   for ( index in 0 ..< actorCount ) {
@@ -41,7 +45,7 @@ void execute ( final int actorCount ) {
   }
   accumulator.join ( )
   final double pi = 4.0d * accumulator.sum * delta
-  final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
+  final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   println ( '==== Groovy/Java GPars ActorScript VP pi = ' + pi )
   println ( '==== Groovy/Java GPars ActorScript VP iteration count = ' + n )
   println ( '==== Groovy/Java GPars ActorScript VP elapse = ' + elapseTime )
