@@ -18,3 +18,10 @@ does not increase linearly with the number of processors available then there is
 Various different idioms and techniques in the various languages are tried as part of showing which
 languages are better than others for this problem.  Also the examples investigate the properties of, and
 indeed idioms and techniques appropriate to, the various languages.
+
+
+A point on JVM "warm up" (i.e. the JIT).  If loop variables are doubles then there is a "warm up" effect and
+two executions prior to any timing executions are needed to have the code JITed.  Using int loop variables
+there appears to be no such affect.
+
+32-bit integer types are used throughout so as to avoid worrying about the Java "warm up" when using longs.
