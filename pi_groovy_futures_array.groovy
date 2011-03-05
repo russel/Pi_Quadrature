@@ -3,12 +3,11 @@
 /*
  *  Calculation of Pi using quadrature realized with a parallel algorithm based on using Futures.
  *
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009--2011 Russel Winder
  */
 
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.ExecutionException
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
@@ -17,35 +16,30 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 // well as the variables.
 
 def execute ( final int numberOfTasks ) {
-  final long n = 100000000l // 10 times fewer due to speed issues.
+  final int n = 100000000i // 10 times fewer due to speed issues.
   final double delta = 1.0d / n
-  final long startTimeNanos = System.nanoTime ( )
-  final long sliceSize = n / numberOfTasks
+  final startTimeNanos = System.nanoTime ( )
+  final int sliceSize = n / numberOfTasks
   final ExecutorService executor = new ScheduledThreadPoolExecutor ( numberOfTasks )
   final Future<Double>[] futures = new Future<Double> [ numberOfTasks ]
-  for ( int i = 0l ; i < numberOfTasks ; ++i ) {
+  for ( int i in 0i ..< numberOfTasks ) {
     final taskId = i
     futures[i] = executor.submit ( new Callable<Double> ( ) {
                                      @Override public Double call ( ) {
-                                       final long start = 1l + taskId * sliceSize
-                                       final long end = ( taskId + 1l ) * sliceSize
+                                       final int start = 1i + taskId * sliceSize
+                                       final int end = ( taskId + 1i ) * sliceSize
                                        double sum = 0.0d ;
-                                       for ( long j = start ; j <= end ; ++j ) {
+                                       for ( int j in start .. end ) {
                                          final double x = ( j - 0.5d ) * delta
                                          sum += 1.0d / ( 1.0d + x * x )
                                        }
-                                       return sum
+                                       sum
                                      }
                                    } )
   }
-  double sum = 0.0d
-  for ( Future<Double> f : futures ) {
-    try { sum += f.get ( ) }
-    catch ( final InterruptedException ie ) { throw new RuntimeException ( ie ) } 
-    catch ( final ExecutionException ee ) { throw new RuntimeException ( ee ) } 
-  }
+  final double sum = futures.inject ( 0.0d ) { l , r -> l + r.get ( ) } 
   final double pi = 4.0d * sum * delta
-  final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
+  final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   executor.shutdown ( )
   println ( "==== Groovy Futures pi = " + pi )
   println ( "==== Groovy Futures iteration count = " + n )
