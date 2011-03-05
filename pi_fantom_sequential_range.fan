@@ -7,6 +7,12 @@
  *  Copyright © 2011 Russel Winder
  */
 
+/*
+ *  Use Float not Decimal so as to get some form of sane performance -- Decimals are realized as
+ *  java.math.BigDecimal which whilst accurate are extraordinarily slow compared to java.lang.Double which
+ *  is how Floats are realized.
+ */
+
 class Main {
   static Void main ( ) {
     n := 1000000000
