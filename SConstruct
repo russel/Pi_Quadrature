@@ -86,12 +86,14 @@ cppRule ( 'pi_cpp_cppcsp2.cpp' , cpppath = [ os.environ['HOME'] +'/include' ] , 
 #
 #  NB The MPI execution targets runs things sequentially.  Use the command "mpirun -np N pi_cpp_boostMPI" to
 #  run the code on N processors.
-if not os.path.isfile ( '/usr/lib/libboost_mpi.so' ) :
+if os.environ['BOOST_HOME'] :
     boostHome = os.environ['BOOST_HOME']
     boostInclude = boostHome + '/include'
     boostLib = boostHome + '/lib'
     cppRule ( 'pi_cpp_boostThread*.cpp' , cpppath = [ boostInclude ] , libpath = [ boostLib ] , libs = [ 'boost_thread' ] ) 
     cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , cpppath = [ boostInclude ] , libpath = [ boostLib ] , libs = [ 'boost_mpi' , 'boost_serialization' ] )
+elif not os.path.isfile ( '/usr/lib/libboost_mpi.so' ) :
+    print '\nWarning:  Cannot find a Boost.MPI.\n'
 else :
     cppRule ( 'pi_cpp_boostThread*.cpp' , libs = [ 'boost_thread' ] ) 
     cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , libs = [ 'boost_mpi' ] )

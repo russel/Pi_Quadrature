@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as an OpenMP annotated algorithm.
  *
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009--2011 Russel Winder
  */
 
 #include <iostream>
@@ -10,16 +10,16 @@
 #include "microsecondTime.h"
 
 void execute ( const int numberOfThreads ) {
-  const long n = 1000000000l ;
+  const int n = 1000000000 ;
   const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
-  const long sliceSize =  n / numberOfThreads ;
+  const int sliceSize =  n / numberOfThreads ;
   double sum = 0.0 ;
 #pragma omp parallel for reduction ( + : sum )
   for ( int i = 0 ; i < numberOfThreads ; ++i ) {
-    const long start = 1 + i * sliceSize ;
-    const long end = ( i + 1 ) * sliceSize ;
-    for ( long j = start ; j <= end ; ++j ) {
+    const int start = 1 + i * sliceSize ;
+    const int end = ( i + 1 ) * sliceSize ;
+    for ( int j = start ; j <= end ; ++j ) {
       const double x = ( j - 0.5 ) * delta ;
       sum += 1.0 / ( 1.0 + x * x ) ;
     }

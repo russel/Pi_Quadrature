@@ -2,7 +2,7 @@
  *  A C++ program to calculate Pi using quadrature.  This uses Anthony Williams' Just::Threads library which
  *  is an implementation of the threads specification of C++0x.
  *
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009--2011 Russel Winder
  */
 
 #include <iostream>
@@ -11,11 +11,11 @@
 #include<future>
 #include "microsecondTime.h"
 
-double partialSum ( const long id , const long sliceSize , const double delta ) {
-  const long start = 1 + id * sliceSize ;
-  const long end = ( id + 1 ) * sliceSize ;
+double partialSum ( const int id , const int sliceSize , const double delta ) {
+  const int start = 1 + id * sliceSize ;
+  const int end = ( id + 1 ) * sliceSize ;
   double sum = 0.0 ;
-  for ( long i = start ; i <= end ; ++i ) {
+  for ( int i = start ; i <= end ; ++i ) {
     const double x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
@@ -23,10 +23,10 @@ double partialSum ( const long id , const long sliceSize , const double delta ) 
 }
 
 void execute ( const int numberOfThreads ) {
-  const long n = 1000000000l ;
+  const int n = 1000000000 ;
   const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
-  const long sliceSize = n / numberOfThreads ;
+  const int sliceSize = n / numberOfThreads ;
   std::shared_future<double> futures [ numberOfThreads ] ;
   for ( int i = 0 ; i < numberOfThreads ; ++i ) {
     std::packaged_task<double ( )> task ( std::bind ( partialSum , i , sliceSize , delta ) ) ;

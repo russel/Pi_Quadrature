@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as a threads-based algorithm.
  *
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009--2011 Russel Winder
  */
 
 #include <iostream>
@@ -13,11 +13,11 @@ double sum ;
 pthread_mutex_t sumMutex ;
 
 struct CalculationParameters {
-  long id ;
-  long sliceSize ;
+  int id ;
+  int sliceSize ;
   double delta ;
   CalculationParameters ( ) : id ( 0l ) , sliceSize ( 0l ) , delta ( 0.0 ) { }
-  CalculationParameters ( const long i , const long s , const double d ) : id ( i ) , sliceSize ( s ) , delta ( d ) { }
+  CalculationParameters ( const int i , const int s , const double d ) : id ( i ) , sliceSize ( s ) , delta ( d ) { }
   CalculationParameters ( const CalculationParameters & x ) {
     id = x.id ;
     sliceSize = x.sliceSize ;
@@ -26,11 +26,11 @@ struct CalculationParameters {
 } ;
 
 void * partialSum ( void *const arg  ) {
-  const long start = 1 + ( (CalculationParameters *const) arg )->id * ( (CalculationParameters *const) arg )->sliceSize ;
-  const long end = ( ( (CalculationParameters *const) arg )->id + 1 ) * ( (CalculationParameters *const) arg )->sliceSize ;
+  const int start = 1 + ( (CalculationParameters *const) arg )->id * ( (CalculationParameters *const) arg )->sliceSize ;
+  const int end = ( ( (CalculationParameters *const) arg )->id + 1 ) * ( (CalculationParameters *const) arg )->sliceSize ;
   const double delta = ( (CalculationParameters *const) arg )->delta ;
   double localSum = 0.0 ;
-  for ( long i = start ; i <= end ; ++i ) {
+  for ( int i = start ; i <= end ; ++i ) {
     const double x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
@@ -42,10 +42,10 @@ void * partialSum ( void *const arg  ) {
 }
 
 void execute ( const int numberOfThreads ) {
-  const long n = 1000000000l ;
+  const int n = 1000000000 ;
   const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
-  const long sliceSize = n / numberOfThreads ;
+  const int sliceSize = n / numberOfThreads ;
   pthread_mutex_init ( &sumMutex , NULL ) ;
   pthread_attr_t attributes ;
   pthread_attr_init ( &attributes ) ;

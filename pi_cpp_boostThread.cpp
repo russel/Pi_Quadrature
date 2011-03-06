@@ -1,7 +1,7 @@
 /*
  *  A C++ program to calculate Pi using quadrature as a threads-based algorithm.
  *
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009--2011 Russel Winder
  */
 
 #include <iostream>
@@ -14,17 +14,17 @@ boost::mutex sumMutex ;
 
 class PartialSum {
  private :
-  long id ;
-  long sliceSize ;
+  int id ;
+  int sliceSize ;
   double delta ;
  public :
-  PartialSum ( const long i , const long s , const double d )
+  PartialSum ( const int i , const int s , const double d )
     : id ( i ) , sliceSize ( s ) , delta ( d ) { }
   void operator ( ) ( ) {
-    const long start = 1 + id * sliceSize ;
-    const long end = ( id + 1 ) * sliceSize ;
+    const int start = 1 + id * sliceSize ;
+    const int end = ( id + 1 ) * sliceSize ;
     double localSum = 0.0 ;
-    for ( long i = start ; i <= end ; ++i ) {
+    for ( int i = start ; i <= end ; ++i ) {
       const double x = ( i - 0.5 ) * delta ;
       localSum += 1.0 / ( 1.0 + x * x ) ;
     }
@@ -34,10 +34,10 @@ class PartialSum {
 };
 
 void execute ( const int numberOfThreads ) {
-  const long n = 1000000000l ;
+  const int n = 1000000000 ;
   const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
-  const long sliceSize = n / numberOfThreads ;
+  const int sliceSize = n / numberOfThreads ;
   boost::thread_group threads ;
   sum = 0.0 ;
   for ( int i = 0 ; i < numberOfThreads ; ++i ) { threads.create_thread ( PartialSum ( i , sliceSize , delta ) ) ; }

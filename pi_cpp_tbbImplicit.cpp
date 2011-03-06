@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as a TBB implemented algorithm.
  *
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009--2011 Russel Winder
  */
 
 #include <iostream>
@@ -19,7 +19,7 @@ class partialSum {
   partialSum ( const double d ) : delta ( d ) , sum ( 0.0 ) { }
   partialSum ( const partialSum & x , tbb::split ) : delta ( x.delta ) , sum ( 0.0 ) { }
   void operator ( ) ( const tbb::blocked_range<long>& range ) {
-    for ( long i = range.begin ( ) ; i != range.end ( ) ; ++i ) {
+    for ( int i = range.begin ( ) ; i != range.end ( ) ; ++i ) {
       const double x = ( i - 0.5 ) * delta ;
       sum += 1.0 / ( 1.0 + x * x ) ;
     }
@@ -29,7 +29,7 @@ class partialSum {
 } ;
 
 int main ( ) {
-  const long n = 1000000000l ;
+  const int n = 1000000000 ;
   const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
   tbb::task_scheduler_init tbb_initializer ;

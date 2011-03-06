@@ -1,3 +1,9 @@
+/*
+ *  A C++ program to calculate Pi using quadrature as a CSP implemented algorithm.
+ *
+ *  Copyright © 2010--2011 Russel Winder
+ */
+
 #include <iostream>
 #include <iomanip>
 #include <vector>
@@ -7,18 +13,18 @@
 class Compute : public csp::CSProcess {
  private :
   const int id ;
-  const long sliceSize ;
+  const int sliceSize ;
   const double delta ;
   const csp::Chanout<double> chanout ;
  public :
-  Compute ( const int i , const long s , const double d , const csp::Chanout<double> c ) 
+  Compute ( const int i , const int s , const double d , const csp::Chanout<double> c ) 
     : id ( i ) , sliceSize ( s ) , delta ( d ) , chanout ( c ) {
   }             
   void run ( ) {
-    const long start = 1 + id * sliceSize ;
-    const long end = ( id + 1 ) * sliceSize ;
+    const int start = 1 + id * sliceSize ;
+    const int end = ( id + 1 ) * sliceSize ;
     double sum = 0.0 ;
-    for ( long i = start ; i <= end ; ++i ) {
+    for ( int i = start ; i <= end ; ++i ) {
       const double x = ( i - 0.5 ) * delta ;
       sum += 1.0 / ( 1.0 + x * x ) ;
     }
@@ -28,14 +34,14 @@ class Compute : public csp::CSProcess {
   
 class Accumulate : public csp::CSProcess {
  private :
-  const long n ;
+  const int n ;
   const int numberOfProcesses ;
   const long long startTimeMicros ;
-  const long sliceSize ;
+  const int sliceSize ;
   const double delta ;
   const csp::AltChanin<double> chanin ;
  public :
-  Accumulate ( const long ni , const int np , const long long st , const long s , const double d , const csp::AltChanin<double> c ) 
+  Accumulate ( const int ni , const int np , const long long st , const int s , const double d , const csp::AltChanin<double> c ) 
     : n ( ni ) , numberOfProcesses ( np ) , startTimeMicros ( st ) , sliceSize ( s ) , delta ( d ) , chanin ( c ) {
   }             
   void run ( ) {
@@ -52,10 +58,10 @@ class Accumulate : public csp::CSProcess {
 } ;
 
 void execute ( const int numberOfProcesses ) {
-  const long n = 1000000000l ;
+  const int n = 1000000000 ;
   const double delta = 1.0 / n ;
   const long long startTimeMicros = microsecondTime ( ) ;
-  const long sliceSize = n / numberOfProcesses ;
+  const int sliceSize = n / numberOfProcesses ;
   csp::Start_CPPCSP ( ) ;
   csp::Any2OneChannel<double> results ;
   std::vector<csp::CSProcessPtr> processes ;
