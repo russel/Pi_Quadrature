@@ -1,11 +1,11 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
 #  Calculation of Pi using quadrature.  Using threads and extensions.  ctypes is careful to release the GIL
 #  whilst C code is running so we get real parallelism. We use a Queue as the way of receiving results since
 #  that has the necessary guarantees to be thread-safe.
 #
-#  Copyright © 2008-10 Russel Winder
+#  Copyright © 2008--2011 Russel Winder
 
 import time
 import threading
@@ -14,7 +14,7 @@ import ctypes
 
 def processSlice ( id , sliceSize , delta , results ) :
     processSlice = ctypes.cdll.LoadLibrary ( 'processSlice_c.so' )
-    processSlice.processSlice.argtypes = [ ctypes.c_long , ctypes.c_long , ctypes.c_double ]
+    processSlice.processSlice.argtypes = [ ctypes.c_int , ctypes.c_int , ctypes.c_double ]
     processSlice.processSlice.restype = ctypes.c_double
     results.put ( processSlice.processSlice ( id , sliceSize , delta ) )
 
