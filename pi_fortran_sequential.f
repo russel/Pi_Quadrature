@@ -1,6 +1,6 @@
 !  A Fortran program to calculate Pi using quadrature as a sequential algorithm.
 !
-!  Copyright © 2008-10 Russel Winder
+!  Copyright © 2008--2010 Russel Winder
 
 program pi
   implicit none
