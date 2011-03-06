@@ -12,9 +12,11 @@ import std.parallelism ;
 import std.stdio ;
 import std.typecons ;
 
-real partialSum ( immutable Tuple ! ( long , long , double ) data ) { 
+real partialSum ( immutable Tuple ! ( int , int , double ) data ) { 
+  immutable start = 1 + data[0] * data[1] ;
+  immutable end = ( data[0] + 1 ) * data[1] ;
   auto sum = 0.0 ;
-  foreach ( i ; data[0] .. data[1] ) {
+  foreach ( i ; start .. end ) {
     immutable x = ( i - 0.5 ) * data[2] ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
@@ -27,32 +29,22 @@ void execute ( immutable int numberOfTasks ) {
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
-  auto inputData = new Tuple ! ( long , long , double ) [ numberOfTasks ] ;
+  auto inputData = new Tuple ! ( int , int , double ) [ numberOfTasks ] ;
   //
   //  The D compiler cannot currently (2.052) handle tuples with elements of immutable type.  So without the cast, the following
   //  error message is emitted:
   //
   //      Error: template instance std.typecons.tuple!(int,int,immutable(double)) error instantiating
   //
-  //foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ; }
-  foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( 1 + i * sliceSize , ( i + 1 ) * sliceSize , cast ( double ) ( delta ) ) ; }
+  //foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i , sliceSize , delta ) ; }
+  foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i ,  cast ( int ) ( sliceSize ) , cast ( double ) ( delta ) ) ; }
   //
-  //  Cannot have outputData be immutable as this results in the compiler saying:
+  //  There is a problem using a lambda function here.  David Simcha reports it is a consequence of issue
+  //  5710 http://d.puremagic.com/issues/show_bug.cgi?id=5710.  Live with this and uise the string syntax
+  //  for specifying a lambda function.
   //
-  //    Error: cannot implicitly convert expression (map(inputData)) of type Map!(partialSum,Tuple!(long,long,double)[]) to immutable(Map!(partialSum,Tuple!(long,long,double)[]))
-  //
-  //  David Simcha reports that using explicit TaskPool creation is only for special cases, that using the
-  //  lazy, singleton taskPool is the right way of handling this sort of map use.
-  //
-  //  There is a known problem with core.cpuid (http://d.puremagic.com/issues/show_bug.cgi?id=5612) that
-  //  means that the detection of the number of cores doesn't work properly.  It seems more problematic in
-  //  64-bit working than 32-bit working.  Fortunately the number of threads in the pool can be forced by
-  //  statement such as the following.  
-  //
-  defaultPoolThreads = 8 ;
-  //
-  auto outputData = taskPool.map ! ( partialSum ) ( inputData ) ;
-  immutable pi = 4.0 * taskPool.reduce ! ( "a + b" ) ( 0.0 , outputData ) * delta ;
+  //immutable pi = 4.0 * taskPool.reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , taskPool.map ! ( partialSum ) ( inputData ) ) * delta ;
+  immutable pi = 4.0 * taskPool.reduce ! ( "a + b" ) ( 0.0 , taskPool.map ! ( partialSum ) ( inputData ) ) * delta ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Parallel Map pi = %.18f" , pi ) ;

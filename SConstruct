@@ -159,7 +159,7 @@ dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'dmd_new' ] , ENV = o
 for item in Glob ( 'pi_d2_*.d' ) :
     root = os.path.splitext ( item.name ) [0]
     environment = dEnvironment
-    if root.split ( '_' )[2] == 'parallelMap' :
+    if root.split ( '_' )[2] in [ 'sequentialMapParallelReduce' ,  'parallelMapParallelReduce' ] :
         environment = dEnvironment.Clone ( )
         environment.Append (
             DPATH =  [ os.environ['HOME'] + '/lib/D' ] ,

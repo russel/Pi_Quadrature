@@ -5,11 +5,15 @@
  *  Copyright © 2010--2011 Russel Winder
  */
 
+//import std.algorithm ;
 import std.concurrency ;
 import std.datetime ;
+//import std.range ;
 import std.stdio ;
 
-void partialSum ( Tid parent , immutable long start , immutable long end , immutable double delta ) {
+void partialSum ( Tid parent , immutable int id , immutable int sliceSize , immutable double delta ) {
+  immutable start = 1 + id * sliceSize ;
+  immutable end = ( id + 1 ) * sliceSize ;
   auto sum = 0.0 ;
   foreach ( i ; start .. end ) {
     immutable x = ( i - 0.5 ) * delta ;
@@ -24,8 +28,12 @@ void execute ( immutable int numberOfTasks ) {
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
+  //
+  //  The following leads to serialization of computation, so do things with a foreach :-((  
+  //
+  //auto tasks = map ! ( ( i ) { return spawn ( & partialSum , thisTid , i , sliceSize , delta ) ; } ) ( iota ( numberOfTasks ) ) ;
   auto tasks = new Tid[numberOfTasks] ;  
-  foreach ( i ; 0 .. numberOfTasks ) { tasks[i] = spawn ( & partialSum , thisTid , 1 + i * sliceSize , ( i + 1 ) * sliceSize , delta ) ; }
+  foreach ( i ; 0 .. numberOfTasks ) { tasks[i] = spawn ( & partialSum , thisTid , i , sliceSize , delta ) ; }
   auto sum = 0.0 ;
   foreach ( task ; tasks ) { sum += receiveOnly ! double ( ) ; }
   immutable pi = 4.0 * sum * delta ;

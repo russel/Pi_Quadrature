@@ -4,7 +4,9 @@
  *  Copyright © 2009--2011 Russel Winder
  */
 
+import std.algorithm ;
 import std.datetime ;
+//import std.range ;
 import std.stdio ;
 
 import core.thread ;
@@ -12,7 +14,9 @@ import core.thread ;
 shared double sum ;
 shared Object sumMutex ;
 
-void partialSum ( immutable long start , immutable long end , immutable double delta ) {
+void partialSum ( immutable int id , immutable int sliceSize , immutable double delta ) {
+  immutable start = 1 + id * sliceSize ;
+  immutable end = ( id + 1 ) * sliceSize ;
   auto localSum = 0.0 ;
   foreach ( i ; start .. end ) {
     immutable x = ( i - 0.5 ) * delta ;
@@ -28,16 +32,27 @@ void execute ( immutable int numberOfThreads ) {
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfThreads ;
   sum = 0.0 ;
+  /*
+   *  The following does not yet (2.052) work :-((
+
+  auto threads = map ! ( ( int i ) {
+      void delegate ( ) closedPartialSum ( ) {
+        immutable id = i ;
+        return ( ) { partialSum ( id , sliceSize , delta ) ; } ;
+      }
+      return new Thread ( closedPartialSum ) ;
+    } ) ( iota ( numberOfThreads ) ) ;
+  */
   auto threads = new Thread[numberOfThreads] ;  
   foreach ( i ; 0 .. numberOfThreads ) {
     //
     //  In order to capture the value of i it is necessary to create a function that returns a delegate to
     //  be used as the function to pass in to the thread object.  This is analogous to what has to be done
-    //  in Python, but it wopuld be much better if it were simpler as in Groovy or Ruby.
+    //  in Python, but it would be much better if it were simpler as in Go, Scala, Groovy, Ruby, or Fantom.
     //
     void delegate ( ) closedPartialSum ( ) {
       immutable id = i ;
-      return ( ) { partialSum ( 1 + id * sliceSize , ( id + 1 ) * sliceSize , delta ) ; } ;
+      return ( ) { partialSum ( id , sliceSize , delta ) ; } ;
     }
     threads[i] = new Thread ( closedPartialSum ) ;
   }
