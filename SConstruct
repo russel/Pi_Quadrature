@@ -453,8 +453,10 @@ extensionsData = {
         } ,
     }
 
-extensionsSpecified = [ ]
-sharedLibraries = [ ]
+#  A number of the Python codes use the same extensions.  The extension only needs to be constructed once.
+#  Keep a dictionary of items made,
+
+extensionsSharedLibraries = { }
 
 pythonEnvironment = Environment ( )
 
@@ -473,20 +475,18 @@ for item in Glob ( 'pi_python*.py' ) :
             if majorVersion == '3' : continue
             extension += '_py' + majorVersion
         extensionName =  '%s_%s' % ( extensionRoot , extension )
-        if extensionName not in extensionsSpecified : 
-            sharedLibrary =  pythonEnvironment.SharedLibrary ( extensionName ,
+        if extensionName not in extensionsSharedLibraries.keys ( ) :
+            extensionsSharedLibraries[extensionName] = pythonEnvironment.SharedLibrary ( extensionName ,
                                         pythonEnvironment.Command ( '%s_%s.c' % ( extensionRoot , extension ) , '%s_%s.pyx' % ( extensionRoot , extension ) ,
                                           extensionsData[extension]['COMMAND'] + ' $SOURCE' ) if extension.split ( '_' )[0] in [ 'pyrex' , 'cython' ] else  '%s_%s.%s' % ( extensionRoot , extension , extension ) ,
                                         CPPPATH = extensionsData[extension]['CPPPATH'] ,
                                         CFLAGS = extensionsData[extension]['CFLAGS'] , CXXFLAGS = extensionsData[extension]['CFLAGS'] ,
                                         SHLIBPREFIX = '' , LINKFLAGS = extensionsData[extension]['LINKFLAGS'] )
-            sharedLibraries.append ( sharedLibrary )
-            addRunTarget ( pythonEnvironment.Command ( target , [ item.name , sharedLibrary ] , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
-            extensionsSpecified.append ( extensionName )
+        addRunTarget ( pythonEnvironment.Command ( target , [ item.name , extensionsSharedLibraries[extensionName] ] , 'LD_LIBRARY_PATH=. ./$SOURCE' ) )
     else :
         addRunTarget ( pythonEnvironment.Command ( target , item.name , './$SOURCE' ) )
 
-compilePythonExtensions = addCompileTarget ( Alias ( 'compilePythonExtensions' , sharedLibraries ) )
+compilePythonExtensions = addCompileTarget ( Alias ( 'compilePythonExtensions' , extensionsSharedLibraries.values ( ) ) )
 
 #  Ruby  #############################################################################
 
