@@ -7,6 +7,7 @@
 
 import std.algorithm ;
 import std.datetime ;
+import std.range ;
 import std.stdio ;
 import std.typecons ;
 
@@ -37,12 +38,10 @@ void execute ( immutable int numberOfTasks ) {
   //foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i , sliceSize , delta ) ; }
   foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i , cast ( int ) ( sliceSize ) , cast ( double ) ( delta ) ) ; }
   //
-  //  Cannot have outputData be immutable as this results in the compiler saying:
+  //  Should replace the above two with the following but it causes a compilation error.
   //
-  //    Error: cannot implicitly convert expression (map(inputData)) of type Map!(partialSum,Tuple!(int,int,double)[]) to immutable(Map!(partialSum,Tuple!(int,int,double)[]))
-  //
-  auto outputData = map ! ( partialSum ) ( inputData ) ;
-  immutable pi = 4.0 * reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , outputData ) * delta ;
+  //auto inputData = map ! ( ( i ) { return tuple ( i , cast ( int ) ( sliceSize ) , cast ( double ) ( delta ) ) ; } ) ( iota ( numberOfTasks ) ) ;
+  immutable pi = 4.0 * reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , map ! ( partialSum ) ( inputData ) ) * delta ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Sequential Map pi = %.18f" , pi ) ;
