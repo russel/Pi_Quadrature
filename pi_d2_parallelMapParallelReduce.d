@@ -43,14 +43,14 @@ void execute ( immutable int numberOfTasks ) {
   //  5710 http://d.puremagic.com/issues/show_bug.cgi?id=5710.  Live with this and uise the string syntax
   //  for specifying a lambda function.
   //
-  //immutable pi = 4.0 * taskPool.reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , taskPool.map ! ( partialSum ) ( inputData ) ) * delta ;
-  immutable pi = 4.0 * taskPool.reduce ! ( "a + b" ) ( 0.0 , taskPool.map ! ( partialSum ) ( inputData ) ) * delta ;
+  //immutable pi = 4.0 * delta * taskPool.reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , taskPool.map ! ( partialSum ) ( inputData ) ) ;
+  immutable pi = 4.0 * delta * taskPool.reduce ! ( "a + b" ) ( 0.0 , taskPool.map ! ( partialSum ) ( inputData ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Parallel Map pi = %.18f" , pi ) ;
-  writefln ( "==== D Parallel Map iteration count = %d" , n ) ;
-  writefln ( "==== D Parallel Map elapse = %f" , elapseTime ) ;
-  writefln ( "==== D Parallel Map task count = %d" , numberOfTasks ) ;
+  writefln ( "==== D Parallel Map Parallel Reduce pi = %.18f" , pi ) ;
+  writefln ( "==== D Parallel Map Parallel Reduce iteration count = %d" , n ) ;
+  writefln ( "==== D Parallel Map Parallel Reduce elapse = %f" , elapseTime ) ;
+  writefln ( "==== D Parallel Map Parallel Reduce task count = %d" , numberOfTasks ) ;
 }
 
 int main ( immutable string[] args ) {

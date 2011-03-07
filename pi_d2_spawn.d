@@ -36,7 +36,7 @@ void execute ( immutable int numberOfTasks ) {
   foreach ( i ; 0 .. numberOfTasks ) { tasks[i] = spawn ( & partialSum , thisTid , i , sliceSize , delta ) ; }
   auto sum = 0.0 ;
   foreach ( task ; tasks ) { sum += receiveOnly ! double ( ) ; }
-  immutable pi = 4.0 * sum * delta ;
+  immutable pi = 4.0 * delta * sum ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Spawn pi = %.18f" , pi ) ;

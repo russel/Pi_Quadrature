@@ -17,15 +17,14 @@ import std.parallelism ;
 import std.range ;
 import std.stdio ;
 
-immutable n = 1000000000 ;
-immutable delta = 1.0 / n ;
-
-real getTerm ( int i ) {
-  immutable x = ( i - 0.5 ) * delta ;
-  return 1.0 / ( 1.0 + x * x ) ;
-}
-
 int main ( immutable string[] args ) {
+  immutable n = 1000000000 ;
+  immutable delta = 1.0 / n ;
+  //  Delegates cannot be assigned to immutables?
+  /*immutable*/ auto getTerm = delegate real ( int i ) {
+    immutable x = ( i - 0.5 ) * delta ;
+    return 1.0 / ( 1.0 + x * x ) ;
+  } ;
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
   immutable pi = 4.0 * delta * taskPool.reduce ! ( "a + b") ( map ! getTerm ( iota ( n ) ) ) ;

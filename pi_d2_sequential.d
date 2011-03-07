@@ -17,7 +17,7 @@ int main ( immutable string[] args ) {
     immutable x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
-  immutable pi = 4.0 * sum * delta ;
+  immutable pi = 4.0 * delta * sum ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Sequential pi = %.18f" , pi ) ;

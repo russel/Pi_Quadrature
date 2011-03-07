@@ -58,7 +58,7 @@ void execute ( immutable int numberOfThreads ) {
   }
   foreach ( thread ; threads ) { thread.start ( ) ; }
   foreach ( thread ; threads ) { thread.join ( ) ; }
-  immutable pi = 4.0 * sum * delta ;
+  immutable pi = 4.0 * delta * sum ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Threads pi = %.18f" , pi ) ;

@@ -41,7 +41,7 @@ void execute ( immutable int numberOfTasks ) {
   //  Should replace the above two with the following but it causes a compilation error.
   //
   //auto inputData = map ! ( ( i ) { return tuple ( i , cast ( int ) ( sliceSize ) , cast ( double ) ( delta ) ) ; } ) ( iota ( numberOfTasks ) ) ;
-  immutable pi = 4.0 * reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , map ! ( partialSum ) ( inputData ) ) * delta ;
+  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , map ! ( partialSum ) ( inputData ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Sequential Map pi = %.18f" , pi ) ;
