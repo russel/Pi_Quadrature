@@ -1,14 +1,14 @@
 /*
  *  Calculation of Pi using quadrature realized with a fork/join approach with threads.
  *
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009--2010 Russel Winder
  */
 
 import scala.concurrent.Lock
 
 object Pi_Scala_Threads extends  Application {
   def execute ( numberOfTasks : Int ) {
-    val n = 1000000000l
+    val n = 1000000000
     val delta = 1.0 / n
     val startTimeNanos = System.nanoTime
     val sliceSize = n / numberOfTasks
@@ -17,13 +17,12 @@ object Pi_Scala_Threads extends  Application {
     var threads = for ( index <- 0 until numberOfTasks ) yield
       new Thread ( new Runnable {
         def run ( ) {
-          var i = 1 + index * sliceSize
+          val start = 1 + index * sliceSize
           val end = ( index + 1 ) * sliceSize
           var localSum = 0.0
-          while ( i <= end ) {
+          for ( i <- start to end ) {
             val x = ( i - 0.5 ) * delta
             localSum += 1.0 / ( 1.0 + x * x )
-            i += 1
           }
           lock.acquire
           sum += localSum
@@ -32,7 +31,7 @@ object Pi_Scala_Threads extends  Application {
       } )
     threads.foreach ( t => t.start )
     threads.foreach ( t => t.join )
-    val pi = 4.0 * sum * delta
+    val pi = 4.0 * delta * sum
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
     println ( "==== Scala Threads pi = " + pi )
     println ( "==== Scala Threads iteration count = " + n )

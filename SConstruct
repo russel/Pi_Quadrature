@@ -315,8 +315,7 @@ Alias ( 'compileJavaProcessSlicesForGroovy' , [ processSliceClasses , processSli
 scalaEnvironment = Environment ( tools = [ ] , ENV = os.environ )
 
 for item in Glob ( 'Pi_Scala_*.scala' ) :
-    if item.name == 'Pi_Scala_FunctionalJava_ParMap.scala' : continue #  Hack because there is a compilation error.
-    if item.name == 'Pi_Scala_Scalaz_ParMap.scala' : continue #  Hack because there is a compilation error.
+    #if item.name == 'Pi_Scala_Scalaz_ParMap.scala' : continue #  Hack because there is a compilation error.
     className = os.path.splitext ( item.name ) [0]
     compiledFileName = className + '.class'
     variant = className.split ( '_' )[2]

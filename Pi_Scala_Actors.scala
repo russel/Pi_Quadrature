@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a fork/join approach using an actor system.
  * 
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009--2010 Russel Winder
  */
 
 import scala.actors.Actor
