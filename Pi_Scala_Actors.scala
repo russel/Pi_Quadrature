@@ -16,7 +16,7 @@ object Pi_Scala_Actors extends Application {
     val accumulator = Actor.actor {
       var sum = 0.0
       calculators.foreach ( calculator => Actor.receive { case d => sum += d.asInstanceOf[Double] } )
-      val pi = 4.0 * sum * delta
+      val pi = 4.0 * delta * sum
       val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
       println ( "==== Scala Actors pi = " + pi )
       println ( "==== Scala Actors iteration count = " + n )
