@@ -2,12 +2,12 @@
  *  Calculation of Pi using quadrature realized with a basic sequential algorithm using a while.
  *  Show the JVM warm up by executing the same thing a number of times.
  *
- *  Copyright © 2009--2010 Russel Winder
+ *  Copyright © 2009--2011 Russel Winder
  */
 
-//  This version is used to experiment with JVM JIT warm up.  If n is long then the warm up effect is seen
-//  quite dramatically -- the JIT only kicks in after the second execution.  If n is int then there is still
-//  the effect but it isn't as noticeable.
+//  This version is used to experiment with JVM JIT warm up.  If n is of type long then the warm up effect
+//  is seen quite dramatically -- the JIT only kicks in after the second execution.  If n is of type int
+//  then there is still the effect but it isn't as noticeable.
 
 object Pi_Scala_Sequential_WarmUp {
   def execute {
