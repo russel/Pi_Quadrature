@@ -1,7 +1,7 @@
 /*
- *  Calculation of Pi using quadrature realized with a basic sequential algorithm using a for comprehension.
+ *  Calculation of Pi using quadrature realized with a basic sequential algorithm using a for "loop".
  *
- *  Copyright © 2009--2010 Russel Winder
+ *  Copyright © 2009--2011 Russel Winder
  */
 
 //  Use the "write a main method" approach since when extending Application to create a main procedure,
