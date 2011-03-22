@@ -1,8 +1,11 @@
 /*
- *  Calculation of Pi using quadrature realized with a fork/join approach using an actor system.
+ *  Calculation of Pi using quadrature realized with a scatter/gather approach using an actor system.
  * 
  *  Copyright © 2009--2011 Russel Winder
  */
+
+//  TODO: Investigate why there is a slow-down using eight or 32 actors on a dual-core compared to
+//  using two actors?
 
 import scala.actors.Actor
 
@@ -30,10 +33,6 @@ object Pi_Scala_Actors extends Application {
         val start = 1 + index * sliceSize
         val end = ( index + 1 ) * sliceSize 
         var sum = 0.0
-        //
-        //  TODO: Investigate why there is a slow-down using eight actors on a dual-core compared to using
-        //  two actors?
-        //
         for ( i <- start to end ) {
           val x = ( i - 0.5 ) * delta
           sum += 1.0 / ( 1.0 + x * x )
