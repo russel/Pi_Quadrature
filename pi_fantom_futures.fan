@@ -19,24 +19,26 @@ class Main {
     startTimeNanos := sys::DateTime.nowTicks ( )
     sliceSize := n / numberOfTasks
     pool := concurrent::ActorPool ( )
-    //  Sadly cannot nest closure definitions so we have to pull this out and assign it to a variable :-((
-    partialSumEvaluator := | Int i -> Float | {
-      start := 1 + i * sliceSize
-      end := ( i + 1 ) * sliceSize
+    partialSumEvaluator := | Int id -> Float | {
+      start := 1 + id * sliceSize
+      end := ( id + 1 ) * sliceSize
       sum := 0.0f
-      ( start .. end ).each | j | {
-        x := ( j - 0.5f ) * delta
-        sum += 1.0f /  ( 1.0f + x * x )
+      ( start .. end ).each | i | {
+        x := ( i - 0.5f ) * delta
+        sum += 1.0f / ( 1.0f + x * x )
       }
       return sum
     }
     /*
-    concurrent::Future[] values := ( 0 ..< numberOfTasks ).toList ( ).map | i -> concurrent::Future | {
+     *  The following leads to a compilation error.
+     *
+    values := ( 0 ..< numberOfTasks ).toList ( ).map | i -> concurrent::Future | {
       return concurrent::Actor ( pool , partialSumEvaluator ).send ( i )
     }
     */
-    Float sum := 1.0f // values.reduce ( 0.0f ) | Float l , concurrent::Future r -> Float | { return l + (Float) r.get ( ) }
-    pi := 4.0f * sum * delta
+    values := concurrent::Future[,]
+    ( 0 ..< numberOfTasks ).each | i | { values.add ( concurrent::Actor ( pool , partialSumEvaluator ).send ( i ) ) }
+    pi := 4.0f * delta * (Float) values.reduce ( 0.0f ) | Float l , concurrent::Future r -> Float | { return l + (Float) r.get ( ) }
     elapseTime := ( sys::DateTime.nowTicks ( ) - startTimeNanos ) / 1e9f
     echo ( "==== Fantom Futures pi = " + pi )
     echo ( "==== Fantom Futures iteration count = " + n ) 
