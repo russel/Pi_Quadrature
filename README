@@ -20,8 +20,8 @@ languages are better than others for this problem.  Also the examples investigat
 indeed idioms and techniques appropriate to, the various languages.
 
 
-A point on JVM "warm up" (i.e. the JIT).  If loop variables are doubles then there is a "warm up" effect and
+A point on JVM "warm up" (i.e. the JIT).  If loop variables are longs then there is a "warm up" effect and
 two executions prior to any timing executions are needed to have the code JITed.  Using int loop variables
-there appears to be no such affect.
+there appears to be no such affect -- in fact there is but it is a small effect and can effectively be ignored.
 
 32-bit integer types are used throughout so as to avoid worrying about the Java "warm up" when using longs.
