@@ -171,7 +171,7 @@ for item in Glob ( 'pi_d2_*.d' ) :
             DPATH =  [ os.environ['HOME'] + '/lib/D' ] ,
             LIBPATH = [ extraLibName ] ,
             LIBS = [ 'parallelism' ] )
-    executables.append ( addCompileTarget ( environment.Program ( item.name ) ) )
+    executables.append ( addCompileTarget ( environment.Program ( item ) ) )
 
 #  Chapel  ###########################################################################
 
