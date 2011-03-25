@@ -39,13 +39,14 @@ void execute ( immutable int numberOfTasks ) {
   //
   //foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i , sliceSize , delta ) ; }
   foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i ,  cast ( int ) ( sliceSize ) , cast ( double ) ( delta ) ) ; }
-  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , taskPool.map ! ( partialSum ) ( inputData ) ) ;
+  //  Remember to use eager map not lazy map here!
+  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , taskPool.amap ! ( partialSum ) ( inputData ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Parallel Map Parallel Reduce pi = %.18f" , pi ) ;
-  writefln ( "==== D Parallel Map Parallel Reduce iteration count = %d" , n ) ;
-  writefln ( "==== D Parallel Map Parallel Reduce elapse = %f" , elapseTime ) ;
-  writefln ( "==== D Parallel Map Parallel Reduce task count = %d" , numberOfTasks ) ;
+  writefln ( "==== D Parallel Map Sequential Reduce pi = %.18f" , pi ) ;
+  writefln ( "==== D Parallel Map Sequential Reduce iteration count = %d" , n ) ;
+  writefln ( "==== D Parallel Map Sequential Reduce elapse = %f" , elapseTime ) ;
+  writefln ( "==== D Parallel Map Sequential Reduce task count = %d" , numberOfTasks ) ;
 }
 
 int main ( immutable string[] args ) {
