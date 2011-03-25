@@ -41,7 +41,7 @@ void execute ( immutable int numberOfTasks ) {
   foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i ,  cast ( int ) ( sliceSize ) , cast ( double ) ( delta ) ) ; }
   //
   //  There is a problem using a lambda function here.  David Simcha reports it is a consequence of issue
-  //  5710 http://d.puremagic.com/issues/show_bug.cgi?id=5710.  Live with this and uise the string syntax
+  //  5710 http://d.puremagic.com/issues/show_bug.cgi?id=5710.  Live with this and use the string syntax
   //  for specifying a lambda function.
   //
   //immutable pi = 4.0 * delta * taskPool.reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , map ! ( partialSum ) ( inputData ) ) ;
