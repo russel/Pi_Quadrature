@@ -11,6 +11,9 @@
 //  reified in the documentation for std.parallelism,
 //  http://cis.jhu.edu/~dsimcha/d/phobos/std_parallelism.html#reduce
 
+//  Attempt to make things more local than David's original.  This fails as paralle reduce cannot work with
+//  closures only with global functions.
+
 import std.algorithm ;
 import std.datetime ;
 import std.parallelism ;
@@ -27,12 +30,14 @@ int main ( immutable string[] args ) {
   } ;
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
-  immutable pi = 4.0 * delta * taskPool.reduce ! ( "a + b") ( map ! getTerm ( iota ( n ) ) ) ;
+  //  Have to use the string mechanism of specifying the lambda as std.parallelism cannot handle non-string
+  //  closures jsut now.
+  //immutable pi = 4.0 * delta * taskPool.reduce ! ( ( a , b ) { return a + b ; } ) ( map ! getTerm ( iota ( n ) ) ) ;
+  immutable pi = 4.0 * delta * taskPool.reduce ! ( "a + b" ) ( map ! getTerm ( iota ( n ) ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Parallel Reduce DS pi = %.18f" , pi ) ;
-  writefln ( "==== D Parallel Reduce DS iteration count = %d" , n ) ;
-  writefln ( "==== D Parallel Reduce DS elapse = %f" , elapseTime ) ;
-  //writefln ( "==== D Parallel ReduceDS task count = %d" , numberOfTasks ) ;
+  writefln ( "==== D Parallel Reduce RW variant of DS pi = %.18f" , pi ) ;
+  writefln ( "==== D Parallel Reduce RW variant of DS iteration count = %d" , n ) ;
+  writefln ( "==== D Parallel Reduce RW variant of DS elapse = %f" , elapseTime ) ;
   return 0 ;
 }
