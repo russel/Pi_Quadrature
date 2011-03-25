@@ -1,6 +1,6 @@
 ;  Calculation of Pi using quadrature. Parallel algorithm using pmap.
 ;
-;  Copyright © 2010 Russel Winder
+;  Copyright © 2010--2011 Russel Winder
 
 ( defn execute [ numberOfThreads ]
   ( let [
@@ -8,7 +8,7 @@
          delta  ( / 1.0 n )
          startTimeNanos  ( System/nanoTime )
          sliceSize  ( / n numberOfThreads )
-         pi  ( * 4.0 ( reduce + ( pmap ( fn [n] ( . n compute ) )  ( for [ i ( range 0 numberOfThreads ) ] ( new ProcessSlice [ i sliceSize delta ] ) ) ) ) )
+         pi  ( * 4.0 delta ( reduce + ( pmap ( fn [n] ( . n compute ) )  ( for [ i ( range 0 numberOfThreads ) ] ( new ProcessSlice [ i sliceSize delta ] ) ) ) ) )
          elapseTime  ( / ( - ( System/nanoTime ) startTimeNanos ) 1e9 )
          ]
     ( println ( str "==== Clojure Parallel Map ProcessSlice pi = " pi ) )

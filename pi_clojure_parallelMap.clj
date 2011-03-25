@@ -1,6 +1,8 @@
 ;  Calculation of Pi using quadrature. Parallel algorithm using pmap.
 ;
-;  Copyright © 2009-10 Russel Winder
+;  Copyright © 2009--2011 Russel Winder
+
+;  TODO : Find out why the very long delay between completing the computation and terminating?
 
 ( defn partialSum [ parameter ]
   ( let [
@@ -25,7 +27,7 @@
          delta  ( / 1.0 n )
          startTimeNanos  ( System/nanoTime )
          sliceSize  ( / n numberOfThreads )
-         pi  ( * 4.0 ( reduce + ( pmap partialSum  ( for [ i ( range 0 numberOfThreads ) ] [ i sliceSize delta ] ) ) ) delta )
+         pi  ( * 4.0 delta ( reduce + ( pmap partialSum  ( for [ i ( range 0 numberOfThreads ) ] [ i sliceSize delta ] ) ) ) )
          elapseTime  ( / ( - ( System/nanoTime ) startTimeNanos ) 1e9 )
          ]
     ( println ( str "==== Clojure Parallel Map pi = " pi ) )

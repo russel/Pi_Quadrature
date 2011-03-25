@@ -1,6 +1,6 @@
 ;  Calculation of Pi using quadrature. Parallel algorithm using futures.
 ;
-;  Copyright © 2009-10 Russel Winder
+;  Copyright © 2009--2011 Russel Winder
 
 ( import '( java.util.concurrent Executors ) )
 
@@ -35,7 +35,7 @@
       ( .get future ) )
     ( .shutdown pool )
     ( let [
-           pi  ( * 4.0 ( reduce + partialSums ) )
+           pi  ( * 4.0 delta ( reduce + partialSums ) )
            elapseTime  ( / ( - ( System/nanoTime ) startTimeNanos ) 1e9 )
            ]
       ( println ( str "==== Clojure Futures pi = " pi ) )
