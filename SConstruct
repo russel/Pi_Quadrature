@@ -99,10 +99,12 @@ else :
     cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , libs = [ 'boost_mpi' ] )
 
 #  Use Anthony Williams' Just::Thread library as an implementation of C++0x threads and things.  Anthony's
-#  Ubuntu Lucid deb seems to work fine on Debian Squeeze, which is good.  In order to use the standard
+#  Ubuntu debs seems to work fine on Debian, which is good -- albeit lucky.  In order to use the standard
 #  naming in the source code we have to augment the include path.  Must also inform GCC that we are using
 #  the next standard.
-cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ '/usr/include/justthread' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libs = [ 'justthread' , 'rt' ] )
+#cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ '/usr/include/justthread' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libs = [ 'justthread' , 'rt' ] )
+# Use the pre-release Just::Thread Pro as it has the actor and dataflow support.
+cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ extraLibName + '/JustThreadPro/include' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libpath = [ extraLibName + '/JustThreadPro/libs' ] , libs = [ 'justthread' , 'rt' ] )
 
 #  TBB 2.2 is packaged in Ubuntu Lucid and Debian Squeeze, but TBB 3 is now out and compiled up in some
 #  location known to the shell.
