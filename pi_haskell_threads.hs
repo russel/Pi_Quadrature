@@ -1,6 +1,6 @@
 --  Haskell implementation of Pi by Quadrature.  This uses threads to parallelize.
 --
---  Copyright © 2009-10 Russel Winder
+--  Copyright © 2009--2011 Russel Winder
 
 module Main where
 
@@ -40,19 +40,19 @@ execute numberOfSlices = do
   let sliceSize = n `div` numberOfSlices
   pi <- spawnWorkersAndSum numberOfSlices delta sliceSize
   --  Don't get the time here since nothing has actually been computed as yet since pi has not been used.
-  print ( "==== Haskell Threads pi = " ++ show pi )
-  print ( "==== Haskell Threads iteration count = " ++ show n )
+  putStrLn ( "==== Haskell Threads pi = " ++ show pi )
   endTime <- getCurrentTime
-  print ( "==== Haskell Threads elapse time = " ++ show ( diffUTCTime endTime startTime ) )
-  print ( "==== Haskell Threads slice count = " ++ show numberOfSlices )
-  print ( "==== Haskell Threads processor count = " ++ show numCapabilities )
+  putStrLn ( "==== Haskell Threads iteration count = " ++ show n )
+  putStrLn ( "==== Haskell Threads elapse time = " ++ show ( diffUTCTime endTime startTime ) )
+  putStrLn ( "==== Haskell Threads slice count = " ++ show numberOfSlices )
+  putStrLn ( "==== Haskell Threads processor count = " ++ show numCapabilities )
 
 main :: IO ( )
 main = do
   execute 1
-  print ""
+  putStrLn ""
   execute 2
-  print ""
+  putStrLn ""
   execute 8
-  print ""
+  putStrLn ""
   execute 32

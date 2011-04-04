@@ -1,6 +1,6 @@
 --  Haskell implementation of Pi by Quadrature
 --
---  Copyright © 2009-10 Russel Winder
+--  Copyright © 2009--2011 Russel Winder
 
 module Main where
 

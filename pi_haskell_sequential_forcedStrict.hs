@@ -1,6 +1,6 @@
 --  Haskell implementation of Pi by Quadrature
 --
---  Copyright © 2009-10 Russel Winder
+--  Copyright © 2009--2011 Russel Winder
 
 module Main where
 
@@ -24,6 +24,6 @@ main = do
   let n = 1000000000
   startTime <- getCurrentTime
   putStrLn ( "==== Haskell Sequential Forced Strict pi = " ++ show ( piQuad n ) )
-  putStrLn ( "==== Haskell Sequential Forced Strict iteration count = " ++ show n )
   endTime <- getCurrentTime
+  putStrLn ( "==== Haskell Sequential Forced Strict iteration count = " ++ show n )
   putStrLn ( "==== Haskell Sequential Forced Strict elapse time = " ++ show ( diffUTCTime endTime startTime ) )

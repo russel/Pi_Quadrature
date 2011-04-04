@@ -1,6 +1,6 @@
 --  Haskell implementation of Pi by Quadrature.  This implementation tries to parallelize.
 --
---  Copyright © 2009-10 Russel Winder
+--  Copyright © 2009--2011 Russel Winder
 
 module Main where
 
@@ -35,19 +35,19 @@ execute numberOfSlices = do
   let sliceSize = n `div` numberOfSlices
   let pi = sum ( parallelMap ( piQuadSlice delta sliceSize ) [ 0 .. ( numberOfSlices - 1 ) ] )
   --  Don't get the time here since nothing has actually been computed as yet since pi has not been used.
-  print ( "==== Haskell Parallel pi = " ++ show pi )
-  print ( "==== Haskell Parallel iteration count = " ++ show n )
+  putStrLn ( "==== Haskell Parallel pi = " ++ show pi )
   endTime <- getCurrentTime
-  print ( "==== Haskell Parallel elapse time = " ++ show ( diffUTCTime endTime startTime ) )
-  print ( "==== Haskell Parallel thread count = " ++ show numberOfSlices )
-  print ( "==== Haskell Parallel processor count = " ++ show numCapabilities )
+  putStrLn ( "==== Haskell Parallel iteration count = " ++ show n )
+  putStrLn ( "==== Haskell Parallel elapse time = " ++ show ( diffUTCTime endTime startTime ) )
+  putStrLn ( "==== Haskell Parallel thread count = " ++ show numberOfSlices )
+  putStrLn ( "==== Haskell Parallel processor count = " ++ show numCapabilities )
 
 main :: IO ( )
 main = do
   execute 1
-  print ""
+  putStrLn ""
   execute 2
-  print ""
+  putStrLn ""
   execute 8
-  print ""
+  putStrLn ""
   execute 32
