@@ -16,11 +16,11 @@ public class Pi_Java_ForkJoinBasic {
     final double delta = 1.0 / n ;
     final long startTimeNanos = System.nanoTime ( ) ;
     final int sliceSize = n / numberOfTasks ;
-    final ForkJoinPool executor = new ForkJoinPool ( numberOfTasks ) ;
+    final ForkJoinPool pool = new ForkJoinPool ( numberOfTasks ) ;
     @SuppressWarnings ( "unchecked" ) final ForkJoinTask<Double>[] futures = new ForkJoinTask [ numberOfTasks ] ;
     for ( int i = 0 ; i < numberOfTasks ; ++i ) {
       final int taskId = i ;
-      futures[taskId] = executor.submit ( new Callable<Double> ( ) {
+      futures[taskId] = pool.submit ( new Callable<Double> ( ) {
           @Override public Double call ( ) {
             final int start = 1 + taskId * sliceSize ;
             final int end = ( taskId + 1 ) * sliceSize ;
@@ -41,7 +41,7 @@ public class Pi_Java_ForkJoinBasic {
     }
     final double pi = 4.0 * sum * delta ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    executor.shutdown ( ) ;
+    pool.shutdown ( ) ;
     System.out.println ( "==== Java ForkJoin Basic pi = " + pi ) ;
     System.out.println ( "==== Java ForkJoin Basic iteration count = " + n ) ;
     System.out.println ( "==== Java ForkJoin Basic elapse = " + elapseTime ) ;

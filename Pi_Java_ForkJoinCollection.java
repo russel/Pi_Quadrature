@@ -18,7 +18,6 @@ public class Pi_Java_ForkJoinCollection {
     final double delta = 1.0 / n ;
     final long startTimeNanos = System.nanoTime ( ) ;
     final int sliceSize = n / numberOfTasks ;
-    final ForkJoinPool executor = new ForkJoinPool ( numberOfTasks ) ;
     final ArrayList<Callable<Double>> callables = new ArrayList<Callable<Double>> ( ) ;
     for ( int i = 0 ; i < numberOfTasks ; ++i ) {
       final int taskId = i ;
@@ -35,15 +34,16 @@ public class Pi_Java_ForkJoinCollection {
           }
         } ) ;
     }
+    final ForkJoinPool pool = new ForkJoinPool ( numberOfTasks ) ;
     double sum = 0.0 ;
-    for ( Future<Double> f : executor.invokeAll ( callables ) ) {
+    for ( Future<Double> f : pool.invokeAll ( callables ) ) {
       try { sum += f.get ( ) ; }
       catch ( final InterruptedException ie ) { throw new RuntimeException ( ie ) ; } 
       catch ( final ExecutionException ee ) { throw new RuntimeException ( ee ) ; } 
     }
+    pool.shutdown ( ) ;
     final double pi = 4.0 * sum * delta ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    executor.shutdown ( ) ;
     System.out.println ( "==== Java ForkJoin Collection pi = " + pi ) ;
     System.out.println ( "==== Java ForkJoin Collection iteration count = " + n ) ;
     System.out.println ( "==== Java ForkJoin Collection elapse = " + elapseTime ) ;
