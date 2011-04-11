@@ -20,6 +20,9 @@ import std.stdio ;
 immutable n = 1000000000 ;
 immutable delta = 1.0 / n ;
 
+//  The function used in the reduce must be global.  Attempting to use a nested function results in a
+//  compilation failure.  Thus the value delta is above and global, but that is fine as it is immutable.
+
 real getTerm ( int i ) {
   immutable x = ( i - 0.5 ) * delta ;
   return 1.0 / ( 1.0 + x * x ) ;
@@ -37,8 +40,8 @@ int main ( immutable string[] args ) {
   immutable pi = 4.0 * delta * taskPool.reduce ! ( "a + b" ) ( map ! getTerm ( iota ( n ) ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Parallel Reduce DS pi = %.18f" , pi ) ;
-  writefln ( "==== D Parallel Reduce DS iteration count = %d" , n ) ;
-  writefln ( "==== D Parallel Reduce DS elapse = %f" , elapseTime ) ;
+  writefln ( "==== D Parallel Reduce pi = %.18f" , pi ) ;
+  writefln ( "==== D Parallel Reduce iteration count = %d" , n ) ;
+  writefln ( "==== D Parallel Reduce elapse = %f" , elapseTime ) ;
   return 0 ;
 }
