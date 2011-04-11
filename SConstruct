@@ -79,24 +79,27 @@ cppRule ( 'pi_cpp_openmp*.cpp' , cxxflags = ccFlags + [ '-fopenmp' ] , libs = [ 
 
 cppRule ( 'pi_cpp_cppcsp2.cpp' , cpppath = [ os.environ['HOME'] +'/include' ] , libpath = [ extraLibName ] , libs = [ 'cppcsp2' , 'pthread' ] )
 
-#  As from 2010-03-04 15:56+00:00, the Boost MPI library is not in Lucid.  As is document in the bug tracker
+#  As from 2010-03-04 15:56+00:00, the Boost.MPI library is not in Lucid.  As is documented in the bug tracker
 #  on Launchpad (https://bugs.launchpad.net/ubuntu/+source/boost-defaults/+bug/531973 and
 #  https://bugs.launchpad.net/ubuntu/+source/boost1.42/+bug/582420), Boost.MPI has been ejected from
-#  Ubuntu!!!!!!!!
+#  Ubuntu!!!!!!!!  It's still in Debian though :-))
+#
+#  If BOOST_HOME is set then use that otherwise use whatever is installed, if it is!
 #
 #  NB The MPI execution targets runs things sequentially.  Use the command "mpirun -np N pi_cpp_boostMPI" to
 #  run the code on N processors.
-if os.environ['BOOST_HOME'] :
+try :
     boostHome = os.environ['BOOST_HOME']
     boostInclude = boostHome + '/include'
     boostLib = boostHome + '/lib'
     cppRule ( 'pi_cpp_boostThread*.cpp' , cpppath = [ boostInclude ] , libpath = [ boostLib ] , libs = [ 'boost_thread' ] ) 
     cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , cpppath = [ boostInclude ] , libpath = [ boostLib ] , libs = [ 'boost_mpi' , 'boost_serialization' ] )
-elif not os.path.isfile ( '/usr/lib/libboost_mpi.so' ) :
-    print '\nWarning:  Cannot find a Boost.MPI.\n'
-else :
-    cppRule ( 'pi_cpp_boostThread*.cpp' , libs = [ 'boost_thread' ] ) 
-    cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , libs = [ 'boost_mpi' ] )
+except KeyError :
+    if not os.path.isfile ( '/usr/lib/libboost_mpi.so' ) :
+        print '\nWarning:  Cannot find a Boost.MPI.\n'
+    else :
+        cppRule ( 'pi_cpp_boostThread*.cpp' , libs = [ 'boost_thread' ] ) 
+        cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , libs = [ 'boost_mpi' ] )
 
 #  Use Anthony Williams' Just::Thread library as an implementation of C++0x threads and things.  Anthony's
 #  Ubuntu debs seems to work fine on Debian, which is good -- albeit lucky.  In order to use the standard
@@ -106,15 +109,17 @@ else :
 # Use the pre-release Just::Thread Pro as it has the actor and dataflow support.
 cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ extraLibName + '/JustThreadPro/include' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libpath = [ extraLibName + '/JustThreadPro/libs' ] , libs = [ 'justthread' , 'rt' ] )
 
-#  TBB 2.2 is packaged in Ubuntu Lucid and Debian Squeeze, but TBB 3 is now out and compiled up in some
-#  location known to the shell.
-if not os.path.isfile ( '/usr/lib/libtbb.so.3' ) :
-    #  Intel's Threading Building Blocks (TBB) only provides dynamic libraries, there are no static
-    #  libraries, so we have to get into the hassle of specifying a LD_LIBRARY_PATH to run the constructed
-    #  executable if the TBB libraries are not in the standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb . . . "
+#  TBB 2.2 is packaged in Ubuntu Lucid and Debian Squeeze.  Debian Wheezy appears to package TBB 3 though it
+#  still has the SO number 2.  Deal with the situation of TBB_HOME being defined for a custom variant of
+#  TBB.
+#
+#  TBB only provides dynamic libraries, there are no static libraries, so we have to get into the hassle of
+#  specifying a LD_LIBRARY_PATH to run the constructed executable if the TBB libraries are not in the
+#  standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb . . . "
+try :
     tbbHome = os.environ['TBB_HOME']
     cppRule (  'pi_cpp_tbb*.cpp' , cpppath = [ tbbHome + '/include' ] , libpath = [ tbbHome ] , libs = [ 'tbb' ] )
-else :
+except KeyError :    
     cppRule (  'pi_cpp_tbb*.cpp' , libs = [ 'tbb' ] )
 
 #  Fortran  ##########################################################################
