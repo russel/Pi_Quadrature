@@ -107,7 +107,7 @@ except KeyError :
 #  the next standard.
 #cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ '/usr/include/justthread' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libs = [ 'justthread' , 'rt' ] )
 # Use the pre-release Just::Thread Pro as it has the actor and dataflow support.
-cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ extraLibName + '/JustThreadPro/include' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libpath = [ extraLibName + '/JustThreadPro/libs' ] , libs = [ 'justthread' , 'rt' ] )
+cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ extraLibName + '/JustThreadPro/include' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' , '--static' ] , libpath = [ extraLibName + '/JustThreadPro/libs' ] , libs = [ 'justthread' , 'pthread' , 'rt' ] )
 
 #  TBB 2.2 is packaged in Ubuntu Lucid and Debian Squeeze.  Debian Wheezy appears to package TBB 3 though it
 #  still has the SO number 2.  Deal with the situation of TBB_HOME being defined for a custom variant of
