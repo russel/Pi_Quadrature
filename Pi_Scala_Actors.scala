@@ -4,8 +4,8 @@
  *  Copyright © 2009--2011 Russel Winder
  */
 
-//  TODO: Investigate why there is a slow-down using eight or 32 actors on a dual-core compared to
-//  using two actors?
+//  TODO: Investigate why there is a slow-down using eight actors on a dual-core machine compared to using
+//  two or 32 actors?
 
 import scala.actors.Actor
 
