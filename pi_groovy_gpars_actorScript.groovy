@@ -16,7 +16,6 @@ void execute ( final int numberOfWorkerActors ) {
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
   final int sliceSize = n / numberOfWorkerActors
-  final computors = [ ]
   final group = new DefaultPGroup ( numberOfWorkerActors + 1i )
   final accumulator = group.messageHandler {
     double sum = 0.0d
@@ -35,6 +34,7 @@ void execute ( final int numberOfWorkerActors ) {
       }
     }
   }
+  final computors = [ ]
   for ( int index in 0i ..< numberOfWorkerActors ) {
     computors.add (
       group.actor {
