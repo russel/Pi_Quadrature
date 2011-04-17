@@ -7,36 +7,35 @@
  */
 
 @Grab ( 'org.codehaus.gpars:gpars:0.12-beta-1-SNAPSHOT' )
-//@Grab ( 'org.codehaus.gpars:gpars:0.11' )
 
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.group.DefaultPGroup
 
-void execute ( final int actorCount ) {
+void execute ( final int numberOfWorkerActors ) {
   final int n = 100000000i // 10 times fewer due to speed issues.
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
-  final int sliceSize = n / actorCount
+  final int sliceSize = n / numberOfWorkerActors
   final computors = [ ]
-  final group = new DefaultPGroup ( actorCount + 1i )
+  final group = new DefaultPGroup ( numberOfWorkerActors + 1i )
   final accumulator = group.messageHandler {
     double sum = 0.0d
     int count = 0i
     when { double result ->
       sum += result
-      if ( ++count == actorCount ) {
-        final double pi = 4.0d * sum * delta
+      if ( ++count == numberOfWorkerActors ) {
+        final double pi = 4.0d * delta * sum
         final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
         println ( '==== Groovy GPars ActorScript pi = ' + pi )
         println ( '==== Groovy GPars ActorScript iteration count = ' + n )
         println ( '==== Groovy GPars ActorScript elapse = ' + elapseTime )
         println ( '==== Groovy GPars ActorScript processor count = ' + Runtime.runtime.availableProcessors ( ) ) ;
-        println ( '==== Groovy GPars ActorScript actor count = ' + actorCount )
+        println ( '==== Groovy GPars ActorScript actor count = ' + numberOfWorkerActors )
         terminate ( )
       }
     }
   }
-  for ( int index in 0i ..< actorCount ) {
+  for ( int index in 0i ..< numberOfWorkerActors ) {
     computors.add (
       group.actor {
         final int start = 1i + index * sliceSize
