@@ -8,7 +8,8 @@
 #include <iostream>
 #include <iomanip>
 #include <thread>
-#include<future>
+#include <future>
+
 #include "microsecondTime.h"
 
 double partialSum ( const int id , const int sliceSize , const double delta ) {
