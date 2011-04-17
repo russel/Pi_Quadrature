@@ -1,0 +1,23 @@
+#! /usr/bin/env a68g
+
+#
+An Algol 68 program to calculate Pi using quadrature as a sequential algorithm.
+
+Copyright © 2011 Russel Winder
+#
+
+BEGIN
+   INT n = 10000000 ; # 100 times fewer due to interpreter speed. #
+   REAL delta = 1.0 / n ;
+   REAL start time = seconds ;
+   REAL sum := 0.0 ;
+   FOR i FROM 1 TO n
+   DO
+      sum := sum + ( 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ^ 2 ) )
+   OD ;
+   REAL pi = 4.0 * delta * sum ;
+   REAL elapse time = seconds - start time ;
+   print ( ( "==== Algol68 Sequential pi = " , pi , newline ) ) ;
+   print ( ( "==== Algol68 Sequential iteration count = " , n , newline ) ) ;
+   print ( ( "==== Algol68 Sequential elapse time = " , elapse time , newline ) )
+END
