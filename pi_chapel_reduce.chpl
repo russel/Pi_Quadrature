@@ -1,19 +1,19 @@
 /*
  *  A Chapel program to calculate Pi using quadrature as a parallel reduce-based algorithm.
  *
- *  Copyright © 2009-10 Russel Winder
+ *  Copyright © 2009--2011 Russel Winder
  */
 
 use Time ;
 
-def execute ( param numberOfTasks : int ) {
+proc execute ( param numberOfTasks : int ) {
   param n : int(64) = 1000000000 ;
   const delta : real = 1.0 / n ;
   var timer : Timer ;
   timer.start ( ) ;
   param sliceSize : int(64) = n / numberOfTasks ;
   const eachProcessor : domain(1) = [ 0 .. ( numberOfTasks - 1 ) ] ;
-  def partialSum ( const id : int ) : real {
+  proc partialSum ( const id : int ) : real {
     const start : int(64) = 1 + id * sliceSize ;
     const end : int(64) = ( id + 1 ) * sliceSize ;
     var sum : real = 0.0 ;
@@ -32,7 +32,7 @@ def execute ( param numberOfTasks : int ) {
   writeln ( "==== Chapel Reduce task count = " , numberOfTasks ) ;
 }
 
-def main ( ) {
+proc main ( ) {
   execute ( 1 ) ;
   writeln ( ) ;
   execute ( 2 ) ;
