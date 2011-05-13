@@ -225,7 +225,7 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
 #  Go  ###############################################################################
 
 goEnvironment = Environment ( tools = [ 'go' ] )
-goEnvironment.GoTarget ( os.environ['GOOS'] , os.environ['GOARCH'] ) 
+#goEnvironment.GoTarget ( os.environ['GOOS'] , os.environ['GOARCH'] ) 
 
 for item in Glob ( 'pi_go_*.go' ) :
     root = os.path.splitext ( item.name ) [0]
