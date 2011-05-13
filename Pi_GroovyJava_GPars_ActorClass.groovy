@@ -6,7 +6,7 @@
  *  Copyright © 2009--2011 Russel Winder.
  */
 
-@Grab ( 'org.codehaus.gpars:gpars:0.12-beta-1-SNAPSHOT' )
+@Grab ( 'org.codehaus.gpars:gpars:0.12-beta-1' )
 
 import java.util.List
 
