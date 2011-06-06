@@ -166,18 +166,6 @@ dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'dmd_new' ] , ENV = o
 for item in Glob ( 'pi_d2_*.d' ) :
     root = os.path.splitext ( item.name ) [0]
     environment = dEnvironment
-    includesParallelism = False
-    with open ( item.name , 'r' ) as code :
-        for line in code :
-            if 'std.parallelism' in line :
-                includesParallelism = True
-                break
-    if includesParallelism :
-        environment = dEnvironment.Clone ( )
-        environment.Append (
-            DPATH =  [ os.environ['HOME'] + '/lib/D' ] ,
-            LIBPATH = [ extraLibName ] ,
-            LIBS = [ 'parallelism' ] )
     executables.append ( addCompileTarget ( environment.Program ( item ) ) )
 
 #  Chapel  ###########################################################################
