@@ -26,7 +26,7 @@ def execute ( processCount ) :
         print ( "==== Python CSP Single NestedDeep process count = "+ str ( processCount ) )
         print ( "==== Python CSP Single NestedDeep processor count = " + str ( multiprocessing.cpu_count ( ) ) )
     processes = [ ] 
-    for i in range ( 0 , processCount ) :
+    for i in xrange ( 0 , processCount ) :
         @process
         def calculator ( ) :
             sum = 0.0

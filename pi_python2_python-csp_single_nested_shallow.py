@@ -33,7 +33,7 @@ def execute ( processCount ) :
         print ( "==== Python CSP Single NestedShallow process count = "+ str ( processCount ) )
         print ( "==== Python CSP Single NestedShallow processor count = " + str ( multiprocessing.cpu_count ( ) ) )
     processes = [ ] 
-    for i in range ( 0 , processCount ) : processes.append ( calculator ( i ) )
+    for i in xrange ( 0 , processCount ) : processes.append ( calculator ( i ) )
     processes.append ( accumulator ( ) )
     Par ( *processes ).start ( )
 

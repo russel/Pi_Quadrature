@@ -26,7 +26,7 @@ def execute ( processCount ) :
         print ( "==== Python CSP Multiple NestedDeep process count =  "+ str ( processCount ) )
         print ( "==== Python CSP Multiple NestedDeep processor count = " + str ( multiprocessing.cpu_count ( ) ) )
     processes = [ ] 
-    for i in range ( 0 , processCount ) :
+    for i in xrange ( 0 , processCount ) :
         channel = Channel ( )
         channels.append ( channel )
         @process
