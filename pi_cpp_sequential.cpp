@@ -9,16 +9,16 @@
 #include "microsecondTime.h"
 
 int main ( ) {
-  const int n = 1000000000 ;
-  const double delta = 1.0 / n ;
-  const long long startTimeMicros = microsecondTime ( ) ;
-  double sum = 0.0 ;
-  for ( int i = 1 ; i <= n ; ++i ) {
-    const double x = ( i - 0.5 ) * delta ;
+  const auto n = 1000000000 ;
+  const auto delta = 1.0 / n ;
+  const auto startTimeMicros = microsecondTime ( ) ;
+  auto sum = 0.0 ;
+  for ( auto i = 1 ; i <= n ; ++i ) {
+    const auto x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
-  const double pi = 4.0 * sum * delta ;
-  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  const auto pi = 4.0 * sum * delta ;
+  const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ Sequential pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ Sequential iteration count = " << n << std::endl ;
   std::cout << "==== C++ Sequential elapse = " << elapseTime << std::endl ;

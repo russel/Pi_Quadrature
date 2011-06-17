@@ -10,26 +10,26 @@
 #include "microsecondTime.h"
 
 int main ( int ac , char * * av ) { // MPI requires writeable access to these parameters :-(
-  const int n = 1000000000 ;
-  const double delta = 1.0 / n ;
-  const long long startTimeMicros = microsecondTime ( ) ;
+  const auto n = 1000000000 ;
+  const auto delta = 1.0 / n ;
+  const auto startTimeMicros = microsecondTime ( ) ;
   boost::mpi::environment environment ( ac , av ) ;
   boost::mpi::communicator world ;
-  const int nProcessors = world.size ( ) ;
-  const int myId = world.rank ( ) ;
-  const int sliceSize = n / nProcessors ;
-  const int start = 1 + myId * sliceSize ;
-  const int end = ( myId + 1 ) * sliceSize ;
-  double localSum = 0.0 ;
-  for ( int i = start ; i <= end ; ++i ) {
-    const double x = ( i - 0.5 ) * delta ;
+  const auto nProcessors = world.size ( ) ;
+  const auto myId = world.rank ( ) ;
+  const auto sliceSize = n / nProcessors ;
+  const auto start = 1 + myId * sliceSize ;
+  const auto end = ( myId + 1 ) * sliceSize ;
+  auto localSum = 0.0 ;
+  for ( auto i = start ; i <= end ; ++i ) {
+    const auto x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
-  double sum ;
+  auto sum = 0.0 ;
   boost::mpi::reduce ( world , localSum , sum , std::plus<double> ( ) , 0 ) ;
   if ( myId == 0 ) {
-    const double pi = 4.0 * sum * delta ;
-    const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+    const auto pi = 4.0 * sum * delta ;
+    const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
     std::cout << "==== C++ Boost MPI pi = " << std::setprecision ( 18 ) << pi << std::endl ;
     std::cout << "==== C++ Boost MPI iteration count = " << n << std::endl ;
     std::cout << "==== C++ Boost MPI elapse = " << elapseTime << std::endl ;

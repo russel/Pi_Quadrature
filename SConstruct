@@ -49,7 +49,7 @@ def cRule ( globPattern , compiler = 'gcc' , cpppath = [ ] , cflags = ccFlags , 
             addCompileTarget (
                 cEnvironment.Program (
                     os.path.splitext ( item.name ) [0] , [ item.name , microsecondTimeC ] ,
-                    CC = compiler , CPPPATH = [ '../Timing' ] + cpppath , CFLAGS = cflags + [ '-std=c99' ] , LINKFLAGS= linkflags , LIBPATH = libpath , LIBS = libs )
+                    CC = compiler , CPPPATH = [ '../Timing' ] + cpppath , CFLAGS = cflags + [ '-std=c99' ] , LINKFLAGS= linkflags + [ '-std=99' ] , LIBPATH = libpath , LIBS = libs )
                 )
             )
 
@@ -68,7 +68,7 @@ def cppRule ( globPattern , compiler = 'g++' , cpppath = [ ] , cxxflags = ccFlag
             addCompileTarget (
                 cppEnvironment.Program (
                     os.path.splitext ( item.name ) [0] , [ item.name , microsecondTimeC ] ,
-                    CXX = compiler , CPPPATH = [ '../Timing' ] + cpppath , CXXFLAGS = cxxflags , LINKFLAGS= linkflags , LIBPATH = libpath , LIBS = libs )
+                    CXX = compiler , CPPPATH = [ '../Timing' ] + cpppath , CXXFLAGS = cxxflags + [ '-std=c++0x' ] , LINKFLAGS= linkflags + [ '-std=c++0x' ] , LIBPATH = libpath , LIBS = libs )
                 )
             )
 
@@ -105,9 +105,9 @@ except KeyError :
 #  Ubuntu debs seems to work fine on Debian, which is good -- albeit lucky.  In order to use the standard
 #  naming in the source code we have to augment the include path.  Must also inform GCC that we are using
 #  the next standard.
-#cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ '/usr/include/justthread' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' ] , libs = [ 'justthread' , 'rt' ] )
+#cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ '/usr/include/justthread' ] , libs = [ 'justthread' , 'rt' ] )
 # Use the pre-release Just::Thread Pro as it has the actor and dataflow support.
-cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ extraLibName + '/JustThreadPro/include' ] , cxxflags = ccFlags + [ '-std=c++0x' ] , linkflags = [ '-std=c++0x' , '--static' ] , libpath = [ extraLibName + '/JustThreadPro/libs' ] , libs = [ 'justthread' , 'pthread' , 'rt' ] )
+cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ extraLibName + '/JustThreadPro/include' ] , linkflags = [ '--static' ] , libpath = [ extraLibName + '/JustThreadPro/libs' ] , libs = [ 'justthread' , 'pthread' , 'rt' ] )
 
 #  TBB 2.2 is packaged in Ubuntu Lucid and Debian Squeeze.  Debian Wheezy appears to package TBB 3 though it
 #  still has the SO number 2.  Deal with the situation of TBB_HOME being defined for a custom variant of
@@ -420,12 +420,12 @@ extensionsData = {
     'c' : {
         'CPPPATH' : [ ] ,
         'CFLAGS' : ccFlags + [ '-std=c99' ] ,
-        'LINKFLAGS' : [ ]
+        'LINKFLAGS' : [ '-std=c99' ]
         } ,
     'cpp' : {
         'CPPPATH' : [ ] ,
-        'CFLAGS' : ccFlags ,
-        'LINKFLAGS' : [ ]
+        'CFLAGS' : ccFlags + [ '-std=c++0x' ] ,
+        'LINKFLAGS' : [ '-std=c++0x' ]
         } ,
     'pyrex_py2' : {
         'CPPPATH' : [ '/usr/include/python2.6' ] ,

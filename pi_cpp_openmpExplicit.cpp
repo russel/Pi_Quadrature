@@ -10,22 +10,22 @@
 #include "microsecondTime.h"
 
 void execute ( const int numberOfThreads ) {
-  const int n = 1000000000 ;
-  const double delta = 1.0 / n ;
-  const long long startTimeMicros = microsecondTime ( ) ;
-  const int sliceSize =  n / numberOfThreads ;
-  double sum = 0.0 ;
+  const auto n = 1000000000 ;
+  const auto delta = 1.0 / n ;
+  const auto startTimeMicros = microsecondTime ( ) ;
+  const auto sliceSize =  n / numberOfThreads ;
+  auto sum = 0.0 ;
 #pragma omp parallel for reduction ( + : sum )
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) {
-    const int start = 1 + i * sliceSize ;
-    const int end = ( i + 1 ) * sliceSize ;
-    for ( int j = start ; j <= end ; ++j ) {
-      const double x = ( j - 0.5 ) * delta ;
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) {
+    const auto start = 1 + i * sliceSize ;
+    const auto end = ( i + 1 ) * sliceSize ;
+    for ( auto j = start ; j <= end ; ++j ) {
+      const auto x = ( j - 0.5 ) * delta ;
       sum += 1.0 / ( 1.0 + x * x ) ;
     }
   }
-  const double pi = 4.0 * sum * delta ;
-  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  const auto pi = 4.0 * sum * delta ;
+  const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ OpenMP Explicit pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ OpenMP Explicit iteration count = " << n << std::endl ;
   std::cout << "==== C++ OpenMP Explicit elapse = "  << elapseTime << std::endl ;

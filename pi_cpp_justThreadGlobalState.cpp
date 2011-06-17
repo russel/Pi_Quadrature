@@ -15,11 +15,11 @@ double sum ;
 std::mutex sumMutex ;
 
 void partialSum ( const int id , const int sliceSize , const double delta ) {
-  const int start = 1 + id * sliceSize ;
-  const int end = ( id + 1 ) * sliceSize ;
-  double localSum = 0.0 ;
-  for ( int i = start ; i <= end ; ++i ) {
-    const double x = ( i - 0.5 ) * delta ;
+  const auto start = 1 + id * sliceSize ;
+  const auto end = ( id + 1 ) * sliceSize ;
+  auto localSum = 0.0 ;
+  for ( auto i = start ; i <= end ; ++i ) {
+    const auto x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
   std::lock_guard<std::mutex> lock ( sumMutex ) ;
@@ -27,16 +27,16 @@ void partialSum ( const int id , const int sliceSize , const double delta ) {
 }
 
 void execute ( const int numberOfThreads ) {
-  const int n = 1000000000 ;
-  const double delta = 1.0 / n ;
-  const long long startTimeMicros = microsecondTime ( ) ;
-  const int sliceSize = n / numberOfThreads ;
+  const auto n = 1000000000 ;
+  const auto delta = 1.0 / n ;
+  const auto startTimeMicros = microsecondTime ( ) ;
+  const auto sliceSize = n / numberOfThreads ;
   std::thread threads [ numberOfThreads ] ;
   sum = 0.0 ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) { threads[i] = std::thread ( std::bind ( partialSum , i , sliceSize , delta ) ) ; }
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) { threads[i].join ( ) ; }
-  const double pi = 4.0 * sum * delta ;
-  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) { threads[i] = std::thread ( std::bind ( partialSum , i , sliceSize , delta ) ) ; }
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) { threads[i].join ( ) ; }
+  const auto pi = 4.0 * sum * delta ;
+  const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ Just::Thread threads pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ Just::Thread threads iteration count = " << n << std::endl ;
   std::cout << "==== C++ Just::Thread threads elapse = " << elapseTime << std::endl ;

@@ -21,11 +21,11 @@ class Compute : public csp::CSProcess {
     : id ( i ) , sliceSize ( s ) , delta ( d ) , chanout ( c ) {
   }             
   void run ( ) {
-    const int start = 1 + id * sliceSize ;
-    const int end = ( id + 1 ) * sliceSize ;
-    double sum = 0.0 ;
-    for ( int i = start ; i <= end ; ++i ) {
-      const double x = ( i - 0.5 ) * delta ;
+    const auto start = 1 + id * sliceSize ;
+    const auto end = ( id + 1 ) * sliceSize ;
+    auto sum = 0.0 ;
+    for ( auto i = start ; i <= end ; ++i ) {
+      const auto x = ( i - 0.5 ) * delta ;
       sum += 1.0 / ( 1.0 + x * x ) ;
     }
     chanout << sum ;
@@ -45,10 +45,10 @@ class Accumulate : public csp::CSProcess {
     : n ( ni ) , numberOfProcesses ( np ) , startTimeMicros ( st ) , sliceSize ( s ) , delta ( d ) , chanin ( c ) {
   }             
   void run ( ) {
-    double sum = 0.0 ;
-    for ( int i = 0 ; i < numberOfProcesses ; ++i ) { double s ; chanin >> s ; sum += s ; }
-    const double pi = 4.0 * sum * delta ;
-    const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+    auto sum = 0.0 ;
+    for ( auto i = 0 ; i < numberOfProcesses ; ++i ) { double s ; chanin >> s ; sum += s ; }
+    const auto pi = 4.0 * sum * delta ;
+    const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
     std::cout << "==== C++ C++CSP2 pi = " << std::setprecision ( 18 ) << pi << std::endl ;
     std::cout << "==== C++ C++CSP2 iteration count = " << n << std::endl ;
     std::cout << "==== C++ C++CSP2 elapse = " << elapseTime << std::endl ;
@@ -58,15 +58,15 @@ class Accumulate : public csp::CSProcess {
 } ;
 
 void execute ( const int numberOfProcesses ) {
-  const int n = 1000000000 ;
-  const double delta = 1.0 / n ;
-  const long long startTimeMicros = microsecondTime ( ) ;
-  const int sliceSize = n / numberOfProcesses ;
+  const auto n = 1000000000 ;
+  const auto delta = 1.0 / n ;
+  const auto startTimeMicros = microsecondTime ( ) ;
+  const auto sliceSize = n / numberOfProcesses ;
   csp::Start_CPPCSP ( ) ;
   csp::Any2OneChannel<double> results ;
   std::vector<csp::CSProcessPtr> processes ;
   processes.push_back ( new Accumulate ( n , numberOfProcesses , startTimeMicros , sliceSize , delta , results.reader ( ) ) ) ;
-  for ( int i = 0 ; i < numberOfProcesses ; ++i ) {
+  for ( auto i = 0 ; i < numberOfProcesses ; ++i ) {
     processes.push_back ( new Compute ( i , sliceSize , delta , results.writer ( ) ) ) ;
   }
   csp::Run ( csp::InParallel ( processes.begin ( ) , processes.end ( ) ) ) ;

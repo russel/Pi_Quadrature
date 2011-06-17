@@ -13,32 +13,32 @@
 #include "microsecondTime.h"
 
 double partialSum ( const int id , const int sliceSize , const double delta ) {
-  const int start = 1 + id * sliceSize ;
-  const int end = ( id + 1 ) * sliceSize ;
-  double sum = 0.0 ;
-  for ( int i = start ; i <= end ; ++i ) {
-    const double x = ( i - 0.5 ) * delta ;
+  const auto start = 1 + id * sliceSize ;
+  const auto end = ( id + 1 ) * sliceSize ;
+  auto sum = 0.0 ;
+  for ( auto i = start ; i <= end ; ++i ) {
+    const auto x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
   return sum ;
 }
 
 void execute ( const int numberOfThreads ) {
-  const int n = 1000000000 ;
-  const double delta = 1.0 / n ;
-  const long long startTimeMicros = microsecondTime ( ) ;
-  const int sliceSize = n / numberOfThreads ;
+  const auto n = 1000000000 ;
+  const auto delta = 1.0 / n ;
+  const auto startTimeMicros = microsecondTime ( ) ;
+  const auto sliceSize = n / numberOfThreads ;
   std::shared_future<double> futures [ numberOfThreads ] ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) {
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) {
     std::packaged_task<double ( )> task ( std::bind ( partialSum , i , sliceSize , delta ) ) ;
     futures[i] = task.get_future ( ) ;
     std::thread thread ( std::move ( task ) ) ;
     thread.detach ( ) ;
   }
-  double sum = 0.0 ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) { sum += futures[i].get ( ) ; }
-  const double pi = 4.0 * sum * delta ;
-  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  auto sum = 0.0 ;
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) { sum += futures[i].get ( ) ; }
+  const auto pi = 4.0 * sum * delta ;
+  const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ Just::Thread futures pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ Just::Thread futures iteration count = " << n << std::endl ;
   std::cout << "==== C++ Just::Thread futures elapse = " << elapseTime << std::endl ;

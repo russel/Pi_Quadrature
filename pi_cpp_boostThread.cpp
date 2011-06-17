@@ -21,11 +21,11 @@ class PartialSum {
   PartialSum ( const int i , const int s , const double d )
     : id ( i ) , sliceSize ( s ) , delta ( d ) { }
   void operator ( ) ( ) {
-    const int start = 1 + id * sliceSize ;
-    const int end = ( id + 1 ) * sliceSize ;
-    double localSum = 0.0 ;
-    for ( int i = start ; i <= end ; ++i ) {
-      const double x = ( i - 0.5 ) * delta ;
+    const auto start = 1 + id * sliceSize ;
+    const auto end = ( id + 1 ) * sliceSize ;
+    auto localSum = 0.0 ;
+    for ( auto i = start ; i <= end ; ++i ) {
+      const auto x = ( i - 0.5 ) * delta ;
       localSum += 1.0 / ( 1.0 + x * x ) ;
     }
     boost::mutex::scoped_lock lock ( sumMutex ) ;
@@ -34,16 +34,16 @@ class PartialSum {
 };
 
 void execute ( const int numberOfThreads ) {
-  const int n = 1000000000 ;
-  const double delta = 1.0 / n ;
-  const long long startTimeMicros = microsecondTime ( ) ;
-  const int sliceSize = n / numberOfThreads ;
+  const auto n = 1000000000 ;
+  const auto delta = 1.0 / n ;
+  const auto startTimeMicros = microsecondTime ( ) ;
+  const auto sliceSize = n / numberOfThreads ;
   boost::thread_group threads ;
   sum = 0.0 ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) { threads.create_thread ( PartialSum ( i , sliceSize , delta ) ) ; }
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) { threads.create_thread ( PartialSum ( i , sliceSize , delta ) ) ; }
   threads.join_all ( ) ;
-  const double pi = 4.0 * sum * delta ;
-  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  const auto pi = 4.0 * sum * delta ;
+  const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ Boost.Thread pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ Boost.Thread iteration count = " << n << std::endl ;
   std::cout << "==== C++ Boost.Thread elapse = "   << elapseTime << std::endl ;

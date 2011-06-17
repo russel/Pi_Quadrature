@@ -15,31 +15,31 @@
 #include "microsecondTime.h"
 
 double partialSum ( const int id , const int sliceSize , const double delta ) {
-  const int start = 1 + id * sliceSize ;
-  const int end = ( id + 1 ) * sliceSize ;
-  double sum = 0.0 ;
-  for ( int i = start ; i <= end ; ++i ) {
-    const double x = ( i - 0.5 ) * delta ;
+  const auto start = 1 + id * sliceSize ;
+  const auto end = ( id + 1 ) * sliceSize ;
+  auto sum = 0.0 ;
+  for ( auto i = start ; i <= end ; ++i ) {
+    const auto x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
   return sum ;
 }
 
 void execute ( const int numberOfThreads ) {
-  const int n = 1000000000 ;
-  const double delta = 1.0 / n ;
-  const long long startTimeMicros = microsecondTime ( ) ;
-  const int sliceSize = n / numberOfThreads ;
+  const auto n = 1000000000 ;
+  const auto delta = 1.0 / n ;
+  const auto startTimeMicros = microsecondTime ( ) ;
+  const auto sliceSize = n / numberOfThreads ;
   std::packaged_task<double ( )> tasks [ numberOfThreads ] ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) {
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) {
     tasks[i] = std::packaged_task<double ( )> ( std::bind ( partialSum , i , sliceSize , delta ) ) ;
     std::thread taskThread ( std::ref ( tasks[i] ) ) ;
     taskThread.detach ( ) ;
   }
-  double sum = 0.0 ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) { sum += tasks[i].get_future ( ).get ( ) ; }
-  const double pi = 4.0 * sum * delta ;
-  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  auto sum = 0.0 ;
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) { sum += tasks[i].get_future ( ).get ( ) ; }
+  const auto pi = 4.0 * sum * delta ;
+  const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ Just::Thread futures AW pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ Just::Thread futures AW iteration count = " << n << std::endl ;
   std::cout << "==== C++ Just::Thread futures AW elapse = " << elapseTime << std::endl ;

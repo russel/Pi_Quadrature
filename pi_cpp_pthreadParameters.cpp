@@ -26,12 +26,12 @@ struct CalculationParameters {
 } ;
 
 void * partialSum ( void *const arg  ) {
-  const int start = 1 + ( (CalculationParameters *const) arg )->id * ( (CalculationParameters *const) arg )->sliceSize ;
-  const int end = ( ( (CalculationParameters *const) arg )->id + 1 ) * ( (CalculationParameters *const) arg )->sliceSize ;
-  const double delta = ( (CalculationParameters *const) arg )->delta ;
-  double localSum = 0.0 ;
-  for ( int i = start ; i <= end ; ++i ) {
-    const double x = ( i - 0.5 ) * delta ;
+  const auto start = 1 + ( (CalculationParameters *const) arg )->id * ( (CalculationParameters *const) arg )->sliceSize ;
+  const auto end = ( ( (CalculationParameters *const) arg )->id + 1 ) * ( (CalculationParameters *const) arg )->sliceSize ;
+  const auto delta = ( (CalculationParameters *const) arg )->delta ;
+  auto localSum = 0.0 ;
+  for ( auto i = start ; i <= end ; ++i ) {
+    const auto x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
   pthread_mutex_lock ( &sumMutex ) ;
@@ -42,10 +42,10 @@ void * partialSum ( void *const arg  ) {
 }
 
 void execute ( const int numberOfThreads ) {
-  const int n = 1000000000 ;
-  const double delta = 1.0 / n ;
-  const long long startTimeMicros = microsecondTime ( ) ;
-  const int sliceSize = n / numberOfThreads ;
+  const auto n = 1000000000 ;
+  const auto delta = 1.0 / n ;
+  const auto startTimeMicros = microsecondTime ( ) ;
+  const auto sliceSize = n / numberOfThreads ;
   pthread_mutex_init ( &sumMutex , NULL ) ;
   pthread_attr_t attributes ;
   pthread_attr_init ( &attributes ) ;
@@ -53,15 +53,15 @@ void execute ( const int numberOfThreads ) {
   sum = 0.0 ; // Only one thread at this point so safe to access without locking.
   pthread_t threads[numberOfThreads] ;
   CalculationParameters parameters[numberOfThreads] ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) {
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) {
     parameters[i] = CalculationParameters ( i , sliceSize , delta ) ;
     pthread_create ( &threads[i] , &attributes , partialSum , (void *) &parameters[i] ) ;
   }
   pthread_attr_destroy ( &attributes ) ;
   int status ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
-  const double pi = 4.0 * sum * delta ;
-  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
+  const auto pi = 4.0 * sum * delta ;
+  const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ PThread parameters pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ PThread parameters iteration count = " << n << std::endl ;
   std::cout << "==== C++ PThread parameters elapse = " << elapseTime << std::endl ;

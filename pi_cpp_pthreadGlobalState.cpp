@@ -9,8 +9,8 @@
 #include <pthread.h>
 #include "microsecondTime.h"
 
-const int n = 1000000000 ;
-const double delta = 1.0 / n ;
+const auto n = 1000000000 ;
+const auto delta = 1.0 / n ;
 
 int sliceSize  ;
 
@@ -29,11 +29,11 @@ typedef int integerFromVoidStar ;
 #endif
 
 void * partialSum ( void *const arg  ) {
-  const int start = 1 + ( (integerFromVoidStar) arg ) * sliceSize ;
-  const int end = ( ( (integerFromVoidStar) arg ) + 1 ) * sliceSize ;
-  double localSum = 0.0 ;
-  for ( int i = start ; i <= end ; ++i ) {
-    const double x = ( i - 0.5 ) * delta ;
+  const auto start = 1 + ( (integerFromVoidStar) arg ) * sliceSize ;
+  const auto end = ( ( (integerFromVoidStar) arg ) + 1 ) * sliceSize ;
+  auto localSum = 0.0 ;
+  for ( auto i = start ; i <= end ; ++i ) {
+    const auto x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }
   pthread_mutex_lock ( &sumMutex ) ;
@@ -44,7 +44,7 @@ void * partialSum ( void *const arg  ) {
 }
 
 void execute ( const int numberOfThreads ) {
-  const long long startTimeMicros = microsecondTime ( ) ;
+  const auto startTimeMicros = microsecondTime ( ) ;
   sum = 0.0 ; // Only one thread at this point so safe to access without locking.
   sliceSize = n / numberOfThreads ; // Only one thread at this point so safe to access without locking.
   pthread_mutex_init ( &sumMutex , NULL ) ;
@@ -52,12 +52,12 @@ void execute ( const int numberOfThreads ) {
   pthread_attr_init ( &attributes ) ;
   pthread_attr_setdetachstate ( &attributes , PTHREAD_CREATE_JOINABLE ) ;
   pthread_t threads[numberOfThreads] ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) { pthread_create ( &threads[i] , &attributes , partialSum , (void *) i ) ; }
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) { pthread_create ( &threads[i] , &attributes , partialSum , (void *) i ) ; }
   pthread_attr_destroy ( &attributes ) ;
   int status ;
-  for ( int i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
-  const double pi = 4.0 * sum * delta ;
-  const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+  for ( auto i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
+  const auto pi = 4.0 * sum * delta ;
+  const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ PThread global pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ PThread global iteration count = " << n << std::endl ;
   std::cout << "==== C++ PThread global elapse = " << elapseTime << std::endl ;
