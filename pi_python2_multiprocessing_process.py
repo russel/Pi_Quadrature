@@ -25,7 +25,7 @@ def execute ( processCount ) :
     resultsQueue = multiprocessing.Queue ( )
     processes = [ multiprocessing.Process ( target = processSlice , args = ( i , sliceSize , delta , resultsQueue ) ) for i in xrange ( 0 , processCount ) ]
     for p in processes : p.start ( )
-    for p in processes : p.join ( )
+    # for p in processes : p.join ( ) # Do not need to syncronize the processes, the get will do that by blocking.
     results = [ resultsQueue.get ( ) for i in xrange ( 0 , processCount ) ]
     pi = 4.0 * sum ( results ) * delta
     elapseTime = time.time ( ) - startTime

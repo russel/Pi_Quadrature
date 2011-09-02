@@ -24,7 +24,7 @@ def execute ( processCount ) :
     pool = multiprocessing.Pool ( processes = processCount )
     results = [ pool.apply_async ( processSlice , args = ( i , sliceSize , delta ) ) for i in xrange ( 0 , processCount ) ]
     pool.close ( )
-    pool.join ( )
+    # pool.join ( ) # Do not need to syncronize the processes, the get will do that by blocking.
     results = [ item.get ( ) for item in results ]
     pi = 4.0 * sum ( results ) * delta
     elapseTime = time.time ( ) - startTime
