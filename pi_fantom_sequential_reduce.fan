@@ -2,8 +2,8 @@
 
 /*
  *  Calculation of Pi using quadrature with a basic sequential algorithm realized via a map/reduce
- *  expression.  This gets ugly of course as the space requirement is horrendous, sufficient to cause an
- *  OOME in fact.  Sometime iteration is just the right thing to do.
+ *  expression.  This gets ugly of course as the space requirement is linear in the number of rectangles,
+ *  sufficient to cause an OOME in fact.  Sometime iteration is just the right thing to do.
  *
  *  Copyright © 2011 Russel Winder
  */
@@ -16,7 +16,7 @@
 
 class Main {
   static Void main ( ) {
-    n := 1000000000
+    n := 1000000//000 //  Any more than 10^6 leads to OOME 
     delta := 1.0f / n
     startTimeNanos := sys::DateTime.nowTicks ( )
     pi := 4.0f * delta * (Float) ( ( 1..n ).toList ( ).map | i -> Float | {
