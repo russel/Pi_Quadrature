@@ -12,7 +12,7 @@
 //  effectively tail recursion implemented in the GPars actor messager handler -- neither Java nor Groovy
 //  support tail recursion of course.
 
-@Grab ( 'org.codehaus.gpars:gpars:0.12-beta-1' )
+@Grab ( 'org.codehaus.gpars:gpars:0.12' )
 
 import groovyx.gpars.actor.Actors
 import groovyx.gpars.actor.DefaultActor

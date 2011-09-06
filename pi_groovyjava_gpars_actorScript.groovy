@@ -6,7 +6,7 @@
  *  Copyright © 2009--2011 Russel Winder.
  */
 
-@Grab ( 'org.codehaus.gpars:gpars:0.12-beta-1' )
+@Grab ( 'org.codehaus.gpars:gpars:0.12' )
 
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.group.DefaultPGroup
