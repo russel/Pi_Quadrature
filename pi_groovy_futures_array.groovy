@@ -41,11 +41,11 @@ def execute ( final int numberOfTasks ) {
   final double pi = 4.0d * sum * delta
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   executor.shutdown ( )
-  println ( "==== Groovy Futures pi = " + pi )
-  println ( "==== Groovy Futures iteration count = " + n )
-  println ( "==== Groovy Futures elapse = " + elapseTime )
-  println ( "==== Groovy Futures processor count = " + Runtime.runtime.availableProcessors ( ) ) ;
-  println ( "==== Groovy Futures number of tasks = " + numberOfTasks )
+  println ( "==== Groovy Futures Array pi = " + pi )
+  println ( "==== Groovy Futures Array iteration count = " + n )
+  println ( "==== Groovy Futures Array elapse = " + elapseTime )
+  println ( "==== Groovy Futures Array processor count = " + Runtime.runtime.availableProcessors ( ) ) ;
+  println ( "==== Groovy Futures Array number of tasks = " + numberOfTasks )
 }
 
 execute ( 1 )
