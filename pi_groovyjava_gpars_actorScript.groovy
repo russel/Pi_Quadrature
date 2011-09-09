@@ -3,10 +3,11 @@
 /*
  *  Calculation of Pi using quadrature realized with GPars actors. Scripty.  With Java computation.
  *
- *  Copyright © 2009--2011 Russel Winder.
+ *  Copyright © 2009–2011 Russel Winder.
  */
 
-@Grab ( 'org.codehaus.gpars:gpars:0.12' )
+//@Grab ( 'org.codehaus.gpars:gpars:0.12' )
+@Grab ( 'org.codehaus.gpars:gpars:1.0-SNAPSHOT' )
 
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.group.DefaultPGroup
@@ -16,7 +17,6 @@ void execute ( final int actorCount ) {
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
   final int sliceSize = n / actorCount
-  final computors = [ ]
   final group = new DefaultPGroup ( actorCount + 1i )
   final accumulator = group.messageHandler {
     double sum = 0.0d
@@ -35,13 +35,13 @@ void execute ( final int actorCount ) {
       }
     }
   }
-  
-  println ( 'WWWW:' + sliceSize.class )
-  for ( index in 0 ..< actorCount ) {
-    println ( 'XXXX:' + sliceSize.class )
+  final computors = [ ]  
+  //  Loop variables are not captured at definition time but at execution time so use the trick used in Java
+  //  to ensure correct capture of the index number for the slice.
+  for ( i in 0 ..< actorCount ) {
+    final int index = i
     computors.add (
       group.actor {
-        println ( 'YYYY:' + sliceSize.class )
         accumulator << ( new ProcessSlice ( index , sliceSize , delta ) ).compute ( )
       }
     )
