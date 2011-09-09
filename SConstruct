@@ -301,7 +301,7 @@ Clean ( '.' , Glob ( '*.class' ) )
 ##  the Java environment.  The source code is UTF-8 encoded no matter what the environment of build.
 
 processSliceClasses =  javaEnvironment.Java ( '.' , [ 'ProcessSlice.java' ] )
-processSliceJCSPClasses = javaEnvironment.Java ( '.' , [ 'ProcessSlice_JCSP.java' ] , JAVACLASSPATH = [ classpathEntries['JCSP'] ] )
+processSliceJCSPClasses = javaEnvironment.Java ( '.' , [ 'ProcessSlice_JCSP.java' ] , JAVACLASSPATH = classpathEntries['JCSP'] )
 
 Alias ( 'compileJavaProcessSlicesForGroovy' , [ processSliceClasses , processSliceJCSPClasses ] )
 
