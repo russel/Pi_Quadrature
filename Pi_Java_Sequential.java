@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a basic sequential algorithm.
  *
- *  Copyright © 2008--2011 Russel Winder
+ *  Copyright © 2008–2011 Russel Winder
  */
 
 public class Pi_Java_Sequential {
