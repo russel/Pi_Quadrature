@@ -3,7 +3,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a basic sequential algorithm.
  *
- *  Copyright © 2008--2011 Russel Winder
+ *  Copyright © 2008–2011 Russel Winder
  */
 
 // This is Groovy and so extraordinarily slow compared to Java.  Use primitive types though so as to avoid

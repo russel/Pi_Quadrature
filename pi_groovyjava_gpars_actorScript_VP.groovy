@@ -3,16 +3,13 @@
 /*
  *  Calculation of Pi using quadrature realized with GPars actors. Scripty.  With Java computation.
  *
- *  Copyright © 2010--2011 Russel Winder.
+ *  Copyright © 2010–2011 Russel Winder.
  */
 
 //  This variant provided by Václav Pech by private email.
-//
-//  There appears to be what looks like the use of recursion in AccumulatorClass.handleMessage.  This is
-//  effectively tail recursion implemented in the GPars actor messager handler -- neither Java nor Groovy
-//  support tail recursion of course.
 
-@Grab ( 'org.codehaus.gpars:gpars:0.12' )
+//@Grab ( 'org.codehaus.gpars:gpars:0.12' )
+@Grab ( 'org.codehaus.gpars:gpars:1.0-SNAPSHOT' )
 
 import groovyx.gpars.actor.Actors
 import groovyx.gpars.actor.DefaultActor
@@ -22,6 +19,9 @@ final class AccumulatorActor extends DefaultActor {
   def sum
   def AccumulatorActor ( actorCount ) { this.actorCount = actorCount }
   @Override protected void act ( ) { handleMessage ( 0 , actorCount , 0.0d ) }
+  //  There is no recursive function call here — it is more like a tail recursive call.  The call of
+  //  handleMessage happens inside the react scope and so registers a new message handler with the state
+  //  captured by the parameters.  It does not create a new function call with a new stack frame.
   void handleMessage ( final n , final max , final sum ) {
     if ( n < max ) {
       react { handleMessage ( n + 1 , max , sum + it ) }

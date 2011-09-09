@@ -4,11 +4,12 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with GPars CSP to partition the
  *  problem and hence harness all processors available to the JVM.
  *
- *  Copyright © 2010--2011 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
 
 @Grab ( 'org.codehaus.jcsp:jcsp:1.1-rc5' )
-@Grab ( 'org.codehaus.gpars:gpars:0.12' )
+//@Grab ( 'org.codehaus.gpars:gpars:0.12' )
+@Grab ( 'org.codehaus.gpars:gpars:1.0-SNAPSHOT' )
 
 import org.jcsp.lang.Channel
 import org.jcsp.lang.CSProcess

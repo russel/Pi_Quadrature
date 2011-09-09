@@ -3,10 +3,11 @@
 /*
  *  Calculation of Pi using quadrature realized with GPars actors.  Done with class(es).
  *
- *  Copyright © 2009--2011 Russel Winder.
+ *  Copyright © 2009–2011 Russel Winder.
  */
 
-@Grab ( 'org.codehaus.gpars:gpars:0.12' )
+//@Grab ( 'org.codehaus.gpars:gpars:0.12' )
+@Grab ( 'org.codehaus.gpars:gpars:1.0-SNAPSHOT' )
 
 import java.util.List
 

@@ -18,7 +18,8 @@ void execute ( final int numberOfTasks ) {
     final double delta = 1.0d / n
     final startTimeNanos = System.nanoTime ( )
     final int sliceSize = n / numberOfTasks
-    final items = [ ] ; for ( int i in 0i ..< numberOfTasks ) { items << i }
+    final items = [ ]
+    for ( int i in 0i ..< numberOfTasks ) { items << i }
     final pi = 4.0d * delta * items.collectParallel { taskId ->
       ( new ProcessSlice ( taskId , sliceSize , delta ) ).compute ( )
     }.sumParallel ( )

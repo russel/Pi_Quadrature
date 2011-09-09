@@ -3,13 +3,14 @@
 /*
  *  Calculation of Pi using quadrature realized with an GPars actor based algorithm.
  *
- *  Copyright © 2010--2011 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
 
 //  This code provided by Václav Pech but private email.  It is based on the pre-existing Groovy/Java
 //  examples and makes use of the Java coded ProcessSlice class.
 
-@Grab ( 'org.codehaus.gpars:gpars:0.12' )
+//@Grab ( 'org.codehaus.gpars:gpars:0.12' )
+@Grab ( 'org.codehaus.gpars:gpars:1.0-SNAPSHOT' )
 
 import groovyx.gpars.actor.Actors
 import groovyx.gpars.actor.DynamicDispatchActor
