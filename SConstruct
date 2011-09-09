@@ -386,7 +386,7 @@ for item in Glob ( '*.groovy' ) :
     elif bits[1] == 'GroovyJava' : dependsOnProcessSlice.append ( runTarget )
     if len ( bits ) > 3 and bits[3] == 'CSP' :
         jcspJarPath =  groovyEnvironment['ENV']['HOME'] + '/lib/Java/jcsp.jar'
-        addRunTarget ( groovyEnvironment.Command ( runTarget , item.name , 'groovy -cp .:%s ./$SOURCE' % jcspJarPath ) )
+        addRunTarget ( groovyEnvironment.Command ( runTarget , item.name , 'groovy -cp .:{0} $SOURCE'.format ( jcspJarPath ) ) )
     else :    
         addRunTarget ( groovyEnvironment.Command ( 'run_' + root , item.name , './$SOURCE' ) )
 
