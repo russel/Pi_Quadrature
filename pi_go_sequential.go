@@ -1,8 +1,11 @@
 /*
  *  A Go program to calculate Pi using quadrature as a sequential algorithm.
  *
- *  Copyright © 2010 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
+
+//  There are performance issues with this code due to the int -> float64 conversion in the loop.  See
+//  pi_go_sequential_AndreyMirtchovski.go for further details.
 
 package main
 

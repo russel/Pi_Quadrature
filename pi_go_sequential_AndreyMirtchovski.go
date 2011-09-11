@@ -4,9 +4,14 @@
  *  Copyright © 2011 Russel Winder
  */
 
-//  This variant on the sequential code was proposed by Andrey Mirtchovski in a private email in reply to an
+//  This variant of the sequential code was proposed by Andrey Mirtchovski in a private email in reply to an
 //  email by Russel Winder on the GoLang Nuts email list.  It involves changing the types of n and i so as
 //  to avoid the conversions from int to float64 in the inner loop.  This increases performance by 3 fold.
+//  The speculation is that go 6g uses the CVTSL2SD instruction with an mmx register (the instruction
+//  "converts doubleword integer to scalar double-precision floating-point value") and that the way the
+//  toolchain generates code leads to code that stalls the pipeline.  But note this is an
+//  hypothesis/speculation to explain the observed behaviour.  Note that the C and C++ code also uses this
+//  instruction but fails to create the delay.
 
 package main
 
