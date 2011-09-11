@@ -25,3 +25,14 @@ two executions prior to any timing executions are needed to have the code JITed.
 there appears to be no such affect -- in fact there is but it is a small effect and can effectively be ignored.
 
 32-bit integer types are used throughout so as to avoid worrying about the Java "warm up" when using longs.
+
+
+House Keeping
+
+If you want to execute any of the C, C++, or Erlang codes you will need to branch a second branch:
+
+   bzr branch http://www.russel.org.uk/Bazaar/Timing
+
+as a peer, i.e. in the same directory as you branched Pi_Quadrature to, so that the two branches are
+subdirectories of the same directory.  This contains the C, C++, and Erlang timer implementation referred to
+by the quadrature codes. 
