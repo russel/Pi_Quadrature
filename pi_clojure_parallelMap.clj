@@ -1,6 +1,6 @@
 ;  Calculation of Pi using quadrature. Parallel algorithm using pmap.
 ;
-;  Copyright © 2009--2011 Russel Winder
+;  Copyright © 2009–2011 Russel Winder
 
 ;  TODO : Find out why the very long delay between completing the computation and terminating?
 

@@ -1,6 +1,6 @@
 ;  Calculation of Pi using quadrature. Sequential algorithm.
 ;
-;  Copyright © 2009--2011 Russel Winder
+;  Copyright © 2009–2011 Russel Winder
 
 ( defn summation [ count delta ]
   ( loop [

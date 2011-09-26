@@ -1,6 +1,6 @@
 ;  Calculation of Pi using quadrature. Parallel algorithm using pmap.
 ;
-;  Copyright © 2010--2011 Russel Winder
+;  Copyright © 2010–2011 Russel Winder
 
 ( defn execute [ numberOfThreads ]
   ( let [
