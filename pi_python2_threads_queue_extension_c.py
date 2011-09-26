@@ -5,7 +5,7 @@
 #  whilst C code is running so we get real parallelism. We use a Queue as the way of receiving results since
 #  that has the necessary guarantees to be thread-safe.
 #
-#  Copyright © 2008--2011 Russel Winder
+#  Copyright © 2008–2011 Russel Winder
 
 import time
 import threading

@@ -1,9 +1,8 @@
 #! /usr/bin/env python3
-# -*- mode:python; coding:utf-8; -*-
 
 #  Calculation of Pi using quadrature. Sequential algorithm.  While loop.
 #
-#  Copyright © 2008-10 Russel Winder
+#  Copyright © 2008–2010 Russel Winder
 
 import time
 

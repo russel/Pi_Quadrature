@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
 #  Calculation of Pi using quadrature.  Using threads -- but this gives no parallelism because of the GIL.
@@ -6,7 +6,7 @@
 #  the results.  However it is not clear that that operation is atomic so we use a Queue as the way of
 #  receiving results since that has the necessary guarantees to be thread-safe.
 #
-#  Copyright © 2008-10 Russel Winder
+#  Copyright © 2008–2010 Russel Winder
 
 import time
 import threading

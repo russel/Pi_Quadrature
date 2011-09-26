@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-# -*- mode:python; coding:utf-8; -*-
 
 #  Calculation of Pi using quadrature. Using the concurrent.futures facilities.
 #

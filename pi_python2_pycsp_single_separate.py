@@ -1,14 +1,14 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
 #  Calculation of Pi using quadrature.  Using the python-csp package by Sarah Mount.
 #
-#  Copyright © 2009-10 Russel Winder
+#  Copyright © 2009–2010 Russel Winder
 
 import time
 import multiprocessing
 
-from pycsp.processes import *
+from pycsp.processes import process , Channel , Parallel
 
 @process
 def calculator ( channel , id , sliceSize , delta ) :

@@ -1,10 +1,9 @@
 #! /usr/bin/env python3
-# -*- mode:python; coding:utf-8; -*-
 
 #  Calculation of Pi using quadrature.  Using the multiprocessing package with processes sending messages to
 #  a collecting queue.
 #
-#  Copyright © 2008-11 Russel Winder
+#  Copyright © 2008–2011 Russel Winder
 
 import time
 import multiprocessing

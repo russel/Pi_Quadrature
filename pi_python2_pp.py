@@ -1,10 +1,10 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
 #  Calculation of Pi using quadrature.  Use the Parallel Python package.  Parallel Python appears not to be
 #  packaged for use with Python 3 in the Ubuntu package repository.
 #
-#  Copyright © 2008-10 Russel Winder
+#  Copyright © 2008–2010 Russel Winder
 
 import time
 

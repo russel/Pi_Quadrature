@@ -1,10 +1,10 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
 #  Calculation of Pi using quadrature. Sequential algorithm.  For loop with xrange.  xrange only exists in
 #  Python 2, in Python 3 range is what xrange used to be in Python 2.
 #
-#  Copyright © 2008-10 Russel Winder
+#  Copyright © 2008–2010 Russel Winder
 
 import time
 

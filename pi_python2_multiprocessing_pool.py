@@ -4,7 +4,7 @@
 #  Calculation of Pi using quadrature. Using the multiprocessing package to provide a process pool to enable
 #  asynchronous function calls very akin to futures..
 #
-#  Copyright © 2008-10 Russel Winder
+#  Copyright © 2008–2010 Russel Winder
 
 import time
 import multiprocessing
