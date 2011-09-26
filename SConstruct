@@ -366,7 +366,7 @@ for item in Glob ( 'Pi_X10_*.x10' ) :
 clojureEnvironment = Environment ( tools = [ 'javac' ] )
 
 for item in Glob ( '*.clj' ) :
-    addRunTarget ( clojureEnvironment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , 'java -cp .:{0}/lib/Java/clojure.jar:{0}/lib/Java/clojure-contrib.jar clojure.main $SOURCE'.format ( os.environ['HOME'] ) ) )
+    addRunTarget ( clojureEnvironment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , 'java -cp .:{0}/lib/Java/clojure.jar clojure.main $SOURCE'.format ( os.environ['HOME'] ) ) )
 
 Depends ( 'run_pi_clojure_processSlice' , processSliceClasses )
 
