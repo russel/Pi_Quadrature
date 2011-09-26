@@ -434,7 +434,7 @@ extensionsData = {
         'COMMAND' : 'pyrexc'
         } ,
     'pyrex_py3' : {
-        'CPPPATH' : [ '/usr/include/python3.1' ] ,
+        'CPPPATH' : [ '/usr/include/python3.2' ] ,
         'CFLAGS' : ccFlags ,
         'LINKFLAGS' :  [ ] ,
         'COMMAND' : 'pyrexc'
@@ -446,7 +446,7 @@ extensionsData = {
         'COMMAND' : 'cython'
         } ,
     'cython_py3' : {
-        'CPPPATH' : [ '/usr/include/python3.1' ] ,
+        'CPPPATH' : [ '/usr/include/python3.2' ] ,
         'CFLAGS' : ccFlags ,
         'LINKFLAGS' : [ ] ,
         'COMMAND' : 'cython'
@@ -470,9 +470,10 @@ for item in Glob ( 'pi_python*.py' ) :
         if extension in [ 'cython' , 'pyrex' ] :
             majorVersion = bits[1][-1:]
             ##
-            ##  Cython 0.11.2 and Pyrex 0.9.8.5 generate C that cannot be compiled against Python 3.1
+            ##  Cython 0.11.2 and Pyrex 0.9.8.5 generate C that cannot be compiled against Python 3.1.  :-(
+            ##  Cython 0.14.1 generates code that compiles with Python 3.2.  :-)
             ##
-            if majorVersion == '3' : continue
+            if extension == 'pyrex' and majorVersion == '3' : continue
             extension += '_py' + majorVersion
         extensionName =  '%s_%s' % ( extensionRoot , extension )
         if extensionName not in extensionsSharedLibraries.keys ( ) :
