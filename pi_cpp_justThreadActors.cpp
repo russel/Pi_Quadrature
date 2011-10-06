@@ -19,7 +19,7 @@ void execute ( const int numberOfWorkerActors ) {
   const auto startTimeMicros = microsecondTime ( ) ;
   const auto sliceSize = n / numberOfWorkerActors ;
   const jss::actor accumulator (
-                                [ ] ( ) {
+                                [ = ] ( ) {
                                   auto sum = 0.0 ;
                                   for ( auto i = 0 ; i < numberOfWorkerActors ; ++i ) {
                                     jss::actor::receive ( )
@@ -39,7 +39,7 @@ void execute ( const int numberOfWorkerActors ) {
   std::vector<jss:actor> calculators ;
   for ( auto i = 0 ; i < numberOfWorkerActors ; ++i ) {
     jss::actor c (
-                  [ ] ( ) {
+                  [ = ] ( ) {
                     const auto start = 1 + index * sliceSize ;
                     const auto end = ( index + 1 ) * sliceSize ;
                     auto sum = 0.0 ;

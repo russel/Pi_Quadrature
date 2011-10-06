@@ -2,7 +2,7 @@
  *  A C++ program to calculate Pi using quadrature.  This uses Anthony Williams' Just::Threads library which
  *  is an implementation of the threads specification of C++0x.
  *
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 #include <iostream>

@@ -5,7 +5,7 @@
  *  This is a variant of pi_cpp_justThreadFutures.cpp from the Just::Thread tests -- Anthony took my
  *  examples and added them into the test suite but amended them a little.
  *
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 #include <iostream>

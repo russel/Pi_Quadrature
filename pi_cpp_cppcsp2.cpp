@@ -1,7 +1,7 @@
 /*
  *  A C++ program to calculate Pi using quadrature as a CSP implemented algorithm.
  *
- *  Copyright © 2010--2011 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
 
 #include <iostream>

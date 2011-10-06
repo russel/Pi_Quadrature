@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as a TBB implemented algorithm.
  *
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 #include <iostream>

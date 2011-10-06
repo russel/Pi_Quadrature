@@ -1,7 +1,7 @@
 /*
  *  A C++ program to calculate Pi using quadrature.  This is an SPMD realization using OpenMPI.
  *
- *  Copyright © 2008--2011 Russel Winder
+ *  Copyright © 2008–2011 Russel Winder
  */
 
 #include <iostream>
