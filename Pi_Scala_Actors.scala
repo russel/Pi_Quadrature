@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a scatter/gather approach using an actor system.
  * 
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 //  TODO: Investigate why there is a slow-down using eight actors on a dual-core machine compared to using
@@ -9,7 +9,7 @@
 
 import scala.actors.Actor
 
-object Pi_Scala_Actors extends Application {
+object Pi_Scala_Actors extends App {
   def execute ( numberOfWorkerActors : Int ) {
     val n = 1000000000
     val delta = 1.0 / n
@@ -28,7 +28,7 @@ object Pi_Scala_Actors extends Application {
       println ( "==== Scala Actors worker actor count = " + numberOfWorkerActors )
       sequencer ! 0
     }
-    for ( index <- 0 until calculators.size ) {
+    for ( index <- calculators.indices ) {
       calculators ( index ) = Actor.actor {
         val start = 1 + index * sliceSize
         val end = ( index + 1 ) * sliceSize 

@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a scatter/gather approach using an actor system.
  * 
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 //  Version using explicit Actor classes rather than using the Actors.actor factory method.  cf.  Pi_Scala_Actors.scala.
@@ -39,7 +39,7 @@ class Calculator ( id : Int , sliceSize : Int , delta : Double , accumulator : A
   }
 }
 
-object Pi_Scala_Actors_Alt extends Application {
+object Pi_Scala_Actors_Alt extends App {
   def execute ( numberOfWorkerActors : Int ) {
     val n = 1000000000
     val delta = 1.0 / n
@@ -48,7 +48,7 @@ object Pi_Scala_Actors_Alt extends Application {
     val accumulator = new Accumulator ( numberOfWorkerActors , delta , n , startTimeNanos , sequencer )
     accumulator.start ( )
     val calculators = new Array[Actor] ( numberOfWorkerActors )
-    for ( id <- 0 until calculators.size ) {
+    for ( id <- calculators.indices ) {
       calculators ( id ) = new Calculator ( id , sliceSize , delta , accumulator )
       calculators ( id ).start ( )
     }

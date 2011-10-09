@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a basic sequential algorithm using a while.
  *  Show the JVM warm up by executing the same thing a number of times.
  *
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 //  This version is used to experiment with JVM JIT warm up.  If n is of type long then the warm up effect

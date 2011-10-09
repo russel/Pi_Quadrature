@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with futures.
  *
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 //  TODO: Investigate why this takes longer with eight workers than two workers on a dual core machine.

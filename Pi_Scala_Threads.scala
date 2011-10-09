@@ -1,12 +1,12 @@
 /*
  *  Calculation of Pi using quadrature realized with a fork/join approach with threads.
  *
- *  Copyright © 2009--2010 Russel Winder
+ *  Copyright © 2009–2010 Russel Winder
  */
 
 import scala.concurrent.Lock
 
-object Pi_Scala_Threads extends  Application {
+object Pi_Scala_Threads extends  App {
   def execute ( numberOfTasks : Int ) {
     val n = 1000000000
     val delta = 1.0 / n
