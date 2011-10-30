@@ -8,7 +8,6 @@
  */
 
 @Grab ( 'org.codehaus.jcsp:jcsp:1.1-rc5' )
-//@Grab ( 'org.codehaus.gpars:gpars:0.12' )
 @Grab ( 'org.codehaus.gpars:gpars:1.0-SNAPSHOT' )
 
 import org.jcsp.lang.Channel
