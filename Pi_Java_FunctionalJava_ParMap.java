@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with an approached based on using parallel map from
  *  Functional Java.
  *
- *  Copyright © 2010--2011 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
 
 import fj.F ;

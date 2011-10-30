@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with GPars data flow tasks and an agent.
  *
- *  Copyright © 2010--2011 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
 
 /*

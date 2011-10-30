@@ -3,7 +3,7 @@
  *  executing the same thing a number of times.  Using long for n and i there is a JIT effect.  Using int
  *  there is no such effect.
  * 
- *  Copyright © 2008--2011 Russel Winder
+ *  Copyright © 2008–2011 Russel Winder
  */
 
 public class Pi_Java_Sequential_WarmUp {

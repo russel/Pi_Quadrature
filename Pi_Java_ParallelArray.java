@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with an approached based on evolving values in an array with
  *  implicit parallelism.  This is material that probably won't actually be in Java 7.
  *
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 import extra166y.CommonOps ;

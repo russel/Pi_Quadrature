@@ -1,7 +1,7 @@
 /*
  *  Support class for the Java/Groovy version of the computation using JCSP.
  *
- *  Copyright © 2010--2011 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
 
 import org.jcsp.lang.ChannelOutput ;

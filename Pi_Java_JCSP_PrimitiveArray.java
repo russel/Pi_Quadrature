@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with JCSP to partition the problem
  *  and hence harness all processors available to the JVM.
  *
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 import org.jcsp.lang.Channel ;
