@@ -1,6 +1,6 @@
 /*
- *  Calculation of Pi using quadrature realized with a fork/join approach with the ForkJoin library of
- *  JSR166y that is destined to be a part of Java 7.
+ *  Calculation of Pi using quadrature realized with a fork/join approach.  This uses a collection to store
+ *  the futures.
  *
  *  Copyright © 2009–2011 Russel Winder
  */
@@ -9,8 +9,8 @@ import java.util.ArrayList ;
 
 import java.util.concurrent.Callable ;
 import java.util.concurrent.ExecutionException ;
+import java.util.concurrent.ForkJoinPool ;
 import java.util.concurrent.Future ;
-import jsr166y.ForkJoinPool ;
 
 public class Pi_Java_ForkJoinCollection {
   private static void execute ( final int numberOfTasks ) {

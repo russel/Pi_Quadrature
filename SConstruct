@@ -7,6 +7,7 @@
 import os
 import platform
 import re
+import subprocess
 import sys
 
 osName , _ , _ , _ , platformVersion , _ = platform.uname ( )
@@ -262,15 +263,26 @@ for item in Glob ( 'Pi_CS_*.cs' ) :
 #  ASCII.  We know the encoding is UTF-8 so say so.  This avoids all the warnings/errors about "unmappable
 #  character for encoding ASCII".
 
-javaEnvironment = Environment ( tools = [ 'javac' ] , JAVACFLAGS = [ '-source' , '6' , '-encoding' , 'utf-8' ] )
+#  "java -version" outputs on standard error.  WTF.
+
+#  The stderr attribute of the subprocess is iterable so get the first line which looks like:
+#
+#  java version "..."
+#
+#  where the elipsis is the version number which looks something like 1.7.0_147-icedtea.
+
+javaProcess = subprocess.Popen ( [ 'java' , '-version' ] , stderr = subprocess.PIPE )
+javaVersion = javaProcess.stderr.next ( ).strip ( ).split ( ) [2][1:-1].split ( '.' )
+assert javaProcess.wait ( ) == 0
+assert javaVersion[1] == '7' , 'Java code has been amended to work with Java 7.'
+
+javaEnvironment = Environment ( tools = [ 'javac' ] , JAVACFLAGS = [ '-source' , '7' , '-encoding' , 'utf-8' ] )
 
 classpathEntries = {
     'JCSP' : ( os.environ['HOME'] + '/lib/Java/jcsp.jar' , ) ,
-    'ForkJoinBasic' : ( os.environ['HOME'] + '/lib/Java/jsr166y.jar' , ) ,
-    'ForkJoinCollection' : ( os.environ['HOME'] + '/lib/Java/jsr166y.jar' , ) ,
-    'ParallelArray' : ( os.environ['HOME'] + '/lib/Java/jsr166y.jar' , os.environ['HOME'] + '/lib/Java/extra166y.jar' ) ,
     'FunctionalJava' : ( os.environ['HOME'] + '/lib/Java/functionaljava.jar' , ) ,
     'GPars' : ( os.environ['HOME'] + '/lib/Java/gpars.jar' , os.environ['HOME'] + '/lib/Java/groovy-all.jar' ) ,
+    'ParallelArray' : ( os.environ['HOME'] + '/lib/Java/jsr166y.jar' , os.environ['HOME'] + '/lib/Java/extra166y.jar' ) ,
     }
 
 for item in Glob ( 'Pi_Java_*.java' ) :
