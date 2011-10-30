@@ -109,11 +109,9 @@ except KeyError :
 # Use the pre-release Just::Thread Pro as it has the actor and dataflow support.
 cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ extraLibName + '/JustThreadPro/include' ] , linkflags = [ '--static' ] , libpath = [ extraLibName + '/JustThreadPro/libs' ] , libs = [ 'justthread' , 'pthread' , 'rt' ] )
 
-#  TBB 2.2 is packaged in Ubuntu Lucid and Debian Squeeze.  Debian Wheezy appears to package TBB 3 though it
+#  TBB 2.2 is packaged in Ubuntu Lucid and Debian Squeeze.  Debian Wheezy appears to package TBB 4 though it
 #  still has the SO number 2.  Deal with the situation of TBB_HOME being defined for a custom variant of
-#  TBB.
-#
-#  TBB only provides dynamic libraries, there are no static libraries, so we have to get into the hassle of
+#  TBB.  TBB only provides dynamic libraries, there are no static libraries, so we have to get into the hassle of
 #  specifying a LD_LIBRARY_PATH to run the constructed executable if the TBB libraries are not in the
 #  standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb . . . "
 try :
@@ -124,7 +122,7 @@ except KeyError :
 
 #  Fortran  ##########################################################################
 
-fortranFlags = [ '-O3' , '-std=f2003' , '-ffree-form' , '-pedantic' , '-Wall' ]
+fortranFlags = [ '-O3' , '-std=f2008' , '-ffree-form' , '-pedantic' , '-Wall' ]
 
 fortranEnvironment = Environment ( tools = [ 'gfortran' , 'gnulink' ] )
 
