@@ -11,7 +11,7 @@
 // well as the variables.
 
 //  Speed issue parameters: int is faster than long; classic for may be slower than "foreach" style for; **
-//  operator appears slow in comparison to using a variable and * --
+//  operator appears slow in comparison to using a variable and * —
 //  cf. pi_groovy_sequential_primitive.groovy.
 
 final int n = 100000000i // 10 times fewer due to speed issues.
