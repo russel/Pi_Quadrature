@@ -31,18 +31,20 @@ class Main {
     }
     /*
      *  The following leads to a compilation error.
-     *
+     * /
     values := ( 0 ..< numberOfTasks ).toList ( ).map | i -> concurrent::Future | {
       return concurrent::Actor ( pool , partialSumEvaluator ).send ( i )
     }
-    */
+    / **/
     values := concurrent::Future[,]
     ( 0 ..< numberOfTasks ).each | i | { values.add ( concurrent::Actor ( pool , partialSumEvaluator ).send ( i ) ) }
+    /**/
     pi := 4.0f * delta * (Float) values.reduce ( 0.0f ) | Float l , concurrent::Future r -> Float | { return l + (Float) r.get ( ) }
     elapseTime := ( sys::DateTime.nowTicks ( ) - startTimeNanos ) / 1e9f
     echo ( "==== Fantom Futures pi = " + pi )
     echo ( "==== Fantom Futures iteration count = " + n ) 
     echo ( "==== Fantom Futures elapse = " + elapseTime )
+    echo ( "==== Fantom Futures number of tasks = " + numberOfTasks )
   }
   static Void main ( ) {
     execute ( 1 ) 
