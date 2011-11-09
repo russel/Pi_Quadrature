@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include <thread>
+#include <memory>
 
 #include <jss/actor.hpp>
 
@@ -18,49 +18,62 @@ void execute ( const int numberOfWorkerActors ) {
   const auto delta = 1.0 / n ;
   const auto startTimeMicros = microsecondTime ( ) ;
   const auto sliceSize = n / numberOfWorkerActors ;
-  // This actor cannot be const since if it is, the calculators cannot send to it.
-  /*const*/ jss::actor accumulator (
-                                //  Actors are not copyable and so cannot user the (=) form, must use the (&) form.
-                                [ & ] ( ) {
-                                  auto sum = 0.0 ;
-                                  for ( auto i = 0 ; i < numberOfWorkerActors ; ++i ) {
-                                    jss::actor::receive ( )
-                                    .match<double> (
-                                                    [ & ] ( double d ) {
-                                                      sum += d ;
-                                                    } ) ;
-                                  }
-                                  const auto pi = 4.0 * sum * delta ;
-                                  const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
-                                  std::cout << "==== C++ Just::Thread actors pi = " << std::setprecision ( 18 ) << pi << std::endl ;
-                                  std::cout << "==== C++ Just::Thread actors iteration count = " << n << std::endl ;
-                                  std::cout << "==== C++ Just::Thread actors elapse = " << elapseTime << std::endl ;
-                                  std::cout << "==== C++ Just::Thread actors threadCount = " <<  numberOfWorkerActors << std::endl ;
-                                  std::cout << "==== C++ Just::Thread actors processor count = "  << std::thread::hardware_concurrency ( ) << std::endl ;
-                                } ) ;
-  // jss:actor has no nullary constructor so cannot have arrays of jss::actor, must work with pointers.
-  // Perhaps should use jss:actor_ref but this has no nullary constructor either.  The point here is to
-  // ensure the actors have a life beyond the scope of creation -- otherwise they will simply be terminated
-  // as the block terminates.  The other point is to spaqwn the actors rather than have them execute
-  // sequentially.
-  const jss::actor * calculators [ numberOfWorkerActors ] ;
+  //  This actor cannot be const since if it is, the calculators cannot send to it.  Not unreasonable since
+  //  sending a message to an actor is a state change of that actor after all.
+  jss::actor accumulator (
+                          //  jss::actors are not copyable and so cannot use the (=) capture form, must use
+                          //  the (&) capture form.  Not a problem here as all the free variables in the
+                          //  lambda expression are const variables.
+                          [ & ] ( ) {
+                            auto sum = 0.0 ;
+                            for ( auto i = 0 ; i < numberOfWorkerActors ; ++i ) {
+                              jss::actor::receive ( )
+                               .match<double> (
+                                               [ & ] ( double d ) {
+                                                 sum += d ;
+                                                 std::cout << "Received " << d << ", sum = " << sum << std::endl ;
+                                               } ) ;
+                            }
+                            const auto pi = 4.0 * sum * delta ;
+                            const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
+                            std::cout << "==== C++ Just::Thread actors pi = " << std::setprecision ( 18 ) << pi << std::endl ;
+                            std::cout << "==== C++ Just::Thread actors iteration count = " << n << std::endl ;
+                            std::cout << "==== C++ Just::Thread actors elapse = " << elapseTime << std::endl ;
+                            std::cout << "==== C++ Just::Thread actors threadCount = " <<  numberOfWorkerActors << std::endl ;
+                            std::cout << "==== C++ Just::Thread actors processor count = "  << std::thread::hardware_concurrency ( ) << std::endl ;
+                          } ) ;
+  //  We have to use dynamic allocation for the worker actors since stack allocated variables have lifetime
+  //  the same as scope so this would sequentialize the execution of the actors: the jss::actor destructor
+  //  waits for the end of the bound thread.
+  std::unique_ptr<const jss::actor> calculators [ numberOfWorkerActors ] ;
   for ( auto index = 0 ; index < numberOfWorkerActors ; ++index ) {
-    calculators [ index ] = new jss::actor a (
-                                            // Actors are not copyable and so cannot user the (=) form, must use the (&) form.
-                                            [ & ] ( ) {
-                                              const auto start = 1 + index * sliceSize ;
-                                              const auto end = ( index + 1 ) * sliceSize ;
-                                              auto sum = 0.0 ;
-                                              for ( auto i = start ; i < end ; ++i ) {
-                                                const auto x = ( i - 0.5 ) * delta ;
-                                                sum += 1.0 / ( 1.0 + x * x ) ;
-                                              }
-                                              accumulator.send ( sum ) ;
-                                            } ) ;
+    //  Since actors are not copyable it is not possible to use the (=) capture form for the lambda
+    //  function.  Instead the (&) form must be used.  If only const variables need to be captured this is
+    //  not a problem.  However, in this case, non-const variables need to be captured and the captured
+    //  value must be the value at the time of capture and not the value at the end of the loop.  Since the
+    //  (&) form captures the address of a variable not it's value, we must use the old Java trick of
+    //  assigning to a const variable in order to capture the value of the iteration variable rather than
+    //  it's address.  Hack, hack.
+    //
+    //  Currently we have a problem that we get multiple copies of some slices and are missing some slices
+    //  this leads to the wrong value being calculated.
+    const auto constIndex = index ;
+    calculators [ index ] = std::unique_ptr<const jss::actor> ( new jss::actor (
+                                                                                [ & ] ( ) {
+                                                                                  const auto start = 1 + constIndex * sliceSize ;
+                                                                                  const auto end = ( constIndex + 1 ) * sliceSize ;
+                                                                                  auto sum = 0.0 ;
+                                                                                  for ( auto i = start ; i < end ; ++i ) {
+                                                                                    const auto x = ( i - 0.5 ) * delta ;
+                                                                                    sum += 1.0 / ( 1.0 + x * x ) ;
+                                                                                  }
+                                                                                  std::cout << "Actor " << constIndex << ", sending " << sum << std::endl ;
+                                                                                  accumulator.send ( sum ) ;
+                                                                                } ) ) ;
   }
-  for ( auto index = 0 ; index < numberOfWorkerActors ; ++index ) {
-    calculators [ index ] -> ~actor ( ) ;
-  }
+  // Due to the accumulator constructor being called at this point, we should wait for termination of said
+  // actor before the program finishes.  The outstanding question is whether all the sources have sent in
+  // their results.  Assume they have and have terminated.
 }
 
 int main ( ) {
