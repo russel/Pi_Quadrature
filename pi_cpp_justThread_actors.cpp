@@ -21,8 +21,8 @@ void execute ( const int numberOfWorkerActors ) {
   //  This actor cannot be const since if it is, the calculators cannot send to it.  Not unreasonable since
   //  sending a message to an actor is a state change of that actor after all.
   jss::actor accumulator (
-                          //  jss::actors are not copyable and so cannot use the (=) capture form, must use
-                          //  the (&) capture form.  Not a problem here as all the free variables in the
+                          //  jss::actors are not copyable and so cannot use the [=] capture form, must use
+                          //  the [&] capture form.  Not a problem here as all the free variables in the
                           //  lambda expression are const variables.
                           [ & ] ( ) {
                             auto sum = 0.0 ;
@@ -47,11 +47,11 @@ void execute ( const int numberOfWorkerActors ) {
   //  waits for the end of the bound thread.
   std::unique_ptr<const jss::actor> calculators [ numberOfWorkerActors ] ;
   for ( auto index = 0 ; index < numberOfWorkerActors ; ++index ) {
-    //  Since actors are not copyable it is not possible to use the (=) capture form for the lambda
-    //  function.  Instead the (&) form must be used.  If only const variables need to be captured this is
+    //  Since actors are not copyable it is not possible to use the [=] capture form for the lambda
+    //  function.  Instead the [&] form must be used.  If only const variables need to be captured this is
     //  not a problem.  However, in this case, non-const variables need to be captured and the captured
     //  value must be the value at the time of capture and not the value at the end of the loop.  Since the
-    //  (&) form captures the address of a variable not it's value, we must use the old Java trick of
+    //  [&] form captures the address of a variable not it's value, we must use the old Java trick of
     //  assigning to a const variable in order to capture the value of the iteration variable rather than
     //  it's address.  Hack, hack.
     //
