@@ -18,8 +18,10 @@ void execute ( const int numberOfWorkerActors ) {
   const auto delta = 1.0 / n ;
   const auto startTimeMicros = microsecondTime ( ) ;
   const auto sliceSize = n / numberOfWorkerActors ;
-  const jss::actor accumulator (
-                                [ = ] ( ) {
+  // This actor cannot be const since if it is, the calculators cannot send to it.
+  /*const*/ jss::actor accumulator (
+                                //  Actors are not copyable and so cannot user the (=) form, must use the (&) form.
+                                [ & ] ( ) {
                                   auto sum = 0.0 ;
                                   for ( auto i = 0 ; i < numberOfWorkerActors ; ++i ) {
                                     jss::actor::receive ( )
@@ -36,28 +38,16 @@ void execute ( const int numberOfWorkerActors ) {
                                   std::cout << "==== C++ Just::Thread actors threadCount = " <<  numberOfWorkerActors << std::endl ;
                                   std::cout << "==== C++ Just::Thread actors processor count = "  << std::thread::hardware_concurrency ( ) << std::endl ;
                                 } ) ;
-  //  Actors cannot be moved into a vector, so the following will not work:
-  /* 
-  std::vector<jss::actor> calculators ;
+  // jss:actor has no nullary constructor so cannot have arrays of jss::actor, must work with pointers.
+  // Perhaps should use jss:actor_ref but this has no nullary constructor either.  The point here is to
+  // ensure the actors have a life beyond the scope of creation -- otherwise they will simply be terminated
+  // as the block terminates.  The other point is to spaqwn the actors rather than have them execute
+  // sequentially.
+  const jss::actor * calculators [ numberOfWorkerActors ] ;
   for ( auto index = 0 ; index < numberOfWorkerActors ; ++index ) {
-    jss::actor c (
-                  [ = ] ( ) {
-                    const auto start = 1 + index * sliceSize ;
-                    const auto end = ( index + 1 ) * sliceSize ;
-                    auto sum = 0.0 ;
-                    for ( auto i = start ; i < end ; ++i ) {
-                      const auto x = ( i - 0.5 ) * delta ;
-                      sum += 1.0 / ( 1.0 + x * x ) ;
-                    }
-                    accumulator.send ( sum ) ;
-                  } ) ;
-    calculators.push_back ( std::move ( c ) ) ;
-  }
-  */
-  jss::actor * calculators [ numberOfWorkerActors ] ;
-  for ( auto index = 0 ; index < numberOfWorkerActors ; ++index ) {
-    calculators [ index ] = new jss::actor (
-                                            [ = ] ( ) {
+    calculators [ index ] = new jss::actor a (
+                                            // Actors are not copyable and so cannot user the (=) form, must use the (&) form.
+                                            [ & ] ( ) {
                                               const auto start = 1 + index * sliceSize ;
                                               const auto end = ( index + 1 ) * sliceSize ;
                                               auto sum = 0.0 ;
@@ -67,6 +57,9 @@ void execute ( const int numberOfWorkerActors ) {
                                               }
                                               accumulator.send ( sum ) ;
                                             } ) ;
+  }
+  for ( auto index = 0 ; index < numberOfWorkerActors ; ++index ) {
+    calculators [ index ] -> ~actor ( ) ;
   }
 }
 
