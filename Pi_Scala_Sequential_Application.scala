@@ -4,12 +4,8 @@
  *  Copyright © 2009–2011 Russel Winder
  */
 
-//  When using the idiom of extending Application to create a main procedure, variables are represented as
-//  methods and this means performance seriously plummets.  The idiom must therefore be to only have
-//  function calls in the main sequence. cf. Pi_Scala_Sequential_Alt.scala.
-
 object Pi_Scala_Sequential_Application extends App {
-  val n = 1000000 // 1000 times fewer for performance reasons.
+  val n = 1000000000
   val delta = 1.0 / n
   val startTimeNanos = System.nanoTime
   var sum = 0.0
