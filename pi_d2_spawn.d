@@ -2,7 +2,7 @@
  *  A D program to calculate Pi using quadrature as a spawn-based algorithm.  Make use of Actor Model
  *  message passing capability.
  *
- *  Copyright © 2010--2011 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
 
 //import std.algorithm ;

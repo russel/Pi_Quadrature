@@ -1,6 +1,6 @@
 !  A Fortran program to calculate Pi using quadrature.  This is an SPMD realization using OpenMPI.
 !
-!  Copyright © 2008--2011 Russel Winder
+!  Copyright © 2008–2011 Russel Winder
 
 program pi
   use mpi
@@ -23,7 +23,7 @@ program pi
   call MPI_Reduce ( localSum , sum , 1 , MPI_DOUBLE_PRECISION , MPI_SUM , 0 , MPI_COMM_WORLD , errorState )
   call MPI_Finalize ( errorState )
   if ( myId == 0 ) then
-     pi_ = 4.0 * sum * delta
+     pi_ = 4.0 * delta * sum
     call system_clock ( endTime , endFrequency )
     elapseTime = endTime - startTime
     elapseTime = elapseTime / startFrequency

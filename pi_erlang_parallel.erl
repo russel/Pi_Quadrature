@@ -1,12 +1,12 @@
 %  Calculation of Pi using quadrature. Parallel algorithm.
 %
-%  Copyright © 2008-9 Russel Winder
+%  Copyright © 2008–2009,2011 Russel Winder
 
 -module ( pi_erlang_parallel ) .
 -export ( [ start / 0 ] ) .
 -import ( microsecondTime , [ microsecondTime / 0 ] ) .
 
-pi_iter ( _To , _From , _To , Delta , Sum ) -> 4.0 * Sum * Delta ;
+pi_iter ( _To , _From , _To , Delta , Sum ) -> 4.0 * Delta * Sum ;
 pi_iter (  I , From , To , Delta , Sum ) ->
 	X = ( I - 0.5 ) * Delta ,
 	pi_iter ( I + 1 , From , To , Delta , Sum + 1.0 / ( 1.0 + X * X ) ) .

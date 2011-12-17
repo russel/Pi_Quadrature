@@ -19,7 +19,7 @@ int main ( ) {
     const auto x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
-  const auto pi = 4.0 * sum * delta ;
+  const auto pi = 4.0 * delta * sum ;
   const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ OpenMP Implicit pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ OpenMP Implicit iteration count = " << n << std::endl ;

@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a fork/join approach with threads.
  *
- *  Copyright © 2009–2010 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 import scala.concurrent.Lock

@@ -41,7 +41,7 @@ public class Pi_Java_JCSP_MultiplexedChannel {
         @Override public void run ( ) {
           double sum = 0.0 ;
           for ( int i = 0 ; i < numberOfTasks ; ++i ) {  sum += channel.in ( ).read ( ) ; }
-          final double pi = 4.0 * sum * delta ;
+          final double pi = 4.0 * delta * sum ;
           final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
           System.out.println ( "==== Java JCSP MultiplexedChannel pi = " + pi ) ;
           System.out.println ( "==== Java JCSP MultiplexedChannel iteration count = " + n ) ;

@@ -47,7 +47,7 @@ class Accumulate : public csp::CSProcess {
   void run ( ) {
     auto sum = 0.0 ;
     for ( auto i = 0 ; i < numberOfProcesses ; ++i ) { double s ; chanin >> s ; sum += s ; }
-    const auto pi = 4.0 * sum * delta ;
+    const auto pi = 4.0 * delta * sum ;
     const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
     std::cout << "==== C++ C++CSP2 pi = " << std::setprecision ( 18 ) << pi << std::endl ;
     std::cout << "==== C++ C++CSP2 iteration count = " << n << std::endl ;

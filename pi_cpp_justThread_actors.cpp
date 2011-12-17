@@ -31,7 +31,7 @@ void execute ( const int numberOfWorkerActors ) {
                                                  sum += d ;
                                                } ) ;
                             }
-                            const auto pi = 4.0 * sum * delta ;
+                            const auto pi = 4.0 * delta * sum ;
                             const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
                             std::cout << "==== C++ Just::Thread actors pi = " << std::setprecision ( 18 ) << pi << std::endl ;
                             std::cout << "==== C++ Just::Thread actors iteration count = " << n << std::endl ;

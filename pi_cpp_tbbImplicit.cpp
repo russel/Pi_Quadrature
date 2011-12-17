@@ -35,7 +35,7 @@ int main ( ) {
   tbb::task_scheduler_init tbb_initializer ;
   partialSum accumulator ( delta ) ;
   tbb::parallel_reduce ( tbb::blocked_range<long> ( 0 , n ) , accumulator , tbb::auto_partitioner ( ) ) ;
-  const auto pi = 4.0 * accumulator.getSum ( ) * delta ;
+  const auto pi = 4.0 * delta * accumulator.getSum ( ) ;
   const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ TBB pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ TBB iteration count = " << n << std::endl ;

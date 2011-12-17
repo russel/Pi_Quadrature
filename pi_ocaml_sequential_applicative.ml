@@ -3,7 +3,7 @@
   Caml implementation of the sequential Pi by Quadrature using a purely applicative style, i.e. iteration
   by tail recursion.
 
-  Copyright © 2009-10 Russel Winder
+  Copyright © 2009–2011 Russel Winder
 
 *)
 
@@ -15,7 +15,7 @@ let main ( ) =
   let n = 1000000000 in
   let delta = 1.0 /. ( float_of_int n ) in
   let startTime = Sys.time ( ) in
-  let pi = 4.0 *. ( compute n delta 0.0 ) *. delta  in
+  let pi = 4.0 *. delta *. ( compute n delta 0.0 ) in
   let elapseTime = Sys.time ( ) -. startTime in
   Printf.printf "==== OCaml Sequential Applicative pi = %.18f\n" pi ;
   Printf.printf "==== OCaml Sequential Applicative iteration count = %d\n" n ;

@@ -5,7 +5,7 @@
  *  UTF-8 encoded Unicode codepoint.  See XTENLANG-1236, http://jira.codehaus.org/browse/XTENLANG-1236.
  *  Version 2.1.0 terminates but gives an error message of bizarre nature.
  * 
- *  Copyright (c) 2009-10 Russel Winder
+ *  Copyright (c) 2009--2011 Russel Winder
  */
 
 import x10.io.Console ;
@@ -28,7 +28,7 @@ public class Pi_X10_Parallel {
       sum
     } ;
     val sums = DistArray.make[Double] ( Dist.makeBlock ( 0 .. ( numberOfTasks - 1 ) ) , computeSlice ) ;
-    val pi : double = 4.0 * sums.reduce ( Double.+ , 0.0 ) * delta ;
+    val pi : double = 4.0 * delta * sums.reduce ( Double.+ , 0.0 ) ;
     val elapseTime : double = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     Console.OUT.println ( "==== X10 Parallel pi = " + pi ) ;
     Console.OUT.println ( "==== X10 Parallel iteration count = " + n ) ;

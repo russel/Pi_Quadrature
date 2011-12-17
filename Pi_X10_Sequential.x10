@@ -5,7 +5,7 @@
  *  UTF-8 encoded Unicode codepoint.  See XTENLANG-1236, http://jira.codehaus.org/browse/XTENLANG-1236.
  *  Version 2.1.0 terminates but gives an error message of bizarre nature.
  *
- *  Copyright (c) 2009-10 Russel Winder
+ *  Copyright (c) 2009--2011 Russel Winder
  */
 
 import x10.io.Console ;
@@ -20,7 +20,7 @@ public class Pi_X10_Sequential {
       val x : double = ( i - 0.5 ) * delta ;
       sum += 1.0 / ( 1.0 + x * x ) ;
     }
-    val pi : double = 4.0 * sum * delta ;
+    val pi : double = 4.0 * delta * sum ;
     val elapseTime : double = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     Console.OUT.println ( "==== X10 Sequential pi = " + pi ) ;
     Console.OUT.println ( "==== X10 Sequential iteration count = " + n ) ;

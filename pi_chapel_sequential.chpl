@@ -1,7 +1,7 @@
 /*
  *  A Chapel program to calculate Pi using quadrature as a sequential algorithm.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009,2011 Russel Winder
  */
 
 use Time ;
@@ -16,7 +16,7 @@ while ( i < n ) {
   sum += 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 ) ;
   i += 1 ;
  }
-const pi = 4.0 * sum * delta ;
+const pi = 4.0 * delta * sum ;
 timer.stop ( ) ;
 writeln ( "==== Chapel Sequential pi = " , pi ) ;
 writeln ( "==== Chapel Sequential iteration count = " , n ) ;

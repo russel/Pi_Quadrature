@@ -13,7 +13,7 @@
  *  A Bazaar branch of this and many other versions in many other languages is held at
  *  http://www.russel.org.uk/Bazaar/Pi_Quadrature.
  *
- *  Copyright © 2010 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
 
 package main
@@ -45,7 +45,7 @@ func execute ( numberOfTasks int ) {
 	for i := 0 ; i < numberOfTasks ; i++ { go processSlice ( i , sliceSize , delta , channel ) }
 	sum := float64 ( 0.0 )
 	for i := 0 ; i < numberOfTasks ; i++ { sum += <- channel }
-	pi := 4.0 * sum * delta
+	pi := 4.0 * delta * sum
 	elapseTime := float64 ( time.Nanoseconds ( ) - startTime ) / 1e9
 	fmt.Printf ( "==== Go Parallel pi = %.18f\n" , pi ) ;
 	fmt.Printf ( "==== Go Parallel iteration count = %d\n" ,  n ) ;

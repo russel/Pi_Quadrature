@@ -1,6 +1,6 @@
 --  Haskell implementation of Pi by Quadrature.  Parallel version using parMap.
 --
---  Copyright © 2009-10 Russel Winder
+--  Copyright © 2009–2011 Russel Winder
 
 module Main where
 
@@ -10,12 +10,12 @@ import Control.Parallel.Strategies ( rwhnf , parMap )
 
 piIter :: Int -> Int -> Double -> Double -> Double
 piIter  n to delta accumulator
-    | n > to = accumulator * delta
+    | n > to = 4.0 * delta * accumulator
     | otherwise = 
         let
           nPlus1 = n + 1
           x = ( ( fromIntegral n ) - 0.5 ) * delta
-          value = accumulator + 4.0 / ( 1.0 + x * x )        
+          value = accumulator + 1.0 / ( 1.0 + x * x )        
         in
           piIter nPlus1 to delta value
 

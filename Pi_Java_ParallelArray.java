@@ -29,7 +29,7 @@ public class Pi_Java_ParallelArray {
           return sum ;
         }
       } ) ;
-    final double pi = 4.0 * finalArray.reduce ( CommonOps.doubleAdder ( ) , 0.0 ) * delta ;
+    final double pi = 4.0 * delta * finalArray.reduce ( CommonOps.doubleAdder ( ) , 0.0 ) ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     System.out.println ( "==== Java Parallel Array pi = " + pi ) ;
     System.out.println ( "==== Java Parallel Array iteration count = " + n ) ;

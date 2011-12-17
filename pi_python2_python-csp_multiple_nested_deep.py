@@ -18,12 +18,12 @@ def execute ( processCount ) :
     channels = [ ]
     @process
     def accumulator ( ) :
-        pi = 4.0 * sum ( [ channel.read ( ) for channel in channels ] ) * delta
+        pi = 4.0 * delta * sum ( [ channel.read ( ) for channel in channels ] )
         elapseTime = time.time ( ) - startTime
         print ( "==== Python CSP Multiple NestedDeep pi = " + str ( pi ) )
-        print ( "==== Python CSP Multiple NestedDeep iteration count = "+ str ( n ) )
+        print ( "==== Python CSP Multiple NestedDeep iteration count = " + str ( n ) )
         print ( "==== Python CSP Multiple NestedDeep elapse = " + str ( elapseTime ) )
-        print ( "==== Python CSP Multiple NestedDeep process count =  "+ str ( processCount ) )
+        print ( "==== Python CSP Multiple NestedDeep process count =  " + str ( processCount ) )
         print ( "==== Python CSP Multiple NestedDeep processor count = " + str ( multiprocessing.cpu_count ( ) ) )
     processes = [ ] 
     for i in xrange ( 0 , processCount ) :

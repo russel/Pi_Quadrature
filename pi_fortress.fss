@@ -1,3 +1,11 @@
+(*
+
+Calculation of Pi using quadrature.
+
+Copyright © 2011 Russel Winder
+
+*)
+
 export Executable
 
 run ( ) : ( ) = do

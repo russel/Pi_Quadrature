@@ -60,7 +60,7 @@ void execute ( const int numberOfThreads ) {
   pthread_attr_destroy ( &attributes ) ;
   int status ;
   for ( auto i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
-  const auto pi = 4.0 * sum * delta ;
+  const auto pi = 4.0 * delta * sum ;
   const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ PThread parameters pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ PThread parameters iteration count = " << n << std::endl ;

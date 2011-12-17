@@ -23,22 +23,19 @@ def execute ( processCount ) :
     pool = multiprocessing.Pool ( processes = processCount )
     results = [ pool.apply_async ( processSlice , args = ( i , sliceSize , delta ) ) for i in range ( 0 , processCount ) ]
     pool.close ( )
-    # pool.join ( ) # Do not need to syncronize the processes, the get will do that by blocking.
-    results = [ item.get ( ) for item in results ]
-    pi = 4.0 * sum ( results ) * delta
+    pi = 4.0 * delta * sum ( [ item.get ( ) for item in results ] )
     elapseTime = time.time ( ) - startTime
     print ( "==== Python Multiprocessing Pool pi = " + str ( pi ) )
-    print ( "==== Python Multiprocessing Pool iteration count = "+ str ( n ) )
+    print ( "==== Python Multiprocessing Pool iteration count = " + str ( n ) )
     print ( "==== Python Multiprocessing Pool elapse = " + str ( elapseTime ) )
     print ( "==== Python Multiprocessing Pool process count = " + str ( processCount ) )
     print ( "==== Python Multiprocessing Pool processor count = " + str ( multiprocessing.cpu_count ( ) ) )
-    print ( )
     
 if __name__ == '__main__' :
     execute ( 1 )
-    print
+    print ( )
     execute ( 2 )
-    print
+    print ( )
     execute ( 8 )
-    print
+    print ( )
     execute ( 32 )

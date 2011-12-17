@@ -3,7 +3,7 @@
 
 #  Calculation of Pi using quadrature. Sequential algorithm.  While loop.
 #
-#  Copyright © 2008–2010 Russel Winder
+#  Copyright © 2008–2011 Russel Winder
 
 import time
 
@@ -16,7 +16,7 @@ while i < n + 1 :
   x = ( i - 0.5 ) * delta
   sum += 1.0 / ( 1.0 + x * x )
   i += 1
-pi = 4.0 * sum * delta
+pi = 4.0 * delta * sum
 elapseTime = time.time ( ) - startTime
 print ( "==== Python Sequential While pi = " + str ( pi ) )
 print ( "==== Python Sequential While iteration count = " + str ( n ) )

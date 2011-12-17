@@ -4,7 +4,7 @@
 #  Calculation of Pi using quadrature.  Using the multiprocessing package with processes sending messages to
 #  a collecting queue.
 #
-#  Copyright © 2008–2010 Russel Winder
+#  Copyright © 2008–2011 Russel Winder
 
 import time
 import multiprocessing
@@ -25,14 +25,12 @@ def execute ( processCount ) :
     resultsQueue = multiprocessing.Queue ( )
     processes = [ multiprocessing.Process ( target = processSlice , args = ( i , sliceSize , delta , resultsQueue ) ) for i in xrange ( 0 , processCount ) ]
     for p in processes : p.start ( )
-    # for p in processes : p.join ( ) # Do not need to syncronize the processes, the get will do that by blocking.
-    results = [ resultsQueue.get ( ) for i in xrange ( 0 , processCount ) ]
-    pi = 4.0 * sum ( results ) * delta
+    pi = 4.0 * delta * sum ( [ resultsQueue.get ( ) for i in xrange ( 0 , processCount ) ] )
     elapseTime = time.time ( ) - startTime
     print ( "==== Python Multiprocessing Process pi = " + str ( pi ) )
-    print ( "==== Python Multiprocessing Process iteration count = "+ str ( n ) )
+    print ( "==== Python Multiprocessing Process iteration count = " + str ( n ) )
     print ( "==== Python Multiprocessing Process elapse = " + str ( elapseTime ) )
-    print ( "==== Python Multiprocessing Process process count = "+ str ( processCount ) )
+    print ( "==== Python Multiprocessing Process process count = " + str ( processCount ) )
     print ( "==== Python Multiprocessing Process processor count = " + str ( multiprocessing.cpu_count ( ) ) )
 
 if __name__ == '__main__' :

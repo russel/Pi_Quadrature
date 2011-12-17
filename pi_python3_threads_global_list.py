@@ -5,7 +5,7 @@
 #  the results.  However it is not clear that that operation is atomic so we use a Queue as the way of
 #  receiving results since that has the necessary guarantees to be thread-safe.
 #
-#  Copyright © 2008–2010 Russel Winder
+#  Copyright © 2008–2011 Russel Winder
 
 import time
 import threading
@@ -27,12 +27,12 @@ def execute ( threadCount ) :
     threads = [ threading.Thread ( target = processSlice , args = ( i , sliceSize , delta ) ) for i in range ( 0 , threadCount ) ]
     for thread in threads : thread.start ( )
     for thread in threads : thread.join ( )
-    pi =  4.0 * sum ( results ) * delta
+    pi =  4.0 * delta *  sum ( results )
     elapseTime = time.time ( ) - startTime
     print ( "==== Python Threads pi = " + str ( pi ) )
     print ( "==== Python Threads iteration count = " + str ( n ) )
     print ( "==== Python Threads elapse = " + str ( elapseTime ) )
-    print ( "==== Python Threads thread count = "+ str ( threadCount ) )
+    print ( "==== Python Threads thread count = " + str ( threadCount ) )
 
 if __name__ == '__main__' :
     execute ( 1 )

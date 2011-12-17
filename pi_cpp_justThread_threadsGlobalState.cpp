@@ -35,7 +35,7 @@ void execute ( const int numberOfThreads ) {
   sum = 0.0 ;
   for ( auto i = 0 ; i < numberOfThreads ; ++i ) { threads[i] = std::thread ( std::bind ( partialSum , i , sliceSize , delta ) ) ; }
   for ( auto i = 0 ; i < numberOfThreads ; ++i ) { threads[i].join ( ) ; }
-  const auto pi = 4.0 * sum * delta ;
+  const auto pi = 4.0 * delta * sum ;
   const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ Just::Thread threads pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ Just::Thread threads iteration count = " << n << std::endl ;

@@ -29,7 +29,7 @@ int main ( int ac , char * * av ) { // MPI requires writeable access to these pa
   MPI::COMM_WORLD.Reduce ( &localSum , &sum , 1 , MPI::DOUBLE , MPI::SUM , 0 ) ;
   MPI::Finalize ( ) ;
   if ( myId == 0 ) {
-    const auto pi = 4.0 * sum * delta ;
+    const auto pi = 4.0 * delta * sum ;
     const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
     std::cout << "==== C++ MPI pi = " << std::setprecision ( 18 ) << pi << std::endl ;
     std::cout << "==== C++ MPI iteration count = " << n << std::endl ;

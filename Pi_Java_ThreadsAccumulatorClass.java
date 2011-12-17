@@ -37,7 +37,7 @@ public class Pi_Java_ThreadsAccumulatorClass {
       try { t.join ( ) ; }
       catch ( final InterruptedException ie ) { throw new RuntimeException ( "Got an InterruptedException joining a thread." , ie ) ; }
     }
-    final double pi = 4.0 * accumulator.getSum ( ) * delta ;
+    final double pi = 4.0 * delta * accumulator.getSum ( ) ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     System.out.println ( "==== Java Threads Accumulator Class pi = " + pi ) ;
     System.out.println ( "==== Java Threads Accumulator Class iteration count = " + n ) ;

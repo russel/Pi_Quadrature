@@ -2,7 +2,7 @@
 
   Caml implementation of the sequential Pi by Quadrature using an imperative approach.
   
-  Copyright © 2009-10 Russel Winder
+  Copyright © 2009–2011 Russel Winder
 
 *)
 
@@ -15,7 +15,7 @@ let main ( ) =
     let x = ( ( float_of_int i ) -. 0.5 ) *. delta in
     sum := ! sum +. ( 1.0 /. ( 1.0 +. x *. x ) )
   done ;
-  let pi = 4.0 *. ! sum *. delta  in
+  let pi = 4.0 *. delta *. ! sum in
   let elapseTime = Sys.time ( ) -. startTime in
   Printf.printf "==== OCaml Sequential Imperative pi = %.18f\n" pi ;
   Printf.printf "==== OCaml Sequential Imperative iteration count = %d\n" n ;

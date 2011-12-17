@@ -23,7 +23,7 @@ func main ( ) {
 		x := ( float64 ( i ) - 0.5 ) * delta
 		sum += 1.0 / ( 1.0 + x * x )
 	}
-	pi := 4.0 * sum * delta
+	pi := 4.0 * delta * sum
 	elapseTime := float64 ( time.Nanoseconds ( ) - startTime ) / 1e9
 	fmt.Printf ( "==== Go Sequential pi = %.18f\n" , pi ) ;
 	fmt.Printf ( "==== Go Sequential iteration count = %d\n" ,  n ) ;

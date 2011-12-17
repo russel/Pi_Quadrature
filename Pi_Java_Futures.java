@@ -42,7 +42,7 @@ public class Pi_Java_Futures {
       catch ( final InterruptedException ie ) { throw new RuntimeException ( ie ) ; } 
       catch ( final ExecutionException ee ) { throw new RuntimeException ( ee ) ; } 
     }
-    final double pi = 4.0 * sum * delta ;
+    final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     executor.shutdown ( ) ;
     System.out.println ( "==== Java Futures pi = " + pi ) ;

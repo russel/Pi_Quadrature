@@ -2,7 +2,7 @@
  *  A D program to calculate Pi using quadrature as a sequential map algorithm.  This is really just here as
  *  a comparison against the parallel map version.
  *
- *  Copyright © 2010--2011 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
 
 import std.algorithm ;

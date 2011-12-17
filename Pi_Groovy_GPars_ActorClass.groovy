@@ -62,8 +62,9 @@ public class Pi_Groovy_GPars_ActorClass {
     accumulator.start ( )
     for ( c in computors ) { c.start ( ) }
     accumulator.join ( )
+    final pi = 4.0d * delta * accumulator.sum
     final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-    println ( '==== Groovy GPars ActorClass pi = ' + 4.0d * accumulator.sum * delta )
+    println ( '==== Groovy GPars ActorClass pi = ' + pi )
     println ( '==== Groovy GPars ActorClass iteration count = ' + n )
     println ( '==== Groovy GPars ActorClass elapse = ' + elapseTime )
     println ( '==== Groovy GPars ActorClass processor count = ' + Runtime.runtime.availableProcessors ( ) ) ;

@@ -27,12 +27,12 @@ def execute ( threadCount ) :
     threads = [ threading.Thread ( target = processSlice , args = ( i , sliceSize , delta , results ) ) for i in xrange ( 0 , threadCount ) ]
     for thread in threads : thread.start ( )
     for thread in threads : thread.join ( )
-    pi =  4.0 * sum ( [ results.get ( ) for i in xrange ( threadCount ) ] ) * delta
+    pi =  4.0 * delta * sum ( [ results.get ( ) for i in xrange ( threadCount ) ] )
     elapseTime = time.time ( ) - startTime
     print ( "==== Python Threads pi = " + str ( pi ) )
     print ( "==== Python Threads iteration count = " + str ( n ) )
     print ( "==== Python Threads elapse = " + str ( elapseTime ) )
-    print ( "==== Python Threads thread count = "+ str ( threadCount ) )
+    print ( "==== Python Threads thread count = " + str ( threadCount ) )
 
 if __name__ == '__main__' :
     execute ( 1 )

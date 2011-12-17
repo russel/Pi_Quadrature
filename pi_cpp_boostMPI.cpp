@@ -28,7 +28,7 @@ int main ( int ac , char * * av ) { // MPI requires writeable access to these pa
   auto sum = 0.0 ;
   boost::mpi::reduce ( world , localSum , sum , std::plus<double> ( ) , 0 ) ;
   if ( myId == 0 ) {
-    const auto pi = 4.0 * sum * delta ;
+    const auto pi = 4.0 * delta * sum ;
     const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
     std::cout << "==== C++ Boost MPI pi = " << std::setprecision ( 18 ) << pi << std::endl ;
     std::cout << "==== C++ Boost MPI iteration count = " << n << std::endl ;

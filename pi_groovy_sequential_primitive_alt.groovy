@@ -22,7 +22,7 @@ for ( int i = 1i ; i <= n ; ++i ) {
   final double x = ( i - 0.5d ) * delta
   sum += 1.0d / ( 1.0d + x * x )
 }
-final double pi = 4.0d * sum * delta
+final double pi = 4.0d * delta * sum
 final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
 println ( "==== Groovy Sequential Primitive Alt pi = " + pi )
 println ( "==== Groovy Sequential Primitive Alt iteration count = " + n )

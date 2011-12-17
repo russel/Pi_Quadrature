@@ -1,7 +1,7 @@
 /*
  *  A C function to calculate a slice of the overall calculation of Pi using quadrature.
  *
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 double processSlice ( int id , int sliceSize , double delta ) {

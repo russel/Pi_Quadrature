@@ -24,7 +24,7 @@ void execute ( const int numberOfThreads ) {
       sum += 1.0 / ( 1.0 + x * x ) ;
     }
   }
-  const auto pi = 4.0 * sum * delta ;
+  const auto pi = 4.0 * delta * sum ;
   const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ OpenMP Explicit pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ OpenMP Explicit iteration count = " << n << std::endl ;

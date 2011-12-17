@@ -4,7 +4,7 @@
  *  Calculation of Pi using quadrature realized with a basic sequential algorithm and enforcing primitive
  *  types throughout.
  *
- *  Copyright © 2008–2010 Russel Winder
+ *  Copyright © 2008–2011 Russel Winder
  */
 
 // This is Groovy and so slow compared to Java.  Use primitive types though so as to avoid really bad
@@ -20,7 +20,7 @@ def execute ( ) {
   final startTime = System.nanoTime ( )
   double sum = 0.0d
   for ( /* Long */ int i in 1i .. n ) { sum += 1.0d / ( 1.0d + ( ( i - 0.5d ) * delta ) ** 2i ) }
-  final double pi = 4.0d * sum * delta
+  final double pi = 4.0d * delta * sum
   final elapseTime =   ( System.nanoTime ( ) - startTime ) / 1e9
   println ( "==== Groovy Sequential Primitives Warm Up pi = " + pi )
   println ( "==== Groovy Sequential Primitives Warm Up iteration count = " + n ) 

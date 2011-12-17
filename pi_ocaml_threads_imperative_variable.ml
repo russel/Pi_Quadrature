@@ -4,7 +4,7 @@
   library.  According to the OCaml manual you can use system threads but it is always by timesharing --
   which seems a bit inconsistent!
 
-  Copyright © 2010 Russel Winder
+  Copyright © 2010–2011 Russel Winder
 
 *)
 
@@ -34,7 +34,7 @@ let execute numberOfThreads =
     processes.(i) <- Thread.create processSlice { start = 1 + i * sliceSize ; finish = ( i + 1 ) * sliceSize ; delta = delta }
   done ;
   Array.iter Thread.join processes ;
-  let pi = 4.0 *. ! sum *. delta  in
+  let pi = 4.0 *.  delta *. ! sum  in
   let elapseTime = Sys.time ( ) -. startTime in
   Printf.printf "==== OCaml Threads Imperative pi = %.18f\n" pi ;
   Printf.printf "==== OCaml Threads Imperative iteration count = %d\n" n ;

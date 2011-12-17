@@ -42,7 +42,7 @@ public class Pi_Java_ForkJoinCollection {
       catch ( final ExecutionException ee ) { throw new RuntimeException ( ee ) ; } 
     }
     pool.shutdown ( ) ;
-    final double pi = 4.0 * sum * delta ;
+    final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     System.out.println ( "==== Java ForkJoin Collection pi = " + pi ) ;
     System.out.println ( "==== Java ForkJoin Collection iteration count = " + n ) ;

@@ -40,7 +40,7 @@ PROC execute ( VAL INT numberOfProcesses , CHAN BYTE out ! )
             sum := sum + item
       PAR i = 0 FOR numberOfProcesses
         calculator ( queues[i] ! , i , sliceSize , delta )
-    sum := 4.0 * ( sum * delta )
+    sum := 4.0 * ( delta * sum )
     time ? endTime
     elapseTime := ( REAL64 ROUND ( endTime - startTime ) ) / 1000000.0
     out.string ( "==== occam Multiple Channels pi = " , 0 , out ! )

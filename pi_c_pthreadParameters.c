@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as a threads-based algorithm.
  *
- *  Copyright © 2009--2011 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 #include <stdio.h>
@@ -54,7 +54,7 @@ void execute ( const int numberOfThreads ) {
   pthread_attr_destroy ( &attributes ) ;
   int status ;
   for ( int i = 0 ; i < numberOfThreads ; ++i ) { pthread_join ( threads[i] , (void **) &status ) ; }
-  const double pi = 4.0 * sum * delta ;
+  const double pi = 4.0 * delta * sum ;
   const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   printf ( "==== C PThread parameters pi = %.18lf\n" , pi ) ;
   printf ( "==== C PThread parameters iteration count = %d\n" ,  n ) ;

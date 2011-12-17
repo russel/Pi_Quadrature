@@ -41,7 +41,7 @@ void execute ( final int numberOfTasks ) {
     @Override public void run ( ) {
       double sum = 0.0d
       for ( int i in 0i ..< numberOfTasks ) { sum += (double) channel.in ( ).read ( ) }
-      final double pi = 4.0d * sum * delta
+      final double pi = 4.0d * delta * sum
       final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
       println ( '==== Groovy GPars CSP Single pi = ' + pi )
       println ( '==== Groovy GPars CSP Single iteration count = ' + n )

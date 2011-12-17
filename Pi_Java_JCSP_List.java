@@ -49,7 +49,7 @@ public class Pi_Java_JCSP_List {
         @Override public void run ( ) {
           double sum = 0.0 ;
           for ( One2OneChannel<Double> c : channels ) {  sum += c.in ( ).read ( ) ; }
-          final double pi = 4.0 * sum * delta ;
+          final double pi = 4.0 * delta * sum ;
           final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
           System.out.println ( "==== Java JCSP List pi = " + pi ) ;
           System.out.println ( "==== Java JCSP List iteration count = " + n ) ;

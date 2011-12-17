@@ -1,7 +1,7 @@
 /*
  *  A D program to calculate Pi using quadrature as a parallel map algorithm.
  *
- *  Copyright © 2010--2011 Russel Winder
+ *  Copyright © 2010–2011 Russel Winder
  */
 
 //  std.parallelism is currently not in Phobos2, though it is being voted on for inclusion in Phobos2, so

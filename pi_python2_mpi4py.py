@@ -24,7 +24,7 @@ for i in xrange ( 1 + myId * sliceSize , ( myId + 1 ) * sliceSize ) :
 sum = numpy.array ( [ 0.0 ] )
 comm.Reduce ( ( localSum , MPI.DOUBLE ) , ( sum , MPI.DOUBLE ) )
 if myId == 0 :
-    pi = 4.0 * sum[0] * delta
+    pi = 4.0 * delta * sum[0]
     elapseTime = time.time ( ) - startTime
     print ( "==== Python MPI pi = " + str ( pi ) )
     print ( "==== Python MPI iteration count = " + str ( n ) )

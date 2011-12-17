@@ -1,6 +1,6 @@
 !  A Fortran program to calculate Pi using quadrature as a sequential algorithm.
 !
-!  Copyright © 2008--2010 Russel Winder
+!  Copyright © 2008–2011 Russel Winder
 
 program pi
   implicit none
@@ -13,7 +13,7 @@ program pi
   do i = 1 , n
      sum = sum + 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 ) 
   end do
-  pi_ = 4.0 * sum * delta
+  pi_ = 4.0 * delta * sum
   call system_clock ( endTime , endFrequency )
   elapseTime = endTime - startTime
   elapseTime = elapseTime / startFrequency

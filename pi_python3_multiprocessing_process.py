@@ -24,14 +24,12 @@ def execute ( processCount ) :
     resultsQueue = multiprocessing.Queue ( )
     processes = [ multiprocessing.Process ( target = processSlice , args = ( i , sliceSize , delta , resultsQueue ) ) for i in range ( 0 , processCount ) ]
     for p in processes : p.start ( )
-    # for p in processes : p.join ( ) # Do not need to syncronize the processes, the get will do that by blocking.
-    results = [ resultsQueue.get ( ) for i in range ( 0 , processCount ) ]
-    pi = 4.0 * sum ( results ) * delta
+    pi = 4.0 * delta * sum ( [ resultsQueue.get ( ) for i in range ( 0 , processCount ) ] )
     elapseTime = time.time ( ) - startTime
     print ( "==== Python Multiprocessing Process pi = " + str ( pi ) )
-    print ( "==== Python Multiprocessing Process iteration count = "+ str ( n ) )
+    print ( "==== Python Multiprocessing Process iteration count = " + str ( n ) )
     print ( "==== Python Multiprocessing Process elapse = " + str ( elapseTime ) )
-    print ( "==== Python Multiprocessing Process process count = "+ str ( processCount ) )
+    print ( "==== Python Multiprocessing Process process count = " + str ( processCount ) )
     print ( "==== Python Multiprocessing Process processor count = " + str ( multiprocessing.cpu_count ( ) ) )
     print ( )
 

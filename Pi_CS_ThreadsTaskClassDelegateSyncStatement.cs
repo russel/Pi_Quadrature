@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a fork/join approach with threads.
  *
- *  Copyright © 2009 Russel Winder
+ *  Copyright © 2009,2011 Russel Winder
  */
 public class Pi_CS_ThreadsTaskClassDelegateSyncStatement {
   private static double sum = 0.0 ;
@@ -36,7 +36,7 @@ public class Pi_CS_ThreadsTaskClassDelegateSyncStatement {
     }
     foreach ( System.Threading.Thread t in threads ) { t.Start ( ) ; }
     foreach ( System.Threading.Thread t in threads ) { t.Join ( ) ; }
-    double pi = 4.0 * sum * delta ;
+    double pi = 4.0 * delta * sum ;
     double elapseTime = ( System.DateTime.Now.Ticks - startTimeHundredsOfNanos ) / 1e7 ;
     System.Console.WriteLine ( "==== C# Threads Task Class Delegate Sync Statement pi = " + pi ) ;
     System.Console.WriteLine ( "==== C# Threads Task Class Delegate Sync Statement iteration count = " + n ) ;

@@ -38,7 +38,7 @@ public class Pi_Java_ThreadsSynchronizedStatement {
       try { t.join ( ) ; }
       catch ( final InterruptedException ie ) { throw new RuntimeException ( "Got an InterruptedException joining a thread." , ie ) ; }
     }
-    final double pi = 4.0 * sum * delta ;
+    final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     System.out.println ( "==== Java Threads Synchronized Statement pi = " + pi ) ;
     System.out.println ( "==== Java Threads Synchronized Statement iteration count = " + n ) ;

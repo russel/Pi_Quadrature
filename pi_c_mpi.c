@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature.  This is an SPMD realization using OpenMPI.
  *
- *  Copyright © 2008--2011 Russel Winder
+ *  Copyright © 2008–2011 Russel Winder
  */
 
 #include <stdio.h>
@@ -28,7 +28,7 @@ int main ( int ac , char ** av ) { // MPI requires write access to these paramet
   MPI_Reduce ( &localSum , &sum , 1 , MPI_DOUBLE , MPI_SUM , 0 , MPI_COMM_WORLD ) ;
   MPI_Finalize ( ) ;
   if ( myId == 0 ) {
-    const double pi = 4.0 * sum * delta ;
+    const double pi = 4.0 * delta * sum ;
     const double elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
     printf ( "==== C MPI pi = %.18lf\n" , pi ) ;
     printf ( "==== C MPI iteration count = %d\n" , n ) ;

@@ -2,7 +2,7 @@
 
 #  Calculation of Pi using quadrature.
 #
-#  Copyright © 2008--2011 Russel Winder 
+#  Copyright © 2008–2011 Russel Winder 
 
 import os
 import platform

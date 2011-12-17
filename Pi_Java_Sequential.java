@@ -14,7 +14,7 @@ public class Pi_Java_Sequential {
       final double x = ( i - 0.5 ) * delta ;
       sum += 1.0 / ( 1.0 + x * x ) ;
     }
-    final double pi = 4.0 * sum * delta ;
+    final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     System.out.println ( "==== Java Sequential pi = " + pi ) ;
     System.out.println ( "==== Java Sequential iteration count = " + n ) ;

@@ -1,6 +1,6 @@
 %  Calculation of Pi using quadrature. Sequential algorithm.
 %
-%  Copyright © 2008-9 Russel Winder
+%  Copyright © 2008–2009,2011 Russel Winder
 
 -module ( pi_erlang_sequential ) .
 -export ( [ start / 0 ] ) .

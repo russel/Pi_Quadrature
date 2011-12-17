@@ -4,7 +4,7 @@
 #  Calculation of Pi using quadrature. Using the multiprocessing package to provide a process pool to enable
 #  asynchronous function calls very akin to futures..
 #
-#  Copyright © 2008–2010 Russel Winder
+#  Copyright © 2008–2011 Russel Winder
 
 import time
 import multiprocessing
@@ -24,12 +24,11 @@ def execute ( processCount ) :
     pool = multiprocessing.Pool ( processes = processCount )
     results = [ pool.apply_async ( processSlice , args = ( i , sliceSize , delta ) ) for i in xrange ( 0 , processCount ) ]
     pool.close ( )
-    # pool.join ( ) # Do not need to syncronize the processes, the get will do that by blocking.
     results = [ item.get ( ) for item in results ]
-    pi = 4.0 * sum ( results ) * delta
+    pi = 4.0 * delta * sum ( results )
     elapseTime = time.time ( ) - startTime
     print ( "==== Python Multiprocessing Pool pi = " + str ( pi ) )
-    print ( "==== Python Multiprocessing Pool iteration count = "+ str ( n ) )
+    print ( "==== Python Multiprocessing Pool iteration count = " + str ( n ) )
     print ( "==== Python Multiprocessing Pool elapse = " + str ( elapseTime ) )
     print ( "==== Python Multiprocessing Pool process count = " + str ( processCount ) )
     print ( "==== Python Multiprocessing Pool processor count = " + str ( multiprocessing.cpu_count ( ) ) )

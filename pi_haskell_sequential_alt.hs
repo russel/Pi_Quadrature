@@ -1,13 +1,13 @@
 --  Haskell implementation of Pi by Quadrature
 --
---  Copyright © 2009--2011 Russel Winder
+--  Copyright © 2009–2011 Russel Winder
 
 module Main where
 
 import Data.Time.Clock ( getCurrentTime , diffUTCTime )
 
 piIter :: Int -> Double -> Double -> Double
-piIter 0 delta accumulator = 4.0 * accumulator * delta
+piIter 0 delta accumulator = 4.0 * delta * accumulator
 piIter n delta accumulator =
     let
         nMinus1 = n -1

@@ -3,7 +3,7 @@
 
 #  Calculation of Pi using quadrature. Sequential algorithm.
 #
-#  Copyright © 2008-9 Russel Winder
+#  Copyright © 2008–2009,2011 Russel Winder
 
 require 'time'
 
@@ -17,7 +17,7 @@ while i <= n do
   sum += 1.0 / ( 1.0 + x * x )
   i += 1
 end
-pi = 4.0 * sum * delta
+pi = 4.0 * delta * sum
 elapseTime = Time.now - startTime
 puts( "==== Ruby Sequential Iteration pi = " + pi.to_s )
 puts( "==== Ruby Sequential Iteration iteration count = " + n.to_s )

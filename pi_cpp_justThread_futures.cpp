@@ -37,7 +37,7 @@ void execute ( const int numberOfThreads ) {
   }
   auto sum = 0.0 ;
   for ( auto i = 0 ; i < numberOfThreads ; ++i ) { sum += futures[i].get ( ) ; }
-  const auto pi = 4.0 * sum * delta ;
+  const auto pi = 4.0 * delta * sum ;
   const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ Just::Thread futures pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ Just::Thread futures iteration count = " << n << std::endl ;

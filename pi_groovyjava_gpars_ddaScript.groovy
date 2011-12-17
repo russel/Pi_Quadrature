@@ -37,7 +37,7 @@ void execute ( final int actorCount ) {
     Actors.actor { accumulator << ( new ProcessSlice ( localIndex , sliceSize , delta ) ).compute ( ) }
   }
   accumulator.join ( )
-  final double pi = 4.0d * accumulator.sum * delta
+  final double pi = 4.0d * delta * accumulator.sum
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   println ( '==== Groovy/Java GPars DynamicDispatchActorScript pi = ' + pi )
   println ( '==== Groovy/Java GPars DynamicDispatchActorScript iteration count = ' + n )

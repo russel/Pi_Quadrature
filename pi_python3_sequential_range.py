@@ -2,7 +2,7 @@
 
 #  Calculation of Pi using quadrature. Sequential algorithm.  For loop with a range.
 #
-#  Copyright © 2008–2010 Russel Winder
+#  Copyright © 2008–2011 Russel Winder
 
 import time
 
@@ -16,7 +16,7 @@ sum = 0.0
 for i in range ( 1 , n + 1 ) :
   x = ( i - 0.5 ) * delta
   sum += 1.0 / ( 1.0 + x * x )
-pi = 4.0 * sum * delta
+pi = 4.0 * delta * sum
 elapseTime = time.time ( ) - startTime
 print ( "==== Python Sequential For/Range pi = " + str ( pi ) )
 print ( "==== Python Sequential For/Range iteration count = " + str ( n ) )

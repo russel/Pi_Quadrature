@@ -4,7 +4,7 @@
 #  Calculation of Pi using quadrature.  Use the Parallel Python package.  Parallel Python appears not to be
 #  packaged for use with Python 3 in the Ubuntu package repository.
 #
-#  Copyright © 2008–2010 Russel Winder
+#  Copyright © 2008–2011 Russel Winder
 
 import time
 
@@ -26,11 +26,10 @@ def execute ( processCount ) :
     sliceSize = n / processCount
     server = pp.Server ( secret = 'blahblahblah' )
     jobs = [ server.submit ( processSlice , ( i , sliceSize , delta ) ) for i in xrange ( 0, processCount ) ]
-    results = [ job ( ) for job in jobs ]
-    pi = 4.0 * sum ( results ) * delta
+    pi = 4.0 * delta * sum ( [ job ( ) for job in jobs ] )
     elapseTime = time.time ( ) - startTime
     print ( "==== Python PP pi = " + str ( pi ) )
-    print ( "==== Python PP iteration count = "+ str ( n ) )
+    print ( "==== Python PP iteration count = " + str ( n ) )
     print ( "==== Python PP elapse = " + str ( elapseTime ) )
     print ( "==== Python PP process count = " + str ( processCount ) )
     print ( "==== Python PP processor count = " + str ( server.get_ncpus ( ) ) )

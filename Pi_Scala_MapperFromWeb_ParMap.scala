@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a parallel map.
  *
- *  Copyright © 2009–2010 Russel Winder
+ *  Copyright © 2009–2011 Russel Winder
  */
 
 import scala.actors.Futures

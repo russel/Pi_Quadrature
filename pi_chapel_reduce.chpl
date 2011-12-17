@@ -24,7 +24,7 @@ proc execute ( param numberOfTasks : int ) {
   }
   // Prior to version 1.1 of Chapel, this is always handled in a single thread.
   // From version 1.1, it is correctly parallelized.
-  const pi = 4.0 * ( + reduce [ i in eachProcessor ] partialSum ( i ) ) * delta ;
+  const pi = 4.0 * delta * ( + reduce [ i in eachProcessor ] partialSum ( i ) ) ;
   timer.stop ( ) ;
   writeln ( "==== Chapel Reduce pi = " , pi ) ;
   writeln ( "==== Chapel Reduce iteration count = " , n ) ;

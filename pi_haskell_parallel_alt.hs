@@ -1,6 +1,6 @@
 --  Haskell implementation of Pi by Quadrature.  This implementation tries to parallelize.
 --
---  Copyright © 2009--2011 Russel Winder
+--  Copyright © 2009–2011 Russel Winder
 
 module Main where
 
@@ -10,7 +10,7 @@ import Control.Parallel ( par )
 
 piIter :: Int -> Int -> Double -> Double -> Double
 piIter  n to delta accumulator
-    | n > to = 4.0 * accumulator * delta
+    | n > to = 4.0 * delta * accumulator
     | otherwise = 
         let
           nPlus1 = n + 1

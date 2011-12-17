@@ -42,7 +42,7 @@ void execute ( const int numberOfThreads ) {
   sum = 0.0 ;
   for ( auto i = 0 ; i < numberOfThreads ; ++i ) { threads.create_thread ( PartialSum ( i , sliceSize , delta ) ) ; }
   threads.join_all ( ) ;
-  const auto pi = 4.0 * sum * delta ;
+  const auto pi = 4.0 * delta * sum ;
   const auto elapseTime = ( microsecondTime ( ) - startTimeMicros ) / 1e6 ;
   std::cout << "==== C++ Boost.Thread pi = " << std::setprecision ( 18 ) << pi << std::endl ;
   std::cout << "==== C++ Boost.Thread iteration count = " << n << std::endl ;

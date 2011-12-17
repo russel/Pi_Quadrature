@@ -23,7 +23,7 @@ void execute ( final int actorCount ) {
     when { double result ->
       sum +=  result
       if ( ++count == actorCount ) {
-        final double pi = 4.0d * sum * delta
+        final double pi = 4.0d * delta * sum
         final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
         println ( '==== Groovy/Java GPars ActorScript pi = ' + pi )
         println ( '==== Groovy/Java GPars ActorScript iteration count = ' + n )

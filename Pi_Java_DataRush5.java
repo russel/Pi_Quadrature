@@ -68,13 +68,13 @@ public class Pi_Java_DataRush5 {
         sum += input.asDouble ( ) ;
         input.stepNext ( ) ; // Should be at EOD
       }
-      final double pi = 4.0 * sum * delta ;
+      final double pi = 4.0 * delta * sum ;
       final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-      System.out.println("==== Java DataRush5 pi = " + pi ) ;
-      System.out.println("==== Java DataRush5 iteration count = " + n ) ;
-      System.out.println("==== Java DataRush5 elapse = " + elapseTime ) ;
-      System.out.println("==== Java DataRush5 processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-      System.out.println("==== Java DataRush5 task count = " + ( inputs.length + 1 ) ) ;
+      System.out.println ( "==== Java DataRush5 pi = " + pi ) ;
+      System.out.println ( "==== Java DataRush5 iteration count = " + n ) ;
+      System.out.println ( "==== Java DataRush5 elapse = " + elapseTime ) ;
+      System.out.println ( "==== Java DataRush5 processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
+      System.out.println ( "==== Java DataRush5 task count = " + ( inputs.length + 1 ) ) ;
     }
   }
   private static final class PiOperator extends DataflowOperator {
