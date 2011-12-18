@@ -11,7 +11,7 @@ final delta = 1.0 / n
 final startTime = System.nanoTime ( )
 final pi = 4 * delta * ( 1 .. n ).sum { i ->
   final x = ( i - 0.5 ) * delta
-  sum += 1 / ( 1 + x * x )
+  1 / ( 1 + x * x )
 }
 final elapseTime =   ( System.nanoTime ( ) - startTime ) / 1e9
 println ( "==== Groovy Sequential BigDecimal Sum Variable pi = " + pi )
