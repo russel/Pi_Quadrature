@@ -183,7 +183,7 @@ haskellEnvironment = Environment ( tools = [ 'haskell' ] )
 
 for item in Glob ( 'pi_haskell_*.hs' ) :
     root = os.path.splitext ( item.name ) [0]
-    options = [ ]
+    options = [ '-rtsopts' ]
     variant = root.split ( '_' )[2]
     if variant == 'threads' :
         options.append ( '-threaded' )
