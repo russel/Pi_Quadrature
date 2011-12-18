@@ -24,8 +24,7 @@ def execute ( processCount ) :
     pool = multiprocessing.Pool ( processes = processCount )
     results = [ pool.apply_async ( processSlice , args = ( i , sliceSize , delta ) ) for i in xrange ( 0 , processCount ) ]
     pool.close ( )
-    results = [ item.get ( ) for item in results ]
-    pi = 4.0 * delta * sum ( results )
+    pi = 4.0 * delta * sum ( [ item.get ( ) for item in results ] )
     elapseTime = time.time ( ) - startTime
     print ( "==== Python Multiprocessing Pool pi = " + str ( pi ) )
     print ( "==== Python Multiprocessing Pool iteration count = " + str ( n ) )

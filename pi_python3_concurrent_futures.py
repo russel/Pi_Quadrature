@@ -23,21 +23,19 @@ def execute ( processCount ) :
     sliceSize = n // processCount
     with concurrent.futures.ProcessPoolExecutor ( max_workers = processCount ) as executor :
         results = [ executor.submit ( processSlice , i , sliceSize , delta ) for i in range ( processCount ) ]
-    results = [ item.result ( ) for item in results ]
-    pi = 4.0 * delta * sum ( results )
+    pi = 4.0 * delta * sum ( [ item.result ( ) for item in results ] )
     elapseTime = time.time ( ) - startTime
     print ( "==== Python Concurrent Futures pi = " + str ( pi ) )
     print ( "==== Python Concurrent Futures iteration count = " + str ( n ) )
     print ( "==== Python Concurrent Futures elapse = " + str ( elapseTime ) )
     print ( "==== Python Concurrent Futures process count = " + str ( processCount ) )
     print ( "==== Python Concurrent Futures processor count = " + str ( multiprocessing.cpu_count ( ) ) )
-    print ( )
 
 if __name__ == '__main__' :
     execute ( 1 )
-    print
+    print ( )
     execute ( 2 )
-    print
+    print ( )
     execute ( 8 )
-    print
+    print ( )
     execute ( 32 )
