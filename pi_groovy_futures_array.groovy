@@ -37,8 +37,7 @@ def execute ( final int numberOfTasks ) {
                                      }
                                    } )
   }
-  final double sum = futures.inject ( 0.0d ) { l , r -> l + r.get ( ) } 
-  final double pi = 4.0d * delta * sum
+  final double pi = 4.0d * delta * futures.sum { f -> f.get ( ) }
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   executor.shutdown ( )
   println ( "==== Groovy Futures Array pi = " + pi )

@@ -37,9 +37,7 @@ void execute ( int numberOfTasks ) {
   }
   processes << new CSProcess ( ) {
     @Override public void run ( ) {
-      double sum = 0.0d
-      for ( int i in 0i ..< numberOfTasks ) { sum += (double) channel.in ( ).read ( ) }
-      final double pi = 4.0d * delta * sum
+      final double pi = 4.0d * delta * ( 0i ..< numberOfTasks ).sum { (double) channel.in ( ).read ( ) }
       final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
       println ( "==== Groovy JCSP Single pi = " + pi )
       println ( "==== Groovy JCSP Single iteration count = " + n )

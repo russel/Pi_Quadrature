@@ -25,9 +25,7 @@ void execute ( final int numberOfTasks ) {
   for ( int i in 0i ..< numberOfTasks ) { processes << new ProcessSlice_JCSP ( i , sliceSize , delta , channels[i].out ( ) ) }
   processes << new CSProcess ( ) {
     @Override public void run ( ) {
-      double sum = 0.0d
-      for ( c in channels ) { sum += (double) c.in ( ).read ( ) }
-      final double pi = 4.0d * delta * sum
+      final double pi = 4.0d * delta * channels.sum { c -> (double) c.in ( ).read ( ) }
       final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
       println ( '==== Groovy/Java GPars CSP Multiple pi = ' + pi )
       println ( '==== Groovy/Java GPars CSP Multiple iteration count = ' + n )

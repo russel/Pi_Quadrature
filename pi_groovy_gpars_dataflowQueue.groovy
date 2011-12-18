@@ -29,9 +29,7 @@ void execute ( final int operatorCount ) {
       partialSums << sum
     }
   }
-  double sum = 0.0
-  for ( final i in 0 ..< operatorCount ) { sum += partialSums.val }
-  final double pi = 4.0d * delta * sum
+  final double pi = 4.0d * delta * ( 0 ..< operatorCount ).sum { partialSums.val }
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   println ( '==== Groovy GPars DataflowQueue pi = ' + pi )
   println ( '==== Groovy GPars DataflowQueue iteration count = ' + n )

@@ -24,6 +24,6 @@ for ( int i = 1i ; i <= n ; ++i ) {
 }
 final double pi = 4.0d * delta * sum
 final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-println ( "==== Groovy Sequential Primitive Alt pi = " + pi )
-println ( "==== Groovy Sequential Primitive Alt iteration count = " + n )
-println ( "==== Groovy Sequential Primitive Alt elapse = " + elapseTime )
+println ( "==== Groovy Sequential Primitive For Variable pi = " + pi )
+println ( "==== Groovy Sequential Primitive For Variable iteration count = " + n )
+println ( "==== Groovy Sequential Primitive For Variable elapse = " + elapseTime )
