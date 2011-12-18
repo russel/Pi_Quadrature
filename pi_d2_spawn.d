@@ -33,7 +33,10 @@ void execute ( immutable int numberOfTasks ) {
   //
   //auto tasks = map ! ( ( i ) { return spawn ( & partialSum , thisTid , i , sliceSize , delta ) ; } ) ( iota ( numberOfTasks ) ) ;
   auto tasks = new Tid[numberOfTasks] ;  
-  foreach ( i ; 0 .. numberOfTasks ) { tasks[i] = spawn ( & partialSum , thisTid , i , sliceSize , delta ) ; }
+  foreach ( i ; 0 .. numberOfTasks ) {
+    immutable ii = i ;
+    tasks[i] = spawn ( & partialSum , thisTid , ii , sliceSize , delta ) ;
+  }
   auto sum = 0.0 ;
   foreach ( task ; tasks ) { sum += receiveOnly ! double ( ) ; }
   immutable pi = 4.0 * delta * sum ;
