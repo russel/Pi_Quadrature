@@ -382,6 +382,9 @@ Depends ( 'run_pi_clojure_processSlice' , processSliceClasses )
 
 #  Groovy  ###########################################################################
 
+#  Most of the dependencies are handled with @Grab annotations in the Groovy source code.  However for the
+#  mixed Groovy/Java there needs to be more attention to the classpath for both comiplation and execution.
+
 groovyEnvironment = Environment ( tools = [ 'javac' ] , ENV = os.environ )
 
 dependsOnProcessSlice = [ ]
@@ -390,15 +393,14 @@ for item in Glob ( '*.groovy' ) :
     root = os.path.splitext ( item.name )[0]
     runTarget = 'run_' + root
     bits = root.split ( '_' )
+    runCommand = './$SOURCE'
     if bits[1] == 'groovyjava' :
-        if bits[3] == 'CSP' : dependsOnProcessSlice_JCSP.append ( runTarget )
+        if bits[3] == 'CSP' :
+            dependsOnProcessSlice_JCSP.append ( runTarget )
+            runCommand = 'groovy -cp .:' + groovyEnvironment['ENV']['HOME'] + '/lib/Java/jcsp.jar $SOURCE'
         else : dependsOnProcessSlice.append ( runTarget )
     elif bits[1] == 'GroovyJava' : dependsOnProcessSlice.append ( runTarget )
-    if len ( bits ) > 3 and bits[3] == 'CSP' :
-        jcspJarPath =  groovyEnvironment['ENV']['HOME'] + '/lib/Java/jcsp.jar'
-        addRunTarget ( groovyEnvironment.Command ( runTarget , item.name , 'groovy -cp .:{0} $SOURCE'.format ( jcspJarPath ) ) )
-    else :    
-        addRunTarget ( groovyEnvironment.Command ( 'run_' + root , item.name , './$SOURCE' ) )
+    addRunTarget ( groovyEnvironment.Command ( 'run_' + root , item.name , runCommand ) )
 
 Depends ( dependsOnProcessSlice_JCSP , processSliceJCSPClasses )
 Depends ( dependsOnProcessSlice , processSliceClasses )

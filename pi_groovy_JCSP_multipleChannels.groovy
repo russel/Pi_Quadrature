@@ -7,7 +7,7 @@
  *  Copyright © 2010–2011 Russel Winder
  */
 
-@Grab ( group = 'org.codehaus.jcsp' , module = 'jcsp' , version = '1.1-rc5' )
+@Grab ( 'org.codehaus.jcsp:jcsp:1.1-rc5' )
 
 import org.jcsp.lang.Channel
 import org.jcsp.lang.CSProcess

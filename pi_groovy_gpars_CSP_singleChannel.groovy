@@ -7,8 +7,7 @@
  *  Copyright © 2010–2011 Russel Winder
  */
 
-@Grab ( 'org.codehaus.jcsp:jcsp:1.1-rc5' )
-@Grab ( 'org.codehaus.gpars:gpars:1.0-SNAPSHOT' )
+@Grab ( 'org.codehaus.gpars:gpars:1.0-beta-1' )
 
 import org.jcsp.lang.Channel
 import org.jcsp.lang.CSProcess

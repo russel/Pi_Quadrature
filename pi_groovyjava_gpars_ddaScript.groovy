@@ -9,7 +9,7 @@
 //  This code provided by Václav Pech but private email.  It is based on the pre-existing Groovy/Java
 //  examples and makes use of the Java coded ProcessSlice class.
 
-@Grab ( 'org.codehaus.gpars:gpars:1.0-SNAPSHOT' )
+@Grab ( 'org.codehaus.gpars:gpars:1.0-beta-1' )
 
 import groovyx.gpars.actor.Actors
 import groovyx.gpars.actor.DynamicDispatchActor

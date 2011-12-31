@@ -6,7 +6,7 @@
  *  Copyright © 2011 Russel Winder
  */
 
-@Grab ( 'org.codehaus.gpars:gpars:1.0-SNAPSHOT' )
+@Grab ( 'org.codehaus.gpars:gpars:1.0-beta-1' )
 
 import groovyx.gpars.dataflow.DataflowVariable
 import static groovyx.gpars.dataflow.Dataflow.task
