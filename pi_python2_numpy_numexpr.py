@@ -21,6 +21,7 @@ def execute ( threadCount ) :
     print ( "==== Python Sequential NumPy NumExpr iteration count = " + str ( n ) )
     print ( "==== Python Sequential NumPy NumExpr elapse = " + str ( elapseTime ) )
     print ( "==== Python Sequential NumPy NumExpr thread count = " + str ( threadCount ) )
+    print ( "==== Python Sequential NumPy NumExpr number of processors = " + str ( numexpr.detect_number_of_cores ( ) ) )
     
 if __name__ == '__main__' :
     execute ( 1 )
