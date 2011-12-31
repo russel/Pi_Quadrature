@@ -15,6 +15,6 @@ def f ( s , i ) :
     return s + 1.0 / ( 1.0 + x * x )
 pi = 4.0 * delta * reduce ( f , xrange ( n ) , 0.0 )
 elapseTime = time.time ( ) - startTime
-print ( "==== Python Sequential Reduce pi = " + str ( pi ) )
-print ( "==== Python Sequential Reduce iteration count = " + str ( n ) )
-print ( "==== Python Sequential Reduce elapse = " + str ( elapseTime ) )
+print ( "==== Python Sequential Reduce Multiply pi = " + str ( pi ) )
+print ( "==== Python Sequential Reduce Multiply iteration count = " + str ( n ) )
+print ( "==== Python Sequential Reduce Multiply elapse = " + str ( elapseTime ) )

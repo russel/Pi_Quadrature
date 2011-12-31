@@ -13,10 +13,9 @@ delta = 1.0 / n
 startTime = time.time ( )
 sum = 0.0
 for i in xrange ( 1 , n + 1 ) :
-  x = ( i - 0.5 ) * delta
-  sum += 1.0 / ( 1.0 + x * x )
+  sum += 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 )
 pi = 4.0 * delta * sum
 elapseTime = time.time ( ) - startTime
-print ( "==== Python Sequential For/Xrange pi = " + str ( pi ) )
-print ( "==== Python Sequential For/Xrange iteration count = " + str ( n ) )
-print ( "==== Python Sequential For/Xrange elapse = " + str ( elapseTime ) )
+print ( "==== Python Sequential For/Xrange Power pi = " + str ( pi ) )
+print ( "==== Python Sequential For/Xrange Power iteration count = " + str ( n ) )
+print ( "==== Python Sequential For/Xrange Power elapse = " + str ( elapseTime ) )

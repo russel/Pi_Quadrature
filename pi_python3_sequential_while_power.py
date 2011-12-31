@@ -12,11 +12,10 @@ startTime = time.time ( )
 sum = 0.0
 i = 1
 while i < n + 1 :
-  x = ( i - 0.5 ) * delta
-  sum += 1.0 / ( 1.0 + x * x )
+  sum += 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 )
   i += 1
 pi = 4.0 * delta * sum
 elapseTime = time.time ( ) - startTime
-print ( "==== Python Sequential While pi = " + str ( pi ) )
-print ( "==== Python Sequential While iteration count = " + str ( n ) )
-print ( "==== Python Sequential While elapse = " + str ( elapseTime ) )
+print ( "==== Python Sequential While Power pi = " + str ( pi ) )
+print ( "==== Python Sequential While Power iteration count = " + str ( n ) )
+print ( "==== Python Sequential While Power elapse = " + str ( elapseTime ) )
