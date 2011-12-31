@@ -6,16 +6,17 @@
 
 import time
 
-n = 10000000 # 100 times fewer due to speed issues
-delta = 1.0 / n
-startTime = time.time ( )
-sum = 0.0
-i = 1
-while i < n + 1 :
-  sum += 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 )
-  i += 1
-pi = 4.0 * delta * sum
-elapseTime = time.time ( ) - startTime
-print ( "==== Python Sequential While Power pi = " + str ( pi ) )
-print ( "==== Python Sequential While Power iteration count = " + str ( n ) )
-print ( "==== Python Sequential While Power elapse = " + str ( elapseTime ) )
+if __name__ == '__main__' :
+  n = 10000000 # 100 times fewer due to speed issues
+  delta = 1.0 / n
+  startTime = time.time ( )
+  sum = 0.0
+  i = 1
+  while i < n + 1 :
+    sum += 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 )
+    i += 1
+  pi = 4.0 * delta * sum
+  elapseTime = time.time ( ) - startTime
+  print ( "==== Python Sequential While Power pi = " + str ( pi ) )
+  print ( "==== Python Sequential While Power iteration count = " + str ( n ) )
+  print ( "==== Python Sequential While Power elapse = " + str ( elapseTime ) )
