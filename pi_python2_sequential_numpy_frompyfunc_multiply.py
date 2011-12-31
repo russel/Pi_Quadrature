@@ -17,6 +17,6 @@ def f ( i ) :
 function = numpy.frompyfunc ( f , 1 , 1 )
 pi = 4.0 * delta * function ( numpy.arange ( n , dtype = numpy.float ) ).sum ( )
 elapseTime = time.time ( ) - startTime
-print ( "==== Python Sequential NumPy Array FromPyFunc Multiply pi = " + str ( pi ) )
-print ( "==== Python Sequential NumPy Array FromPyFunc Multiply iteration count = " + str ( n ) )
-print ( "==== Python Sequential NumPy Array FromPyFunc Multiply elapse = " + str ( elapseTime ) )
+print ( "==== Python Sequential NumPy FromPyFunc Multiply pi = " + str ( pi ) )
+print ( "==== Python Sequential NumPy FromPyFunc Multiply iteration count = " + str ( n ) )
+print ( "==== Python Sequential NumPy FromPyFunc Multiply elapse = " + str ( elapseTime ) )

@@ -17,6 +17,6 @@ def f ( i ) :
 function = numpy.vectorize ( f )
 pi = 4.0 * delta * function ( numpy.arange ( n , dtype = numpy.float ) ).sum ( )
 elapseTime = time.time ( ) - startTime
-print ( "==== Python Sequential NumPy Array Vectorize Multiply pi = " + str ( pi ) )
-print ( "==== Python Sequential NumPy Array Vectorize Multiply iteration count = " + str ( n ) )
-print ( "==== Python Sequential NumPy Array Vectorize Multiply elapse = " + str ( elapseTime ) )
+print ( "==== Python Sequential NumPy Vectorize Multiply pi = " + str ( pi ) )
+print ( "==== Python Sequential NumPy Vectorize Multiply iteration count = " + str ( n ) )
+print ( "==== Python Sequential NumPy Vectorize Multiply elapse = " + str ( elapseTime ) )
