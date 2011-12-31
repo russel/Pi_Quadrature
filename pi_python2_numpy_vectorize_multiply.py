@@ -13,11 +13,12 @@ def f ( i ) :
     return 1.0 / ( 1.0 + x * x )
 
 if __name__ == '__main__' :
-    n = 100000000 # 0
+    n = 10000000 # 00
     delta = 1.0 / n
     startTime = time.time ( )
-    pi = 4.0 * delta * numpy.fromfunction ( f , ( n , ) , dtype = numpy.float ).sum ( )
+    function = numpy.vectorize ( f )
+    pi = 4.0 * delta * function ( numpy.arange ( n , dtype = numpy.float ) ).sum ( )
     elapseTime = time.time ( ) - startTime
-    print ( "==== Python Sequential NumPy FromFunction Multiply pi = " + str ( pi ) )
-    print ( "==== Python Sequential NumPy FromFunction Multiply iteration count = " + str ( n ) )
-    print ( "==== Python Sequential NumPy FromFunction Multiply elapse = " + str ( elapseTime ) )
+    print ( "==== Python NumPy Vectorize Multiply pi = " + str ( pi ) )
+    print ( "==== Python NumPy Vectorize Multiply iteration count = " + str ( n ) )
+    print ( "==== Python NumPy Vectorize Multiply elapse = " + str ( elapseTime ) )
