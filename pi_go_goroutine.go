@@ -38,7 +38,7 @@ func processSlice ( id int , sliceSize int , delta float64 , channel chan float6
 func execute ( numberOfTasks int ) {
 	const n = 1000000000
 	const delta = 1.0 / float64 ( n )
-	startTime := time.Nanoseconds ( )
+	startTime := time.Now ( )
 	runtime.GOMAXPROCS ( numberOfTasks ) // Temporary hack
 	sliceSize := n / numberOfTasks
 	channel := make ( chan float64 , numberOfTasks )
@@ -46,10 +46,10 @@ func execute ( numberOfTasks int ) {
 	sum := float64 ( 0.0 )
 	for i := 0 ; i < numberOfTasks ; i++ { sum += <- channel }
 	pi := 4.0 * delta * sum
-	elapseTime := float64 ( time.Nanoseconds ( ) - startTime ) / 1e9
+	elapseTime := time.Now ( ).Sub ( startTime )
 	fmt.Printf ( "==== Go Parallel pi = %.18f\n" , pi ) ;
 	fmt.Printf ( "==== Go Parallel iteration count = %d\n" ,  n ) ;
-	fmt.Printf ( "==== Go Parallel elapse = %f\n" , elapseTime ) ;
+	fmt.Printf ( "==== Go Parallel elapse = %v\n" , elapseTime ) ;
 	fmt.Printf ( "==== Go Parallel threadCount = %d\n" , numberOfTasks )
 }
 
