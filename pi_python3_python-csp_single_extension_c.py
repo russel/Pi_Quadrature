@@ -2,7 +2,7 @@
 
 #  Calculation of Pi using quadrature.  Using the python-csp package by Sarah Mount.
 #
-#  Copyright © 2010–2011 Russel Winder
+#  Copyright © 2010–2012 Russel Winder
 
 import time
 import multiprocessing
@@ -12,9 +12,6 @@ from csp.os_process import process , Channel , Par
 
 @process
 def calculator ( channel , id , sliceSize , delta ) :
-    processSlice = ctypes.cdll.LoadLibrary ( 'processSlice_c.so' )
-    processSlice.processSlice.argtypes = [ ctypes.c_int , ctypes.c_int , ctypes.c_double ]
-    processSlice.processSlice.restype = ctypes.c_double
     channel.write ( processSlice.processSlice ( id , sliceSize , delta ) )
         
 @process
@@ -39,6 +36,9 @@ def execute ( processCount ) :
     Par ( *processes ).start ( )
 
 if __name__ == '__main__' :
+    processSlice = ctypes.cdll.LoadLibrary ( 'processSlice_c.so' )
+    processSlice.processSlice.argtypes = [ ctypes.c_int , ctypes.c_int , ctypes.c_double ]
+    processSlice.processSlice.restype = ctypes.c_double
     execute ( 1 )
     print ( )
     execute ( 2 )
