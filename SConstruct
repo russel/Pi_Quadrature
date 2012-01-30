@@ -440,7 +440,7 @@ extensionsData = {
         'LINKFLAGS' : [ '-std=c++0x' ]
         } ,
     'pyrex_py2' : {
-        'CPPPATH' : [ '/usr/include/python2.6' ] ,
+        'CPPPATH' : [ '/usr/include/python2.7' ] ,
         'CFLAGS' : ccFlags ,
         'LINKFLAGS' : [ ] ,
         'COMMAND' : 'pyrexc'
@@ -452,7 +452,7 @@ extensionsData = {
         'COMMAND' : 'pyrexc'
         } ,
     'cython_py2' : {
-        'CPPPATH' : [ '/usr/include/python2.6' ] ,
+        'CPPPATH' : [ '/usr/include/python2.7' ] ,
         'CFLAGS' : ccFlags ,
         'LINKFLAGS' : [ ] ,
         'COMMAND' : 'cython'
