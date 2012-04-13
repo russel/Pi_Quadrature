@@ -1,7 +1,7 @@
 /*
  *  A D program to calculate Pi using quadrature as a threads-based algorithm.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 import std.algorithm ;
@@ -18,7 +18,7 @@ void partialSum ( immutable int id , immutable int sliceSize , immutable double 
   immutable start = 1 + id * sliceSize ;
   immutable end = ( id + 1 ) * sliceSize ;
   auto localSum = 0.0 ;
-  foreach ( i ; start .. end ) {
+  foreach ( i ; start .. end + 1 ) {
     immutable x = ( i - 0.5 ) * delta ;
     localSum += 1.0 / ( 1.0 + x * x ) ;
   }

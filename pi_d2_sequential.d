@@ -1,7 +1,7 @@
 /*
  *  A D program to calculate Pi using quadrature as a sequential algorithm.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 import std.datetime ;
@@ -13,7 +13,7 @@ int main ( immutable string[] args ) {
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
   auto sum = 0.0 ;
-  foreach ( i ; 1 .. n ) {
+  foreach ( i ; 1 .. n + 1 ) {
     immutable x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }

@@ -1,7 +1,7 @@
 /*
  *  A D program to calculate Pi using quadrature as a parallel map algorithm.
  *
- *  Copyright © 2010–2011 Russel Winder
+ *  Copyright © 2010–2012 Russel Winder
  */
 
 //  std.parallelism is currently not in Phobos2, though it is being voted on for inclusion in Phobos2, so
@@ -17,7 +17,7 @@ real partialSum ( immutable Tuple ! ( int , int , double ) data ) {
   immutable start = 1 + data[0] * data[1] ;
   immutable end = ( data[0] + 1 ) * data[1] ;
   auto sum = 0.0 ;
-  foreach ( i ; start .. end ) {
+  foreach ( i ; start .. end + 1 ) {
     immutable x = ( i - 0.5 ) * data[2] ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }

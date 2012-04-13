@@ -2,7 +2,7 @@
  *  A D program to calculate Pi using quadrature as a spawn-based algorithm.  Make use of Actor Model
  *  message passing capability.
  *
- *  Copyright © 2010–2011 Russel Winder
+ *  Copyright © 2010–2012 Russel Winder
  */
 
 //import std.algorithm ;
@@ -15,7 +15,7 @@ void partialSum ( Tid parent , immutable int id , immutable int sliceSize , immu
   immutable start = 1 + id * sliceSize ;
   immutable end = ( id + 1 ) * sliceSize ;
   auto sum = 0.0 ;
-  foreach ( i ; start .. end ) {
+  foreach ( i ; start .. end + 1 ) {
     immutable x = ( i - 0.5 ) * delta ;
     sum += 1.0 / ( 1.0 + x * x ) ;
   }
