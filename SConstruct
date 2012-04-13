@@ -2,7 +2,7 @@
 
 #  Calculation of Pi using quadrature.
 #
-#  Copyright © 2008–2011 Russel Winder 
+#  Copyright © 2008–2012 Russel Winder 
 
 import os
 import platform
@@ -211,12 +211,21 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
 
 #  Go  ###############################################################################
 
-goEnvironment = Environment ( tools = [ 'go' ] )
+# The SCons Go tool is broken :-((
+
+#goEnvironment = Environment ( tools = [ 'go' ] )
 #goEnvironment.GoTarget ( os.environ['GOOS'] , os.environ['GOARCH'] ) 
+
+#for item in Glob ( 'pi_go_*.go' ) :
+#    root = os.path.splitext ( item.name ) [0]
+#    executable = goEnvironment.GoProgram ( root , item )
+#    executables.append ( addCompileTarget ( executable ) )
 
 for item in Glob ( 'pi_go_*.go' ) :
     root = os.path.splitext ( item.name ) [0]
-    executable = goEnvironment.GoProgram ( root , item )
+    # The standard Go compiler does not generate fast code, GCCGo does.
+    #executable = Command ( root , item , 'go build $SOURCE' )
+    executable = Command ( root , item , 'gccgo -o $TARGET -O3 $SOURCE' )
     executables.append ( addCompileTarget ( executable ) )
 
 #  occam  ############################################################################
