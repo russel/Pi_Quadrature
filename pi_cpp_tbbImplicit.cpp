@@ -1,7 +1,7 @@
 /*
  *  A C program to calculate Pi using quadrature as a TBB implemented algorithm.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 #include <iostream>
@@ -9,7 +9,10 @@
 #include "tbb/task_scheduler_init.h"
 #include "tbb/blocked_range.h"
 #include "tbb/parallel_reduce.h"
+#include "tbb/mutex.h"
 #include "microsecondTime.h"
+
+tbb::mutex joinMutex ;
 
 class partialSum {
  private :
@@ -24,7 +27,10 @@ class partialSum {
       sum += 1.0 / ( 1.0 + x * x ) ;
     }
   }
-  void join ( const partialSum & x ) { sum += x.sum ; }
+  void join ( const partialSum & x ) {
+    tbb::mutex::scoped_lock lock ( joinMutex ) ;
+    sum += x.sum ;
+  }
   double getSum ( ) { return sum ; }
 } ;
 
