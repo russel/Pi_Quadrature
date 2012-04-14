@@ -5,10 +5,10 @@
  *  Copyright © 2010–2012 Russel Winder
  */
 
-//import std.algorithm ;
+import std.algorithm ;
 import std.concurrency ;
 import std.datetime ;
-//import std.range ;
+import std.range ;
 import std.stdio ;
 
 void partialSum ( Tid parent , immutable int id , immutable int sliceSize , immutable double delta ) {
@@ -28,17 +28,11 @@ void execute ( immutable int numberOfTasks ) {
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
-  //
-  //  The following leads to serialization of computation, so do things with a foreach :-((  
-  //
-  //auto tasks = map ! ( ( i ) { return spawn ( & partialSum , thisTid , i , sliceSize , delta ) ; } ) ( iota ( numberOfTasks ) ) ;
-  auto tasks = new Tid[numberOfTasks] ;  
   foreach ( i ; 0 .. numberOfTasks ) {
-    immutable ii = i ;
-    tasks[i] = spawn ( & partialSum , thisTid , ii , sliceSize , delta ) ;
+    spawn ( & partialSum , thisTid , cast ( immutable ( int ) ) i , sliceSize , delta ) ;
   }
   auto sum = 0.0 ;
-  foreach ( task ; tasks ) { sum += receiveOnly ! double ( ) ; }
+  foreach ( i ; 0 .. numberOfTasks ) { sum += receiveOnly ! double ( ) ; }
   immutable pi = 4.0 * delta * sum ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
