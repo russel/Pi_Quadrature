@@ -6,10 +6,14 @@
 
 import std.algorithm ;
 import std.datetime ;
-//import std.range ;
+import std.range ;
 import std.stdio ;
 
 import core.thread ;
+
+// A variable to select which of two thread setup sequences is to be used. 0 => use a map, anything else
+// means use a for loop.  There is a problem using a map in 2.059 :-((
+immutable selector = 1 ;
 
 shared double sum ;
 shared Object sumMutex ;
@@ -32,29 +36,23 @@ void execute ( immutable int numberOfThreads ) {
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfThreads ;
   sum = 0.0 ;
-  /*
-   *  The following does not yet (2.052) work :-((
-
-  auto threads = map ! ( ( int i ) {
+  static if  ( selector == 0 ) {
+    // The following does not work as at 2.059 :-((
+    auto threads = map ! ( ( int i ) {
+          void delegate ( ) closedPartialSum ( ) {
+            return delegate ( ) { partialSum ( i , sliceSize , delta ) ; } ;
+          }
+          return new Thread ( closedPartialSum ) ;
+        } ) ( iota ( numberOfThreads ) ) ;
+  }
+  else {
+    auto threads = new Thread [ numberOfThreads ] ;  
+    foreach ( i ; 0 .. numberOfThreads ) {
       void delegate ( ) closedPartialSum ( ) {
-        immutable id = i ;
-        return ( ) { partialSum ( id , sliceSize , delta ) ; } ;
+        return delegate ( ) { partialSum ( i , sliceSize , delta ) ; } ;
       }
-      return new Thread ( closedPartialSum ) ;
-    } ) ( iota ( numberOfThreads ) ) ;
-  */
-  auto threads = new Thread[numberOfThreads] ;  
-  foreach ( i ; 0 .. numberOfThreads ) {
-    //
-    //  In order to capture the value of i it is necessary to create a function that returns a delegate to
-    //  be used as the function to pass in to the thread object.  This is analogous to what has to be done
-    //  in Python, but it would be much better if it were simpler as in Go, Scala, Groovy, Ruby, or Fantom.
-    //
-    void delegate ( ) closedPartialSum ( ) {
-      immutable id = i ;
-      return ( ) { partialSum ( id , sliceSize , delta ) ; } ;
+      threads[i] = new Thread ( closedPartialSum ) ;
     }
-    threads[i] = new Thread ( closedPartialSum ) ;
   }
   foreach ( thread ; threads ) { thread.start ( ) ; }
   foreach ( thread ; threads ) { thread.join ( ) ; }
