@@ -5,10 +5,8 @@
  *  Copyright © 2010–2012 Russel Winder
  */
 
-import std.algorithm ;
 import std.concurrency ;
 import std.datetime ;
-import std.range ;
 import std.stdio ;
 
 void partialSum ( Tid parent , immutable int id , immutable int sliceSize , immutable double delta ) {
