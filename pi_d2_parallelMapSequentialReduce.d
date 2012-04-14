@@ -4,16 +4,15 @@
  *  Copyright © 2010–2012 Russel Winder
  */
 
-//  std.parallelism is currently not in Phobos2, though it is being voted on for inclusion in Phobos2, so
-//  ensure the compilation command takes care of all the factors to include the library.
-
 import std.algorithm ;
 import std.datetime ;
 import std.parallelism ;
 import std.stdio ;
 import std.typecons ;
 
-real partialSum ( immutable Tuple ! ( int , int , double ) data ) { 
+alias  Tuple ! ( int , int , double ) ParameterType ;
+
+double partialSum ( immutable ParameterType data ) { 
   immutable start = 1 + data[0] * data[1] ;
   immutable end = ( data[0] + 1 ) * data[1] ;
   auto sum = 0.0 ;
@@ -30,17 +29,10 @@ void execute ( immutable int numberOfTasks ) {
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
-  auto inputData = new Tuple ! ( int , int , double ) [ numberOfTasks ] ;
-  //
-  //  The D compiler cannot currently (2.052) handle tuples with elements of immutable type.  So without the cast, the following
-  //  error message is emitted:
-  //
-  //      Error: template instance std.typecons.tuple!(int,int,immutable(double)) error instantiating
-  //
-  //foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i , sliceSize , delta ) ; }
-  foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i ,  cast ( int ) ( sliceSize ) , cast ( double ) ( delta ) ) ; }
-  //  Remember to use eager map not lazy map here!
-  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , taskPool.amap ! ( partialSum ) ( inputData ) ) ;
+  auto inputData = new ParameterType [ numberOfTasks ] ;
+  foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i , sliceSize , delta ) ; }
+  //  It is important that this is an eager map and not a lazy map.
+  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) => a + b ) ( 0.0 , taskPool.amap ! ( partialSum ) ( inputData ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Parallel Map Sequential Reduce pi = %.18f" , pi ) ;
