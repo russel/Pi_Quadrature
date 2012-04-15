@@ -160,7 +160,7 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 #  and compiler tools. Also the dmd compiler is not in the bootstrap path on RW's set up, so amend the path
 #  to ensure it is found.
 
-dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'dmd_new' ] , ENV = os.environ , DFLAGS = [ '-O' , '-release' , '-inline' ] )
+dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'dmd_new' ] , ENV = os.environ , DFLAGS = [ '-O' , '-release' ] ) # , '-inline' ] )
 
 for item in Glob ( 'pi_d2_*.d' ) :
     root = os.path.splitext ( item.name ) [0]
