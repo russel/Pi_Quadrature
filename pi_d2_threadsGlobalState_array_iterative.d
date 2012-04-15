@@ -11,10 +11,6 @@ import std.stdio ;
 
 import core.thread ;
 
-// A variable to select which of two thread setup sequences is to be used. 0 => use a map, anything else
-// means use a for loop.  There is a problem using a map in 2.059 :-((
-immutable selector = 1 ;
-
 shared double sum ;
 shared Object sumMutex ;
 
@@ -36,33 +32,23 @@ void execute ( immutable int numberOfThreads ) {
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfThreads ;
   sum = 0.0 ;
-  static if  ( selector == 0 ) {
-    // The following does not work as at 2.059 :-((
-    auto threads = map ! ( ( int i ) {
-          void delegate ( ) closedPartialSum ( ) {
-            return delegate ( ) { partialSum ( i , sliceSize , delta ) ; } ;
-          }
-          return new Thread ( closedPartialSum ) ;
-        } ) ( iota ( numberOfThreads ) ) ;
-  }
-  else {
-    auto threads = new Thread [ numberOfThreads ] ;  
-    foreach ( i ; 0 .. numberOfThreads ) {
-      void delegate ( ) closedPartialSum ( ) {
-        return delegate ( ) { partialSum ( i , sliceSize , delta ) ; } ;
-      }
-      threads[i] = new Thread ( closedPartialSum ) ;
+  auto threads = new Thread [ numberOfThreads ] ;  
+  foreach ( i ; 0 .. numberOfThreads ) {
+    void delegate ( ) closedPartialSum ( ) {
+      immutable ii = i ;
+      return delegate ( ) { partialSum ( ii , sliceSize , delta ) ; } ;
     }
+    threads[i] = new Thread ( closedPartialSum ) ;
   }
   foreach ( thread ; threads ) { thread.start ( ) ; }
   foreach ( thread ; threads ) { thread.join ( ) ; }
   immutable pi = 4.0 * delta * sum ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Threads pi = %.18f" , pi ) ;
-  writefln ( "==== D Threads iteration count = %d" , n ) ;
-  writefln ( "==== D Threads elapse = %f" , elapseTime ) ;
-  writefln ( "==== D Threads thread count = %d" , numberOfThreads ) ;
+  writefln ( "==== D Threads Global State Array Iterative pi = %.18f" , pi ) ;
+  writefln ( "==== D Threads Global State Array Iterative iteration count = %d" , n ) ;
+  writefln ( "==== D Threads Global State Array Iterative elapse = %f" , elapseTime ) ;
+  writefln ( "==== D Threads Global State Array Iterative thread count = %d" , numberOfThreads ) ;
 }
 
 int main ( immutable string[] args ) {
