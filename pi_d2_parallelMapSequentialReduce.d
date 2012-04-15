@@ -7,12 +7,11 @@
 import std.algorithm ;
 import std.datetime ;
 import std.parallelism ;
+import std.range ;
 import std.stdio ;
 import std.typecons ;
 
-alias  Tuple ! ( int , int , double ) ParameterType ;
-
-double partialSum ( immutable ParameterType data ) { 
+double partialSum ( immutable Tuple ! ( int , int , double ) data ) { 
   immutable start = 1 + data[0] * data[1] ;
   immutable end = ( data[0] + 1 ) * data[1] ;
   auto sum = 0.0 ;
@@ -29,10 +28,8 @@ void execute ( immutable int numberOfTasks ) {
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
-  auto inputData = new ParameterType [ numberOfTasks ] ;
-  foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i , sliceSize , delta ) ; }
-  //  It is important that this is an eager map and not a lazy map.
-  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) => a + b ) ( 0.0 , taskPool.amap ! ( partialSum ) ( inputData ) ) ;
+  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) => a + b ) ( 0.0 , taskPool.amap ! ( partialSum ) (
+    map ! ( i => tuple ( i , cast ( int ) sliceSize , cast ( double ) delta ) ) ( iota ( numberOfTasks ) ) ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Parallel Map Sequential Reduce pi = %.18f" , pi ) ;
