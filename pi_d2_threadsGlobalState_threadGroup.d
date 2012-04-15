@@ -11,11 +11,6 @@ import std.stdio ;
 
 import core.thread ;
 
-//  TODO:  FIXME
-// A variable to select which of two thread setup sequences is to be used. 0 => use a map, anything else
-// means use a for loop.  There is a problem using a map in 2.059 :-((
-immutable selector = 1 ;
-
 shared double sum ;
 shared Object sumMutex ;
 
