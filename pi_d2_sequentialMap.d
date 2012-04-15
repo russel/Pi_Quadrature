@@ -11,7 +11,7 @@ import std.range ;
 import std.stdio ;
 import std.typecons ;
 
-real partialSum ( immutable Tuple ! ( int , int , double ) data ) { 
+double partialSum ( immutable Tuple ! ( int , int , double ) data ) { 
   immutable start = 1 + data[0] * data[1] ;
   immutable end = ( data[0] + 1 ) * data[1] ;
   auto sum = 0.0 ;
@@ -28,20 +28,8 @@ void execute ( immutable int numberOfTasks ) {
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
-  auto inputData = new Tuple ! ( int , int , double ) [ numberOfTasks ] ;
-  //
-  //  The D compiler cannot currently (2.052) handle tuples with elements of immutable type.  So without the
-  //  cast, the following error message is emitted:
-  //
-  //      Error: template instance std.typecons.tuple!(int,immutable(int),immutable(double)) error instantiating
-  //
-  //foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i , sliceSize , delta ) ; }
-  foreach ( i ; 0 .. numberOfTasks ) { inputData[i] = tuple ( i , cast ( int ) ( sliceSize ) , cast ( double ) ( delta ) ) ; }
-  //
-  //  Should replace the above two with the following but it causes a compilation error.
-  //
-  //auto inputData = map ! ( ( i ) { return tuple ( i , cast ( int ) ( sliceSize ) , cast ( double ) ( delta ) ) ; } ) ( iota ( numberOfTasks ) ) ;
-  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) { return a + b ; } ) ( 0.0 , map ! ( partialSum ) ( inputData ) ) ;
+  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) => a + b ) ( 0.0 , map ! ( partialSum ) (
+    map ! ( i => tuple ( i , cast ( int ) sliceSize , cast ( double ) delta ) ) ( iota ( numberOfTasks ) ) ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
   writefln ( "==== D Sequential Map pi = %.18f" , pi ) ;
