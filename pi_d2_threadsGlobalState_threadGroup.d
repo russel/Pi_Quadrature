@@ -49,10 +49,10 @@ void execute ( immutable int numberOfThreads ) {
   immutable pi = 4.0 * delta * sum ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Threads pi = %.18f" , pi ) ;
-  writefln ( "==== D Threads iteration count = %d" , n ) ;
-  writefln ( "==== D Threads elapse = %f" , elapseTime ) ;
-  writefln ( "==== D Threads thread count = %d" , numberOfThreads ) ;
+  writefln ( "==== D Threads Global State ThreadGroup pi = %.18f" , pi ) ;
+  writefln ( "==== D Threads Global State ThreadGroup iteration count = %d" , n ) ;
+  writefln ( "==== D Threads Global State ThreadGroup elapse = %f" , elapseTime ) ;
+  writefln ( "==== D Threads Global State ThreadGroup thread count = %d" , numberOfThreads ) ;
 }
 
 int main ( immutable string[] args ) {
