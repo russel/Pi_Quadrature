@@ -168,7 +168,7 @@ dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'dmd' ] ,
                              CC = 'gcc-4.6',
                              DFLAGS = [ '-O' , '-release' , '-inline' ] )
 
-for item in Glob ( 'pi_d2_*.d' ) :
+for item in Glob ( 'pi_d_*.d' ) :
     root = os.path.splitext ( item.name ) [0]
     environment = dEnvironment
     executables.append ( addCompileTarget ( environment.Program ( item ) ) )
