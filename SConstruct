@@ -160,7 +160,13 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 #  and compiler tools. Also the dmd compiler is not in the bootstrap path on RW's set up, so amend the path
 #  to ensure it is found.
 
-dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'dmd_new' ] , ENV = os.environ , DFLAGS = [ '-O' , '-release' ] ) # , '-inline' ] )
+# As at 2012-05-09 GCC is 4.7 on Debian Unstable but this does not include gdmd.  Must use 4.6 to have
+# access to gphobos2.
+
+dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'dmd' ] ,
+                             # use gdmd by commenting out ENV = os.environ ,
+                             CC = 'gcc-4.6',
+                             DFLAGS = [ '-O' , '-release' , '-inline' ] )
 
 for item in Glob ( 'pi_d2_*.d' ) :
     root = os.path.splitext ( item.name ) [0]
