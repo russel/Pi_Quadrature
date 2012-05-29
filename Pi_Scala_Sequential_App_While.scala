@@ -19,7 +19,7 @@ object Pi_Scala_Sequential_App_While extends App {
   }
   val pi = 4.0 * delta * sum
   val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-  println ( "==== Scala Sequential Main While pi = " + pi )
-  println ( "==== Scala Sequential Main While iteration count = " + n )
-  println ( "==== Scala Sequential Main While elapse = " + elapseTime )
+  println ( "==== Scala Sequential App While pi = " + pi )
+  println ( "==== Scala Sequential App While iteration count = " + n )
+  println ( "==== Scala Sequential App While elapse = " + elapseTime )
 }
