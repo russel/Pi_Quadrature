@@ -1,17 +1,17 @@
 /*
  *  Calculation of Pi using quadrature realized with a parallel map.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 import scala.actors.Futures
 
-object Pi_Scala_MapperFromWeb_ParMap {
+object Pi_Scala_Mapper_ParMap {
   class Mapper[A,B:ClassManifest] ( data : List[A] , function : A => B ) {
     val pmap = {
       val buffer = new Array[B] ( data.length )
       val mappers = for ( index <- 0 until data.length ) yield Futures.future { buffer ( index ) = function ( data ( index ) ) }
-      for ( mapper <- mappers ) mapper ( ) // NB This set of parentheses is essential.
+      for ( mapper <- mappers ) mapper ( )
       buffer
     }
   }
@@ -32,11 +32,11 @@ object Pi_Scala_MapperFromWeb_ParMap {
     }
     val pi = 4.0 * delta * ( ( ( new Mapper[Int,Double] ( List.range ( 0 , numberOfThreads ) , partialSum ) ).pmap ) reduceLeft ( _ + _ ) )
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-    println ( "==== Scala MapperFromWeb ParMap pi = " + pi )
-    println ( "==== Scala MapperFromWeb ParMap iteration count = " + n )
-    println ( "==== Scala MapperFromWeb ParMap elapse = " + elapseTime )
-    println ( "==== Scala MapperFromWeb ParMap processor count = " + Runtime.getRuntime.availableProcessors )
-    println ( "==== Scala MapperFromWeb ParMap threads count = " + numberOfThreads )
+    println ( "==== Scala Mapper ParMap pi = " + pi )
+    println ( "==== Scala Mapper ParMap iteration count = " + n )
+    println ( "==== Scala Mapper ParMap elapse = " + elapseTime )
+    println ( "==== Scala Mapper ParMap processor count = " + Runtime.getRuntime.availableProcessors )
+    println ( "==== Scala Mapper ParMap threads count = " + numberOfThreads )
   }
   def main ( args : Array[String] ) {
     execute ( 1 )
