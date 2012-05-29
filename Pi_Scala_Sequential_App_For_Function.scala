@@ -5,7 +5,7 @@
  */
 
 object Pi_Scala_Sequential_App_For_Function extends App {
-  def doStuff ( ) = {
+  def doStuff {
     val n = 1000000000
     val delta = 1.0 / n
     val startTimeNanos = System.nanoTime
