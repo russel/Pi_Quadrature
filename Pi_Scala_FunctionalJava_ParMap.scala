@@ -1,10 +1,10 @@
 /*
  *  Calculation of Pi using quadrature realized with a parallel map.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
-//  This seems to execute fine but it takes a very long time to terminate after the results have been
+//  TODO: This seems to execute fine but it takes a very long time to terminate after the results have been
 //  output.  Very strange and :-((
 
 import fj.control.parallel.Strategy
