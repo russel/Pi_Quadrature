@@ -6,7 +6,7 @@
 
 import scala.concurrent.Lock
 
-object Pi_Scala_Threads extends  App {
+object Pi_Scala_Threads {
   def execute ( numberOfTasks : Int ) = {
     val n = 1000000000
     val delta = 1.0 / n
@@ -39,11 +39,13 @@ object Pi_Scala_Threads extends  App {
     println ( "==== Scala Threads processor count = " + Runtime.getRuntime.availableProcessors )
     println ( "==== Scala Threads thread count = " + numberOfTasks )
   }
-  execute ( 1 )
-  println
-  execute ( 2 )
-  println
-  execute ( 8 )
-  println
-  execute ( 32 )
+  def main ( args : Array[String] ) {
+    execute ( 1 )
+    println
+    execute ( 2 )
+    println
+    execute ( 8 )
+    println
+    execute ( 32 )
+  }
 }
