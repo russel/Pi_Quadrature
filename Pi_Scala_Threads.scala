@@ -7,7 +7,7 @@
 import scala.concurrent.Lock
 
 object Pi_Scala_Threads {
-  def execute ( numberOfTasks : Int ) = {
+  def execute ( numberOfTasks : Int ) {
     val n = 1000000000
     val delta = 1.0 / n
     val startTimeNanos = System.nanoTime
