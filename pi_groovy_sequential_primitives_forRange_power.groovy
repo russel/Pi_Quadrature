@@ -10,8 +10,10 @@
 final int n = 100000000i // 10 times fewer than Java due to speed issues.
 final double delta = 1.0d / n
 final startTime = System.nanoTime ( )
-final double pi = 4.0d * delta * ( 1i .. n ).sum { i -> 1.0d / ( 1.0d + ( ( i - 0.5d ) * delta ) ** 2i ) }
+double sum = 0.0d
+for ( int i in 1i .. n ) { sum += 1.0d / ( 1.0d + ( ( i - 0.5d ) * delta ) ** 2i ) }
+final double pi = 4.0d * delta * sum
 final elapseTime = ( System.nanoTime ( ) - startTime ) / 1e9
-println ( "==== Groovy Sequential Primitives Sum Power pi = " + pi )
-println ( "==== Groovy Sequential Primitives Sum Power iteration count = " + n ) 
-println ( "==== Groovy Sequential Primitives Sum Power elapse = " + elapseTime )
+println ( "==== Groovy Sequential Primitives ForRange Power pi = " + pi )
+println ( "==== Groovy Sequential Primitives ForRange Power iteration count = " + n ) 
+println ( "==== Groovy Sequential Primitives ForRange Power elapse = " + elapseTime )
