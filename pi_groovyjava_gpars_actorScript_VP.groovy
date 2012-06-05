@@ -3,12 +3,10 @@
 /*
  *  Calculation of Pi using quadrature realized with GPars actors. Scripty.  With Java computation.
  *
- *  Copyright © 2010–2011 Russel Winder.
+ *  Copyright © 2010–2012 Russel Winder.
  */
 
 //  This variant provided by Václav Pech by private email.
-
-@Grab ( 'org.codehaus.gpars:gpars:1.0-beta-1' )
 
 import groovyx.gpars.actor.Actors
 import groovyx.gpars.actor.DefaultActor

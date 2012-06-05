@@ -3,10 +3,8 @@
 /*
  *  Caluclation of Pi using quadrature realized with GPars dataflow variables.
  *
- *  Copyright © 2011 Russel Winder
+ *  Copyright © 2011–2012 Russel Winder
  */
-
-@Grab ( 'org.codehaus.gpars:gpars:1.0-beta-1' )
 
 import groovyx.gpars.dataflow.DataflowQueue
 import static groovyx.gpars.dataflow.Dataflow.task

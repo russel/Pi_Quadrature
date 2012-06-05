@@ -4,10 +4,8 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with GPars ParallelEnhancer to
  *  partition the problem and hence harness all processors available to the JVM.
  *
- *  Copyright © 2010–2011 Russel Winder
+ *  Copyright © 2010–2012 Russel Winder
  */
-
-@Grab ( 'org.codehaus.gpars:gpars:1.0-beta-1' )
 
 import groovyx.gpars.ParallelEnhancer
 
