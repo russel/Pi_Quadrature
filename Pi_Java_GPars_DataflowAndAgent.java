@@ -20,14 +20,13 @@ public class Pi_Java_GPars_DataflowAndAgent {
     void add ( final double value ) { sum += value ; }
     public double getSum ( ) { return sum ; }
   }
-  private static Agent<Accumulator> sum ;
   private static void execute ( final int numberOfTasks ) throws InterruptedException {
     final int n = 1000000000 ;
     final double delta = 1.0 / n ;
     final long startTimeNanos = System.nanoTime ( ) ;
     final int sliceSize = n / numberOfTasks ;
     final DataflowVariable<?>[] tasks = new DataflowVariable[numberOfTasks] ;
-    sum = new Agent<Accumulator> ( new Accumulator ( ) ) ;
+    final Agent<Accumulator> sum = new Agent<Accumulator> ( new Accumulator ( ) ) ;
     for ( int i = 0 ; i < numberOfTasks ; ++i ) {
       final int taskId = i ;
       tasks[taskId] = Dataflow.task ( new Runnable ( ) {
