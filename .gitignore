@@ -1,0 +1,13 @@
+.sconsign.dblite
+site_scons
+DataRush.slc
+*.hi
+*.cm[xi]
+*.beam
+*.class
+*.aux
+*.fls
+*.log
+*.pdf
+*.[568]
+*.exe
