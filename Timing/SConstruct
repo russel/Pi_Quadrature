@@ -1,0 +1,19 @@
+# -*- mode:python; coding:utf-8; -*-
+
+#  Some languages do not have platform independent timing APIs, in particular, C, C++, and Erlang.  Code in
+#  this directory relates to providing appropriate facilities.
+#
+#  Copyright © 2008,2012 Russel Winder 
+
+# RW's environment includes the experimental DMD support which overwrites the default linker to be gdmd,
+# this is a bug and will be fixed, in the interim specify things more tightly that we would like.
+
+environment = Environment ( tools = [ 'gcc' , 'g++' , 'gnulink' ] )
+
+standAloneTests = [
+    environment.Program ( [ 'microsecondTime_test.cpp' , 'microsecondTime.c' ] ) ,
+    environment.Program ( [ 'rdtsc_test.c' , 'rdtsc.c' ] ) ,
+    environment.Program ( [ 'processorSpeed_test.cpp' , 'processorSpeed.cpp' ] ) ,
+    ]
+
+Command ( 'runTests' , standAloneTests , [ './' + str ( x[0] ) for x in standAloneTests ] )

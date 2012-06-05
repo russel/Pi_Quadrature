@@ -42,7 +42,7 @@ ccFlags = [ '-O3' , '-Wall' , '-Wextra' ]
 
 cEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' ] )
 
-microsecondTimeC = cEnvironment.Object ( '../Timing/microsecondTime.c' , CFLAGS = ccFlags )
+microsecondTimeC = cEnvironment.Object ( 'Timing/microsecondTime.c' , CFLAGS = ccFlags )
 
 def cRule ( globPattern , compiler = 'gcc' , cpppath = [ ] , cflags = ccFlags , linkflags = [ ] , libpath = [ ] , libs = [ ] ) :
     for item in Glob ( globPattern ) :
@@ -50,7 +50,7 @@ def cRule ( globPattern , compiler = 'gcc' , cpppath = [ ] , cflags = ccFlags , 
             addCompileTarget (
                 cEnvironment.Program (
                     os.path.splitext ( item.name ) [0] , [ item.name , microsecondTimeC ] ,
-                    CC = compiler , CPPPATH = [ '../Timing' ] + cpppath , CFLAGS = cflags + [ '-std=c99' ] , LINKFLAGS= linkflags + [ '-std=99' ] , LIBPATH = libpath , LIBS = libs )
+                    CC = compiler , CPPPATH = [ 'Timing' ] + cpppath , CFLAGS = cflags + [ '-std=c99' ] , LINKFLAGS= linkflags + [ '-std=c99' ] , LIBPATH = libpath , LIBS = libs )
                 )
             )
 
@@ -69,7 +69,7 @@ def cppRule ( globPattern , compiler = 'g++' , cpppath = [ ] , cxxflags = ccFlag
             addCompileTarget (
                 cppEnvironment.Program (
                     os.path.splitext ( item.name ) [0] , [ item.name , microsecondTimeC ] ,
-                    CXX = compiler , CPPPATH = [ '../Timing' ] + cpppath , CXXFLAGS = cxxflags + [ '-std=c++0x' ] , LINKFLAGS= linkflags + [ '-std=c++0x' ] , LIBPATH = libpath , LIBS = libs )
+                    CXX = compiler , CPPPATH = [ 'Timing' ] + cpppath , CXXFLAGS = cxxflags + [ '-std=c++0x' ] , LINKFLAGS= linkflags + [ '-std=c++0x' ] , LIBPATH = libpath , LIBS = libs )
                 )
             )
 
@@ -542,7 +542,7 @@ erlangEnvironment = Environment ( tools = [ 'erlang' ] )
 
 #  The trailing slash on the OUTPUT is critical for the way the erlang tool works :-(
 
-microsecondTimeErlang = erlangEnvironment.Erlang ( '../Timing/microsecondTime.erl' ,  OUTPUT = './' )
+microsecondTimeErlang = erlangEnvironment.Erlang ( 'Timing/microsecondTime.erl' ,  OUTPUT = './' )
 
 for item in Glob ( 'pi_erlang_*.erl' ) :
     root = os.path.splitext ( item.name ) [0]
