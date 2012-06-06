@@ -16,9 +16,10 @@ final class AccumulatorActor extends DefaultActor {
   def sum
   def AccumulatorActor ( actorCount ) { this.actorCount = actorCount }
   @Override protected void act ( ) { handleMessage ( 0 , actorCount , 0.0d ) }
-  //  There is no recursive function call here — it is more like a tail recursive call.  The call of
-  //  handleMessage happens inside the react scope and so registers a new message handler with the state
-  //  captured by the parameters.  It does not create a new function call with a new stack frame.
+  //  There is no recursive function call here — it is more like a tail recursive call or a continuation.
+  //  The call of handleMessage happens inside the react scope and so registers a new message handler with
+  //  the state captured by the parameters.  It definitely does not create a new function call with a new
+  //  stack frame.
   void handleMessage ( final n , final max , final sum ) {
     if ( n < max ) {
       react { handleMessage ( n + 1 , max , sum + it ) }

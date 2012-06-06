@@ -34,7 +34,8 @@ void execute ( final int actorCount ) {
   }
   final computors = [ ]  
   //  Loop variables are not captured at definition time but at execution time so use the trick used in Java
-  //  to ensure correct capture of the index number for the slice.
+  //  to ensure correct capture of the index number for the slice. It would be much better if Groovy had
+  //  some form of list comprehension capability.
   for ( i in 0 ..< actorCount ) {
     final int index = i
     computors.add (
