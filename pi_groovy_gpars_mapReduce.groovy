@@ -13,7 +13,7 @@ void execute ( final int numberOfTasks ) {
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
   final int sliceSize = n / numberOfTasks
-  final pi
+  final double pi
   withPool {
     pi = 4.0d * delta * ( 0i ..< numberOfTasks ).parallel.map { taskId ->
       final int start = 1i + taskId * sliceSize
