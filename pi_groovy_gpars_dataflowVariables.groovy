@@ -16,7 +16,8 @@ void execute ( final int operatorCount ) {
   final int sliceSize = n / operatorCount
   final partialSums = [ ]
   ( 0 ..< operatorCount ).each { index ->
-    partialSums << new DataflowVariable ( )
+    final variable = new DataflowVariable ( )
+    partialSums << variable
     task {
       final int start = 1i + index * sliceSize
       final int end = ( index + 1i ) * sliceSize
@@ -25,7 +26,7 @@ void execute ( final int operatorCount ) {
         final double x = ( i - 0.5d ) * delta
         sum += 1.0d / ( 1.0d + x * x )
       }
-      partialSums[index] << sum
+      variable << sum
     }
   }
   final double pi = 4.0d * delta * partialSums.sum { it.val }
