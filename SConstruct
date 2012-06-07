@@ -390,7 +390,7 @@ for item in Glob ( 'Pi_X10_*.x10' ) :
 
 clojureEnvironment = Environment ( tools = [ 'javac' ] )
 
-for item in Glob ( '*.clj' ) :
+for item in Glob ( 'pi_clojure_*.clj' ) :
     addRunTarget ( clojureEnvironment.Command ( 'run_' + os.path.splitext ( item.name ) [0] , item.name , 'java -cp .:{0}/lib/Java/clojure.jar clojure.main $SOURCE'.format ( os.environ['HOME'] ) ) )
 
 Depends ( 'run_pi_clojure_processSlice' , processSliceClasses )
@@ -404,7 +404,7 @@ groovyEnvironment = Environment ( tools = [ 'javac' ] , ENV = os.environ )
 
 dependsOnProcessSlice = [ ]
 dependsOnProcessSlice_JCSP = [ ]
-for item in Glob ( '*.groovy' ) :
+for item in Glob ( 'pi_groovy*.groovy' ) :
     root = os.path.splitext ( item.name )[0]
     runTarget = 'run_' + root
     bits = root.split ( '_' )
