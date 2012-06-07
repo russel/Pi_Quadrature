@@ -24,20 +24,13 @@ void execute ( final int numberOfTasks ) {
     @Override public void run ( ) {
       final double pi = 4.0d * delta * ( 0i ..< numberOfTasks ).sum { (double) channel.in ( ).read ( ) }
       final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      println ( '==== Groovy/Java GPars CSP Single pi = ' + pi )
-      println ( '==== Groovy/Java GPars CSP Single iteration count = ' + n )
-      println ( '==== Groovy/Java GPars CSP Single elapse = ' + elapseTime )
-      println ( '==== Groovy/Java GPars CSP Single processor count = ' + Runtime.getRuntime ( ).availableProcessors ( ) )
-      println ( '==== Groovy/Java GPars CSP Single task count = ' + numberOfTasks )
+      Output.out ( 'Groovy/Java GPars CSP Single' , pi , n , elapseTime, numberOfTasks )
     }
   } ;
   ( new PAR ( processes ) ).run ( )
 }
 
 execute ( 1 )
-println ( )
 execute ( 2 )
-println ( )
 execute ( 8 )
-println ( )
 execute ( 32 )

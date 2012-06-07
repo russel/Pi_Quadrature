@@ -3,17 +3,13 @@
 /*
  *  Calculation of Pi using quadrature realized with a parallel algorithm based on using Futures.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledThreadPoolExecutor
-
-// This is Groovy and so extraordinarily slow compared to Java.  Use primitive types though so as to avoid
-// really bad performance due to use of Integer and BigDecimal.  Hence the careful markup of the literals as
-// well as the variables.
 
 def execute ( final int numberOfTasks ) {
   final int n = 100000000i // 10 times fewer due to speed issues.
@@ -36,17 +32,10 @@ def execute ( final int numberOfTasks ) {
   final double pi = 4.0d * delta * futures.sum { f -> f.get ( ) } 
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   executor.shutdown ( )
-  println ( "==== Groovy Futures List As pi = " + pi )
-  println ( "==== Groovy Futures List As iteration count = " + n )
-  println ( "==== Groovy Futures List As elapse = " + elapseTime )
-  println ( "==== Groovy Futures List As processor count = " + Runtime.runtime.availableProcessors ( ) ) ;
-  println ( "==== Groovy Futures List As number of tasks = " + numberOfTasks )
+  Output.out ( 'Groovy Futures List As' , pi , n , elapseTime , numberOfTasks )
 }
 
 execute ( 1 )
-println ( )
 execute ( 2 )
-println ( )
 execute ( 8 )
-println ( )
 execute ( 32 )

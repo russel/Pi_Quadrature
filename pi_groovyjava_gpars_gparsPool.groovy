@@ -19,18 +19,11 @@ void execute ( final int numberOfTasks ) {
       ( new ProcessSlice ( taskId , sliceSize , delta ) ).compute ( )
     }.sumParallel ( )
     final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-    println ( '==== Groovy/Java GPars GParsPool pi = ' + pi )
-    println ( '==== Groovy/Java GPars GParsPool iteration count = ' + n )
-    println ( '==== Groovy/Java GPars GParsPool elapse = ' + elapseTime )
-    println ( '==== Groovy/Java GPars GParsPool processor count = ' + Runtime.getRuntime ( ).availableProcessors ( ) )
-    println ( '==== Groovy/Java GPars GParsPool task count = ' + numberOfTasks )
+    Output.out ( 'Groovy/Java GPars GParsPool' , pi , n , elapseTime , numberOfTasks )
   }
 }
 
 execute ( 1 )
-println ( )
 execute ( 2 )
-println ( )
 execute ( 8 )
-println ( )
 execute ( 32 )

@@ -31,17 +31,10 @@ void execute ( final int operatorCount ) {
   }
   final double pi = 4.0d * delta * partialSums.sum { it.val }
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  println ( '==== Groovy GPars DataflowVariables pi = ' + pi )
-  println ( '==== Groovy GPars DataflowVariables iteration count = ' + n )
-  println ( '==== Groovy GPars DataflowVariables elapse = ' + elapseTime )
-  println ( '==== Groovy GPars DataflowVariables processor count = ' + Runtime.runtime.availableProcessors ( ) ) ;
-  println ( '==== Groovy GPars DataflowVariables operator count = ' + operatorCount )
+  Output.out ( 'Groovy GPars DataflowVariables' , pi , n , elapseTime, operatorCount )
 }
 
 execute ( 1 )
-println ( )
 execute ( 2 )
-println ( )
 execute ( 8 )
-println ( )
 execute ( 32 )

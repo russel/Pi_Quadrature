@@ -44,17 +44,10 @@ void execute ( final int actorCount ) {
   accumulator.join ( )
   final double pi = 4.0d * delta * accumulator.sum
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  println ( '==== Groovy/Java GPars ActorScript VP pi = ' + pi )
-  println ( '==== Groovy/Java GPars ActorScript VP iteration count = ' + n )
-  println ( '==== Groovy/Java GPars ActorScript VP elapse = ' + elapseTime )
-  println ( '==== Groovy/Java GPars ActorScript VP processor count = ' + Runtime.runtime.availableProcessors ( ) )
-  println ( '==== Groovy/Java GPars ActorScript VP actor count = ' + actorCount )
+  Output.out ( 'Groovy/Java GPars ActorScript VP' , pi , n , elapseTime , actorCount )
 }
 
 execute ( 1 )
-println ( )
 execute ( 2 )
-println ( )
 execute ( 8 )
-println ( )
 execute ( 32 )

@@ -14,6 +14,4 @@ final pi = 4 * delta * ( 1 .. n ).sum { i ->
   1 / ( 1 + x * x )
 }
 final elapseTime =   ( System.nanoTime ( ) - startTime ) / 1e9
-println ( "==== Groovy Sequential BigDecimal Sum Multiply pi = " + pi )
-println ( "==== Groovy Sequential BigDecimal Sum Multiply iteration count = " + n ) 
-println ( "==== Groovy Sequential BigDecimal Sum Multiply elapse = " + elapseTime )
+Output.out ( 'Groovy Sequential BigDecimal Sum Multiply' , pi , n , elapseTime )

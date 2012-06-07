@@ -4,7 +4,7 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with JCSP to partition the problem
  *  and hence harness all processors available to the JVM.
  *
- *  Copyright © 2010–2011 Russel Winder
+ *  Copyright © 2010–2012 Russel Winder
  */
 
 @Grab ( 'org.codehaus.jcsp:jcsp:1.1-rc5' )
@@ -39,20 +39,13 @@ void execute ( int numberOfTasks ) {
     @Override public void run ( ) {
       final double pi = 4.0d * delta * channels.sum { c -> (double) c.in ( ).read ( ) }
       final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      println ( "==== Groovy JCSP Multiple pi = " + pi )
-      println ( "==== Groovy JCSP Multiple iteration count = " + n )
-      println ( "==== Groovy JCSP Multiple elapse = " + elapseTime )
-      println ( "==== Groovy JCSP Multiple processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) )
-      println ( "==== Groovy JCSP Multiple task count = " + numberOfTasks )
+      Output.out ( 'Groovy JCSP Multiple' , pi , n , elapseTime , numberOfTasks )
     }
-  } ;
+  }
   ( new Parallel ( processes as CSProcess[] ) ).run ( )
 }
 
 execute ( 1 )
-println ( )
 execute ( 2 )
-println ( )
 execute ( 8 )
-println ( )
 execute ( 32 )

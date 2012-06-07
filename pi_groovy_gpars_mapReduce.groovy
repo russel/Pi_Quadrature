@@ -25,18 +25,11 @@ void execute ( final int numberOfTasks ) {
       sum
     }.sum ( )
     final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-    println ( '==== Groovy GPars MapReduce pi = ' + pi )
-    println ( '==== Groovy GPars MapReduce iteration count = ' + n )
-    println ( '==== Groovy GPars MapReduce elapse = ' + elapseTime )
-    println ( '==== Groovy GPars MapReduce processor count = ' + Runtime.getRuntime ( ).availableProcessors ( ) )
-    println ( '==== Groovy GPars MapReduce task count = ' + numberOfTasks )
+    Output.out ( 'Groovy GPars MapReduce' , pi , n , elapseTime , numberOfTasks )
   }
 }
 
 execute ( 1 )
-println ( )
 execute ( 2 )
-println ( )
 execute ( 8 )
-println ( )
 execute ( 32 )

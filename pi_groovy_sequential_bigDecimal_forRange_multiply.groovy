@@ -16,6 +16,4 @@ for ( i in 1 .. n ) {
 }
 final pi = 4 * delta * sum
 final elapseTime =   ( System.nanoTime ( ) - startTime ) / 1e9
-println ( "==== Groovy Sequential BigDecimal ForRange Multiply pi = " + pi )
-println ( "==== Groovy Sequential BigDecimal ForRange Multiply iteration count = " + n ) 
-println ( "==== Groovy Sequential BigDecimal ForRange Multiply elapse = " + elapseTime )
+Output.out ( 'Groovy Sequential BigDecimal ForRange Multiply' , pi , n , elapseTime )

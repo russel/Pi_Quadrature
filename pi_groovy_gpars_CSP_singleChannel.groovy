@@ -40,20 +40,13 @@ void execute ( final int numberOfTasks ) {
       for ( int i in 0i ..< numberOfTasks ) { sum += (double) channel.in ( ).read ( ) }
       final double pi = 4.0d * delta * sum
       final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      println ( '==== Groovy GPars CSP Single pi = ' + pi )
-      println ( '==== Groovy GPars CSP Single iteration count = ' + n )
-      println ( '==== Groovy GPars CSP Single elapse = ' + elapseTime )
-      println ( '==== Groovy GPars CSP Single processor count = ' + Runtime.getRuntime ( ).availableProcessors ( ) )
-      println ( '==== Groovy GPars CSP Single task count = ' + numberOfTasks )
+      Output.out ( 'Groovy GPars CSP Single' , pi , n , elapseTime , numberOfTasks )
     }
-  } ;
+  }
   ( new PAR ( processes ) ).run ( )
 }
 
 execute ( 1 )
-println ( )
 execute ( 2 )
-println ( )
 execute ( 8 )
-println ( )
 execute ( 32 )

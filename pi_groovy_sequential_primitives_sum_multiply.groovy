@@ -15,6 +15,4 @@ final double pi = 4.0d * delta * ( 1i .. n ).sum { i ->
   1.0d / ( 1.0d + x * x )
 }
 final elapseTime = ( System.nanoTime ( ) - startTime ) / 1e9
-println ( "==== Groovy Sequential Primitives Sum Multiply pi = " + pi )
-println ( "==== Groovy Sequential Primitives Sum Multiply iteration count = " + n ) 
-println ( "==== Groovy Sequential Primitives Sum Multiply elapse = " + elapseTime )
+Output.out ( 'Groovy Sequential Primitives Sum Multiply' , pi , n , elapseTime )
