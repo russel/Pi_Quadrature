@@ -16,9 +16,9 @@
 package main
 
 import (
-	"fmt"
 	"time"
 	"runtime"
+	"./output"
 )
 
 func processSlice ( id int , sliceSize int , delta float64 , channel chan float64 ) {
@@ -48,18 +48,12 @@ func execute ( numberOfTasks int ) {
 	for i := range channels { sum += <- channels[i] }
 	pi := 4.0 * delta * sum
 	elapseTime := time.Now ( ).Sub ( startTime )
-	fmt.Printf ( "==== Go Parallel pi = %.18f\n" , pi ) ;
-	fmt.Printf ( "==== Go Parallel iteration count = %d\n" ,  n ) ;
-	fmt.Printf ( "==== Go Parallel elapse = %v\n" , elapseTime ) ;
-	fmt.Printf ( "==== Go Parallel threadCount = %d\n" , numberOfTasks )
+	output.OutP ( "Go Goroutines Multiple Channels", pi , n , elapseTime , numberOfTasks )
 }
 
 func main ( ) {
 	execute ( 1 )
-	fmt.Println ( )
 	execute ( 2 )
-	fmt.Println ( )
 	execute ( 8 )
-	fmt.Println ( )
 	execute ( 32 )
 }

@@ -7,8 +7,8 @@
 package main
 
 import (
-	"fmt"
 	"time"
+	"./output"
 )
 
 func main ( ) {
@@ -22,7 +22,5 @@ func main ( ) {
 	}
 	pi := 4.0 * delta * sum
 	elapseTime := time.Now ( ).Sub ( startTime )
-	fmt.Printf ( "==== Go Sequential pi = %.18f\n" , pi ) ;
-	fmt.Printf ( "==== Go Sequential iteration count = %d\n" ,  n ) ;
-	fmt.Printf ( "==== Go Sequential elapse = %v\n" , elapseTime ) ;
+	output.OutS ( "Go Sequential" , pi , n , elapseTime )
 }
