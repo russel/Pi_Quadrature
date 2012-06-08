@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a fork/join approach with threads.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 public class Pi_Java_ThreadsSynchronizedStatement {
@@ -40,19 +40,12 @@ public class Pi_Java_ThreadsSynchronizedStatement {
     }
     final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    System.out.println ( "==== Java Threads Synchronized Statement pi = " + pi ) ;
-    System.out.println ( "==== Java Threads Synchronized Statement iteration count = " + n ) ;
-    System.out.println ( "==== Java Threads Synchronized Statement elapse = " + elapseTime ) ;
-    System.out.println ( "==== Java Threads Synchronized Statement processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-    System.out.println ( "==== Java Threads Synchronized Statement thread count = " + numberOfTasks ) ;
+    JOutput.out ( "Java Threads Synchronized Statement" , pi, n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_ThreadsSynchronizedStatement.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_ThreadsSynchronizedStatement.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_ThreadsSynchronizedStatement.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_ThreadsSynchronizedStatement.execute ( 32 ) ;
   }
 }

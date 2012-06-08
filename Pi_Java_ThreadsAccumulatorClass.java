@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a fork/join approach with threads.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 public class Pi_Java_ThreadsAccumulatorClass {
@@ -39,19 +39,12 @@ public class Pi_Java_ThreadsAccumulatorClass {
     }
     final double pi = 4.0 * delta * accumulator.getSum ( ) ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    System.out.println ( "==== Java Threads Accumulator Class pi = " + pi ) ;
-    System.out.println ( "==== Java Threads Accumulator Class iteration count = " + n ) ;
-    System.out.println ( "==== Java Threads Accumulator Class elapse = " + elapseTime ) ;
-    System.out.println ( "==== Java Threads Accumulator Class processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-    System.out.println ( "==== Java Threads Accumulator Class thread count = " + numberOfTasks ) ;
+    JOutput.out( "Java Threads Accumulator Class" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_ThreadsAccumulatorClass.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_ThreadsAccumulatorClass.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_ThreadsAccumulatorClass.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_ThreadsAccumulatorClass.execute ( 32 ) ;
   }
 }

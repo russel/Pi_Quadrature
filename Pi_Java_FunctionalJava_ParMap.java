@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with an approached based on using parallel map from
  *  Functional Java.
  *
- *  Copyright © 2010–2011 Russel Winder
+ *  Copyright © 2010–2012 Russel Winder
  */
 
 import fj.F ;
@@ -40,19 +40,12 @@ public class Pi_Java_FunctionalJava_ParMap {
     final Strategy<Unit> strategy = Strategy.simpleThreadStrategy ( ) ;
     final double pi = 4.0 * delta * ParModule.parModule ( strategy ).parMap ( inputData , sliceCalculator ).claim ( ).foldLeft ( add , 0.0 ) ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    System.out.println ( "==== Java FunctionalJava ParMap pi = " + pi ) ;
-    System.out.println ( "==== Java FunctionalJava ParMap iteration count = " + n ) ;
-    System.out.println ( "==== Java FunctionalJava ParMap elapse = " + elapseTime ) ;
-    System.out.println ( "==== Java FunctionalJava ParMap processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-    System.out.println ( "==== Java FunctionalJava ParMap thread count = " + numberOfTasks ) ;
+    JOutput.out ( "Java FunctionalJava ParMap" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_FunctionalJava_ParMap.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_FunctionalJava_ParMap.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_FunctionalJava_ParMap.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_FunctionalJava_ParMap.execute ( 32 ) ;
   }
 }

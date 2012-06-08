@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a dataflow architecture implemented using Pervasive
  *  DataRush 5.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  *  Copyright © 2009 Pervasive Software Inc.
  */
 
@@ -70,11 +70,7 @@ public class Pi_Java_DataRush5 {
       }
       final double pi = 4.0 * delta * sum ;
       final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-      System.out.println ( "==== Java DataRush5 pi = " + pi ) ;
-      System.out.println ( "==== Java DataRush5 iteration count = " + n ) ;
-      System.out.println ( "==== Java DataRush5 elapse = " + elapseTime ) ;
-      System.out.println ( "==== Java DataRush5 processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-      System.out.println ( "==== Java DataRush5 task count = " + ( inputs.length + 1 ) ) ;
+      JOutput.out ( "Java DataRush5" , pi , n , elapseTime , inputs.length + 1 ) ;
     }
   }
   private static final class PiOperator extends DataflowOperator {
@@ -103,11 +99,8 @@ public class Pi_Java_DataRush5 {
   }
   public static void main ( final String[] args ) {
     Pi_Java_DataRush5.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_DataRush5.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_DataRush5.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_DataRush5.execute ( 32 ) ;
   }
 }

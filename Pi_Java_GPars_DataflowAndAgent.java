@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with GPars data flow tasks and an agent.
  *
- *  Copyright © 2010–2011 Russel Winder
+ *  Copyright © 2010–2012 Russel Winder
  */
 
 /*
@@ -53,19 +53,12 @@ public class Pi_Java_GPars_DataflowAndAgent {
     }
     final double pi = 4.0 * delta * sum.getVal ( ).getSum ( ) ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    System.out.println ( "==== Java GPars Dataflow/Agent pi = " + pi ) ;
-    System.out.println ( "==== Java GPars Dataflow/Agent iteration count = " + n ) ;
-    System.out.println ( "==== Java GPars Dataflow/Agent elapse = " + elapseTime ) ;
-    System.out.println ( "==== Java GPars Dataflow/Agent processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-    System.out.println ( "==== Java GPars Dataflow/Agent thread count = " + numberOfTasks ) ;
+    JOutput.out( "Java GPars Dataflow/Agent" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args) throws InterruptedException {
     Pi_Java_GPars_DataflowAndAgent.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_GPars_DataflowAndAgent.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_GPars_DataflowAndAgent.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_GPars_DataflowAndAgent.execute ( 32 ) ;
   }
 }

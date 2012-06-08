@@ -303,9 +303,8 @@ classpathEntries = {
 for item in Glob ( 'Pi_Java_*.java' ) :
     className = os.path.splitext ( item.name ) [0]
     compileTargets.append ( className + '.class' )
-    variant = className.split ( '_' )[2]
+    variant = className.split ( '_' ) [2]
     javaCommand = 'java'
-    classpath = [ ]
     if variant in [ 'DataRush4' , 'DataRush5' ] :
         dataRushHome = os.environ['HOME'] + '/lib/Java/' + variant
         compiledBits = javaEnvironment.Java ( target = '.' , source = item , JAVACLASSPATH = [ f.path for f in Glob ( dataRushHome + '/lib/*.jar' ) ] )

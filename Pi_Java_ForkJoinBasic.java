@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach.  This uses a primitive array to
  *  store the futures.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 import java.util.concurrent.Callable ;
@@ -42,19 +42,12 @@ public class Pi_Java_ForkJoinBasic {
     final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     pool.shutdown ( ) ;
-    System.out.println ( "==== Java ForkJoin Basic pi = " + pi ) ;
-    System.out.println ( "==== Java ForkJoin Basic iteration count = " + n ) ;
-    System.out.println ( "==== Java ForkJoin Basic elapse = " + elapseTime ) ;
-    System.out.println ( "==== Java ForkJoin Basic processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-    System.out.println ( "==== Java ForkJoin Basic thread count = " + numberOfTasks ) ;
+    JOutput.out ( "Java ForkJoin Basic" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_ForkJoinBasic.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_ForkJoinBasic.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_ForkJoinBasic.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_ForkJoinBasic.execute ( 32 ) ;
   }
 }

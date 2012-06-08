@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with an approached based on evolving values in an array with
  *  implicit parallelism.  This is material that probably won't actually be in Java 7.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 import extra166y.CommonOps ;
@@ -31,19 +31,12 @@ public class Pi_Java_ParallelArray {
       } ) ;
     final double pi = 4.0 * delta * finalArray.reduce ( CommonOps.doubleAdder ( ) , 0.0 ) ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    System.out.println ( "==== Java Parallel Array pi = " + pi ) ;
-    System.out.println ( "==== Java Parallel Array iteration count = " + n ) ;
-    System.out.println ( "==== Java Parallel Array elapse = " + elapseTime ) ;
-    System.out.println ( "==== Java Parallel Array processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-    System.out.println ( "==== Java Parallel Array thread count = " + numberOfTasks ) ;
+    JOutput.out ( "Java Parallel Array" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_ParallelArray.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_ParallelArray.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_ParallelArray.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_ParallelArray.execute ( 32 ) ;
   }
 }

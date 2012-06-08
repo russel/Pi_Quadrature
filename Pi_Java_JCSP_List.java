@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with JCSP to partition the problem
  *  and hence harness all processors available to the JVM.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 import org.jcsp.lang.Channel ;
@@ -51,22 +51,15 @@ public class Pi_Java_JCSP_List {
           for ( One2OneChannel<Double> c : channels ) {  sum += c.in ( ).read ( ) ; }
           final double pi = 4.0 * delta * sum ;
           final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-          System.out.println ( "==== Java JCSP List pi = " + pi ) ;
-          System.out.println ( "==== Java JCSP List iteration count = " + n ) ;
-          System.out.println ( "==== Java JCSP List elapse = " + elapseTime ) ;
-          System.out.println ( "==== Java JCSP List processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-          System.out.println ( "==== Java JCSP List task count = " + numberOfTasks ) ;
+          JOutput.out ( "Java JCSP List" , pi , n , elapseTime , numberOfTasks ) ;
         }
       } ) ;
     ( new Parallel ( processes.toArray ( new CSProcess [0] ) ) ).run ( ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_JCSP_List.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_JCSP_List.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_JCSP_List.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_JCSP_List.execute ( 32 ) ;
   }
 }

@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach.  This uses a collection to store
  *  the futures.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 import java.util.ArrayList ;
@@ -44,19 +44,12 @@ public class Pi_Java_ForkJoinCollection {
     pool.shutdown ( ) ;
     final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    System.out.println ( "==== Java ForkJoin Collection pi = " + pi ) ;
-    System.out.println ( "==== Java ForkJoin Collection iteration count = " + n ) ;
-    System.out.println ( "==== Java ForkJoin Collection elapse = " + elapseTime ) ;
-    System.out.println ( "==== Java ForkJoin Collection processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-    System.out.println ( "==== Java ForkJoin Collection thread count = " + numberOfTasks ) ;
+    JOutput.out ( "Java ForkJoin Collection" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_ForkJoinCollection.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_ForkJoinCollection.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_ForkJoinCollection.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_ForkJoinCollection.execute ( 32 ) ;
   }
 }

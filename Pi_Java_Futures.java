@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with threads and futures (hidden
  *  by using executors) to partition the problem and hence harness all processors available to the JVM.
  *
- *  Copyright © 2008–2011 Russel Winder
+ *  Copyright © 2008–2012 Russel Winder
  */
 
 import java.util.ArrayList ;
@@ -45,19 +45,12 @@ public class Pi_Java_Futures {
     final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     executor.shutdown ( ) ;
-    System.out.println ( "==== Java Futures pi = " + pi ) ;
-    System.out.println ( "==== Java Futures iteration count = " + n ) ;
-    System.out.println ( "==== Java Futures elapse = " + elapseTime ) ;
-    System.out.println ( "==== Java Futures processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-    System.out.println ( "==== Java Futures thread count = " + numberOfTasks ) ;
+    JOutput.out ( "Java Futures" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_Futures.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_Futures.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_Futures.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_Futures.execute ( 32 ) ;
   }
 }

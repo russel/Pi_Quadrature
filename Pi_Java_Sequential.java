@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a basic sequential algorithm.
  *
- *  Copyright © 2008–2011 Russel Winder
+ *  Copyright © 2008–2012 Russel Winder
  */
 
 public class Pi_Java_Sequential {
@@ -16,8 +16,6 @@ public class Pi_Java_Sequential {
     }
     final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    System.out.println ( "==== Java Sequential pi = " + pi ) ;
-    System.out.println ( "==== Java Sequential iteration count = " + n ) ;
-    System.out.println ( "==== Java Sequential elapse = " + elapseTime ) ;
+    JOutput.out ( "Java Sequential" , pi , n , elapseTime ) ;
   }
 }

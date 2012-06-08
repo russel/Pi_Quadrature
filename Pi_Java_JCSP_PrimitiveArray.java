@@ -2,7 +2,7 @@
  *  Calculation of Pi using quadrature realized with a fork/join approach with JCSP to partition the problem
  *  and hence harness all processors available to the JVM.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 import org.jcsp.lang.Channel ;
@@ -39,22 +39,15 @@ public class Pi_Java_JCSP_PrimitiveArray {
         for ( One2OneChannel<Double> c : channels ) { sum += c.in ( ).read ( ) ; }
         final double pi = 4.0 * delta * sum ;
         final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-        System.out.println ( "==== Java JCSP Primitive Array pi = " + pi ) ;
-        System.out.println ( "==== Java JCSP Primitive Array iteration count = " + n ) ;
-        System.out.println ( "==== Java JCSP Primitive Array elapse = " + elapseTime ) ;
-        System.out.println ( "==== Java JCSP Primitive Array processor count = " + Runtime.getRuntime ( ).availableProcessors ( ) ) ;
-        System.out.println ( "==== Java JCSP Primitive Array task count = " + numberOfTasks ) ;
+        JOutput.out ( "Java JCSP Primitive Array" , pi , n , elapseTime , numberOfTasks ) ;
       }
     } ;
     ( new Parallel ( processes ) ).run ( ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_JCSP_PrimitiveArray.execute ( 1 ) ;
-    System.out.println ( ) ;
     Pi_Java_JCSP_PrimitiveArray.execute ( 2 ) ;
-    System.out.println ( ) ;
     Pi_Java_JCSP_PrimitiveArray.execute ( 8 ) ;
-    System.out.println ( ) ;
     Pi_Java_JCSP_PrimitiveArray.execute ( 32 ) ;
   }
 }
