@@ -8,11 +8,13 @@
 
 import java.util.List
 
+import groovy.transform.CompileStatic
+
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.actor.DefaultActor
 import groovyx.gpars.actor.DynamicDispatchActor
 
-public class Pi_Groovy_GPars_ActorClass {
+public class Pi_Groovy_GPars_ActorClass_Static {
 
   private static class  ComputeActor extends DefaultActor {
     private int taskId
@@ -25,6 +27,7 @@ public class Pi_Groovy_GPars_ActorClass {
       this.delta = delta
       this.accumulator = accumulator
     }
+    @CompileStatic
     @Override protected void act ( ) {
       final int start = 1i + taskId * sliceSize
       final int end = ( taskId + 1i ) * sliceSize 
