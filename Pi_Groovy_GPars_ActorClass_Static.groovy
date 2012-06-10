@@ -27,8 +27,7 @@ public class Pi_Groovy_GPars_ActorClass_Static {
       this.delta = delta
       this.accumulator = accumulator
     }
-    @CompileStatic
-    @Override protected void act ( ) {
+    @CompileStatic @Override protected void act ( ) {
       final int start = 1i + taskId * sliceSize
       final int end = ( taskId + 1i ) * sliceSize 
       double sum = 0.0d

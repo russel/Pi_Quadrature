@@ -11,8 +11,6 @@ import groovy.transform.CompileStatic
 
 import groovyx.gpars.ParallelEnhancer
 
-
-
 void execute ( final int numberOfTasks ) {
   final int n = 1000000000i
   final double delta = 1.0d / n
@@ -24,7 +22,7 @@ void execute ( final int numberOfTasks ) {
     PartialSum.compute ( taskId , sliceSize , delta )
   }.sumParallel ( )
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  Output.out ( 'Groovy GPars ParallelEnhancer' , pi , n , elapseTime , numberOfTasks )
+  Output.out ( 'Groovy GPars ParallelEnhancer Static' , pi , n , elapseTime , numberOfTasks )
 }
 
 execute ( 1 )
