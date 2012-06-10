@@ -62,7 +62,7 @@ public class Pi_Groovy_GPars_ActorClass_Dynamic {
     accumulator.join ( )
     final pi = 4.0d * delta * accumulator.sum
     final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-    Output.out ( 'Groovy GPars ActorClass' , pi , n , elapseTime , actorCount )
+    Output.out ( 'Groovy GPars ActorClass Dynamic' , pi , n , elapseTime , actorCount )
   }
 
   public static void main ( final String[] args ) {
