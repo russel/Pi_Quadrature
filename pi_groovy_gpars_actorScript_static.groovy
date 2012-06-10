@@ -6,11 +6,24 @@
  *  Copyright © 2009–2012 Russel Winder.
  */
 
+import groovy.transform.CompileStatic
+
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.group.DefaultPGroup
 
+@CompileStatic double computePartialSum ( final int taskId , final int sliceSize , final double delta ) {
+   final int start = 1i + taskId * sliceSize
+    final int end = ( taskId + 1i ) * sliceSize
+    double sum = 0.0d
+    for ( int i = start ; i <= end ; ++i ) {
+      final double x = ( i - 0.5d ) * delta
+      sum += 1.0d / ( 1.0d + x * x )
+    }
+    return sum
+}
+
 void execute ( final int actorCount ) {
-  final int n = 100000000i // 10 times fewer due to speed issues.
+  final int n = 1000000000i 
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
   final int sliceSize = n / actorCount
@@ -23,7 +36,7 @@ void execute ( final int actorCount ) {
       if ( ++count == actorCount ) {
         final double pi = 4.0d * delta * sum
         final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-        Output.out ( 'Groovy GPars ActorScript' , pi , n , elapseTime , actorCount )
+        Output.out ( 'Groovy GPars ActorScript Static' , pi , n , elapseTime , actorCount )
         terminate ( )
       }
     }
@@ -35,14 +48,7 @@ void execute ( final int actorCount ) {
     final int index = a
     computors.add (
       group.actor {
-        final int start = 1i + index * sliceSize
-        final int end = ( index + 1i ) * sliceSize
-        double sum = 0.0d
-        for ( int i in start .. end ) {
-          final double x = ( i - 0.5d ) * delta
-          sum += 1.0d / ( 1.0d + x * x )
-        }
-        accumulator << sum
+        accumulator << computePartialSum ( index , sliceSize , delta )
       }
     )    
   }
