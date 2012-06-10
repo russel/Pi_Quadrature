@@ -10,26 +10,17 @@ import groovyx.gpars.dataflow.DataflowQueue
 import static groovyx.gpars.dataflow.Dataflow.task
 
 void execute ( final int operatorCount ) {
-  final int n = 100000000i // 10 times fewer due to speed issues.
+  final int n = 1000000000i
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
   final int sliceSize = n / operatorCount
   final partialSums = new DataflowQueue ( )
   ( 0 ..< operatorCount ).each { index ->
-    task {
-      final int start = 1i + index * sliceSize
-      final int end = ( index + 1i ) * sliceSize
-      double sum = 0.0d
-      for ( int i in start .. end ) {
-        final double x = ( i - 0.5d ) * delta
-        sum += 1.0d / ( 1.0d + x * x )
-      }
-      partialSums << sum
-    }
+    task { partialSums << PartialSum.compute ( index , sliceSize , delta ) }
   }
   final double pi = 4.0d * delta * ( 0 ..< operatorCount ).sum { partialSums.val }
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  Output.out ( 'Groovy GPars DataflowQueue' , pi , n , elapseTime , operatorCount )
+  Output.out ( 'Groovy GPars DataflowQueue Static' , pi , n , elapseTime , operatorCount )
 }
 
 execute ( 1 )

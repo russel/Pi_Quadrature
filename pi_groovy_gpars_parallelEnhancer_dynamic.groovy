@@ -10,7 +10,7 @@
 import groovyx.gpars.ParallelEnhancer
 
 void execute ( final int numberOfTasks ) {
-  final int n = 100000000i // 10 times fewer due to speed issues.
+  final int n = 100000000i // 10 times fewer than Java due to speed issues.
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
   final int sliceSize = n / numberOfTasks

@@ -10,7 +10,7 @@ import groovyx.gpars.dataflow.DataflowVariable
 import static groovyx.gpars.dataflow.Dataflow.task
 
 void execute ( final int operatorCount ) {
-  final int n = 100000000i // 10 times fewer due to speed issues.
+  final int n = 100000000i // 10 times fewer than Java due to speed issues.
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
   final int sliceSize = n / operatorCount
@@ -31,7 +31,7 @@ void execute ( final int operatorCount ) {
   }
   final double pi = 4.0d * delta * partialSums.sum { it.val }
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  Output.out ( 'Groovy GPars DataflowVariables' , pi , n , elapseTime, operatorCount )
+  Output.out ( 'Groovy GPars DataflowVariables Dynamic' , pi , n , elapseTime, operatorCount )
 }
 
 execute ( 1 )

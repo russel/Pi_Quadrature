@@ -10,7 +10,7 @@
 import groovy.transform.CompileStatic
 
 @CompileStatic execute ( ) {
-  final int n = 100000000i // 10 times fewer than Java due to speed issues.
+  final int n = 1000000000i
   final double delta = 1.0d / n
   final startTime = System.nanoTime ( )
   double sum = 0.0d
