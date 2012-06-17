@@ -6,10 +6,11 @@
 #  the results.  However it is not clear that that operation is atomic so we use a Queue as the way of
 #  receiving results since that has the necessary guarantees to be thread-safe.
 #
-#  Copyright © 2008–2011 Russel Winder
+#  Copyright © 2008–2012 Russel Winder
 
-import time
-import threading
+from output import out
+from threading import Thread
+from time import time
 
 def processSlice ( id , sliceSize , delta ) :
     sum = 0.0
@@ -19,27 +20,21 @@ def processSlice ( id , sliceSize , delta ) :
     results.append ( sum )
 
 def execute ( threadCount ) :
-    n = 10000000 # 100 times fewer due to speed issues.
+    n = 10000000 # 100 times fewer than C due to speed issues.
     delta = 1.0 / n
-    startTime = time.time ( )
+    startTime = time ( )
     sliceSize = n / threadCount
     global results
     results = [ ]
-    threads = [ threading.Thread ( target = processSlice , args = ( i , sliceSize , delta ) ) for i in xrange ( 0 , threadCount ) ]
+    threads = [ Thread ( target = processSlice , args = ( i , sliceSize , delta ) ) for i in xrange ( 0 , threadCount ) ]
     for thread in threads : thread.start ( )
     for thread in threads : thread.join ( )
     pi =  4.0 * delta * sum ( results )
-    elapseTime = time.time ( ) - startTime
-    print ( "==== Python Threads pi = " + str ( pi ) )
-    print ( "==== Python Threads iteration count = " + str ( n ) )
-    print ( "==== Python Threads elapse = " + str ( elapseTime ) )
-    print ( "==== Python Threads thread count = " + str ( threadCount ) )
+    elapseTime = time ( ) - startTime
+    out ( 'Python2 Threads Global List' , pi , n , elapseTime , threadCount )
 
 if __name__ == '__main__' :
     execute ( 1 )
-    print
     execute ( 2 )
-    print
     execute ( 8 )
-    print
     execute ( 32 )
