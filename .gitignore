@@ -11,3 +11,5 @@ DataRush.slc
 *.pdf
 *.[568]
 *.exe
+*~
+*.pyc
