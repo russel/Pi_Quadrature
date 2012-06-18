@@ -4,13 +4,11 @@
 #  Calculation of Pi using quadrature.  Use the Parallel Python package.  Parallel Python appears not to be
 #  packaged for use with Python 3 in the Ubuntu package repository.
 #
-#  Copyright © 2008–2011 Russel Winder
+#  Copyright © 2008–2012 Russel Winder
 
-import time
-
-import sys
-import os
-import pp
+from output import out
+from pp import Server
+from time import time
 
 def processSlice ( id , sliceSize , delta ) :
     sum = 0.0
@@ -22,24 +20,17 @@ def processSlice ( id , sliceSize , delta ) :
 def execute ( processCount ) :
     n = 10000000 # 100 times fewer due to speed issues.
     delta = 1.0 / n
-    startTime = time.time ( )
+    startTime = time ( )
     sliceSize = n / processCount
-    server = pp.Server ( secret = 'blahblahblah' )
+    server = Server ( secret = 'blahblahblah' )
     jobs = [ server.submit ( processSlice , ( i , sliceSize , delta ) ) for i in xrange ( 0, processCount ) ]
     pi = 4.0 * delta * sum ( [ job ( ) for job in jobs ] )
-    elapseTime = time.time ( ) - startTime
-    print ( "==== Python PP pi = " + str ( pi ) )
-    print ( "==== Python PP iteration count = " + str ( n ) )
-    print ( "==== Python PP elapse = " + str ( elapseTime ) )
-    print ( "==== Python PP process count = " + str ( processCount ) )
-    print ( "==== Python PP processor count = " + str ( server.get_ncpus ( ) ) )
+    elapseTime = time ( ) - startTime
+    out ( __file__ , pi , n , elapseTime , processCount , server.get_ncpus ( ) )
     server.print_stats ( )
     
 if __name__ == '__main__' :
     execute ( 1 )
-    print
     execute ( 2 )
-    print
     execute ( 8 )
-    print
     execute ( 32 )
