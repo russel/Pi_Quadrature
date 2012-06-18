@@ -1,4 +1,5 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
+# -*- mode:python; coding:utf-8; -*-
 
 #  Calculation of Pi using quadrature. Using the multiprocessing package to provide a process pool to enable
 #  asynchronous function calls very akin to futures.
@@ -9,26 +10,27 @@ from multiprocessing import Pool, cpu_count
 from output import out
 from time import time
 
+import ctypes
+
 def processSlice ( id , sliceSize , delta ) :
-    sum = 0.0
-    for i in range (  1 + id * sliceSize , ( id + 1 ) * sliceSize + 1 ) :
-        x = ( i - 0.5 ) * delta
-        sum += 1.0 / ( 1.0 + x * x )
-    return sum
+    return processSliceModule.processSlice ( id , sliceSize , delta )
 
 def execute ( processCount ) :
-    n = 10000000 # 100 times fewer due to speed issues.
+    n = 1000000000
     delta = 1.0 / n
     startTime = time ( )
-    sliceSize = n // processCount
+    sliceSize = n / processCount
     pool = Pool ( processes = processCount )
     results = [ pool.apply_async ( processSlice , args = ( i , sliceSize , delta ) ) for i in range ( 0 , processCount ) ]
     pool.close ( )
     pi = 4.0 * delta * sum ( [ item.get ( ) for item in results ] )
     elapseTime = time ( ) - startTime
-    out ( 'Python3 Multiprocessing Pool' , pi , n , elapseTime , processCount , cpu_count ( ) ) )
+    out ( 'Python2 Multiprocessing Pool Extension C' , pi , n , elapseTime , processCount , cpu_count ( ) ) )
     
 if __name__ == '__main__' :
+    processSliceModule = ctypes.cdll.LoadLibrary ( 'processSlice_c.so' )
+    processSliceModule.processSlice.argtypes = [ ctypes.c_int , ctypes.c_int , ctypes.c_double ]
+    processSliceModule.processSlice.restype = ctypes.c_double
     execute ( 1 )
     execute ( 2 )
     execute ( 8 )
