@@ -6,8 +6,10 @@ A module providing an output function for all the variants of the "Π by Quadrat
 
 # This function must work in both Python 2 and Python 3.
 
-def out ( banner , pi , n , elapseTime , *args ) :
-    print ( '================ {}'.format ( banner ) )
+import os.path
+
+def out ( name , pi , n , elapseTime , *args ) :
+    print ( '======================== {}'.format ( ' '.join ( os.path.splitext ( name )[0].split ( '_' ) [1:] ) ) )
     print ( '\tπ = {:.18f}'.format ( pi ) )
     print ( '\titeration count = {}'.format ( n ) )
     print ( '\telapse time = {}'.format ( elapseTime ) )

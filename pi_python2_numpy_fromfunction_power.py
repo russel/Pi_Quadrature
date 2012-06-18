@@ -1,19 +1,18 @@
 #! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature. Sequential algorithm.  Use NumPy.
+#  Calculation of Pi using quadrature. Sequential algorithm. Use NumPy.
 #
-#  Copyright © 2008–2011 Russel Winder
+#  Copyright © 2008–2012 Russel Winder
 
-import time
-import numpy
+from numpy import float , fromfunction
+from output import out
+from time import time
 
 if __name__ == '__main__' :
-    n = 100000000 # 0
+    n = 100000000 # 10 times fewer due to speed reasons.
     delta = 1.0 / n
-    startTime = time.time ( )
-    pi = 4.0 * delta * numpy.fromfunction ( lambda i : 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 ) , ( n , ) , dtype = numpy.float ).sum ( )
-    elapseTime = time.time ( ) - startTime
-    print ( "==== Python NumPy FromFunction Power pi = " + str ( pi ) )
-    print ( "==== Python NumPy FromFunction Power iteration count = " + str ( n ) )
-    print ( "==== Python NumPy FromFunction Power elapse = " + str ( elapseTime ) )
+    startTime = time ( )
+    pi = 4.0 * delta * fromfunction ( lambda i : 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 ) , ( n , ) , dtype = float ).sum ( )
+    elapseTime = time ( ) - startTime
+    out ( __file__ , pi , n , elapseTime )

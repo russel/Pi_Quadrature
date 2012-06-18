@@ -1,33 +1,27 @@
 #! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature. Sequential algorithm.  Use NumPy.
+#  Calculation of Pi using quadrature. Sequential algorithm. Use NumPy.
 #
-#  Copyright © 2008–2011 Russel Winder
+#  Copyright © 2008–2012 Russel Winder
 
-import time
-import numpy
-import numexpr
+from output import out
+from time import time
+from numpy import arange
+from numexpr import detect_number_of_cores , evaluate , set_num_threads 
 
 def execute ( threadCount ) :
-    n = 100000000 # 0
+    n = 100000000 # 10 times fewer than C due to speed reasons.
     delta = 1.0 / n
-    startTime = time.time ( )
-    numexpr.set_num_threads ( threadCount )
-    value = numpy.arange ( n )
-    pi = 4.0 * delta * numexpr.evaluate ( "1.0 / ( 1.0 + ( ( value - 0.5 ) * delta ) ** 2 )" ).sum ( )
-    elapseTime = time.time ( ) - startTime
-    print ( "==== Python Sequential NumPy NumExpr pi = " + str ( pi ) )
-    print ( "==== Python Sequential NumPy NumExpr iteration count = " + str ( n ) )
-    print ( "==== Python Sequential NumPy NumExpr elapse = " + str ( elapseTime ) )
-    print ( "==== Python Sequential NumPy NumExpr thread count = " + str ( threadCount ) )
-    print ( "==== Python Sequential NumPy NumExpr number of processors = " + str ( numexpr.detect_number_of_cores ( ) ) )
+    startTime = time ( )
+    set_num_threads ( threadCount )
+    value = arange ( n )
+    pi = 4.0 * delta * evaluate ( "1.0 / ( 1.0 + ( ( value - 0.5 ) * delta ) ** 2 )" ).sum ( )
+    elapseTime = time ( ) - startTime
+    out ( __file__ ,  pi , n , elapseTime , threadCount , detect_number_of_cores ( ) )
     
 if __name__ == '__main__' :
     execute ( 1 )
-    print
     execute ( 2 )
-    print
     execute ( 8 )
-    print
     execute ( 32 )
