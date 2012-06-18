@@ -11,10 +11,10 @@ from queue import Queue
 from threading import Thread
 from time import time
 
-import ctypes
+from processSlice_cython_py3 import processSlice
 
-def processSlice ( id , sliceSize , delta , results ) :
-    results.put ( processSliceModule.processSlice ( id , sliceSize , delta ) )
+def calculator ( id , sliceSize , delta , results ) :
+    results.put ( processSlice ( id , sliceSize , delta ) )
 
 def execute ( threadCount ) :
     n = 1000000000
@@ -22,7 +22,7 @@ def execute ( threadCount ) :
     startTime = time ( )
     sliceSize = n // threadCount
     results = Queue ( threadCount )
-    threads = [ Thread ( target = processSlice , args = ( i , sliceSize , delta , results ) ) for i in range ( 0 , threadCount ) ]
+    threads = [ Thread ( target = calculator , args = ( i , sliceSize , delta , results ) ) for i in range ( 0 , threadCount ) ]
     for thread in threads : thread.start ( )
     for thread in threads : thread.join ( )
     pi =  4.0 * delta * sum ( [ results.get ( ) for i in range ( threadCount ) ] )
@@ -30,9 +30,6 @@ def execute ( threadCount ) :
     out ( __file__ , pi , n , elapseTime , threadCount )
 
 if __name__ == '__main__' :
-    processSliceModule = ctypes.cdll.LoadLibrary ( 'processSlice_c.so' )
-    processSliceModule.processSlice.argtypes = [ ctypes.c_int , ctypes.c_int , ctypes.c_double ]
-    processSliceModule.processSlice.restype = ctypes.c_double
     execute ( 1 )
     execute ( 2 )
     execute ( 8 )
