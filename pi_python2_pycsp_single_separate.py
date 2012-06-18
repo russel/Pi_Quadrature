@@ -1,14 +1,14 @@
 #! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature.  Using the python-csp package by Sarah Mount.
+#  Calculation of Pi using quadrature. Using the pycsp package byRune Møllegaard Friborg.
 #
-#  Copyright © 2009–2011 Russel Winder
+#  Copyright © 2009–2012 Russel Winder
 
-import time
-import multiprocessing
-
+from multiprocessing import cpu_count
+from output import out
 from pycsp.processes import process , Channel , Parallel
+from time import time
 
 @process
 def calculator ( channel , id , sliceSize , delta ) :
@@ -21,17 +21,13 @@ def calculator ( channel , id , sliceSize , delta ) :
 @process
 def accumulator ( channel , n , delta , startTime , processCount ) :
     pi = 4.0 * delta * sum ( [ channel ( ) for i in xrange ( 0 , processCount ) ] )
-    elapseTime = time.time ( ) - startTime
-    print ( "==== PyCSP Single Separate pi = " + str ( pi ) )
-    print ( "==== PyCSP Single Separate iteration count = " + str ( n ) )
-    print ( "==== PyCSP Single Separate elapse = " + str ( elapseTime ) )
-    print ( "==== PyCSP Single Separate process count = " + str ( processCount ) )
-    print ( "==== PyCSP Single Separate processor count = " + str ( multiprocessing.cpu_count ( ) ) )
+    elapseTime = time ( ) - startTime
+    out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
 
 def execute ( processCount ) :
     n = 10000000 # 100 times fewer due to speed issues.
     delta = 1.0 / n
-    startTime = time.time ( )
+    startTime = time ( )
     sliceSize = n / processCount
     channel = Channel ( )
     processes = [ calculator ( -channel , i , sliceSize , delta )  for i in xrange ( 0 , processCount ) ]
@@ -40,9 +36,6 @@ def execute ( processCount ) :
 
 if __name__ == '__main__' :
     execute ( 1 )
-    print
     execute ( 2 )
-    print
     execute ( 8 )
-    print
     execute ( 32 )
