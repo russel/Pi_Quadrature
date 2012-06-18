@@ -11,7 +11,7 @@ from numpy import arange
 from numexpr import detect_number_of_cores , evaluate , set_num_threads 
 
 def execute ( threadCount ) :
-    n = 100000000 # 10 times fewer than C due to speed reasons.
+    n = 100000000 # 10 times fewer than C due to speed issues.
     delta = 1.0 / n
     startTime = time ( )
     set_num_threads ( threadCount )

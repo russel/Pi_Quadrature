@@ -1,16 +1,16 @@
 #! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature.  Using the python-csp package by Sarah Mount.
+#  Calculation of Pi using quadrature. Using the python-csp package by Sarah Mount.
 #
-#  Copyright © 2010–2011 Russel Winder
-
-import time
-import multiprocessing
-
-from processSlice_pyrex_py2 import processSlice
+#  Copyright © 2010–2012 Russel Winder
 
 from csp.os_process import process , Channel , Par
+from multiprocessing import cpu_count
+from output import out
+from time import time
+
+from processSlice_pyrex_py2 import processSlice
 
 @process
 def calculator ( channel , id , sliceSize , delta ) :
@@ -19,17 +19,13 @@ def calculator ( channel , id , sliceSize , delta ) :
 @process
 def accumulator ( channel , n , delta , startTime , processCount ) :
     pi = 4.0 * delta * sum ( [ channel.read ( ) for i in xrange ( 0 , processCount ) ] )
-    elapseTime = time.time ( ) - startTime
-    print ( "==== Python CSP Single Pyrex Extension pi = " + str ( pi ) )
-    print ( "==== Python CSP Single Pyrex Extension iteration count = " + str ( n ) )
-    print ( "==== Python CSP Single Pyrex Extension elapse = " + str ( elapseTime ) )
-    print ( "==== Python CSP Single Pyrex Extension process count = " + str ( processCount ) )
-    print ( "==== Python CSP Single Pyrex Extension processor count = " + str ( multiprocessing.cpu_count ( ) ) )
+    elapseTime = time ( ) - startTime
+    out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
 
 def execute ( processCount ) :
     n = 1000000000
     delta = 1.0 / n
-    startTime = time.time ( )
+    startTime = time ( )
     sliceSize = n / processCount
     channel = Channel ( )
     processes = [ ] 
@@ -39,9 +35,6 @@ def execute ( processCount ) :
 
 if __name__ == '__main__' :
     execute ( 1 )
-    print
     execute ( 2 )
-    print
     execute ( 8 )
-    print
     execute ( 32 )

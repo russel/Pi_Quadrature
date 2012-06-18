@@ -14,7 +14,7 @@ def f ( i ) :
     return 1.0 / ( 1.0 + x * x )
 
 if __name__ == '__main__' :
-    n = 10000000 # 100 times fewer than C due to speed reasons.
+    n = 10000000 # 100 times fewer than C due to speed issues.
     delta = 1.0 / n
     startTime = time ( )
     pi = 4.0 * delta * frompyfunc ( f , 1 , 1 ) ( arange ( n , dtype = float ) ).sum ( )

@@ -10,7 +10,7 @@ from output import out
 from time import time
 
 if __name__ == '__main__' :
-  n = int ( 1000000 ) # 1000 times fewer than C due to speed reasons.
+  n = int ( 1000000 ) # 1000 times fewer than C due to speed issues.
   delta = divide ( 1.0 , n )
   startTime = time ( )
   sum = float ( 0.0 )
