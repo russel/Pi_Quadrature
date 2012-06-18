@@ -18,4 +18,4 @@ if __name__ == '__main__' :
     startTime = time ( )
     pi = 4.0 * delta * reduce ( f , xrange ( n ) , 0.0 )
     elapseTime = time ( ) - startTime
-    out ( 'Python2 Sequential Reduce Multiply' , pi , n , elapseTime )
+    out ( __file__ , pi , n , elapseTime )

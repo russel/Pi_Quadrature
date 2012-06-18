@@ -30,4 +30,4 @@ if __name__ == '__main__' :
   if myId == 0 :
     pi = 4.0 * delta * sum[0]
     elapseTime = time ( ) - startTime
-    out ( 'Python2 MPI4Py Extension C' , pi , n , elapseTime , nProcessors )
+    out ( __file__ , pi , n , elapseTime , nProcessors )

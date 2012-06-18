@@ -15,4 +15,4 @@ if __name__ == '__main__' :
     startTime = time ( )
     pi = 4.0 * delta * reduce ( lambda s , i  : s + 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 ) , range ( n ) , 0.0 )
     elapseTime = time ( ) - startTime
-    out ( 'Python3 Sequential Reduce Power' , pi , n , elapseTime )
+    out ( __file__ , pi , n , elapseTime )

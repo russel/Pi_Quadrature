@@ -30,7 +30,7 @@ def execute ( threadCount ) :
     for thread in threads : thread.join ( )
     pi =  4.0 * delta *  sum ( results )
     elapseTime = time ( ) - startTime
-    out ( 'Python3 Threads Global List' ,  pi , n , elapseTime , threadCount )
+    out ( __file__ ,  pi , n , elapseTime , threadCount )
 
 if __name__ == '__main__' :
     execute ( 1 )

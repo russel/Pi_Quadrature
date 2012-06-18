@@ -19,4 +19,4 @@ if __name__ == '__main__' :
     sum += 1.0 / ( 1.0 + x * x )
   pi = 4.0 * delta * sum
   elapseTime = time ( ) - startTime
-  out ( 'Python2 Sequential For/Xrange Multiply' , pi , n , elapseTime )
+  out ( __file__ , pi , n , elapseTime )

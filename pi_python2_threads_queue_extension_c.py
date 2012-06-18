@@ -28,7 +28,7 @@ def execute ( threadCount ) :
     for thread in threads : thread.join ( )
     pi =  4.0 * delta * sum ( [ results.get ( ) for i in xrange ( threadCount ) ] )
     elapseTime = time ( ) - startTime
-    out ( 'Python2 Threads Queue Extension C' , pi , n , elapseTime , threadCount )
+    out ( __file__ , pi , n , elapseTime , threadCount )
 
 if __name__ == '__main__' :
     processSliceModule = ctypes.cdll.LoadLibrary ( 'processSlice_c.so' )

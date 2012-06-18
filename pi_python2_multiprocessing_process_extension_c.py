@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
 #  Calculation of Pi using quadrature. Using the multiprocessing package with processes sending messages to
@@ -26,7 +26,7 @@ def execute ( processCount ) :
     for p in processes : p.start ( )
     pi = 4.0 * delta * sum ( [ resultsQueue.get ( ) for i in range ( 0 , processCount ) ] )
     elapseTime = time ( ) - startTime
-    out ( 'Python2 Multiprocessing Process Extension C' , pi , n , elapseTime , processCount , cpu_count ( ) )
+    out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
 
 if __name__ == '__main__' :
     processSliceModule = ctypes.cdll.LoadLibrary ( 'processSlice_c.so' )

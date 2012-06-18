@@ -24,10 +24,10 @@ def execute ( processCount ) :
     sliceSize = n / processCount
     pool = Pool ( processes = processCount )
     results = [ pool.apply_async ( processSlice , args = ( i , sliceSize , delta ) ) for i in xrange ( 0 , processCount ) ]
-    pool.close ( )
+    #pool.close ( )
     pi = 4.0 * delta * sum ( [ item.get ( ) for item in results ] )
     elapseTime = time ( ) - startTime
-    out ( 'Python2 Multiprocessing Pool' , pi , n , elapseTime , processCount , cpu_count ( ) ) )
+    out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
 
 if __name__ == '__main__' :
     execute ( 1 )

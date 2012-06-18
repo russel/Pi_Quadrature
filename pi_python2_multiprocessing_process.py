@@ -28,7 +28,7 @@ def execute ( processCount ) :
     for p in processes : p.start ( )
     pi = 4.0 * delta * sum ( [ resultsQueue.get ( ) for i in xrange ( 0 , processCount ) ] )
     elapseTime = time ( ) - startTime
-    out ( 'Python2 Multiprocessing Process' , pi , n , elapseTime , processCount , cpu_count ( ) )
+    out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
 
 if __name__ == '__main__' :
     execute ( 1 )

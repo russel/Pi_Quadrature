@@ -19,4 +19,4 @@ if __name__ == '__main__' :
     i += 1
   pi = 4.0 * delta * sum
   elapseTime = time ( ) - startTime
-  out ( 'Python2 Sequential While Power' ,  pi , n , elapseTime )
+  out ( __file__ ,  pi , n , elapseTime )
