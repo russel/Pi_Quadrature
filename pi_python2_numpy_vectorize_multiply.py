@@ -3,7 +3,7 @@
 
 #  Calculation of Pi using quadrature. Sequential algorithm.  Use NumPy.
 #
-#  Copyright © 2008–2011 Russel Winder
+#  Copyright © 2008–2012 Russel Winder
 
 from numpy import arange , vectorize , float
 from output import out
@@ -14,7 +14,7 @@ def f ( i ) :
     return 1.0 / ( 1.0 + x * x )
 
 if __name__ == '__main__' :
-    n = 10000000 # 100 times fewer due to speed issues.
+    n = 10000000 # 100 times fewer than C due to speed issues.
     delta = 1.0 / n
     startTime = time ( )
     pi = 4.0 * delta * vectorize ( f ) ( arange ( n , dtype = float ) ).sum ( )

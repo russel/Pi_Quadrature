@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature.  Use the Parallel Python package.  Parallel Python appears not to be
+#  Calculation of Pi using quadrature. Use the Parallel Python package. Parallel Python appears not to be
 #  packaged for use with Python 3 in the Ubuntu package repository.
 #
 #  Copyright © 2008–2012 Russel Winder
@@ -18,7 +18,7 @@ def processSlice ( id , sliceSize , delta ) :
     return sum
 
 def execute ( processCount ) :
-    n = 10000000 # 100 times fewer due to speed issues.
+    n = 10000000 # 100 times fewer than C due to speed issues.
     delta = 1.0 / n
     startTime = time ( )
     sliceSize = n / processCount

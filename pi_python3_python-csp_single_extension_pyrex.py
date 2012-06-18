@@ -1,8 +1,8 @@
 #! /usr/bin/env python3
 
-#  Calculation of Pi using quadrature.  Using the python-csp package by Sarah Mount.
+#  Calculation of Pi using quadrature. Using the python-csp package by Sarah Mount.
 #
-#  Copyright © 2010–2011 Russel Winder
+#  Copyright © 2010–2012 Russel Winder
 
 from csp.os_process import process , Channel , Par
 from multiprocessing import cpu_count

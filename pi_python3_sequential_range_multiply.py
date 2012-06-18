@@ -2,7 +2,7 @@
 
 #  Calculation of Pi using quadrature. Sequential algorithm. For loop with a range.
 #
-#  Copyright © 2008–2011 Russel Winder
+#  Copyright © 2008–2012 Russel Winder
 
 from output import out
 from time import time

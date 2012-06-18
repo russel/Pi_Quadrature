@@ -26,7 +26,7 @@ def accumulator ( channels , n , delta , startTime , processCount ) :
     out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
 
 def execute ( processCount ) :
-    n = 10000000 # 100 times fewer due to speed issues.
+    n = 10000000 # 100 times fewer than C due to speed issues.
     delta = 1.0 / n
     startTime = time ( )
     sliceSize = n // processCount
