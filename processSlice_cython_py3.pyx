@@ -1,8 +1,6 @@
-# -*- mode:python; coding:utf-8; -*-
-
 #  A Cython extensions to calculate a slice of the overall calculation of Pi using quadrature.
 #
-#  Copyright © 2010--2011 Russel Winder
+#  Copyright © 2010--2012 Russel Winder
 
 def processSlice ( int id , int sliceSize , double delta ) :
   cdef int i = 0
