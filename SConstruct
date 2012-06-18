@@ -446,8 +446,8 @@ extensionsData = {
         } ,
     'cpp' : {
         'CPPPATH' : [ ] ,
-        'CFLAGS' : ccFlags + [ '-std=c++0x' ] ,
-        'LINKFLAGS' : [ '-std=c++0x' ]
+        'CFLAGS' : ccFlags + [ '-std=c++11' ] ,
+        'LINKFLAGS' : [ '-std=c++11' ]
         } ,
     'pyrex_py2' : {
         'CPPPATH' : [ '/usr/include/python2.7' ] ,
@@ -456,7 +456,7 @@ extensionsData = {
         'COMMAND' : 'pyrexc'
         } ,
     'pyrex_py3' : {
-        'CPPPATH' : [ '/usr/include/python3.2' ] ,
+        'CPPPATH' : [ '/usr/include/python3.2mu' ] ,
         'CFLAGS' : ccFlags ,
         'LINKFLAGS' :  [ ] ,
         'COMMAND' : 'pyrexc'
@@ -468,7 +468,7 @@ extensionsData = {
         'COMMAND' : 'cython'
         } ,
     'cython_py3' : {
-        'CPPPATH' : [ '/usr/include/python3.2' ] ,
+        'CPPPATH' : [ '/usr/include/python3.2mu' ] ,
         'CFLAGS' : ccFlags ,
         'LINKFLAGS' : [ ] ,
         'COMMAND' : 'cython'
@@ -480,7 +480,7 @@ extensionsData = {
 
 extensionsSharedLibraries = { }
 
-pythonEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' ] )
+pythonEnvironment = Environment ( tools = [ 'g++' , 'gcc' , 'gnulink' ] ) # The order here is crucial :-((
 
 for item in Glob ( 'pi_python*.py' ) :
     root = os.path.splitext ( item.name ) [0]
@@ -493,7 +493,7 @@ for item in Glob ( 'pi_python*.py' ) :
             majorVersion = bits[1][-1:]
             ##
             ##  Cython 0.11.2 and Pyrex 0.9.8.5 generate C that cannot be compiled against Python 3.1.  :-(
-            ##  Cython 0.14.1 generates code that compiles with Python 3.2.  :-)
+            ##  Cython 0.14.1 and later generate code that compiles with Python 3.2.  :-)
             ##
             if extension == 'pyrex' and majorVersion == '3' : continue
             extension += '_py' + majorVersion
