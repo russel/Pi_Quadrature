@@ -1,4 +1,4 @@
-#  A Pyrex extensions to calculate a slice of the overall calculation of Pi using quadrature.
+#  A Pyrex extensions to calculate a slice of the overall calculation of π using quadrature.
 #
 #  Copyright © 2010–2012 Russel Winder
 
