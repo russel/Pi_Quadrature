@@ -1,15 +1,16 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
+# -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature.  Using threads and Cython extensions.
+#  Calculation of Pi using quadrature.  Using threads and Pyrex extensions.
 #
 #  Copyright © 2008–2012 Russel Winder
 
 from output import out
-from queue import Queue
+from Queue import Queue
 from threading import Thread
 from time import time
 
-from processSlice_cython_py3 import processSlice
+from processSlice_pyrex_py2 import processSlice
 
 def calculator ( id , sliceSize , delta , results ) :
     results.put ( processSlice ( id , sliceSize , delta ) )
