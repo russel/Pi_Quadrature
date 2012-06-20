@@ -39,7 +39,7 @@ public class Pi_Java_ThreadsAccumulatorClass {
     }
     final double pi = 4.0 * delta * accumulator.getSum ( ) ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    JOutput.out( "Java Threads Accumulator Class" , pi , n , elapseTime , numberOfTasks ) ;
+    JOutput.out( "Pi_Java_ThreadsAccumulator Class" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_ThreadsAccumulatorClass.execute ( 1 ) ;

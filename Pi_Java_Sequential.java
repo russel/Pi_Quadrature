@@ -16,6 +16,6 @@ public class Pi_Java_Sequential {
     }
     final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    JOutput.out ( "Java Sequential" , pi , n , elapseTime ) ;
+    JOutput.out ( "Pi_Java_Sequential" , pi , n , elapseTime ) ;
   }
 }

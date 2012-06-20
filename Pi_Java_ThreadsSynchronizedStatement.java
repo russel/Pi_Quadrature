@@ -40,7 +40,7 @@ public class Pi_Java_ThreadsSynchronizedStatement {
     }
     final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    JOutput.out ( "Java Threads Synchronized Statement" , pi, n , elapseTime , numberOfTasks ) ;
+    JOutput.out ( "Pi_Java_ThreadsSynchronized Statement" , pi, n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_ThreadsSynchronizedStatement.execute ( 1 ) ;

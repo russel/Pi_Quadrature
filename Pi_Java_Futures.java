@@ -45,7 +45,7 @@ public class Pi_Java_Futures {
     final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     executor.shutdown ( ) ;
-    JOutput.out ( "Java Futures" , pi , n , elapseTime , numberOfTasks ) ;
+    JOutput.out ( "Pi_Java_Futures" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_Futures.execute ( 1 ) ;

@@ -44,7 +44,7 @@ public class Pi_Java_ForkJoinCollection {
     pool.shutdown ( ) ;
     final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    JOutput.out ( "Java ForkJoin Collection" , pi , n , elapseTime , numberOfTasks ) ;
+    JOutput.out ( "Pi_Java_ForkJoinCollection" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_ForkJoinCollection.execute ( 1 ) ;

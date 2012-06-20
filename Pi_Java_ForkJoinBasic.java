@@ -42,7 +42,7 @@ public class Pi_Java_ForkJoinBasic {
     final double pi = 4.0 * delta * sum ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
     pool.shutdown ( ) ;
-    JOutput.out ( "Java ForkJoin Basic" , pi , n , elapseTime , numberOfTasks ) ;
+    JOutput.out ( "Pi_Java_ForkJoinBasic" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_ForkJoinBasic.execute ( 1 ) ;

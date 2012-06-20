@@ -70,7 +70,7 @@ public class Pi_Java_DataRush5 {
       }
       final double pi = 4.0 * delta * sum ;
       final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-      JOutput.out ( "Java DataRush5" , pi , n , elapseTime , inputs.length + 1 ) ;
+      JOutput.out ( "Pi_Java_DataRush5" , pi , n , elapseTime , inputs.length + 1 ) ;
     }
   }
   private static final class PiOperator extends DataflowOperator {

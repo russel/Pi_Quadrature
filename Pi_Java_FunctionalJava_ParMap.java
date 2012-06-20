@@ -40,7 +40,7 @@ public class Pi_Java_FunctionalJava_ParMap {
     final Strategy<Unit> strategy = Strategy.simpleThreadStrategy ( ) ;
     final double pi = 4.0 * delta * ParModule.parModule ( strategy ).parMap ( inputData , sliceCalculator ).claim ( ).foldLeft ( add , 0.0 ) ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    JOutput.out ( "Java FunctionalJava ParMap" , pi , n , elapseTime , numberOfTasks ) ;
+    JOutput.out ( "Pi_Java_FunctionalJava_ParMap" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_FunctionalJava_ParMap.execute ( 1 ) ;

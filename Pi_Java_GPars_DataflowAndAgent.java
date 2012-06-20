@@ -53,7 +53,7 @@ public class Pi_Java_GPars_DataflowAndAgent {
     }
     final double pi = 4.0 * delta * sum.getVal ( ).getSum ( ) ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    JOutput.out( "Java GPars Dataflow/Agent" , pi , n , elapseTime , numberOfTasks ) ;
+    JOutput.out( "Pi_Java_GPars_DataflowAndAgent" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args) throws InterruptedException {
     Pi_Java_GPars_DataflowAndAgent.execute ( 1 ) ;

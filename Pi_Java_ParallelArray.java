@@ -31,7 +31,7 @@ public class Pi_Java_ParallelArray {
       } ) ;
     final double pi = 4.0 * delta * finalArray.reduce ( CommonOps.doubleAdder ( ) , 0.0 ) ;
     final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-    JOutput.out ( "Java Parallel Array" , pi , n , elapseTime , numberOfTasks ) ;
+    JOutput.out ( "Pi_Java_ParallelArray" , pi , n , elapseTime , numberOfTasks ) ;
   }
   public static void main ( final String[] args ) {
     Pi_Java_ParallelArray.execute ( 1 ) ;

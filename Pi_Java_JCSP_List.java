@@ -51,7 +51,7 @@ public class Pi_Java_JCSP_List {
           for ( One2OneChannel<Double> c : channels ) {  sum += c.in ( ).read ( ) ; }
           final double pi = 4.0 * delta * sum ;
           final double elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9 ;
-          JOutput.out ( "Java JCSP List" , pi , n , elapseTime , numberOfTasks ) ;
+          JOutput.out ( "Pi_Java_JCSP_List" , pi , n , elapseTime , numberOfTasks ) ;
         }
       } ) ;
     ( new Parallel ( processes.toArray ( new CSProcess [0] ) ) ).run ( ) ;
