@@ -7,6 +7,8 @@
 import scala.actors.Actor
 import scala.actors.remote.RemoteActor
 
+import SOutput.out
+
 object Pi_Scala_RemoteActors extends App {
   def execute ( numberOfWorkerActors : Int ) {
     val n = 1000000000
@@ -21,11 +23,7 @@ object Pi_Scala_RemoteActors extends App {
       calculators.foreach ( calculator => Actor.receive { case d => sum += d.asInstanceOf[Double] } )
       val pi = 4.0 * delta * sum
       val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-      println ( "==== Scala Actors pi = " + pi )
-      println ( "==== Scala Actors iteration count = " + n )
-      println ( "==== Scala Actors elapse = " + elapseTime )
-      println ( "==== Scala Actors processor count = " + Runtime.getRuntime.availableProcessors )
-      println ( "==== Scala Actors worker actor count = " + numberOfWorkerActors )
+      out ( "Pi_Scala_RemoteActors" , pi , n , elapseTime , numberOfWorkerActors )
       sequencer ! 0
     }
     for ( index <- calculators.indices ) {
@@ -46,13 +44,10 @@ object Pi_Scala_RemoteActors extends App {
   val sequencer = Actor.actor {
     execute ( 1 )
     Actor.receive { case d => }
-    println
     execute ( 2 )
     Actor.receive { case d => }
-    println
     execute ( 8 )
     Actor.receive { case d => }
-    println
     execute ( 32 )
   }
 }

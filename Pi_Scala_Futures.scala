@@ -7,6 +7,8 @@
 import scala.actors.Future
 import scala.actors.Futures
 
+import SOutput.out
+
 object Pi_Scala_Futures {
   def execute ( numberOfWorkers : Int ) {
     val n = 1000000000
@@ -28,19 +30,12 @@ object Pi_Scala_Futures {
     //  function that must be called to obtain the value.  Hence _+_() instead of _+_.
     val pi = 4.0 * delta * ( ( 0.0 /: partialSums ) ( _ + _ ( ) ) )
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-    println ( "==== Scala Futures pi = " + pi )
-    println ( "==== Scala Futures iteration count = " + n )
-    println ( "==== Scala Futures elapse = " + elapseTime )
-    println ( "==== Scala Futures processor count = " + Runtime.getRuntime.availableProcessors )
-    println ( "==== Scala Futures worker count = " + numberOfWorkers )
+    out ( "Pi_Scala_Futures" , pi , n, elapseTime , numberOfWorkers )
   }
   def main ( args : Array[String] ) {
     execute ( 1 )
-    println
     execute ( 2 )
-    println
     execute ( 8 )
-    println
     execute ( 32 )
   }
 }

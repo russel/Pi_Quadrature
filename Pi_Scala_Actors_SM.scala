@@ -9,6 +9,8 @@
 
 import scala.actors.Actor
 
+import SOutput.out
+
 class Calculator ( id : Int , sliceSize : Int , delta : Double , accumulator : Actor ) extends Actor {
   def act {
     var sum = 0.0
@@ -51,20 +53,13 @@ object Pi_Scala_Actors_SM {
     Actor.receive {
       case pi : Double =>
         val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-        println ( "==== Scala Actors SM pi = " + pi )
-        println ( "==== Scala Actors SM iteration count = " + n )
-        println ( "==== Scala Actors SM elapse = " + elapseTime )
-        println ( "==== Scala Actors SM processor count = " + Runtime.getRuntime.availableProcessors )
-        println ( "==== Scala Actors SM worker actor count = " + numberOfActors )
+        out ( "Pi_Scala_Actors_SM" , pi , n , elapseTime , numberOfActors )
     }
   }
   def main ( args : Array[String] ) {
     execute ( 1 )
-    println
     execute ( 2 )
-    println
     execute ( 8 )
-    println
     execute ( 32 )
   }  
 }

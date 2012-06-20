@@ -6,6 +6,8 @@
 
 import scala.actors.Actor
 
+import SOutput.out
+
 class Accumulator ( numberOfWorkerActors : Int , delta : Double , n : Int , startTimeNanos : Long , sequencer : Actor ) extends Actor {
   def act {
     var sum = 0.0
@@ -13,11 +15,7 @@ class Accumulator ( numberOfWorkerActors : Int , delta : Double , n : Int , star
     //( 0 until numberOfWorkerActors ).foreach ( ( i : Int ) => Actor.receive { case d => sum += d.asInstanceOf[Double] } )
     val pi = 4.0 * delta * sum
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-    println ( "==== Scala Actors Alt pi = " + pi )
-    println ( "==== Scala Actors Alt iteration count = " + n )
-    println ( "==== Scala Actors Alt elapse = " + elapseTime )
-    println ( "==== Scala Actors Alt processor count = " + Runtime.getRuntime.availableProcessors )
-    println ( "==== Scala Actors Alt worker actor count = " + numberOfWorkerActors )
+    out ( "PI_Scala_Actors_Alt" , pi , n , elapseTime , numberOfWorkerActors )
     sequencer ! 0
   }
 }
@@ -49,13 +47,10 @@ object Pi_Scala_Actors_Alt extends App {
   val sequencer = Actor.actor {
     execute ( 1 )
     Actor.receive { case d => }
-    println
     execute ( 2 )
     Actor.receive { case d => }
-    println
     execute ( 8 )
     Actor.receive { case d => }
-    println
     execute ( 32 )
   }
 }

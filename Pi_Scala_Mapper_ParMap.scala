@@ -6,6 +6,8 @@
 
 import scala.actors.Futures
 
+import SOutput.out
+
 object Pi_Scala_Mapper_ParMap {
   class Mapper[A,B:ClassManifest] ( data : List[A] , function : A => B ) {
     val pmap = {
@@ -32,19 +34,12 @@ object Pi_Scala_Mapper_ParMap {
     }
     val pi = 4.0 * delta * ( ( ( new Mapper[Int,Double] ( List.range ( 0 , numberOfThreads ) , partialSum ) ).pmap ) reduceLeft ( _ + _ ) )
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-    println ( "==== Scala Mapper ParMap pi = " + pi )
-    println ( "==== Scala Mapper ParMap iteration count = " + n )
-    println ( "==== Scala Mapper ParMap elapse = " + elapseTime )
-    println ( "==== Scala Mapper ParMap processor count = " + Runtime.getRuntime.availableProcessors )
-    println ( "==== Scala Mapper ParMap threads count = " + numberOfThreads )
+    out ( "Pi_Scala_Mapper_ParMap" , pi , n , elapseTime , numberOfThreads )
   }
   def main ( args : Array[String] ) {
     execute ( 1 )
-    println
     execute ( 2 )
-    println
     execute ( 8 )
-    println
     execute ( 32 )
   }
 }

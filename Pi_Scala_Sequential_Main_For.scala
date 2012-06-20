@@ -4,6 +4,8 @@
  *  Copyright © 2009–2012 Russel Winder
  */
 
+import SOutput.out
+
 object Pi_Scala_Sequential_Main_For {
   def main ( args : Array[String] ) {
     val n = 1000000000
@@ -16,8 +18,6 @@ object Pi_Scala_Sequential_Main_For {
     }
     val pi = 4.0 * delta * sum
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-    println ( "==== Scala Sequential Main For pi = " + pi )
-    println ( "==== Scala Sequential Main For iteration count = " + n )
-    println ( "==== Scala Sequential Main For elapse = " + elapseTime )
+    out ( "Pi_Scala_Sequential_Main_For" , pi , n , elapseTime )
   }
 }

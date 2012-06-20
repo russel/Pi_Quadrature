@@ -4,6 +4,8 @@
  *  Copyright © 2009–2012 Russel Winder
  */
 
+import SOutput.out
+
 object Pi_Scala_Sequential_App_For_Function extends App {
   def doStuff {
     val n = 1000000000
@@ -16,9 +18,7 @@ object Pi_Scala_Sequential_App_For_Function extends App {
     }
     val pi = 4.0 * delta * sum
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-    println ( "==== Scala Sequential App For Function pi = " + pi )
-    println ( "==== Scala Sequential App For Function iteration count = " + n )
-    println ( "==== Scala Sequential App For Function Alt elapse = " + elapseTime )
+    out ( "Pi_Scala_Sequential_App_For_Function" , pi , n , elapseTime )
   }
-  doStuff ( )
+  doStuff
 }

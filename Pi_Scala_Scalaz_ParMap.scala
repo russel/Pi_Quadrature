@@ -1,7 +1,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a parallel map.
  *
- *  Copyright © 2009–2011 Russel Winder
+ *  Copyright © 2009–2012 Russel Winder
  */
 
 //  This seems to execute fine but it takes a very long time to terminate after the results have been
@@ -15,6 +15,8 @@ import scalaz.concurrent.Strategy.Executor
 
 //  But now we will have to specify which Executor.
 import java.util.concurrent.Executors
+
+import SOutput.out
 
 object Pi_Scala_Scalaz_ParMap {
   implicit val pool = Executors.newCachedThreadPool
@@ -35,19 +37,12 @@ object Pi_Scala_Scalaz_ParMap {
     }
     val pi = 4.0 * delta * List.range ( 0 , numberOfThreads ).parMap ( partialSum ).get.reduceLeft ( _ + _ )
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-    println ( "==== Scala Scalaz ParMap pi = " + pi )
-    println ( "==== Scala Scalaz ParMap iteration count = " + n )
-    println ( "==== Scala Scalaz ParMap elapse = " + elapseTime )
-    println ( "==== Scala Scalaz ParMap processor count = " + Runtime.getRuntime.availableProcessors )
-    println ( "==== Scala Scalaz ParMap threads count = " + numberOfThreads )
+    out ( "Pi_Scala_Scalaz_ParMap" , pi , n , elapseTime , numberOfThreads )
   }
   def main ( args : Array[String] ) {
     execute ( 1 )
-    println
     execute ( 2 )
-    println
     execute ( 8 )
-    println
     execute ( 32 )
   }
 }

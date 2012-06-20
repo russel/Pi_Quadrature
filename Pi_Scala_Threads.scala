@@ -5,6 +5,7 @@
  */
 
 import scala.concurrent.Lock
+import SOutput.out
 
 object Pi_Scala_Threads {
   def execute ( numberOfTasks : Int ) {
@@ -33,19 +34,12 @@ object Pi_Scala_Threads {
     threads.foreach ( t => t.join )
     val pi = 4.0 * delta * sum
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-    println ( "==== Scala Threads pi = " + pi )
-    println ( "==== Scala Threads iteration count = " + n )
-    println ( "==== Scala Threads elapse = " + elapseTime )
-    println ( "==== Scala Threads processor count = " + Runtime.getRuntime.availableProcessors )
-    println ( "==== Scala Threads thread count = " + numberOfTasks )
+    out ( "Pi_Scala_Threads" , pi , n, elapseTime , numberOfTasks )
   }
   def main ( args : Array[String] ) {
     execute ( 1 )
-    println
     execute ( 2 )
-    println
     execute ( 8 )
-    println
     execute ( 32 )
   }
 }

@@ -15,6 +15,8 @@ import fj.F
 import fj.F2
 import fj.data.List
 
+import SOutput.out
+
 object Pi_Scala_FunctionalJava_ParMap {
   def execute ( numberOfThreads : Int ) {
     val n = 1000000000
@@ -43,19 +45,12 @@ object Pi_Scala_FunctionalJava_ParMap {
       .claim
       .foldLeft1 ( sum )
     val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-    println ( "==== Scala FunctionalJava ParMap pi = " + pi )
-    println ( "==== Scala FunctionalJava ParMap iteration count = " + n )
-    println ( "==== Scala FunctionalJava ParMap elapse = " + elapseTime )
-    println ( "==== Scala FunctionalJava ParMap processor count = " + Runtime.getRuntime.availableProcessors )
-    println ( "==== Scala FunctionalJava ParMap threads count = " + numberOfThreads )
+    out ( "Pi_Scala_FunctionalJava" , pi , n, elapseTime , numberOfThreads )
   }
   def main ( args : Array[String] ) {
     execute ( 1 )
-    println
     execute ( 2 )
-    println
     execute ( 8 )
-    println
     execute ( 32 )
   }
 }
