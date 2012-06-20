@@ -1,5 +1,7 @@
+= π by Quadrature
+
 This directory contains various implementations in various programming languages of the embarrassingly
-parallel problem of calculating pi using quadrature. (Quadrature in this case is the process of finding the
+parallel problem of calculating π using quadrature. (Quadrature in this case is the process of finding the
 area under a curve using the approximation of filling the area with rectangles and summing the areas of the
 rectangles.)
 
@@ -9,7 +11,7 @@ The integral equation:
 
 leads to the following summation as an approximation:
 
-      \pi = \fraction{4}{n} \sum_{i = 1}^{n} \fraction{1}{1 + (\fraction{i - 0.5}{n})^2}
+    \pi = \fraction{4}{n} \sum_{i = 1}^{n} \fraction{1}{1 + (\fraction{i - 0.5}{n})^2}
 
 This summation can be partitioned into partial sums that are themselves summed.  This is an embarrassingly
 parallel scatter/gather (aka farmer/worker) problem that can check scalability.  If the speed of execution
@@ -19,20 +21,6 @@ Various different idioms and techniques in the various languages are tried as pa
 languages are better than others for this problem.  Also the examples investigate the properties of, and
 indeed idioms and techniques appropriate to, the various languages.
 
-
 A point on JVM "warm up" (i.e. the JIT).  If loop variables are longs then there is a "warm up" effect and
 two executions prior to any timing executions are needed to have the code JITed.  Using int loop variables
-there appears to be no such affect -- in fact there is but it is a small effect and can effectively be ignored.
-
-32-bit integer types are used throughout so as to avoid worrying about the Java "warm up" when using longs.
-
-
-House Keeping
-
-If you want to execute any of the C, C++, or Erlang codes you will need to branch a second branch:
-
-   bzr branch http://www.russel.org.uk/Bazaar/Timing
-
-as a peer, i.e. in the same directory as you branched Pi_Quadrature to, so that the two branches are
-subdirectories of the same directory.  This contains the C, C++, and Erlang timer implementation referred to
-by the quadrature codes. 
+there appears to be no such affect -- in fact there is, but it is a small effect and can effectively be ignored.
