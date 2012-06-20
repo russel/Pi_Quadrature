@@ -20,7 +20,7 @@ void execute ( final int numberOfTasks ) {
     ( new ProcessSlice ( taskId , sliceSize , delta ) ).compute ( )
   }.sumParallel ( )
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  Output.out ( 'Groovy/Java GPars ParallelEnhancer' , pi , n , elapseTime , numberOfTasks )
+  Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
 }
 
 execute ( 1 )

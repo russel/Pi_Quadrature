@@ -44,7 +44,7 @@ void execute ( final int actorCount ) {
   accumulator.join ( )
   final double pi = 4.0d * delta * accumulator.sum
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  Output.out ( 'Groovy/Java GPars ActorScript VP' , pi , n , elapseTime , actorCount )
+  Output.out ( getClass ( ).name , pi , n , elapseTime , actorCount )
 }
 
 execute ( 1 )

@@ -39,7 +39,7 @@ void execute ( int numberOfTasks ) {
     @Override public void run ( ) {
       final double pi = 4.0d * delta * ( 0i ..< numberOfTasks ).sum { (double) channel.in ( ).read ( ) }
       final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      Output.out ( 'Groovy JCSP Single' , pi , n , elapseTime , numberOfTasks )
+      Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
     }
   } ;
   ( new Parallel ( processes as CSProcess[] ) ).run ( )

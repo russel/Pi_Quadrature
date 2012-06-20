@@ -16,4 +16,4 @@ for ( i = 1 ; i <= n ; ++i ) {
 }
 final double pi = 4.0 * delta * sum
 final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-Output.out ( "Groovy Sequential BigDecimal ForIndex Multiply" , pi , n , elapseTime )
+Output.out ( getClass ( ).name , pi , n , elapseTime )

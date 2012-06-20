@@ -11,4 +11,4 @@ final delta = 1.0 / n
 final startTime = System.nanoTime ( )
 final pi = 4 * delta * ( 1 .. n ).sum { i -> 1 / ( 1 + ( ( i - 0.5 ) * delta ) ** 2 ) }
 final elapseTime =   ( System.nanoTime ( ) - startTime ) / 1e9
-Output.out ( 'Groovy Sequential BigDecimal Sum Power' , pi , n , elapseTime )
+Output.out ( getClass ( ).name , pi , n , elapseTime )

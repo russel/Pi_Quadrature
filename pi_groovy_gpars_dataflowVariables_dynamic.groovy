@@ -31,7 +31,7 @@ void execute ( final int operatorCount ) {
   }
   final double pi = 4.0d * delta * partialSums.sum { it.val }
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  Output.out ( 'Groovy GPars DataflowVariables Dynamic' , pi , n , elapseTime, operatorCount )
+  Output.out ( getClass ( ).name , pi , n , elapseTime, operatorCount )
 }
 
 execute ( 1 )

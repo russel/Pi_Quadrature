@@ -17,4 +17,4 @@ for ( int i = 1i ; i <= n ; ++i ) {
 }
 final double pi = 4.0d * delta * sum
 final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-Output.out ( 'Groovy Sequential Primitive ForIndex Multiply Dynamic' , pi , n , elapseTime )
+Output.out ( getClass ( ).name , pi , n , elapseTime )

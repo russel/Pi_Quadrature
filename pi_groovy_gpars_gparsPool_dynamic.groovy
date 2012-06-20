@@ -27,7 +27,7 @@ void execute ( final int numberOfTasks ) {
       sum
     }.sumParallel ( )
     final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-    Output.out ( 'Groovy GPars GParsPool Dynamic' , pi , n , elapseTime , numberOfTasks )
+    Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
   }
 }
 

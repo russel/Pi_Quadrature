@@ -24,7 +24,7 @@ void execute ( final int numberOfTasks ) {
     @Override public void run ( ) {
       final double pi = 4.0d * delta * channels.sum { c -> (double) c.in ( ).read ( ) }
       final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      Output.out ( 'Groovy/Java GPars CSP Multiple' , pi , n , elapseTime , numberOfTasks )
+      Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
     }
   } ;
   ( new PAR ( processes ) ).run ( )

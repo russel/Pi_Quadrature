@@ -25,7 +25,7 @@ void execute ( final int numberOfTasks ) {
       sum
     }.sum ( )
     final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-    Output.out ( 'Groovy GPars MapReduce Dynamic' , pi , n , elapseTime , numberOfTasks )
+    Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
   }
 }
 

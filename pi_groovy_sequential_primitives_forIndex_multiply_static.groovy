@@ -20,7 +20,7 @@ import groovy.transform.CompileStatic
   }
   final double pi = 4.0d * delta * sum
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  Output.out ( 'Groovy Sequential Primitive ForIndex Multiply Static' , pi , n , elapseTime )
+  Output.out ( getClass ( ).name , pi , n , elapseTime )
 }
 
 execute ( )

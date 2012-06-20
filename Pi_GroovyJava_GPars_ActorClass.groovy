@@ -49,7 +49,7 @@ public class Pi_GroovyJava_GPars_ActorClass {
     accumulator.join ( )
     final pi = 4.0d * delta * accumulator.sum
     final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-    Output.out ( 'GroovyJava GPars ActorClass' , pi , n , elapseTime , actorCount )
+    Output.out ( getClass ( ).name , pi , n , elapseTime , actorCount )
   }
 
   public static void main ( final String[] args ) {

@@ -36,7 +36,7 @@ def execute ( final int numberOfTasks ) {
   final double pi = 4.0d * delta * futures.sum { f -> f.get ( ) }
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   executor.shutdown ( )
-  Output.out ( 'Groovy Futures Array' , pi , n , elapseTime , numberOfTasks )
+  Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
 }
 
 execute ( 1 )

@@ -15,4 +15,4 @@ final double pi = 4.0d * delta * ( 1i .. n ).sum { i ->
   1.0d / ( 1.0d + x * x )
 }
 final elapseTime = ( System.nanoTime ( ) - startTime ) / 1e9
-Output.out ( 'Groovy Sequential Primitives Sum Multiply' , pi , n , elapseTime )
+Output.out ( getClass ( ).name , pi , n , elapseTime )

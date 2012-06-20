@@ -13,4 +13,4 @@ def sum = 0.0
 for ( i in 1 .. n ) { sum += 1 / ( 1 + ( ( i - 0.5 ) * delta ) ** 2 ) }
 final pi = 4 * delta * sum
 final elapseTime =   ( System.nanoTime ( ) - startTime ) / 1e9
-Output.out ( 'Groovy Sequential BigDecimal ForRange Power' , pi , n , elapseTime )
+Output.out ( getClass ( ).name , pi , n , elapseTime )

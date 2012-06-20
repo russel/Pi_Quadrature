@@ -20,7 +20,7 @@ void execute ( final int operatorCount ) {
   }
   final double pi = 4.0d * delta * ( 0 ..< operatorCount ).sum { partialSums.val }
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  Output.out ( 'Groovy GPars DataflowQueue Static' , pi , n , elapseTime , operatorCount )
+  Output.out ( getClass ( ).name , pi , n , elapseTime , operatorCount )
 }
 
 execute ( 1 )

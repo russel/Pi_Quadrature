@@ -23,7 +23,7 @@ void execute ( final int actorCount ) {
       if ( ++count == actorCount ) {
         final double pi = 4.0d * delta * sum
         final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-        Output.out ( 'Groovy/Java GPars ActorScript' , pi , n , elapseTime , actorCount )
+        Output.out ( getClass ( ).name , pi , n , elapseTime , actorCount )
         terminate ( )
       }
     }
