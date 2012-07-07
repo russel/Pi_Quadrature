@@ -9,17 +9,16 @@ program pi
 ! 18 to 80-bit (if present). 33 presumably maps to a software 128-bit floating point library.
   integer , parameter :: DoubleKind = selected_real_kind ( p = 15 )
   real ( DoubleKind ) , parameter :: delta = 1.0 / n
-  real ( DoubleKind ) :: sum = 0.0 , elapseTime , pi_
+  real ( DoubleKind ) :: sum = 0.0 , x , elapseTime , pi_
   integer :: i , startTime , startFrequency , endTime , endFrequency
   call system_clock ( startTime , startFrequency )
   do i = 1 , n
-     sum = sum + 1.0 / ( 1.0 + ( ( i - 0.5 ) * delta ) ** 2 ) 
+     x = ( i - 0.5 ) * delta
+     sum = sum + 1.0 / ( 1.0 + x * x ) 
   end do
   pi_ = 4.0 * delta * sum
   call system_clock ( endTime , endFrequency )
   elapseTime = endTime - startTime
   elapseTime = elapseTime / startFrequency
-  print * , "==== Fortran Sequential pi =" , pi_
-  print * , "==== Fortran Sequential iteration count =" , n
-  print * , "==== Fortran Sequential elapse =" , elapseTime
+  call out ( "Sequential Multiply" , pi_ , n , elapseTime )
 end program pi

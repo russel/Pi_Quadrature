@@ -2,7 +2,7 @@
 
 #  Calculation of Pi using quadrature.
 #
-#  Copyright © 2008–2012 Russel Winder 
+#  Copyright © 2008–2012 Russel Winder
 
 import os
 import platform
@@ -93,13 +93,13 @@ try :
     boostHome = os.environ['BOOST_HOME']
     boostInclude = boostHome + '/include'
     boostLib = boostHome + '/lib'
-    cppRule ( 'pi_cpp_boostThread*.cpp' , cpppath = [ boostInclude ] , libpath = [ boostLib ] , libs = [ 'boost_thread' ] ) 
+    cppRule ( 'pi_cpp_boostThread*.cpp' , cpppath = [ boostInclude ] , libpath = [ boostLib ] , libs = [ 'boost_thread' ] )
     cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , cpppath = [ boostInclude ] , libpath = [ boostLib ] , libs = [ 'boost_mpi' , 'boost_serialization' ] )
 except KeyError :
     if not os.path.isfile ( '/usr/lib/libboost_mpi.so' ) :
         print '\nWarning:  Cannot find a Boost.MPI.\n'
     else :
-        cppRule ( 'pi_cpp_boostThread*.cpp' , libs = [ 'boost_thread' ] ) 
+        cppRule ( 'pi_cpp_boostThread*.cpp' , libs = [ 'boost_thread' ] )
         cppRule ( 'pi_cpp_boostMPI*.cpp' , compiler = 'mpic++' , libs = [ 'boost_mpi' ] )
 
 #  Use Anthony Williams' Just::Thread library as an implementation of C++0x threads and things.  Anthony's
@@ -118,21 +118,23 @@ cppRule ( 'pi_cpp_justThread*.cpp' , cpppath = [ extraLibName + '/JustThreadPro/
 try :
     tbbHome = os.environ['TBB_HOME']
     cppRule (  'pi_cpp_tbb*.cpp' , cpppath = [ tbbHome + '/include' ] , libpath = [ tbbHome ] , libs = [ 'tbb' ] )
-except KeyError :    
+except KeyError :
     cppRule (  'pi_cpp_tbb*.cpp' , libs = [ 'tbb' ] )
 
 #  Fortran  ##########################################################################
 
 fortranFlags = [ '-O3' , '-std=f2008' , '-ffree-form' , '-pedantic' , '-Wall' ]
 
-fortranEnvironment = Environment ( tools = [ 'gfortran' , 'gnulink' ] )
+fortranEnvironment = Environment ( tools = [ 'gfortran' , 'gnulink' ] , FORTRANFLAGS = fortranFlags )
+
+fortranOutput = fortranEnvironment.Object ( 'output.f' )
 
 def fortranRule ( globPattern , compiler = 'gfortran' , fortranflags = fortranFlags , linkflags = [ ] , libpath = [ ] , libs = [ ] ) :
     for item in Glob ( globPattern ) :
         executables.append (
             addCompileTarget (
                 fortranEnvironment.Program (
-                    os.path.splitext ( item.name ) [0] , item.name ,
+                    os.path.splitext ( item.name ) [0] , [ item.name , fortranOutput ] ,
                     FORTRAN = compiler , FORTRANFLAGS = fortranflags , LINKFLAGS= linkflags , LIBPATH = libpath , LIBS = libs )
                 )
             )
@@ -228,7 +230,7 @@ for item in Glob ( 'pi_ocaml_*.ml' ) :
 
 #for item in Glob ( 'pi_go_*.go' ) :
 #    #root = os.path.splitext ( item.name ) [0]
-#    executables.append ( addCompileTarget ( goEnvironment.Program ( item ) ) ) 
+#    executables.append ( addCompileTarget ( goEnvironment.Program ( item ) ) )
 
 #for item in Glob ( 'pi_go_*.go' ) :
 #    root = os.path.splitext ( item.name ) [0]
@@ -249,7 +251,7 @@ occamEnvironment = Environment ( tools = [ ] , ENV = os.environ )
 for item in Glob ( 'pi_occam*.occ' ) :
     root = os.path.splitext ( item.name ) [0]
     executables.append ( addCompileTarget ( occamEnvironment.Command ( root , item.name , 'kroc -o $TARGET $SOURCE' ) ) )
-    
+
 #  Clay  ############################################################################
 
 clayEnvironment = Environment ( tools = [ ] , ENV = os.environ )
@@ -349,7 +351,7 @@ for item in Glob ( 'Pi_Scala_*.scala' ) :
     elif variant == 'Scalaz' :
         extraStuff = '-cp .:%s/lib/Java/scalaz-core.jar' % ( os.environ['HOME'] , )
     compiledClass = scalaEnvironment.Command ( compiledFileName , item.name , scalacCommand ( extraStuff ) )
-    Depends ( compiledClass , scalaOutputClass ) 
+    Depends ( compiledClass , scalaOutputClass )
     addRunTarget ( scalaEnvironment.Command ( 'run_' + className , compiledClass , 'scala {} {} '.format ( extraStuff , className ) ) )
 
 ##  As the clean rule for removing all the class files has already been set since the Java builder does not

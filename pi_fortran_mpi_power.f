@@ -10,7 +10,7 @@ program pi
 ! 18 to 80-bit (if present). 33 presumably maps to a software 128-bit floating point library.
   integer , parameter :: DoubleKind = selected_real_kind ( p = 15 )
   real ( DoubleKind ) , parameter :: delta = 1.0 / n
-  real ( DoubleKind ) :: sum = 0.0 , elapseTime , pi_
+  real ( DoubleKind ) :: localSum = 0.0 , sum = 0.0 , elapseTime , pi_
   integer :: i , startTime , startFrequency , endTime , endFrequency
   integer :: errorState , nProcessors , myId , start , end , sliceSize
   call system_clock ( startTime , startFrequency )
@@ -27,12 +27,9 @@ program pi
   call MPI_Finalize ( errorState )
   if ( myId == 0 ) then
      pi_ = 4.0 * delta * sum
-    call system_clock ( endTime , endFrequency )
-    elapseTime = endTime - startTime
-    elapseTime = elapseTime / startFrequency
-    print * , "==== Fortran MPI pi =" , pi_
-    print * , "==== Fortran MPI iteration count =" , n
-    print * , "==== Fortran MPI elapse =" , elapseTime
-    print * , "==== Fortran MPI processor count =" ,  nProcessors
+     call system_clock ( endTime , endFrequency )
+     elapseTime = endTime - startTime
+     elapseTime = elapseTime / startFrequency
+     call out ( "MPI" , pi_ , n , elapseTime , nProcessors )
   end if
 end program

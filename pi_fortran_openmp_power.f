@@ -21,8 +21,5 @@ program pi
   call system_clock ( endTime , endFrequency )
   elapseTime = endTime - startTime
   elapseTime = elapseTime / startFrequency
-  print * , "==== Fortran OpenMP pi =" , pi_
-  print * , "==== Fortran OpenMP iteration count =" , n
-  print * , "==== Fortran OpenMP elapse =" , elapseTime
-  print * , "==== Fortran OpenMP processor count = " , omp_get_num_procs ( )
+call outn ( "OpenMP" , pi_ , n , elapseTime , omp_get_num_procs ( ) )
 end program pi
