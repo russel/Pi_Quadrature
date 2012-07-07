@@ -7,8 +7,6 @@
  */
 
 import java.util.concurrent.Callable
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Future
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
 def execute ( final int numberOfTasks ) {
@@ -16,8 +14,8 @@ def execute ( final int numberOfTasks ) {
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
   final int sliceSize = n / numberOfTasks
-  final ExecutorService executor = new ScheduledThreadPoolExecutor ( numberOfTasks )
-  final List<Future<Double>> futures = ( 0 ..< numberOfTasks ).collect { taskId ->
+  final executor = new ScheduledThreadPoolExecutor ( numberOfTasks )
+  final futures = ( 0 ..< numberOfTasks ).collect { taskId ->
     executor.submit ( {
                         final int start = 1i + taskId * sliceSize
                         final int end = ( taskId + 1i ) * sliceSize
