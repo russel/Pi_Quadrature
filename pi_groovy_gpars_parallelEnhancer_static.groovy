@@ -25,7 +25,7 @@ void execute ( final int numberOfTasks ) {
   Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
 }
 
-execute ( 1 )
-execute ( 2 )
-execute ( 8 )
-execute ( 32 )
+execute 1
+execute 2
+execute 8
+execute 32

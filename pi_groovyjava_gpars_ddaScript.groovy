@@ -40,7 +40,7 @@ void execute ( final int actorCount ) {
   Output.out ( getClass ( ).name , pi , n , elapseTime , actorCount )
 }
 
-execute ( 1 )
-execute ( 2 )
-execute ( 8 )
-execute ( 32 )
+execute 1
+execute 2
+execute 8
+execute 32

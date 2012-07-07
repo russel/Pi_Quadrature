@@ -43,7 +43,7 @@ void execute ( final int actorCount ) {
   accumulator.join ( )
 }
 
-execute ( 1 )
-execute ( 2 )
-execute ( 8 )
-execute ( 32 )
+execute 1
+execute 2
+execute 8
+execute 32

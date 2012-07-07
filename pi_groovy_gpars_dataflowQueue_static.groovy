@@ -23,7 +23,7 @@ void execute ( final int operatorCount ) {
   Output.out ( getClass ( ).name , pi , n , elapseTime , operatorCount )
 }
 
-execute ( 1 )
-execute ( 2 )
-execute ( 8 )
-execute ( 32 )
+execute 1
+execute 2
+execute 8
+execute 32

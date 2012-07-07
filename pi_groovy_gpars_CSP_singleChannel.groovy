@@ -46,7 +46,7 @@ void execute ( final int numberOfTasks ) {
   ( new PAR ( processes ) ).run ( )
 }
 
-execute ( 1 )
-execute ( 2 )
-execute ( 8 )
-execute ( 32 )
+execute 1
+execute 2
+execute 8
+execute 32
