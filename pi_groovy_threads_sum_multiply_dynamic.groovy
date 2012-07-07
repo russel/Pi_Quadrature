@@ -30,7 +30,7 @@ def execute ( numberOfThreads ) {
   ( 0 ..< numberOfThreads ).each { sum += results.take ( ) }
   final double pi = 4.0d * delta * sum
   final elapseTime = ( System.nanoTime ( ) - startTime ) / 1e9
-  Output.out ( getClass ( ).name , pi , n , elapseTime )
+  Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfThreads )
 }
 
 execute 1

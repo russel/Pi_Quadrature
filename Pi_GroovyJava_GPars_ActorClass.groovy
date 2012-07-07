@@ -53,10 +53,10 @@ public class Pi_GroovyJava_GPars_ActorClass {
   }
 
   public static void main ( final String[] args ) {
-    execute ( 1 )
-    execute ( 2 )
-    execute ( 8 )
-    execute ( 32 )
+    execute 1
+    execute 2
+    execute 8
+    execute 32
   }
 
 }
