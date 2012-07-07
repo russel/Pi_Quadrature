@@ -3,9 +3,10 @@
 
 #  Calculation of Pi using quadrature. Sequential algorithm.
 #
-#  Copyright © 2008–2009,2011 Russel Winder
+#  Copyright © 2008–2009,2011,2012 Russel Winder
 
 require 'time'
+load 'output.rb'
 
 n = 10000000 #  100 times fewer due to speed issues.
 delta = 1.0 / n
@@ -19,6 +20,4 @@ while i <= n do
 end
 pi = 4.0 * delta * sum
 elapseTime = Time.now - startTime
-puts( "==== Ruby Sequential Iteration pi = " + pi.to_s )
-puts( "==== Ruby Sequential Iteration iteration count = " + n.to_s )
-puts( "==== Ruby Sequential Iteration elapse = " + elapseTime.to_s )
+out __FILE__ , pi , n , elapseTime
