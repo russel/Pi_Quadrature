@@ -18,30 +18,24 @@ void execute ( int numberOfTasks ) {
   final double delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
   final int sliceSize = n / numberOfTasks
-  final channels = Channel.one2oneArray ( numberOfTasks )
-  final processes = [ ]
-  for ( int i in 0i ..< numberOfTasks ) {
-    final int taskId = i
-    processes <<  new CSProcess ( ) {
-      @Override public void run ( ) {
-        final int start = 1i + taskId * sliceSize
-        final int end = ( taskId + 1i ) * sliceSize
-        double sum = 0.0d
-        for ( int j in start .. end ) {
-          final double x = ( j - 0.5d ) * delta
-          sum += 1.0d / ( 1.0d + x * x )
-        }
-        channels[taskId].out ( ).write ( sum )
+  final channel = Channel.any2one ( )
+  final processes = ( 0i ..< numberOfTasks ).collect { taskId ->
+    { ->
+      final int start = 1i + taskId * sliceSize
+      final int end = ( taskId + 1i ) * sliceSize
+      double sum = 0.0
+      for ( int j in start .. end ) {
+        final double x = ( j - 0.5d ) * delta
+        sum += 1.0d / ( 1.0d + x * x )
       }
-    }
+      channel.out ( ).write ( sum )
+    } as CSProcess
   }
-  processes << new CSProcess ( ) {
-    @Override public void run ( ) {
-      final double pi = 4.0d * delta * channels.sum { c -> (double) c.in ( ).read ( ) }
+  processes << {
+      final double pi = 4.0d * delta * ( 0i ..< numberOfTasks ).sum { (double) channel.in ( ).read ( ) }
       final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
       Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
-    }
-  }
+    } as CSProcess
   ( new Parallel ( processes as CSProcess[] ) ).run ( )
 }
 
