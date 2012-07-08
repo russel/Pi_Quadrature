@@ -1,7 +1,7 @@
 #! /usr/bin/env groovy
 
 /*
- *  Calculation of Pi using quadrature realized with a fork/join approach with GPars Parallelizer to
+ *  Calculation of π using quadrature realized with a fork/join approach with GPars Parallelizer to
  *  partition the problem and hence harness all processors available to the JVM.
  *
  *  Copyright © 2010–2012 Russel Winder
@@ -9,15 +9,14 @@
 
 import groovyx.gpars.GParsPool
 
-void execute ( final int numberOfTasks ) {
+void execute ( final numberOfTasks ) {
   GParsPool.withPool {
-    final int n = 1000000000i
-    final double delta = 1.0d / n
+    final n = 1000000000
+    final delta = 1.0 / n
     final startTimeNanos = System.nanoTime ( )
-    final int sliceSize = n / numberOfTasks
-    final items = 0i ..< numberOfTasks
-    final pi = 4.0d * delta * items.collectParallel { taskId ->
-      PartialSum.compute ( taskId , sliceSize , delta )
+    final sliceSize = ( int ) ( n / numberOfTasks )
+    final pi = 4.0 * delta * ( 0 ..< numberOfTasks ).collectParallel { taskId ->
+      PartialSum.staticCompile ( taskId , sliceSize , delta )
     }.sumParallel ( )
     final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
     Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
