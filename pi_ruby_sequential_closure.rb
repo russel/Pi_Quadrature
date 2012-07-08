@@ -1,4 +1,4 @@
-#! /usr/bin/env ruby
+#! /usr/bin/env jruby
 # -*- coding: utf-8; -*-
 
 #  Calculation of Pi using quadrature. Sequential algorithm.
