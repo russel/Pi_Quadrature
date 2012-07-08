@@ -10,16 +10,15 @@
 import java.util.concurrent.LinkedBlockingQueue
 
 def execute ( numberOfThreads ) {
-  final int n = 1000000000i
-  final double delta = 1.0d / n
+  final n = 1000000000
+  final delta = 1.0 / n
   final startTime = System.nanoTime ( )
-  final int sliceSize = n / numberOfThreads
+  final sliceSize = n / numberOfThreads
   final results = new LinkedBlockingQueue ( )
-  final partialSum = { id -> results << PartialSum.compute ( id , sliceSize , delta ) }
-  ( 0 ..< numberOfThreads ).each { id -> new Thread ( partialSum.curry ( id ) ).start ( ) }
-  double sum = 0.0d
+  ( 0 ..< numberOfThreads ).each { id -> new Thread ( { results << PartialSum.compute ( id , sliceSize , delta ) } ).start ( ) }
+  def sum = 0.0
   ( 0 ..< numberOfThreads ).each { sum += results.take ( ) }
-  final double pi = 4.0d * delta * sum
+  final pi = 4.0 * delta * sum
   final elapseTime = ( System.nanoTime ( ) - startTime ) / 1e9
   Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfThreads )
 }
