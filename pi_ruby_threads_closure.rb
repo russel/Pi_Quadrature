@@ -1,22 +1,15 @@
 #! /usr/bin/env jruby
 # -*- coding: utf-8; -*-
 
-#  Calculation of Pi using quadrature. Thread-based algorithm.
+#  Calculation of π using quadrature. Thread-based algorithm.
 #
 #  Copyright © 2008–2009,2011,2012 Russel Winder
 
-require 'time'
 require 'thread'
-load 'output.rb'
+require 'time'
 
-def partialSum ( id , sliceSize , delta )
-  sum = 0.0
-  ( ( 1 + id * sliceSize ) .. ( ( id + 1 ) * sliceSize + 1 ) ).each { | i |
-    x = ( i - 0.5 ) * delta
-    sum += 1.0 / ( 1.0 + x * x )
-  }
-  sum
-end
+load 'output.rb'
+load 'partialSum.rb'
 
 def execute ( threadCount )
   n = 10000000 # 100 times fewer due to speed issues.
@@ -29,7 +22,7 @@ def execute ( threadCount )
   ( 0 ... threadCount ).each { sum += results.deq }
   pi = 4.0 * delta * sum
   elapseTime = Time.now - startTime
-  out __FILE__ , pi , n , elapseTime , threadCount
+  outn __FILE__ , pi , n , elapseTime , threadCount
 end
 
 execute 1

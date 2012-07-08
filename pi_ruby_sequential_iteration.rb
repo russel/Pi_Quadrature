@@ -1,11 +1,12 @@
 #! /usr/bin/env jruby
 # -*- coding: utf-8; -*-
 
-#  Calculation of Pi using quadrature. Sequential algorithm.
+#  Calculation of π using quadrature. Sequential algorithm.
 #
 #  Copyright © 2008–2009,2011,2012 Russel Winder
 
 require 'time'
+
 load 'output.rb'
 
 n = 10000000 #  100 times fewer due to speed issues.
