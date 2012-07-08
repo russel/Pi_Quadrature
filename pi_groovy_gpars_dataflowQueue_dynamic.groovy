@@ -1,7 +1,7 @@
 #! /usr/bin/env groovy
 
 /*
- *  Caluclation of Pi using quadrature realized with GPars dataflow variables.
+ *  Caluclation of π using quadrature realized with GPars dataflow variables.
  *
  *  Copyright © 2011–2012 Russel Winder
  */

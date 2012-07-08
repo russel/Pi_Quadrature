@@ -1,5 +1,6 @@
 /**
- * The partial sum function for the Groovy codes as a statically compiled function.
+ * The partial sum function for the Groovy codes as a statically compiled function and as a dynamically
+ * compiled function.
  *
  *  Copyright © 2012 Russel Winder
  */

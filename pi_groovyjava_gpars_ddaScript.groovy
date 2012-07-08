@@ -1,7 +1,7 @@
 #! /usr/bin/env groovy
 
 /*
- *  Calculation of Pi using quadrature realized with an GPars actor based algorithm.
+ *  Calculation of π using quadrature realized with an GPars actor based algorithm.
  *
  *  Copyright © 2010–2012 Russel Winder
  */

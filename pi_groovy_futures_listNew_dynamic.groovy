@@ -1,7 +1,7 @@
 #! /usr/bin/env groovy 
 
 /*
- *  Calculation of Pi using quadrature realized with a parallel algorithm based on using Futures.
+ *  Calculation of π using quadrature realized with a parallel algorithm based on using Futures.
  *
  *  Copyright © 2009–2012 Russel Winder
  */

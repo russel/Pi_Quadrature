@@ -1,7 +1,7 @@
 #! /usr/bin/env groovy
 
 /*
- *  Calculation of Pi using quadrature realized with a thread-based algorithm, enforcing primitive types
+ *  Calculation of π using quadrature realized with a thread-based algorithm, enforcing primitive types
  *  throughout.
  *
  *  Copyright © 2008–2012 Russel Winder

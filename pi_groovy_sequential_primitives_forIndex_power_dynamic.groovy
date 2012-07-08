@@ -1,7 +1,7 @@
 #! /usr/bin/env groovy 
 
 /*
- *  Calculation of Pi using quadrature realized with a basic sequential algorithm and enforcing primitive
+ *  Calculation of π using quadrature realized with a basic sequential algorithm and enforcing primitive
  *  types throughout.
  *
  *  Copyright © 2008–2012 Russel Winder

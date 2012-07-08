@@ -1,7 +1,7 @@
 #! /usr/bin/env groovy
 
 /*
- *  Calculation of Pi using quadrature realized with a fork/join approach with JCSP to partition the problem
+ *  Calculation of π using quadrature realized with a fork/join approach with JCSP to partition the problem
  *  and hence harness all processors available to the JVM.
  *
  *  Copyright © 2010–2012 Russel Winder
