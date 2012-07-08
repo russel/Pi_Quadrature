@@ -9,16 +9,16 @@
 import java.util.concurrent.Callable
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
-def execute ( final int numberOfTasks ) {
-  final int n = 1000000000i
-  final double delta = 1.0d / n
+def execute ( final numberOfTasks ) {
+  final n = 1000000000
+  final delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
-  final int sliceSize = n / numberOfTasks
+  final sliceSize = ( int ) ( n / numberOfTasks )
   final executor = new ScheduledThreadPoolExecutor ( numberOfTasks )
   final futures = ( 0 ..< numberOfTasks ).collect { taskId ->
-    executor.submit ( { PartialSum.compute ( taskId, sliceSize , delta ) } as Callable )
+    executor.submit ( { PartialSum.staticCompile ( taskId, sliceSize , delta ) } as Callable )
   }
-  final double pi = 4.0d * delta * futures.sum { f -> f.get ( ) } 
+  final pi = 4.0 * delta * futures.sum { f -> f.get ( ) } 
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   executor.shutdown ( )
   Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
