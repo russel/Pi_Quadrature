@@ -9,13 +9,13 @@
 
 import groovyx.gpars.GParsPool
 
-void execute ( final int numberOfTasks ) {
+void execute ( final numberOfTasks ) {
   GParsPool.withPool {
-    final int n = 1000000000i
-    final double delta = 1.0d / n
+    final n = 1000000000
+    final delta = 1.0 / n
     final startTimeNanos = System.nanoTime ( )
-    final int sliceSize = n / numberOfTasks
-    final pi = 4.0d * delta * ( 0i ..< numberOfTasks ).collectParallel { taskId ->
+    final sliceSize = ( int ) ( n / numberOfTasks )
+    final pi = 4.0 * delta * ( 0 ..< numberOfTasks ).collectParallel { taskId ->
       ( new ProcessSlice ( taskId , sliceSize , delta ) ).compute ( )
     }.sumParallel ( )
     final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9

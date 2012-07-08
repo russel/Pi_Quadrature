@@ -6,8 +6,8 @@
  *  Copyright © 2010–2012 Russel Winder
  */
 
-//  This code provided by Václav Pech but private email.  It is based on the pre-existing Groovy/Java
-//  examples and makes use of the Java coded ProcessSlice class.
+//  This code evolved from one provided by Václav Pech by private email which was based on one of the
+//  pre-existing Groovy/Java examples.
 
 import groovyx.gpars.actor.Actors
 import groovyx.gpars.actor.DynamicDispatchActor
@@ -23,19 +23,18 @@ final class DDAAccumulator extends DynamicDispatchActor {
   }
 }
 
-void execute ( final int actorCount ) {
-  final int n = 1000000000i
-  final double delta = 1.0d / n
+void execute ( final actorCount ) {
+  final n = 1000000000
+  final delta = 1.0 / n
   final startTimeNanos = System.nanoTime ( )
-  final int sliceSize = n / actorCount
+  final sliceSize = ( int ) ( n / actorCount )
   final accumulator = new DDAAccumulator ( actorCount )
   accumulator.start ( )
-  for ( index in 0 ..< actorCount ) {
-    final localIndex = index
-    Actors.actor { accumulator << ( new ProcessSlice ( localIndex , sliceSize , delta ) ).compute ( ) }
+  ( 0 ..< actorCount ).each { id ->
+    Actors.actor { accumulator << ( new ProcessSlice ( id , sliceSize , delta ) ).compute ( ) }
   }
   accumulator.join ( )
-  final double pi = 4.0d * delta * accumulator.sum
+  final pi = 4.0 * delta * accumulator.sum
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   Output.out ( getClass ( ).name , pi , n , elapseTime , actorCount )
 }
