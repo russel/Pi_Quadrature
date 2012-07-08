@@ -9,35 +9,27 @@
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.group.DefaultPGroup
 
-void execute ( final int actorCount ) {
-  final int n = 1000000000i 
-  final double delta = 1.0d / n
+void execute ( final actorCount ) {
+  final n = 1000000000 
+  final delta = 1.0d / n
   final startTimeNanos = System.nanoTime ( )
-  final int sliceSize = n / actorCount
-  final group = new DefaultPGroup ( actorCount + 1i )
+  final sliceSize = ( int ) ( n / actorCount )
+  final group = new DefaultPGroup ( actorCount + 1 )
   final accumulator = group.messageHandler {
-    double sum = 0.0d
-    int count = 0i
-    when { double result ->
+    def sum = 0.0
+    def count = 0
+    when { result ->
       sum += result
       if ( ++count == actorCount ) {
-        final double pi = 4.0d * delta * sum
+        final pi = 4.0 * delta * sum
         final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
         Output.out ( getClass ( ).name , pi , n , elapseTime , actorCount )
         terminate ( )
       }
     }
   }
-  final computors = [ ]
-  //  Loop variables are not captured at definition time but at execution time so use the trick used in Java
-  //  to ensure correct capture of the index number for the slice.
-  for ( a in 0 ..< actorCount ) {
-    final int index = a
-    computors.add (
-      group.actor {
-        accumulator << PartialSum.compute ( index , sliceSize , delta )
-      }
-    )    
+  ( 0 ..< actorCount ).each { index ->
+    group.actor { accumulator << PartialSum.staticCompile ( index , sliceSize , delta ) }
   }
   accumulator.join ( )
 }

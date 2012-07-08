@@ -12,31 +12,23 @@ import org.jcsp.lang.CSProcess
 
 import groovyx.gpars.csp.PAR
 
-void execute ( final int numberOfTasks ) {
-  final int n = 1000000000i
-  final double delta = 1.0d / n
+void execute ( final numberOfTasks ) {
+  final n = 1000000000
+  final delta = 1.0 / n
   final startTimeNanos = System.nanoTime ( )
-  final int sliceSize = n / numberOfTasks
+  final sliceSize = ( int ) ( n / numberOfTasks )
   final channel = Channel.any2one ( )
-  final processes = [ ]
-  for ( int i in 0i ..< numberOfTasks ) { 
-    final int taskId = i
-    processes << new CSProcess ( ) {
-      @Override public void run ( ) {
-        channel.out ( ).write ( PartialSum.compute ( taskId , sliceSize , delta ) )
-      }
-    }
+  final processes = ( 0 ..< numberOfTasks ).collect { taskId ->
+    { -> channel.out ( ).write ( PartialSum.staticCompile ( taskId , sliceSize , delta ) ) } as CSProcess
   }
-  processes << new CSProcess ( ) {
-    @Override public void run ( ) {
-      double sum = 0.0d
-      for ( int i in 0i ..< numberOfTasks ) { sum += (double) channel.in ( ).read ( ) }
-      final double pi = 4.0d * delta * sum
-      final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-      Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
-    }
-  }
-  ( new PAR ( processes ) ).run ( )
+  processes << {
+    def sum = 0.0
+    for ( i in 0 ..< numberOfTasks ) { sum += channel.in ( ).read ( ) }
+    final pi = 4.0 * delta * sum
+    final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
+    Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
+  } as CSProcess
+  ( new PAR ( processes as CSProcess[] ) ).run ( )
 }
 
 execute 1

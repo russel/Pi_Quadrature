@@ -9,18 +9,18 @@
 import groovyx.gpars.dataflow.DataflowVariable
 import static groovyx.gpars.dataflow.Dataflow.task
 
-void execute ( final int operatorCount ) {
-  final int n = 1000000000i
-  final double delta = 1.0d / n
+void execute ( final operatorCount ) {
+  final n = 1000000000
+  final delta = 1.0 / n
   final startTimeNanos = System.nanoTime ( )
-  final int sliceSize = n / operatorCount
+  final sliceSize = ( int ) ( n / operatorCount )
   final partialSums = [ ]
   ( 0 ..< operatorCount ).each { index ->
     final variable = new DataflowVariable ( )
     partialSums << variable
-    task { variable << PartialSum.compute ( index , sliceSize , delta ) }
+    task { variable << PartialSum.staticCompile ( index , sliceSize , delta ) }
   }
-  final double pi = 4.0d * delta * partialSums.sum { it.val }
+  final pi = 4.0 * delta * partialSums.sum { it.val }
   final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
   Output.out ( getClass ( ).name , pi , n , elapseTime, operatorCount )
 }
