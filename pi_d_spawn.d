@@ -7,7 +7,8 @@
 
 import std.concurrency ;
 import std.datetime ;
-import std.stdio ;
+
+import output_d ;
 
 void partialSum ( Tid parent , immutable int id , immutable int sliceSize , immutable double delta ) {
   immutable start = 1 + id * sliceSize ;
@@ -34,19 +35,13 @@ void execute ( immutable int numberOfTasks ) {
   immutable pi = 4.0 * delta * sum ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Spawn pi = %.18f" , pi ) ;
-  writefln ( "==== D Spawn iteration count = %d" , n ) ;
-  writefln ( "==== D Spawn elapse = %f" , elapseTime ) ;
-  writefln ( "==== D Spawn task count = %d" , numberOfTasks ) ;
+  output ( __FILE__ , pi , n , elapseTime , numberOfTasks ) ;
 }
 
 int main ( immutable string[] args ) {
   execute ( 1 ) ;
-  writeln ( ) ;
   execute ( 2 ) ;
-  writeln ( ) ;
   execute ( 8 ) ;
-  writeln ( ) ;
   execute ( 32 ) ;
   return 0 ;
 }

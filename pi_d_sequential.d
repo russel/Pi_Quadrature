@@ -5,7 +5,8 @@
  */
 
 import std.datetime ;
-import std.stdio ;
+
+import output_d ;
 
 int main ( immutable string[] args ) {
   immutable n = 1000000000 ;
@@ -20,8 +21,6 @@ int main ( immutable string[] args ) {
   immutable pi = 4.0 * delta * sum ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Sequential pi = %.18f" , pi ) ;
-  writefln ( "==== D Sequential iteration count = %d" , n ) ;
-  writefln ( "==== D Sequential elapse = %f" , elapseTime ) ;
+  output ( __FILE__ , pi  , n , elapseTime ) ;
   return 0 ;
 }

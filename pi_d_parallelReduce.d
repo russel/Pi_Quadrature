@@ -12,7 +12,8 @@ import std.algorithm ;
 import std.datetime ;
 import std.parallelism ;
 import std.range ;
-import std.stdio ;
+
+import output_d ;
 
 immutable n = 1000000000 ;
 immutable delta = 1.0 / n ;
@@ -36,8 +37,6 @@ int main ( immutable string[] args ) {
   immutable pi = 4.0 * delta * taskPool.reduce ! ( "a + b" ) ( map ! getTerm ( iota ( n ) ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Parallel Reduce pi = %.18f" , pi ) ;
-  writefln ( "==== D Parallel Reduce iteration count = %d" , n ) ;
-  writefln ( "==== D Parallel Reduce elapse = %f" , elapseTime ) ;
+  output ( __FILE__ , pi , n , elapseTime ) ;
   return 0 ;
 }

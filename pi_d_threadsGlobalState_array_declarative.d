@@ -7,9 +7,10 @@
 import std.algorithm ;
 import std.datetime ;
 import std.range ;
-import std.stdio ;
 
 import core.thread ;
+
+import output_d ;
 
 shared double sum ;
 shared Object sumMutex ;
@@ -44,20 +45,14 @@ void execute ( immutable int numberOfThreads ) {
   immutable pi = 4.0 * delta * sum ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Threads Global State Array Declarative pi = %.18f" , pi ) ;
-  writefln ( "==== D Threads Global State Array Declarative iteration count = %d" , n ) ;
-  writefln ( "==== D Threads Global State Array Declarative elapse = %f" , elapseTime ) ;
-  writefln ( "==== D Threads Global State Array Declarative thread count = %d" , numberOfThreads ) ;
+  output ( __FILE__ , pi , n , elapseTime , numberOfThreads ) ;
 }
 
 int main ( immutable string[] args ) {
   sumMutex = new shared ( Object ) ;
   execute ( 1 ) ;
-  writeln ( ) ;
   execute ( 2 ) ;
-  writeln ( ) ;
   execute ( 8 ) ;
-  writeln ( ) ;
   execute ( 32 ) ;
   return 0 ;
 }

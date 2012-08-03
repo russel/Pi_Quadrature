@@ -8,8 +8,9 @@
 import std.algorithm ;
 import std.datetime ;
 import std.range ;
-import std.stdio ;
 import std.typecons ;
+
+import output_d ;
 
 double partialSum ( immutable Tuple ! ( int , int , double ) data ) { 
   immutable start = 1 + data[0] * data[1] ;
@@ -32,19 +33,13 @@ void execute ( immutable int numberOfTasks ) {
     map ! ( i => tuple ( i , cast ( int ) sliceSize , cast ( double ) delta ) ) ( iota ( numberOfTasks ) ) ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;
-  writefln ( "==== D Sequential Map pi = %.18f" , pi ) ;
-  writefln ( "==== D Sequential Map iteration count = %d" , n ) ;
-  writefln ( "==== D Sequential Map elapse = %f" , elapseTime ) ;
-  writefln ( "==== D Sequential Map task count = %d" , numberOfTasks ) ;
+  output ( __FILE__ , pi , n , elapseTime , numberOfTasks ) ;
 }
 
 int main ( immutable string[] args ) {
   execute ( 1 ) ;
-  writeln ( ) ;
   execute ( 2 ) ;
-  writeln ( ) ;
   execute ( 8 ) ;
-  writeln ( ) ;
   execute ( 32 ) ;
   return 0 ;
 }
