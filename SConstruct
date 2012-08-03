@@ -127,7 +127,7 @@ fortranFlags = [ '-O3' , '-std=f2008' , '-ffree-form' , '-pedantic' , '-Wall' ]
 
 fortranEnvironment = Environment ( tools = [ 'gfortran' , 'gnulink' ] , FORTRANFLAGS = fortranFlags )
 
-fortranOutput = fortranEnvironment.Object ( 'output.f' )
+fortranOutput = fortranEnvironment.Object ( 'output_f.f' )
 
 def fortranRule ( globPattern , compiler = 'gfortran' , fortranflags = fortranFlags , linkflags = [ ] , libpath = [ ] , libs = [ ] ) :
     for item in Glob ( globPattern ) :
@@ -144,10 +144,6 @@ fortranRule ( 'pi_fortran_openmp*.f' , fortranflags = fortranFlags + [ '-fopenmp
 fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 
 #  D  ################################################################################
-
-##  NB Until 2011-02-18 (1.066, 2.051) the D compiler was a 32-bit application that generated 32-bit code --
-##  so on 64-bit platforms special care was needed.  As of 2011-02-18 (1.067, 2.052) the D compiler is able
-##  to generate 64-bit code on a Linux machine.
 
 ######
 ##
@@ -166,14 +162,16 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 # access to gphobos2.
 
 dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'dmd' ] ,
-                             # use gdmd by commenting out ENV = os.environ ,
-                             CC = 'gcc-4.6',
-                             DFLAGS = [ '-O' , '-release' , '-inline' ] )
+# use dmd by commenting out
+ENV = os.environ ,
+CC = 'gcc-4.6',
+DFLAGS = [ '-O' , '-release' , '-inline' ] )
+
+dOutput = dEnvironment.Object ( 'output_d.d' )
 
 for item in Glob ( 'pi_d_*.d' ) :
     root = os.path.splitext ( item.name ) [0]
-    environment = dEnvironment
-    executables.append ( addCompileTarget ( environment.Program ( item ) ) )
+    executables.append ( addCompileTarget ( dEnvironment.Program ( [ item , dOutput ] ) ) )
 
 #  Chapel  ###########################################################################
 
