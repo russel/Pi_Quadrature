@@ -6,7 +6,7 @@
 #
 #  Copyright © 2008–2012 Russel Winder
 
-from multiprocessing import Pool, cpu_count
+from multiprocessing import Pool
 from output import out
 from time import time
 
@@ -25,7 +25,7 @@ def execute ( processCount ) :
     #pool.close ( )
     pi = 4.0 * delta * sum ( [ item.get ( ) for item in results ] )
     elapseTime = time ( ) - startTime
-    out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
+    out ( __file__ , pi , n , elapseTime , processCount )
     
 if __name__ == '__main__' :
     processSliceModule = ctypes.cdll.LoadLibrary ( 'processSlice_cpp.so' )

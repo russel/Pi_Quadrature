@@ -5,7 +5,6 @@
 #  Copyright © 2011–2012 Russel Winder
 
 from concurrent.futures import ProcessPoolExecutor
-from multiprocessing import cpu_count
 from output import out
 from time import time
 
@@ -25,7 +24,7 @@ def execute ( processCount ) :
         results = [ executor.submit ( processSlice , i , sliceSize , delta ) for i in range ( processCount ) ]
     pi = 4.0 * delta * sum ( [ item.result ( ) for item in results ] )
     elapseTime = time ( ) - startTime
-    out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
+    out ( __file__ , pi , n , elapseTime , processCount )
 
 if __name__ == '__main__' :
     processSliceModule = ctypes.cdll.LoadLibrary ( 'processSlice_cpp.so' )

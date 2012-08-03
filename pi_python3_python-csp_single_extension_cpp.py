@@ -5,7 +5,6 @@
 #  Copyright © 2010–2012 Russel Winder
 
 from csp.os_process import process , Channel , Par
-from multiprocessing import cpu_count
 from output import out
 from time import time
 
@@ -19,7 +18,7 @@ def calculator ( channel , id , sliceSize , delta ) :
 def accumulator ( channel , n , delta , startTime , processCount ) :
     pi = 4.0 * delta * sum ( [ channel.read ( ) for i in range ( 0 , processCount ) ] )
     elapseTime = time ( ) - startTime
-    out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
+    out ( __file__ , pi , n , elapseTime , processCount )
 
 def execute ( processCount ) :
     n = 1000000000

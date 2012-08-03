@@ -26,7 +26,7 @@ def execute ( processCount ) :
     jobs = [ server.submit ( processSlice , ( i , sliceSize , delta ) ) for i in xrange ( 0, processCount ) ]
     pi = 4.0 * delta * sum ( [ job ( ) for job in jobs ] )
     elapseTime = time ( ) - startTime
-    out ( __file__ , pi , n , elapseTime , processCount , server.get_ncpus ( ) )
+    out ( __file__ , pi , n , elapseTime , processCount )
     server.print_stats ( )
     
 if __name__ == '__main__' :

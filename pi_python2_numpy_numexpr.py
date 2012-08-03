@@ -8,7 +8,7 @@
 from output import out
 from time import time
 from numpy import arange
-from numexpr import detect_number_of_cores , evaluate , set_num_threads 
+from numexpr import evaluate , set_num_threads 
 
 def execute ( threadCount ) :
     n = 100000000 # 10 times fewer than C due to speed issues.
@@ -18,7 +18,7 @@ def execute ( threadCount ) :
     value = arange ( n )
     pi = 4.0 * delta * evaluate ( "1.0 / ( 1.0 + ( ( value - 0.5 ) * delta ) ** 2 )" ).sum ( )
     elapseTime = time ( ) - startTime
-    out ( __file__ ,  pi , n , elapseTime , threadCount , detect_number_of_cores ( ) )
+    out ( __file__ ,  pi , n , elapseTime , threadCount )
     
 if __name__ == '__main__' :
     execute ( 1 )

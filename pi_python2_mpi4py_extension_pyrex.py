@@ -18,13 +18,12 @@ if __name__ == '__main__' :
   delta = 1.0 / n
   startTime = time ( )
   comm = MPI.COMM_WORLD
-  nProcessors = comm.Get_size ( )
   myId = comm.Get_rank ( )
-  sliceSize = n / nProcessors
+  sliceSize = n / comm.Get_size ( )
   localSum = array ( [ processSlice ( myId , sliceSize , delta ) ] )
   sum = array ( [ 0.0 ] )
   comm.Reduce ( ( localSum , MPI.DOUBLE ) , ( sum , MPI.DOUBLE ) )
   if myId == 0 :
     pi = 4.0 * delta * sum[0]
     elapseTime = time ( ) - startTime
-    out ( __file__ , pi , n , elapseTime , nProcessors )
+    out ( __file__ , pi , n , elapseTime )

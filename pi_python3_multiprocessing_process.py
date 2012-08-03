@@ -5,7 +5,7 @@
 #
 #  Copyright © 2008–2012 Russel Winder
 
-from multiprocessing import Queue , Process, cpu_count
+from multiprocessing import Queue , Process
 from output import out
 from time import time
 
@@ -27,7 +27,7 @@ def execute ( processCount ) :
     for p in processes : p.start ( )
     pi = 4.0 * delta * sum ( [ resultsQueue.get ( ) for i in range ( 0 , processCount ) ] )
     elapseTime = time ( ) - startTime
-    out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
+    out ( __file__ , pi , n , elapseTime , processCount )
 
 if __name__ == '__main__' :
     execute ( 1 )

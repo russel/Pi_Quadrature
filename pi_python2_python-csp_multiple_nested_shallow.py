@@ -6,7 +6,6 @@
 #  Copyright © 2009–2012 Russel Winder
 
 from csp.os_process import process , Channel , Par
-from multiprocessing import cpu_count
 from output import out
 from time import time
 
@@ -27,7 +26,7 @@ def execute ( processCount ) :
     def accumulator ( ) :
         pi = 4.0 * delta * sum ( [ channel.read ( ) for channel in channels ] )
         elapseTime = time ( ) - startTime
-        out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
+        out ( __file__ , pi , n , elapseTime , processCount )
     processes = [ ] 
     for i in xrange ( 0 , processCount ) :
         channel = Channel ( )

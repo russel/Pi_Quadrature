@@ -5,7 +5,6 @@
 #
 #  Copyright © 2009–2012 Russel Winder
 
-from multiprocessing import cpu_count
 from output import out
 from pycsp.processes import process , Channel , Parallel
 from time import time
@@ -22,7 +21,7 @@ def calculator ( channel , id , sliceSize , delta ) :
 def accumulator ( channel , n , delta , startTime , processCount ) :
     pi = 4.0 * delta * sum ( [ channel ( ) for i in xrange ( 0 , processCount ) ] )
     elapseTime = time ( ) - startTime
-    out ( __file__ , pi , n , elapseTime , processCount , cpu_count ( ) )
+    out ( __file__ , pi , n , elapseTime , processCount )
 
 def execute ( processCount ) :
     n = 10000000 # 100 times fewer than C due to speed issues.
