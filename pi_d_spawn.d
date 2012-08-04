@@ -1,6 +1,6 @@
 /*
- *  A D program to calculate Pi using quadrature as a spawn-based algorithm.  Make use of Actor Model
- *  message passing capability.
+ *  A D program to calculate π using quadrature as a spawn-based approach.  Make use of actor-style message
+ *  passing capability.
  *
  *  Copyright © 2010–2012 Russel Winder
  */
