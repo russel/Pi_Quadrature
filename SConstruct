@@ -147,25 +147,22 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 
 ######
 ##
-##  NB The D tool amends the 'LIBS' key in the environment used.  To avoid this polluting link phases for
-##  other languages, ensure to use a distinct clone for all the D compilation and linking.  As this is done
-##  for all the languages anyway there is no problem :-)
+##  NB As at 2012-08-04, the SCons D tools amend the 'LIBS' key in the environment used.  To avoid this
+##  polluting link phases for other languages, ensure to use a distinct clone for all the D compilation and
+##  linking.
 ##
 ######
 
-#  The dmd tool fails to set up the environment correctly to do linking on Ubuntu and Debian unless there is
-#  a compiler tool specified in order to determine the linker AND the dmd tool is included after the link
-#  and compiler tools. Also the dmd compiler is not in the bootstrap path on RW's set up, so amend the path
-#  to ensure it is found.
+#  As at 2012-08-04, the SCons D tools fails to set up the compile chain correctly on Debian.  Hence specify
+#  a compiler tool as well as a linker tool and ensure the D tool is last in the sequence.
 
-# As at 2012-05-09 GCC is 4.7 on Debian Unstable but this does not include gdmd.  Must use 4.6 to have
-# access to gphobos2.
-
-dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'dmd' ] ,
-# use dmd by commenting out
-ENV = os.environ ,
-CC = 'gcc-4.6',
-DFLAGS = [ '-O' , '-release' , '-inline' ] )
+if False :
+    # As at 2012-08-04 the Debian Unstable gdc package is GCC 4.6, it is not part of GCC 4.7.
+    dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'gdc'] ,
+                                 DFLAGS = [ '-O3' ] )
+else :
+    dEnvironment = Environment ( tools = [ 'cc' , 'link' , 'dmd' ] ,
+                                 DFLAGS = [ '-O' , '-release' ] )
 
 dOutput = dEnvironment.Object ( 'output_d.d' )
 
