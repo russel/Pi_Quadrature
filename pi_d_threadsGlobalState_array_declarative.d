@@ -1,5 +1,5 @@
 /*
- *  A D program to calculate Pi using quadrature as a threads-based algorithm.
+ *  A D program to calculate π using quadrature as a threads-based approach.
  *
  *  Copyright © 2009–2012 Russel Winder
  */
@@ -34,12 +34,12 @@ void execute ( immutable int numberOfThreads ) {
   immutable sliceSize = n / numberOfThreads ;
   sum = 0.0 ;
   auto threads = map ! ( ( int i ) {
-      void delegate ( ) closedPartialSum ( ) {
+      auto closedPartialSum ( ) {
         immutable ii = i ;
         return delegate ( ) { partialSum ( ii , sliceSize , delta ) ; } ;
       }
       return new Thread ( closedPartialSum ) ;
-    } ) ( iota ( numberOfThreads ) ) ;
+      } ) ( iota ( numberOfThreads ) ) ;
   foreach ( thread ; threads ) { thread.start ( ) ; }
   foreach ( thread ; threads ) { thread.join ( ) ; }
   immutable pi = 4.0 * delta * sum ;
