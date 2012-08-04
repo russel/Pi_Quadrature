@@ -157,6 +157,7 @@ fortranRule ( 'pi_fortran_mpi*.f' , compiler = 'mpif90' )
 #  a compiler tool as well as a linker tool and ensure the D tool is last in the sequence.
 
 if False :
+#if True :
     # As at 2012-08-04 the Debian Unstable gdc package is GCC 4.6, it is not part of GCC 4.7.
     dEnvironment = Environment ( tools = [ 'gcc' , 'gnulink' , 'gdc'] ,
                                  DFLAGS = [ '-O3' ] )
