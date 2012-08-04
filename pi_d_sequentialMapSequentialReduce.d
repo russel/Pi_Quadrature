@@ -1,12 +1,12 @@
 /*
- *  A D program to calculate π using quadrature as a sequential reduction of parallel maps.
+ *  A D program to calculate π using quadrature as a sequential reduction of sequential maps.  This is really
+ *  just here as a comparison against the various parallel versions.
  *
  *  Copyright © 2010–2012 Russel Winder
  */
 
 import std.algorithm ;
 import std.datetime ;
-import std.parallelism ;
 import std.range ;
 import std.typecons ;
 
@@ -29,7 +29,7 @@ void execute ( immutable int numberOfTasks ) {
   StopWatch stopWatch ;
   stopWatch.start ( ) ;
   immutable sliceSize = n / numberOfTasks ;
-  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) => a + b ) ( 0.0 , taskPool.amap ! ( partialSum ) (
+  immutable pi = 4.0 * delta * reduce ! ( ( a , b ) => a + b ) ( 0.0 , map ! ( partialSum ) (
     map ! ( i => tuple ( i , cast ( int ) sliceSize , cast ( double ) delta ) ) ( iota ( numberOfTasks ) ) ) ) ;
   stopWatch.stop ( ) ;
   immutable elapseTime = stopWatch.peek ( ).hnsecs * 100e-9 ;

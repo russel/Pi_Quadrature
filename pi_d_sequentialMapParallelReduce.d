@@ -1,11 +1,8 @@
 /*
- *  A D program to calculate Pi using quadrature as a parallel map algorithm.
+ *  A D program to calculate π using quadrature as a parallel reduction of sequential maps.
  *
  *  Copyright © 2010–2012 Russel Winder
  */
-
-//  std.parallelism is currently not in Phobos2, though it is being voted on for inclusion in Phobos2, so
-//  ensure the compilation command takes care of all the factors to include the library.
 
 import std.algorithm ;
 import std.datetime ;
@@ -35,6 +32,8 @@ void execute ( immutable int numberOfTasks ) {
   //  There is a problem using a lambda function here.  David Simcha reports it is a consequence of issue
   //  5710 http://d.puremagic.com/issues/show_bug.cgi?id=5710.  Live with this and use the string syntax
   //  for specifying a lambda function.
+  //immutable pi = 4.0 * delta * taskPool.reduce ! ( ( a, b ) { return a + b ; } ) ( 0.0 , map ! ( partialSum ) (
+  //immutable pi = 4.0 * delta * taskPool.reduce ! ( ( a, b ) => a + b ) ( 0.0 , map ! ( partialSum ) (
   immutable pi = 4.0 * delta * taskPool.reduce ! ( "a + b" ) ( 0.0 , map ! ( partialSum ) (
     map ! ( i => tuple ( i , cast ( int ) sliceSize , cast ( double ) delta ) ) ( iota ( numberOfTasks ) ) ) ) ;
   stopWatch.stop ( ) ;

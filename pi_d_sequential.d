@@ -1,5 +1,5 @@
 /*
- *  A D program to calculate Pi using quadrature as a sequential algorithm.
+ *  A D program to calculate π using quadrature as a sequential algorithm.
  *
  *  Copyright © 2009–2012 Russel Winder
  */
