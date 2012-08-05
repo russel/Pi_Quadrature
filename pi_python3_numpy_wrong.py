@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# -*- coding:utf-8; -*-
+#! /usr/bin/env python3
 
 #  Calculation of π using quadrature. Sequential algorithm using NumPy – sort of. This is an example of how
 #  not to use NumPy.
@@ -15,7 +14,7 @@ if __name__ == '__main__':
     delta = divide(1.0, n)
     startTime = time()
     sum = float(0.0)
-    for i in xrange(1, n + 1):
+    for i in range(1, n + 1):
         x = multiply(subtract(i, 0.5), delta)
         sum = add(sum, divide(1.0, add(1.0, multiply(x, x))))
     pi = multiply(4.0, multiply(delta, sum))
