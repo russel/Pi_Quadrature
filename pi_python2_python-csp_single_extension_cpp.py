@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- mode:python; coding:utf-8; -*-
+# -*- coding:utf-8; -*-
 
 #  Calculation of π using quadrature. Usies the python-csp package by Sarah Mount.
 #
