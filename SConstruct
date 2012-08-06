@@ -497,11 +497,6 @@ for item in Glob('pi_python*.py'):
         assert item.name.find(extension) != -1
         if extension in ['cython', 'pyrex']:
             majorVersion = bits[1][-1:]
-            ##
-            ##  Cython 0.11.2 and Pyrex 0.9.8.5 generate C that cannot be compiled against Python 3.1. :-(
-            ##  Cython 0.14.1 and later generate code that compiles with Python 3.2. :-)
-            ##
-            if extension == 'pyrex' and majorVersion == '3': continue
             extension += '_py' + majorVersion
         extensionName = '{}_{}'.format(extensionRoot, extension)
         if extensionName not in extensionsSharedLibraries.keys():
