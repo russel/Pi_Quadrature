@@ -1,9 +1,7 @@
 #! /usr/bin/env python3
 
-#  Calculation of Pi using quadrature.  Using threads -- but this gives no parallelism because of the GIL.
-#  If the append operation on a list is atomic then we can just use a list as the mechanism for receiving
-#  the results.  However it is not clear that that operation is atomic so we use a Queue as the way of
-#  receiving results since that has the necessary guarantees to be thread-safe.
+#  Calculation of π using quadrature. Uses threads but this gives no parallelism because of the GIL.
+#  This version uses a global thread-safe queue for the children to send results back to the parent.
 #
 #  Copyright © 2008–2012 Russel Winder
 
@@ -12,29 +10,29 @@ from queue import Queue
 from threading import Thread
 from time import time
 
-def processSlice ( id , sliceSize , delta ) :
+def processSlice(id, sliceSize, delta):
     sum = 0.0
-    for i in range ( 1 + id * sliceSize , ( id + 1 ) * sliceSize + 1 ) :
-        x = ( i - 0.5 ) * delta
-        sum += 1.0 / ( 1.0 + x * x )
-    results.put ( sum )
+    for i in range(1 + id * sliceSize, (id + 1) * sliceSize + 1):
+        x = (i - 0.5) * delta
+        sum += 1.0 / (1.0 + x * x)
+    results.put(sum)
 
-def execute ( threadCount ) :
-    n = 10000000 # 100 times fewer than C due to speed issues.
+def execute(threadCount):
+    n = 10000000  # 100 times fewer than C due to speed issues.
     delta = 1.0 / n
-    startTime = time ( )
+    startTime = time()
     sliceSize = n // threadCount
     global results
-    results = Queue ( threadCount )
-    threads = [ Thread ( target = processSlice , args = ( i , sliceSize , delta ) ) for i in range ( 0 , threadCount ) ]
-    for thread in threads : thread.start ( )
-    for thread in threads : thread.join ( )
-    pi =  4.0 * delta * sum ( [ results.get ( ) for i in range ( threadCount ) ] )
-    elapseTime = time ( ) - startTime
-    out ( __file__ , pi , n , elapseTime , threadCount )
+    results = Queue(threadCount)
+    threads = [Thread(target=processSlice, args=(i, sliceSize, delta)) for i in range(0, threadCount)]
+    for thread in threads: thread.start()
+    for thread in threads: thread.join()
+    pi = 4.0 * delta * sum([results.get() for i in range(threadCount)])
+    elapseTime = time() - startTime
+    out(__file__, pi, n, elapseTime, threadCount)
 
-if __name__ == '__main__' :
-    execute ( 1 )
-    execute ( 2 )
-    execute ( 8 )
-    execute ( 32 )
+if __name__ == '__main__':
+    execute(1)
+    execute(2)
+    execute(8)
+    execute(32)
