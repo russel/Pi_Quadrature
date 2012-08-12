@@ -26,8 +26,10 @@ def execute(threadCount):
     global results
     results = []
     threads = [Thread(target=processSlice, args=(i, sliceSize, delta)) for i in xrange(0, threadCount)]
-    for thread in threads: thread.start()
-    for thread in threads: thread.join()
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
     pi = 4.0 * delta * sum(results)
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, threadCount)

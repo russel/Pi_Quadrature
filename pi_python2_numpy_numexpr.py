@@ -18,7 +18,7 @@ def execute(threadCount):
     value = arange(n)
     pi = 4.0 * delta * evaluate("1.0 / (1.0 + ((value - 0.5) * delta) ** 2)").sum()
     elapseTime = time() - startTime
-    out(__file__,  pi, n, elapseTime, threadCount)
+    out(__file__, pi, n, elapseTime, threadCount)
 
 if __name__ == '__main__':
     execute(1)

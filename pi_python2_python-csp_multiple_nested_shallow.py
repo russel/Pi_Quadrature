@@ -15,6 +15,7 @@ def execute(processCount):
     startTime = time()
     sliceSize = n / processCount
     channels = []
+
     @process
     def calculator(channel, id):
         sum = 0.0
@@ -22,11 +23,13 @@ def execute(processCount):
             x = (i - 0.5) * delta
             sum += 1.0 / (1.0 + x * x)
         channel.write(sum)
+
     @process
     def accumulator():
         pi = 4.0 * delta * sum([channel.read() for channel in channels])
         elapseTime = time() - startTime
         out(__file__, pi, n, elapseTime, processCount)
+
     processes = []
     for i in xrange(0, processCount):
         channel = Channel()

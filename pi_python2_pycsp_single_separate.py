@@ -16,7 +16,7 @@ def calculator(channel, id, sliceSize, delta):
         x = (i - 0.5) * delta
         sum += 1.0 / (1.0 + x * x)
     channel(sum)
-        
+
 @process
 def accumulator(channel, n, delta, startTime, processCount):
     pi = 4.0 * delta * sum([channel() for i in xrange(0, processCount)])
@@ -29,7 +29,7 @@ def execute(processCount):
     startTime = time()
     sliceSize = n / processCount
     channel = Channel()
-    processes = [calculator(-channel, i, sliceSize, delta)  for i in xrange(0, processCount)]
+    processes = [calculator(-channel, i, sliceSize, delta) for i in xrange(0, processCount)]
     processes.append(accumulator(+channel, n, delta, startTime, processCount))
     Parallel(*processes)
 
