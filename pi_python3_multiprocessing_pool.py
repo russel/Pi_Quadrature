@@ -23,7 +23,6 @@ def execute(processCount):
     sliceSize = n // processCount
     pool = Pool(processes=processCount)
     results = [pool.apply_async(processSlice, args=(i, sliceSize, delta)) for i in range(0, processCount)]
-    #pool.close()
     pi = 4.0 * delta * sum([item.get() for item in results])
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)

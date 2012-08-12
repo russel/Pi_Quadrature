@@ -15,7 +15,6 @@ def processSlice(id, sliceSize, delta, output):
         x = (i - 0.5) * delta
         sum += 1.0 / (1.0 + x * x)
     output.put(sum)
-    output.close()
 
 def execute(processCount):
     n = 10000000  # 100 times fewer than C due to speed issues.

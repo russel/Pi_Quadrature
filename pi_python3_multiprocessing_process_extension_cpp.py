@@ -13,7 +13,6 @@ import ctypes
 
 def processSlice(id, sliceSize, delta, output):
     output.put(processSliceModule.processSlice(id, sliceSize, delta))
-    output.close()
 
 def execute(processCount):
     n = 1000000000

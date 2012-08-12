@@ -13,7 +13,6 @@ from processSlice_cython_py3 import processSlice
 
 def calculator(id, sliceSize, delta, output):
     output.put(processSlice(id, sliceSize, delta))
-    output.close()
 
 def execute(processCount):
     n = 1000000000
