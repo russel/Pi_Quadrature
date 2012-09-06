@@ -141,25 +141,26 @@ fortranRule('pi_fortran_mpi*.f', compiler='mpif90')
 
 #  D  ################################################################################
 
-######
+##  DMD 2.059 worked, DMD 2.060 has issues – various problems with the thread.  GDC on Debian as at
+##  2012-09-06 realizes D 2.056 and so barfs on some constructs introduced after that version.  LDC compiled
+##  from master/HEAD as at 2012-09-06 is D 2.060 and works fine.
 ##
-##  NB As at 2012-08-04, the SCons D tools amend the 'LIBS' key in the environment used.  To avoid this
-##  polluting link phases for other languages, ensure to use a distinct clone for all the D compilation and
-##  linking.
-##
-######
+##  pi_d_threadsGlobalState_array_declarative.d and pi_d_threadsGlobalState_array_iterative.d are the codes
+##  that fail unde DMD 2.060 that work under 2.059.
 
-#  As at 2012-08-04, the SCons D tools fails to set up the compile chain correctly on Debian.  Hence specify
-#  a compiler tool as well as a linker tool and ensure the D tool is last in the sequence.
-
-if False:
-#if True:
-    # As at 2012-08-04 the Debian Unstable gdc package is GCC 4.6, it is not part of GCC 4.7.
-    dEnvironment = Environment(tools=['gcc', 'gnulink', 'gdc'],
-                                 DFLAGS=['-O3'])
-else:
-    dEnvironment = Environment(tools=['cc', 'link', 'dmd'],
-                                 DFLAGS=['-O', '-release'])
+dEnvironment = {
+    'dmd': Environment(tools=['link', 'dmd'], # Why is the order crucial here?
+                       DFLAGS=['-O', '-release'],
+                       #DC='gdmd'
+                       ),
+    'gdc':  Environment(tools=['link', 'gdc'], # Why is the order crucial here?
+                        DFLAGS=['-O3'],
+                        ),
+    'ldc': Environment(tools=['link', 'ldc'],
+                       ENV = os.environ,
+                       DFLAGS=['-O', '-release'],
+                       ),
+                       }['ldc']
 
 dOutput = dEnvironment.Object('output_d.d')
 
