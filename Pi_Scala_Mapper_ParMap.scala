@@ -33,8 +33,8 @@ object Pi_Scala_Mapper_ParMap {
       }
       sum
     }
-    val pi = 4.0 * delta *(((new Mapper[Int,Double](List.range(0 , numberOfThreads) , partialSum)).pmap) reduceLeft(_ + _))
-    val elapseTime =(System.nanoTime - startTimeNanos) / 1e9
+    val pi = 4.0 * delta * (((new Mapper[Int,Double](List.range(0 , numberOfThreads) , partialSum)).pmap) reduceLeft(_ + _))
+    val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
     out("Pi_Scala_Mapper_ParMap" , pi , n , elapseTime , numberOfThreads)
   }
 

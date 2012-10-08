@@ -22,7 +22,7 @@ object Pi_Scala_RemoteActors extends App {
       var sum = 0.0
       calculators.foreach(calculator => Actor.receive { case d => sum += d.asInstanceOf[Double] })
       val pi = 4.0 * delta * sum
-      val elapseTime =(System.nanoTime - startTimeNanos) / 1e9
+      val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
       out("Pi_Scala_RemoteActors", pi, n, elapseTime, numberOfWorkerActors)
       sequencer ! 0
     }
