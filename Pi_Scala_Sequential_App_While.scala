@@ -14,12 +14,12 @@ object Pi_Scala_Sequential_App_While extends App {
   val startTimeNanos = System.nanoTime
   var sum = 0.0
   var i = 1
-  while ( i <= n ) {
-    val x = ( i - 0.5 ) * delta
-    sum += 1.0 / ( 1.0 + x * x )
+  while (i <= n) {
+    val x = (i - 0.5) * delta
+    sum += 1.0 / (1.0 + x * x)
     i += 1
   }
   val pi = 4.0 * delta * sum
-  val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-  out ( "Pi_Scala_Sequential_App_While" , pi , n , elapseTime )
+  val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
+  out("Pi_Scala_Sequential_App_While", pi, n, elapseTime)
 }

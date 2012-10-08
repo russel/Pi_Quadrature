@@ -18,39 +18,39 @@ import fj.data.List
 import SOutput.out
 
 object Pi_Scala_FunctionalJava_ParMap {
-  def execute ( numberOfThreads : Int ) {
+  def execute(numberOfThreads:Int) {
     val n = 1000000000
     val delta = 1.0 / n
     val startTimeNanos = System.nanoTime
     val sliceSize = n / numberOfThreads
     val partialSum = new F[java.lang.Integer,Double] {
-      def f ( indexOfWrongType : java.lang.Integer ) : Double = {
-        val index : Int = indexOfWrongType.intValue
+      def f(indexOfWrongType:java.lang.Integer):Double = {
+        val index:Int = indexOfWrongType.intValue
         val start = 1 + index * sliceSize
-        val end = ( index + 1 ) * sliceSize 
+        val end = (index + 1) * sliceSize
         var sum = 0.0
-        for ( i <- start to end ) {
-          val x = ( i - 0.5 ) * delta
-          sum += 1.0 / ( 1.0 + x * x )
+        for (i <- start to end) {
+          val x = (i - 0.5) * delta
+          sum += 1.0 / (1.0 + x * x)
         }
         sum
       }
     }
     val sum = new F2[Double,Double,Double] {
-      def f ( a : Double , b : Double ) : Double = { a + b }
+      def f(a:Double, b:Double):Double = { a + b }
     }
     val pi = 4.0 * delta * ParModule
-      .parModule ( Strategy.executorStrategy[fj.Unit] ( Executors.newCachedThreadPool ) )
-      .parMap ( List.range ( 0 , numberOfThreads ) , partialSum )
+      .parModule(Strategy.executorStrategy[fj.Unit](Executors.newCachedThreadPool))
+      .parMap(List.range(0, numberOfThreads), partialSum)
       .claim
-      .foldLeft1 ( sum )
-    val elapseTime = ( System.nanoTime - startTimeNanos ) / 1e9
-    out ( "Pi_Scala_FunctionalJava" , pi , n, elapseTime , numberOfThreads )
+      .foldLeft1(sum)
+    val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
+    out("Pi_Scala_FunctionalJava", pi, n, elapseTime, numberOfThreads)
   }
-  def main ( args : Array[String] ) {
-    execute ( 1 )
-    execute ( 2 )
-    execute ( 8 )
-    execute ( 32 )
+  def main(args:Array[String]) {
+    execute(1)
+    execute(2)
+    execute(8)
+    execute(32)
   }
 }
