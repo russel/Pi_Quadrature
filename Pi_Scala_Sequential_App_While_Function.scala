@@ -20,7 +20,7 @@ object Pi_Scala_Sequential_App_While_Function extends App {
     }
     val pi = 4.0 * delta * sum
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_Scala_Sequential_App_While", pi, n, elapseTime)
+    out("Pi_Scala_Sequential_App_While_Function", pi, n, elapseTime)
   }
   doStuff
 }
