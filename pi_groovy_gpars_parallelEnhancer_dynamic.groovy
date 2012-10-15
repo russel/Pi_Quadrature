@@ -9,18 +9,18 @@
 
 import groovyx.gpars.ParallelEnhancer
 
-void execute ( final numberOfTasks ) {
-  final n = 100000000 // 10 times fewer than Java due to speed issues.
+void execute(final numberOfTasks) {
+  final n = 1000000000
   final delta = 1.0 / n
-  final startTimeNanos = System.nanoTime ( )
-  final sliceSize = ( int ) ( n / numberOfTasks )
+  final startTimeNanos = System.nanoTime ()
+  final sliceSize = (int)(n / numberOfTasks)
   final items = 0 ..< numberOfTasks
-  ParallelEnhancer.enhanceInstance ( items )
-  final pi = 4.0 * delta * items.collectParallel { taskId ->
-    PartialSum.dynamicCompile ( taskId , sliceSize , delta )
-  }.sumParallel ( )
-  final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
+  ParallelEnhancer.enhanceInstance(items)
+  final pi = 4.0 * delta * items.collectParallel {taskId ->
+    PartialSum.dynamicCompile(taskId, sliceSize, delta)
+  }.sumParallel()
+  final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
+  Output.out(getClass().name, pi, n, elapseTime, numberOfTasks)
 }
 
 execute 1

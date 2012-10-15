@@ -1,4 +1,4 @@
-#! /usr/bin/env groovy 
+#! /usr/bin/env groovy
 
 /*
  *  Calculation of π using quadrature realized with a basic sequential algorithm and enforcing primitive
@@ -9,18 +9,18 @@
 
 import groovy.transform.CompileStatic
 
-@CompileStatic execute ( ) {
+@CompileStatic execute() {
   final int n = 1000000000i
   final double delta = 1.0d / n
-  final startTimeNanos = System.nanoTime ( )
+  final startTimeNanos = System.nanoTime ()
   double sum = 0.0d
-  for ( int i = 1i ; i <= n ; ++i ) {
-    final double x = ( i - 0.5d ) * delta
-    sum += 1.0d / ( 1.0d + x * x )
+  for (int i = 1i; i <= n; ++i) {
+    final double x = (i - 0.5d) * delta
+    sum += 1.0d / (1.0d + x * x)
   }
   final double pi = 4.0d * delta * sum
-  final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-  Output.out ( getClass ( ).name , pi , n , elapseTime )
+  final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
+  Output.out(getClass().name, pi, n, elapseTime)
 }
 
-execute ( )
+execute()

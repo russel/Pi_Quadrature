@@ -8,12 +8,12 @@
 
 final n = 1000000 // 1000 times fewer than Java due to speed issues.
 final delta = 1.0 / n
-final startTime = System.nanoTime ( )
+final startTime = System.nanoTime()
 def sum = 0.0
-for ( i in 1 .. n ) {
-  final x = ( i - 0.5 ) * delta
-  sum += 1 / ( 1 + x * x )
+for (i in 1 .. n) {
+  final x = (i - 0.5) * delta
+  sum += 1 / (1 + x * x)
 }
 final pi = 4 * delta * sum
-final elapseTime =   ( System.nanoTime ( ) - startTime ) / 1e9
-Output.out ( getClass ( ).name , pi , n , elapseTime )
+final elapseTime = (System.nanoTime() - startTime) / 1e9
+Output.out(getClass().name, pi, n, elapseTime)

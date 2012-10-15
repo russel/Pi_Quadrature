@@ -12,19 +12,19 @@ import org.jcsp.lang.CSProcess
 
 import groovyx.gpars.csp.PAR
 
-void execute ( final numberOfTasks ) {
+void execute(final numberOfTasks) {
   final n = 1000000000
   final delta = 1.0 / n
-  final startTimeNanos = System.nanoTime ( )
-  final sliceSize = ( int ) ( n / numberOfTasks )
-  final channels = Channel.one2oneArray ( numberOfTasks )
-  final processes = ( 0 ..< numberOfTasks ).collect { id -> new ProcessSlice_JCSP ( id , sliceSize , delta , channels[id].out ( ) ) }
+  final startTimeNanos = System.nanoTime()
+  final sliceSize = (int)(n / numberOfTasks)
+  final channels = Channel.one2oneArray(numberOfTasks)
+  final processes = (0 ..< numberOfTasks).collect {id -> new ProcessSlice_JCSP(id, sliceSize, delta, channels[id].out())}
   processes << {
-    final pi = 4.0 * delta * channels.sum { c -> c.in ( ).read ( ) }
-    final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-    Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfTasks )
+    final pi = 4.0 * delta * channels.sum {c -> c.in().read()}
+    final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
+    Output.out(getClass().name, pi, n, elapseTime, numberOfTasks)
   } as CSProcess
-  ( new PAR ( processes as CSProcess[] ) ).run ( )
+  new PAR(processes as CSProcess[]).run()
 }
 
 execute 1

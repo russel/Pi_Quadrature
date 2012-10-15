@@ -9,29 +9,18 @@
 
 import java.util.concurrent.LinkedBlockingQueue
 
-def partialSum ( int id , int sliceSize , double delta ) { 
-  final int start = 1i + id * sliceSize
-  final int end = ( id + 1i ) * sliceSize
-  double sum = 0.0d
-  for ( int i in start .. end ) {
-    final double x = ( i - 0.5d ) * delta
-    sum += 1.0d / ( 1.0d + x * x )
-  }
-  sum
-}
-
-def execute ( numberOfThreads ) {
-  final n = 100000000 // 10 times fewer than Java due to speed issues.
+def execute(numberOfThreads) {
+  final n = 1000000000
   final delta = 1.0 / n
-  final startTime = System.nanoTime ( )
-  final int sliceSize = n / numberOfThreads
-  final results = new LinkedBlockingQueue ( )
-  ( 0 ..< numberOfThreads ).each { id -> new Thread ( { results << partialSum ( id , sliceSize , delta ) } ).start ( ) }
+  final startTime = System.nanoTime()
+  final int sliceSize = (int)(n / numberOfThreads)
+  final results = new LinkedBlockingQueue()
+  (0 ..< numberOfThreads).each {id -> new Thread({results << PartialSum.dynamicCompile(id, sliceSize, delta)}).start()}
   def sum = 0.0
-  ( 0 ..< numberOfThreads ).each { sum += results.take ( ) }
+  (0 ..< numberOfThreads).each {sum += results.take()}
   final pi = 4.0 * delta * sum
-  final elapseTime = ( System.nanoTime ( ) - startTime ) / 1e9
-  Output.out ( getClass ( ).name , pi , n , elapseTime , numberOfThreads )
+  final elapseTime = (System.nanoTime() - startTime) / 1e9
+  Output.out(getClass().name, pi, n, elapseTime, numberOfThreads)
 }
 
 execute 1

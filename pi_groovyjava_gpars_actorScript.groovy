@@ -9,29 +9,29 @@
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.group.DefaultPGroup
 
-void execute ( final actorCount ) {
+void execute(final actorCount) {
   final n = 1000000000
   final delta = 1.0 / n
-  final startTimeNanos = System.nanoTime ( )
-  final sliceSize = ( int ) ( n / actorCount )
-  final group = new DefaultPGroup ( actorCount + 1 )
+  final startTimeNanos = System.nanoTime()
+  final sliceSize = (int)(n / actorCount)
+  final group = new DefaultPGroup(actorCount + 1)
   final accumulator = group.messageHandler {
     def sum = 0.0
     def count = 0
-    when { double result ->
+    when {double result ->
       sum +=  result
-      if ( ++count == actorCount ) {
+      if (++count == actorCount) {
         final pi = 4.0 * delta * sum
-        final elapseTime = ( System.nanoTime ( ) - startTimeNanos ) / 1e9
-        Output.out ( getClass ( ).name , pi , n , elapseTime , actorCount )
-        terminate ( )
+        final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
+        Output.out(getClass().name, pi, n, elapseTime, actorCount)
+        terminate()
       }
     }
   }
-  ( 0 ..< actorCount ).each { id ->
-      group.actor { accumulator << ( new ProcessSlice ( id , sliceSize , delta ) ).compute ( ) }
+  (0 ..< actorCount).each {id ->
+      group.actor {accumulator << new ProcessSlice(id, sliceSize, delta).compute()}
   }
-  accumulator.join ( )
+  accumulator.join()
 }
 
 execute 1
