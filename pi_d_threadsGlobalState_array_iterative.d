@@ -41,8 +41,8 @@ void execute(immutable int numberOfThreads) {
     }
     threads[i] = new Thread(closedPartialSum);
   }
-  foreach(thread; threads) { thread.start(); }
-  foreach(thread; threads) { thread.join(); }
+  foreach (thread; threads) { thread.start(); }
+  foreach (thread; threads) { thread.join(); }
   immutable pi = 4.0 * delta * sum;
   stopWatch.stop();
   immutable elapseTime = stopWatch.peek().hnsecs * 100e-9;
