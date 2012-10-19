@@ -15,9 +15,10 @@ proc main() {
     var sum:real = 0.0;
     var i:int(64) = 0;
     for i in 0 .. n {
-        sum += 1.0 / (1.0 + ((i - 0.5) * delta) ** 2);
+        const x:real = (i - 0.5) * delta;
+        sum += 1.0 / (1.0 + x * x);
     }
     const pi = 4.0 * delta * sum;
     timer.stop();
-    output("Chapel Sequential For", pi, n, timer.elapsed());
+    output("Chapel Sequential For Multiply", pi, n, timer.elapsed());
 }

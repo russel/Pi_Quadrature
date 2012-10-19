@@ -20,5 +20,5 @@ proc main() {
     }
     const pi = 4.0 * delta * sum;
     timer.stop();
-    output("Chapel Sequential While", pi, n, timer.elapsed());
+    output("Chapel Sequential While Power", pi, n, timer.elapsed());
 }
