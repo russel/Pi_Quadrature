@@ -234,6 +234,11 @@ for item in Glob('pi_ocaml_*.ml'):
 #    executable = Command(root, item, 'gccgo -o $TARGET -O3 $SOURCE')
 #    executables.append(addCompileTarget(executable))
 
+for item in Glob('pi_go_*.go'):
+    root = os.path.splitext(item.name)[0]
+    Command('run_' + root, item, 'go run $SOURCE')
+    #Command('run_' + root, item, 'go run -compiler gccgo -gccgoflags -O3 $SOURCE')
+
 #  occam  ############################################################################
 
 #  As far as is known there is no occam implementation packaged in Debian Squeeze or Ubuntu Lucid.  We
