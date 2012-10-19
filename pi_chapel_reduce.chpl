@@ -12,8 +12,8 @@ proc execute(numberOfTasks:int) {
     const delta:real = 1.0 / n;
     var timer:Timer;
     timer.start();
-    param sliceSize:int(64) = n / numberOfTasks;
-    const eachProcessor:domain(1) = [ 0 ..(numberOfTasks - 1) ];
+    const sliceSize:int(64) = n / numberOfTasks;
+    const eachProcessor:domain(1) = {0 ..(numberOfTasks - 1)};
     proc partialSum(const id:int):real {
         const start:int(64) = 1 + id * sliceSize;
         const end:int(64) = (id + 1) * sliceSize;
@@ -23,17 +23,14 @@ proc execute(numberOfTasks:int) {
         }
         return sum;
     }
-    const pi = 4.0 * delta * (+ reduce [ i in eachProcessor ] partialSum(i));
+    const pi = 4.0 * delta * (+ reduce [i in eachProcessor] partialSum(i));
     timer.stop();
     output_more("Chapel Reduce", pi, n,  timer.elapsed(), numberOfTasks);
 }
 
 proc main() {
     execute(1);
-    writeln();
     execute(2);
-    writeln();
     execute(8);
-    writeln();
     execute(32);
 }
