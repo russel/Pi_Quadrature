@@ -173,7 +173,7 @@ for item in Glob('pi_d_*.d'):
 chapelEnvironment = Environment(tools=['chapel'], ENV=os.environ, CHPLFLAGS=['-O', '--fast'])
 
 for item in Glob('pi_chapel_*.chpl'):
-    executables.append(addCompileTarget(chapelEnvironment.ChapelProgram(item)))
+    executables.append(addCompileTarget(chapelEnvironment.ChapelProgram(item.name.replace('.chpl', ''), [item, 'output.chpl'])))
 
 #  Haskell  ##########################################################################
 
