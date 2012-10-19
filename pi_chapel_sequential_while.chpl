@@ -18,6 +18,6 @@ while (i < n) {
  }
 const pi = 4.0 * delta * sum;
 timer.stop();
-writeln("==== Chapel Sequential pi = ", pi);
-writeln("==== Chapel Sequential iteration count = ", n);
-writeln("==== Chapel Sequential elapse = ", timer.elapsed());
+writeln("==== Chapel Sequential While pi = ", pi);
+writeln("==== Chapel Sequential While iteration count = ", n);
+writeln("==== Chapel Sequential While elapse = ", timer.elapsed());
