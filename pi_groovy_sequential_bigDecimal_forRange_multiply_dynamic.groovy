@@ -6,7 +6,7 @@
  *  Copyright © 2008–2012 Russel Winder
  */
 
-final n = 1000000 // 1000 times fewer than Java due to speed issues.
+final n = 100000 // 10000 times fewer than Java due to speed issues.
 final delta = 1.0 / n
 final startTime = System.nanoTime()
 def sum = 0.0
