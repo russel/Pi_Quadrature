@@ -358,7 +358,7 @@ for item in Glob('Pi_Scala_*.scala'):
 
 ceylonEnvironment = Environment(
     ENV = os.environ,
-    JAVA_HOME=os.environ['HOME'] + '/lib.Linux.x86/JDK7',
+    JAVA_HOME=os.path.join(extraLibName, 'JDK7')
     )
 
 ceylonEnvironment.Command('run_pi_ceylon_sequential', 'pi_ceylon_sequential.ceylon', ['ceylon compile --src . $SOURCE',
