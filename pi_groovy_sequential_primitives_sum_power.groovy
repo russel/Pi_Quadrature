@@ -7,9 +7,9 @@
  *  Copyright © 2008–2012 Russel Winder
  */
 
-final int n = 10000000i // 100 times fewer than Java due to speed issues.
-final double delta = 1.0d / n
+final int n = 10000000 // 100 times fewer than Java due to speed issues.
+final double delta = 1.0 / n
 final startTime = System.nanoTime()
-final double pi = 4.0d * delta * (1i .. n).sum {i -> 1.0d / (1.0d + (( i - 0.5d) * delta) ** 2i)}
+final double pi = 4.0 * delta * (1i .. n).sum {int i -> 1.0d / (1.0d + ((i - 0.5d) * delta) ** 2i)}
 final elapseTime = (System.nanoTime() - startTime) / 1e9
 Output.out(getClass().name, pi, n, elapseTime)

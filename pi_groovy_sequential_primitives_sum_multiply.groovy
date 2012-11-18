@@ -7,10 +7,10 @@
  *  Copyright © 2008–2012 Russel Winder
  */
 
-final int n = 10000000i // 100 times fewer than Java due to speed issues.
-final double delta = 1.0d / n
+final int n = 10000000 // 100 times fewer than Java due to speed issues.
+final double delta = 1.0 / n
 final startTime = System.nanoTime()
-final double pi = 4.0d * delta * (1i .. n).sum {i ->
+final double pi = 4.0 * delta * (1i .. n).sum {int i ->
   final double x = (i - 0.5d) * delta
   1.0d / (1.0d + x * x)
 }
