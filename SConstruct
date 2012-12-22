@@ -160,7 +160,7 @@ dEnvironment = {
                        ENV = os.environ,
                        DFLAGS=['-O', '-release'],
                        ),
-                       }['ldc']
+}['ldc']
 
 dOutput = dEnvironment.Object('output_d.d')
 
@@ -362,7 +362,7 @@ ceylonEnvironment = Environment(
     )
 
 ceylonEnvironment.Command('run_pi_ceylon_sequential', 'pi_ceylon_sequential.ceylon', ['ceylon compile --src . $SOURCE',
-                          'ceylon run --run execute default'])
+                          'ceylon run --run main default'])
 Clean('.', 'modules')
 
 #  X10  ##############################################################################

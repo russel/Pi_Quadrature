@@ -20,7 +20,7 @@ void output(String name, Float pi, Integer n, Float elapseTime) {
 
 doc "The function that does the hard work."
 by "Russel Winder"
-void execute() {
+void main() {
     value n = 100000000; // 10 times fewer than Java due to speed issues.
     value delta = 1.0 / n;
     value startTime = nanoTime();
