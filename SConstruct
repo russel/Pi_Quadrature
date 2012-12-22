@@ -160,6 +160,8 @@ dEnvironment = {
                        ENV = os.environ,
                        DFLAGS=['-O', '-release'],
                        ),
+#}['dmd']
+#}['gdc']
 }['ldc']
 
 dOutput = dEnvironment.Object('output_d.d')
