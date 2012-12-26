@@ -142,11 +142,15 @@ fortranRule('pi_fortran_mpi*.f', compiler='mpif90')
 #  D  ################################################################################
 
 ##  DMD 2.059 worked, DMD 2.060 has issues – various problems with the thread.  GDC on Debian as at
-##  2012-09-06 realizes D 2.056 and so barfs on some constructs introduced after that version.  LDC compiled
-##  from master/HEAD as at 2012-11--11 is D 2.060+changes and works fine.
+## 2012-09-06 realizes D 2.056 and so barfs on some constructs introduced after that version.  LDC compiled
+## from master/HEAD as at 2012-11--11 is D 2.060+changes and works fine. Except for
+## pi_d_threadsGlobalState_array_declarative.d. See http://d.puremagic.com/issues/show_bug.cgi?id=8774.  It
+## appears that pi_d_threadsGlobalState_array_declarative.d should never have worked under 2.059 as it was:
+## maps are iterable but lazy, the array needs to be instantiated for the algorithm to work as required.
 ##
-##  pi_d_threadsGlobalState_array_declarative.d and pi_d_threadsGlobalState_array_iterative.d are the codes
-##  that fail under DMD 2.060 that work under 2.059.
+##  pi_d_threadsGlobalState_array_iterative.d and pi_d_threadsGlobalState_threadGroup.d fail on DMD 2.060
+##  but worked under 2.059, and work under LDC2.
+
 
 dEnvironment = {
     'dmd': Environment(tools=['link', 'dmd'], # Why is the order crucial here?
