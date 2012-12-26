@@ -39,7 +39,7 @@ void execute(immutable int numberOfThreads) {
         return delegate() { partialSum(ii, sliceSize, delta); };
       }
       return new Thread(closedPartialSum);
-      })(iota(numberOfThreads));
+      })(iota(numberOfThreads)).array;
   foreach (thread; threads) { thread.start(); }
   foreach (thread; threads) { thread.join(); }
   immutable pi = 4.0 * delta * sum;
