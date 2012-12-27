@@ -34,11 +34,7 @@ void execute(immutable int numberOfThreads) {
   immutable sliceSize = n / numberOfThreads;
   sum = 0.0;
   auto threads = map !((int i) {
-      auto closedPartialSum() {
-        immutable ii = i;
-        return delegate() { partialSum(ii, sliceSize, delta); };
-      }
-      return new Thread(closedPartialSum);
+          return new Thread({ partialSum(i, sliceSize, delta); });
       })(iota(numberOfThreads)).array;
   foreach (thread; threads) { thread.start(); }
   foreach (thread; threads) { thread.join(); }
