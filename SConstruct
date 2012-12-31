@@ -388,7 +388,10 @@ Clean('.', 'modules')
 ####  they run on 1 core unless the mpirun command is used.  One downside though the Java backend version
 ####  appears to show no scaling at all.  And the MPI execution is bizarre, and shows no scaling at all.
 
-x10Environment = Environment(tools=['x10'], ENV=os.environ)
+x10Environment = Environment(
+    tools=['x10'],
+    ENV=os.environ,
+)
 
 for item in Glob('Pi_X10_*.x10'):
     x10ClassName = os.path.splitext(item.name)[0]
@@ -396,6 +399,7 @@ for item in Glob('Pi_X10_*.x10'):
     #  Java backend bits.
     #
     x10ClassFile = x10Environment.X10Classes(item)
+    SideEffect(item.name.replace('.x10', '$$Main.class'), x10ClassFile)
     compileTargets.append(x10ClassFile[0].name)
     addRunTarget(x10Environment.Command('run_' + x10ClassName + '_Java', x10ClassFile, 'x10 ' + x10ClassName))
     #
