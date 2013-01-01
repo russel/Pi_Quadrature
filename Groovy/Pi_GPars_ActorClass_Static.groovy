@@ -3,7 +3,7 @@
 /*
  *  Calculation of π using quadrature realized with GPars actors.  Done with class(es).
  *
- *  Copyright © 2009–2012 Russel Winder.
+ *  Copyright © 2009–2013  Russel Winder.
  */
 
 import java.util.List
@@ -14,19 +14,21 @@ import groovyx.gpars.actor.Actor
 import groovyx.gpars.actor.DefaultActor
 import groovyx.gpars.actor.DynamicDispatchActor
 
-public class Pi_Groovy_GPars_ActorClass_Static {
+public class Pi_GPars_ActorClass_Static {
 
   private static class  ComputeActor extends DefaultActor {
     private int taskId
     private int sliceSize
     private double delta
     private Actor accumulator
+
     ComputeActor(final int taskId, final int sliceSize, final double delta, final Actor accumulator) {
       this.taskId = taskId
       this.sliceSize = sliceSize
       this.delta = delta
       this.accumulator = accumulator
     }
+
     @CompileStatic @Override protected void act () {
       final int start = 1i + taskId * sliceSize
       final int end = (taskId + 1i) * sliceSize
@@ -43,7 +45,9 @@ public class Pi_Groovy_GPars_ActorClass_Static {
     private List<Actor> sources
     private double sum = 0.0d
     private int count = 0i
+
     AccumulatorActor(final List<Actor> s) { sources = s }
+
     @Override protected void onMessage(final Double result) {
       sum +=  result
       if (++count == sources.size()) { terminate() }
