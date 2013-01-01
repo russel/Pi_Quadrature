@@ -1,2 +1,7 @@
 project
 target
+.cache
+.classpath
+.idea
+.idea_modules
+.project
