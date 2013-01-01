@@ -3,7 +3,6 @@ site_scons
 DataRush.slc
 *.hi
 *.cm[xi]
-*.beam
 *.class
 *.aux
 *.fls
@@ -12,4 +11,3 @@ DataRush.slc
 *.[568]
 *.exe
 *~
-*.pyc

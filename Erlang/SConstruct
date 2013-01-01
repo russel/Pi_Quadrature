@@ -7,8 +7,14 @@ erlangEnvironment = Environment(tools=['erlang'])
 microsecondTime = erlangEnvironment.Erlang('microsecondTime.erl',  OUTPUT='./')
 output = erlangEnvironment.Erlang('output.erl',  OUTPUT='./')
 
+compiled = [microsecondTime, output]
+
 for item in Glob('pi_*.erl'):
     root = os.path.splitext(item.name)[0]
-    erlangEnvironment.Command('run_' + root, [erlangEnvironment.Erlang(item), microsecondTime, output], '$ERL -noshell -s {} -smp'.format(root))
+    compiledFile = erlangEnvironment.Erlang(item)
+    compiled.append(compiledFile)
+    erlangEnvironment.Command('run_' + root, [compiledFile, microsecondTime, output], '$ERL -noshell -s {} -smp'.format(root))
     #  Executing an Erlang program can result in a crash dump file so let SCons know this.
     SideEffect('erl_crash.dump',  'run_' + root)
+
+Default(compiled)
