@@ -4,3 +4,7 @@ __pycache__
 *.so
 processSlice_cython_py*.c
 processSlice_pyrex_py2.c
+.idea
+.project
+.settings
+.pydevproject
