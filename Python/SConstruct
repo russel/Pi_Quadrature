@@ -1,0 +1,126 @@
+#  Some of the Python code relies on extensions written in various languages.  Because we have both Python 3
+#  and Python 2 versions this means that two targets are specifying the same extension, which leads SCons to
+#  deduce a "warning: Two different environments were specified for target . . . "  So we have to protect
+#  against trying to issue two SharedLibrary calls for the same extensions.  This leads to apparent
+#  inefficiency in handling the libraries due to wanting to use node references for dependency handling.
+#
+#  Cython and Pyrex need access to the Python headers when compiling the generated C and so are Python
+#  version dependent.
+#
+#  This is all grossly over-complicated and needs a complete rethink.
+
+#  At some point it was believed that these options were needed for building the Pyrex and Cython
+#  extensions, but they are not. Leave them here as reminders.
+#
+#  -Bsymbolic-functions is a Posix ld option only relevant for ELF shared libraries.  -O1 is a Posix ld
+#  option for optimization level and only relevant to ELF shared libraries.
+
+#cythonPyrexCcFlags =  ccFlags + ['-fno-strict-aliasing', '-DNDEBUG', '-fwrapv', '-Wstrict-prototypes']
+#cythonPyrexLinkFlags =  ['-Wl,-O1',  '-Wl,-Bsymbolic-functions']
+
+import os
+
+compileTargets = []
+
+def addCompileTarget(target):
+    global compileTargets
+    compileTargets.append(target[0].name)
+    return target
+
+runTargets = []
+
+def addRunTarget(target):
+    global runTargets
+    runTargets.append(target[0].name)
+    return target
+
+ccFlags = ['-O3', '-Wall', '-Wextra']
+
+extensionRoot = 'processSlice'
+extensionsData = {
+    'c': {
+        'CPPPATH': [],
+        'CFLAGS': ccFlags + ['-std=c99'],
+        'LINKFLAGS': ['-std=c99']
+        },
+    'cpp': {
+        'CPPPATH': [],
+        'CFLAGS': ccFlags + ['-std=c++11'],
+        'LINKFLAGS': ['-std=c++11']
+        },
+    'pyrex_py2': {
+        'CPPPATH': ['/usr/include/python2.7'],
+        'CFLAGS': ccFlags,
+        'LINKFLAGS': [],
+        'COMMAND': 'pyrexc'
+        },
+    'pyrex_py3': {
+        'CPPPATH': ['/usr/include/python3.2mu'],
+        'CFLAGS': ccFlags,
+        'LINKFLAGS':  [],
+        'COMMAND': 'pyrexc'
+        },
+    'cython_py2': {
+        'CPPPATH': ['/usr/include/python2.7'],
+        'CFLAGS': ccFlags,
+        'LINKFLAGS': [],
+        'COMMAND': 'cython'
+        },
+    'cython_py3': {
+        'CPPPATH': ['/usr/include/python3.2mu'],
+        'CFLAGS': ccFlags,
+        'LINKFLAGS': [],
+        'COMMAND': 'cython'
+        },
+    }
+
+#  A number of the Python codes use the same extensions.  The extension only needs to be constructed once.
+#  Keep a dictionary of items made,
+
+extensionsSharedLibraries = {}
+
+pythonEnvironment = Environment(tools=['g++', 'gcc', 'gnulink'],  # The order here is crucial:-((
+                                  ENV=os.environ,  # Need this for the Python 3 extensions code to run out of the box.
+                                 )
+
+for item in Glob('pi_python*.py'):
+    root = os.path.splitext(item.name)[0]
+    target = 'run_' + root
+    bits = root.split('_')
+    if len(bits) > 5 and bits[4] == 'extension':
+        extension = bits[5]
+        assert item.name.find(extension) != -1
+        if extension in ['cython', 'pyrex']:
+            majorVersion = bits[1][-1:]
+            extension += '_py' + majorVersion
+        extensionName = '{}_{}'.format(extensionRoot, extension)
+        if extensionName not in extensionsSharedLibraries.keys():
+            extensionsSharedLibraries[extensionName] = pythonEnvironment.SharedLibrary(extensionName,
+                    pythonEnvironment.Command('{}_{}.c'.format(extensionRoot, extension), '{}_{}.pyx'.format(extensionRoot, extension),
+                    extensionsData[extension]['COMMAND'] + ' $SOURCE') if extension.split('_')[0] in ['pyrex', 'cython'] else '{}_{}.{}'.format(extensionRoot, extension, extension),
+                    CPPPATH=extensionsData[extension]['CPPPATH'],
+                    CFLAGS=extensionsData[extension]['CFLAGS'], CXXFLAGS=extensionsData[extension]['CFLAGS'],
+                    SHLIBPREFIX='', LINKFLAGS=extensionsData[extension]['LINKFLAGS'])
+        addRunTarget(pythonEnvironment.Command(target, [item.name, extensionsSharedLibraries[extensionName]], 'LD_LIBRARY_PATH=. ./$SOURCE'))
+    else:
+        addRunTarget(pythonEnvironment.Command(target, item.name, './$SOURCE'))
+
+compilePythonExtensions = addCompileTarget(Alias('compilePythonExtensions', extensionsSharedLibraries.values()))
+
+
+addCompileTarget(Alias('compile', compileTargets + compilePythonExtensions))
+
+addRunTarget(Alias('run', runTargets))
+
+Default('compile')
+
+helpString = 'Compile targets are:\n'
+compileTargets.sort()
+for target in compileTargets:
+    helpString += '\t' + target + '\n'
+helpString += '\nRun targets are:\n'
+runTargets.sort()
+for target in runTargets:
+    helpString += '\t' + target + '\n'
+helpString += '\nDefault is to achieve all compile targets.\n'
+Help(helpString)

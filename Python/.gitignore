@@ -1,0 +1,6 @@
+*.pyc
+__pycache__
+*.os
+*.so
+processSlice_cython_py*.c
+processSlice_pyrex_py2.c
