@@ -430,20 +430,6 @@ for item in Glob('*.fss'):
         Depends(pdfDocument, fortressEnvironment.Command(fortressCodeRoot + '.tex', item.name, 'fortify $SOURCE'))
         addCompileTarget(Alias('typesetFortress', pdfDocument))
 
-#  Erlang  ###########################################################################
-
-erlangEnvironment = Environment(tools=['erlang'])
-
-#  The trailing slash on the OUTPUT is critical for the way the erlang tool works:-(
-
-microsecondTimeErlang = erlangEnvironment.Erlang('Timing/microsecondTime.erl',  OUTPUT='./')
-
-for item in Glob('pi_erlang_*.erl'):
-    root = os.path.splitext(item.name)[0]
-    addRunTarget(erlangEnvironment.Command('run_' + root, [addCompileTarget(erlangEnvironment.Erlang(item)), microsecondTimeErlang], '$ERL -noshell -s {} -smp'.format(root)))
-    #  Executing an Erlang program can result in a crash dump file so let SCons know this.
-    SideEffect('erl_crash.dump',  'run_' + root)
-
 ####################################################################################
 ####################################################################################
 

@@ -1,4 +1,4 @@
--module(pi_erlang_zvi).
+-module(pi_zvi).
 -author("Zvi").
 -compile([export_all]).
 
@@ -13,9 +13,9 @@ test()->
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 1. built-in constant
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-calc_pi(math,_N) -> 
+calc_pi(math,_N) ->
 	math:pi();
-	
+
 calc_pi(list_creation,N) ->
 	lists:seq(1,N),
 	3.14159;
@@ -39,7 +39,7 @@ calc_pi(lc_no_pow,N) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 calc_pi(map,N) ->
 	Step = 1/N,
-	F = fun(I) -> 
+	F = fun(I) ->
 		X=Step*(I-0.5),
 		4.0/(1.0+X*X)
 	    end,
@@ -50,16 +50,16 @@ calc_pi(map,N) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 calc_pi(mapfoldl,N) ->
 	Step = 1/N,
-	F = fun(I,Sum) -> 
-		X=Step*(I-0.5), 
-		V=4.0/(1.0+X*X), 
+	F = fun(I,Sum) ->
+		X=Step*(I-0.5),
+		V=4.0/(1.0+X*X),
                  {0,Sum+V}
 	    end,
 	{_,Sum} = lists:mapfoldl(F, 0, lists:seq(1,N)),
 	Step*Sum;
 
 %% replace list to plist module  in tests using HOFs
-	
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 5. serial - tail recursion - decrement index
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -85,12 +85,12 @@ calc_pi(parallel,N) ->
 	NPerWorker = trunc(N/NWorkers+0.5),
 	Step = 1/N,
 	Self = self(),
-	Pids = [spawn(fun() -> Self ! {sum,calc_pi2(I,lists:min([N,I+NPerWorker-1]),Step)} end) 
+	Pids = [spawn(fun() -> Self ! {sum,calc_pi2(I,lists:min([N,I+NPerWorker-1]),Step)} end)
 	        || I<-lists:seq(1,N,NPerWorker) ],
 	lists:sum([receive {sum,S} -> S end || _<-Pids]).
 
-	
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 calc_pi1(0,Step,Sum) -> Step*Sum;
 calc_pi1(I,Step,Sum) ->
 	X=Step*(I-0.5),
