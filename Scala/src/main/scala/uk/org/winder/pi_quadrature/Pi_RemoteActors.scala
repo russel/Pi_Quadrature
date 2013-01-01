@@ -1,15 +1,18 @@
 /*
  *  Calculation of Pi using quadrature realized with a scatter/gather approach using a remote actor system.
  *
- *  Copyright © 2009–2012 Russel Winder
+ *  Copyright © 2009–2013  Russel Winder
  */
+
+package uk.org.winder.pi_quadrature
 
 import scala.actors.Actor
 import scala.actors.remote.RemoteActor
 
-import SOutput.out
+import Output.out
 
-object Pi_Scala_RemoteActors extends App {
+object Pi_RemoteActors extends App {
+
   def execute(numberOfWorkerActors:Int) {
     val n = 1000000000
     val delta = 1.0 / n
@@ -23,7 +26,7 @@ object Pi_Scala_RemoteActors extends App {
       calculators.foreach(calculator => Actor.receive { case d => sum += d.asInstanceOf[Double] })
       val pi = 4.0 * delta * sum
       val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-      out("Pi_Scala_RemoteActors", pi, n, elapseTime, numberOfWorkerActors)
+      out("Pi_RemoteActors", pi, n, elapseTime, numberOfWorkerActors)
       sequencer ! 0
     }
     for(index <- calculators.indices) {
@@ -41,6 +44,7 @@ object Pi_Scala_RemoteActors extends App {
       }
     }
   }
+
   val sequencer = Actor.actor {
     execute(1)
     Actor.receive { case d => }
@@ -50,4 +54,5 @@ object Pi_Scala_RemoteActors extends App {
     Actor.receive { case d => }
     execute(32)
   }
+
 }

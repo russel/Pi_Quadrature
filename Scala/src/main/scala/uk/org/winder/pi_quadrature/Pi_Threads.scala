@@ -1,13 +1,17 @@
 /*
  *  Calculation of Pi using quadrature realized with a scatter/gather approach using threads.
  *
- *  Copyright © 2009–2012 Russel Winder
+ *  Copyright © 2009–2013  Russel Winder
  */
 
-import scala.concurrent.Lock
-import SOutput.out
+package uk.org.winder.pi_quadrature
 
-object Pi_Scala_Threads {
+import scala.concurrent.Lock
+
+import Output.out
+
+object Pi_Threads {
+
   def execute(numberOfTasks:Int) {
     val n = 1000000000
     val delta = 1.0 / n
@@ -34,12 +38,14 @@ object Pi_Scala_Threads {
     threads.foreach(t => t.join)
     val pi = 4.0 * delta * sum
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_Scala_Threads" , pi , n, elapseTime , numberOfTasks)
+    out("Pi_Threads" , pi , n, elapseTime , numberOfTasks)
   }
+
   def main(args:Array[String]) {
     execute(1)
     execute(2)
     execute(8)
     execute(32)
   }
+
 }

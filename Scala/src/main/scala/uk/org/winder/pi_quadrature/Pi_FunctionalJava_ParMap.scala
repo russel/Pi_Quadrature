@@ -1,8 +1,10 @@
 /*
  *  Calculation of Pi using quadrature realized with a parallel map.
  *
- *  Copyright © 2009–2012 Russel Winder
+ *  Copyright © 2009–2013  Russel Winder
  */
+
+package uk.org.winder.pi_quadrature
 
 //  TODO: This seems to execute fine but it takes a very long time to terminate after the results have been
 //  output.  Very strange and :-((
@@ -15,9 +17,10 @@ import fj.F
 import fj.F2
 import fj.data.List
 
-import SOutput.out
+import Output.out
 
-object Pi_Scala_FunctionalJava_ParMap {
+object Pi_FunctionalJava_ParMap {
+
   def execute(numberOfThreads:Int) {
     val n = 1000000000
     val delta = 1.0 / n
@@ -45,12 +48,14 @@ object Pi_Scala_FunctionalJava_ParMap {
       .claim
       .foldLeft1(sum)
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_Scala_FunctionalJava", pi, n, elapseTime, numberOfThreads)
+    out("Pi_FunctionalJava", pi, n, elapseTime, numberOfThreads)
   }
+
   def main(args:Array[String]) {
     execute(1)
     execute(2)
     execute(8)
     execute(32)
   }
+
 }

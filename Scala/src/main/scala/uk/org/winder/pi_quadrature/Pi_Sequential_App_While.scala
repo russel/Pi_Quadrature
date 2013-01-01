@@ -1,14 +1,17 @@
 /*
  *  Calculation of Pi using quadrature realized with a basic sequential algorithm using a while statement.
  *
- *  Copyright © 2009–2012 Russel Winder
+ *  Copyright © 2009–2013  Russel Winder
  */
 
-import SOutput.out
+package uk.org.winder.pi_quadrature
+
+import Output.out
 
 // While here is slow due to the way variables are handled in the main sequence of an App.
 
-object Pi_Scala_Sequential_App_While extends App {
+object Pi_Sequential_App_While extends App {
+
   val n = 1000000000
   val delta = 1.0 / n
   val startTimeNanos = System.nanoTime
@@ -21,5 +24,6 @@ object Pi_Scala_Sequential_App_While extends App {
   }
   val pi = 4.0 * delta * sum
   val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-  out("Pi_Scala_Sequential_App_While", pi, n, elapseTime)
+  out("Pi_Sequential_App_While", pi, n, elapseTime)
+
 }

@@ -1,15 +1,18 @@
 /*
  *  Calculation of Pi using quadrature realized with a scatter/gather approach using futures.
  *
- *  Copyright © 2009–2012 Russel Winder
+ *  Copyright © 2009–2013  Russel Winder
  */
+
+package uk.org.winder.pi_quadrature
 
 import scala.actors.Future
 import scala.actors.Futures
 
-import SOutput.out
+import Output.out
 
-object Pi_Scala_Futures {
+object Pi_Futures {
+
   def execute(numberOfWorkers:Int) {
     val n = 1000000000
     val delta = 1.0 / n
@@ -30,12 +33,14 @@ object Pi_Scala_Futures {
     //  function that must be called to obtain the value.  Hence _+_() instead of _+_.
     val pi = 4.0 * delta * ((0.0 /: partialSums)(_ + _()))
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_Scala_Futures", pi, n, elapseTime, numberOfWorkers)
+    out("Pi_Futures", pi, n, elapseTime, numberOfWorkers)
   }
+
   def main(args:Array[String]){
     execute(1)
     execute(2)
     execute(8)
     execute(32)
   }
+
 }

@@ -1,14 +1,17 @@
 /*
  *  Calculation of Pi using quadrature realized with a parallel map.
  *
- *  Copyright © 2009–2012 Russel Winder
+ *  Copyright © 2009–2013  Russel Winder
  */
+
+package uk.org.winder.pi_quadrature
 
 import scala.actors.Futures
 
-import SOutput.out
+import Output.out
 
-object Pi_Scala_Mapper_ParMap {
+object Pi_Mapper_ParMap {
+
   class Mapper[A,B:ClassManifest](data:List[A] , function:A => B) {
     val pmap = {
       val buffer = new Array[B](data.length)
@@ -35,7 +38,7 @@ object Pi_Scala_Mapper_ParMap {
     }
     val pi = 4.0 * delta * (((new Mapper[Int,Double](List.range(0 , numberOfThreads) , partialSum)).pmap) reduceLeft(_ + _))
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_Scala_Mapper_ParMap" , pi , n , elapseTime , numberOfThreads)
+    out("Pi_Mapper_ParMap" , pi , n , elapseTime , numberOfThreads)
   }
 
   def main(args:Array[String]) {
@@ -44,4 +47,5 @@ object Pi_Scala_Mapper_ParMap {
     execute(8)
     execute(32)
   }
+
 }
