@@ -13,7 +13,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget
+from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, createHelp
 
 ccFlags = ['-O3', '-Wall', '-Wextra']
 
@@ -95,13 +95,4 @@ addRunTarget(Alias('run', runTargets))
 
 Default('compile')
 
-helpString = 'Compile targets are:\n'
-compileTargets.sort()
-for target in compileTargets:
-    helpString += '\t' + target + '\n'
-helpString += '\nRun targets are:\n'
-runTargets.sort()
-for target in runTargets:
-    helpString += '\t' + target + '\n'
-helpString += '\nDefault is to achieve all compile targets.\n'
-Help(helpString)
+Help(createHelp())

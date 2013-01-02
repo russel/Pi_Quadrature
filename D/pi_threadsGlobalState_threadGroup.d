@@ -1,7 +1,7 @@
 /*
  *  A D program to calculate π using quadrature as a threads-based approach.
  *
- *  Copyright © 2009–2012 Russel Winder
+ *  Copyright © 2009–2013  Russel Winder
  */
 
 import std.algorithm ;
@@ -10,7 +10,7 @@ import std.range;
 
 import core.thread;
 
-import output_d;
+import outputFunctions;
 
 shared double sum;
 shared Object sumMutex;

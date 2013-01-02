@@ -1,7 +1,7 @@
 /*
  *  Output functions for the D realizations of π by quadrature.
  *
- *  Copyright © 2012 Russel Winder
+ *  Copyright © 2012  Russel Winder
  */
 
 import std.conv;

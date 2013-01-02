@@ -2,13 +2,13 @@
  *  A D program to calculate π using quadrature as a spawn-based approach.  Make use of actor-style message
  *  passing capability.
  *
- *  Copyright © 2010–2012 Russel Winder
+ *  Copyright © 2010–2013  Russel Winder
  */
 
 import std.concurrency;
 import std.datetime;
 
-import output_d;
+import outputFunctions;
 
 void partialSum(Tid parent, immutable int id, immutable int sliceSize, immutable double delta) {
   immutable start = 1 + id * sliceSize;

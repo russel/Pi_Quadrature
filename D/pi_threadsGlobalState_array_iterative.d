@@ -1,7 +1,7 @@
 /*
  *  A D program to calculate π using quadrature as a threads-based approach.
  *
- *  Copyright © 2009–2012 Russel Winder
+ *  Copyright © 2009–2013  Russel Winder
  */
 
 import std.algorithm;
@@ -10,7 +10,7 @@ import std.range;
 
 import core.thread;
 
-import output_d;
+import outputFunctions;
 
 shared double sum;
 shared Object sumMutex;
@@ -23,7 +23,7 @@ void partialSum(immutable int id, immutable int sliceSize, immutable double delt
     immutable x = (i - 0.5) * delta;
     localSum += 1.0 / (1.0 + x * x);
   }
-  synchronized (sumMutex) { sum += localSum; }
+  synchronized(sumMutex) { sum += localSum; }
 }
 
 void execute(immutable int numberOfThreads) {
@@ -33,9 +33,14 @@ void execute(immutable int numberOfThreads) {
   stopWatch.start();
   immutable sliceSize = n / numberOfThreads;
   sum = 0.0;
-  auto threads = map !((int i) {
-          return new Thread({ partialSum(i, sliceSize, delta); });
-      })(iota(numberOfThreads)).array;
+  auto threads = new Thread[numberOfThreads];
+  foreach (i; 0 .. numberOfThreads) {
+    auto closedPartialSum() {
+      immutable ii = i;
+      return delegate() { partialSum(ii, sliceSize, delta); };
+    }
+    threads[i] = new Thread(closedPartialSum);
+  }
   foreach (thread; threads) { thread.start(); }
   foreach (thread; threads) { thread.join(); }
   immutable pi = 4.0 * delta * sum;

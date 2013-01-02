@@ -2,7 +2,7 @@
  *  A D program to calculate π using quadrature as a sequential reduction of sequential maps.  This is really
  *  just here as a comparison against the various parallel versions.
  *
- *  Copyright © 2010–2012 Russel Winder
+ *  Copyright © 2010–2013  Russel Winder
  */
 
 import std.algorithm;
@@ -10,7 +10,7 @@ import std.datetime;
 import std.range;
 import std.typecons;
 
-import output_d;
+import outputFunctions;
 
 double partialSum(immutable Tuple !(int, int, double) data) {
   immutable start = 1 + data[0] * data[1];

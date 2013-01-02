@@ -2,7 +2,7 @@
 
 #  Calculation of Pi using quadrature.
 #
-#  Copyright © 2008–2012 Russel Winder
+#  Copyright © 2008–2013 Russel Winder
 
 import os
 import platform
@@ -14,24 +14,7 @@ osName, _, _, _, platformVersion, _ = platform.uname()
 platformVersion = re.sub('i.86', 'ix86', platformVersion)
 extraLibName = os.environ['HOME'] + '/lib.' + osName + '.' + platformVersion
 
-compileTargets = []
-
-def addCompileTarget(target):
-    global compileTargets
-    compileTargets.append(target[0].name)
-    return target
-
-runTargets = []
-
-def addRunTarget(target):
-    global runTargets
-    runTargets.append(target[0].name)
-    return target
-
-##  When compilation produces an executable we can generate the run target in an identical way.  Executables
-##  accumlates a list of the executables that will be run targets.
-
-executables = []
+from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, executables, createHelp
 
 ##  NB We must avoid amending the globally shared environment with language or specific program dependent
 ##  changes to keys used by other languages or other programs.  By specifying key/value pairs explicitly in
@@ -406,19 +389,10 @@ for item in Glob('*.fss'):
 ####################################################################################
 ####################################################################################
 
-addCompileTarget(Alias('compile', compileTargets + compilePythonExtensions))
+addCompileTarget(Alias('compile', compileTargets))
 
 addRunTarget(Alias('run', runTargets))
 
 Default('compile')
 
-helpString = 'Compile targets are:\n'
-compileTargets.sort()
-for target in compileTargets:
-    helpString += '\t' + target + '\n'
-helpString += '\nRun targets are:\n'
-runTargets.sort()
-for target in runTargets:
-    helpString += '\t' + target + '\n'
-helpString += '\nDefault is to achieve all compile targets.\n'
-Help(helpString)
+Help(createHelp())
