@@ -9,30 +9,11 @@
 #
 #  This is all grossly over-complicated and needs a complete rethink.
 
-#  At some point it was believed that these options were needed for building the Pyrex and Cython
-#  extensions, but they are not. Leave them here as reminders.
-#
-#  -Bsymbolic-functions is a Posix ld option only relevant for ELF shared libraries.  -O1 is a Posix ld
-#  option for optimization level and only relevant to ELF shared libraries.
-
-#cythonPyrexCcFlags =  ccFlags + ['-fno-strict-aliasing', '-DNDEBUG', '-fwrapv', '-Wstrict-prototypes']
-#cythonPyrexLinkFlags =  ['-Wl,-O1',  '-Wl,-Bsymbolic-functions']
-
 import os
+import sys
+sys.path.append('../site_scons')
 
-compileTargets = []
-
-def addCompileTarget(target):
-    global compileTargets
-    compileTargets.append(target[0].name)
-    return target
-
-runTargets = []
-
-def addRunTarget(target):
-    global runTargets
-    runTargets.append(target[0].name)
-    return target
+from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget
 
 ccFlags = ['-O3', '-Wall', '-Wextra']
 

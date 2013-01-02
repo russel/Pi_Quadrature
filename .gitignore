@@ -1,5 +1,4 @@
 .sconsign.dblite
-site_scons
 DataRush.slc
 *.hi
 *.cm[xi]
@@ -11,3 +10,4 @@ DataRush.slc
 *.[568]
 *.exe
 *~
+*.pyc
