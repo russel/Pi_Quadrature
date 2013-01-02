@@ -337,15 +337,6 @@ for item in Glob('Pi_X10_*.x10'):
     compileTargets.append(x10Executable[0].name)
     addRunTarget(x10Environment.Command('run_' + x10ClassName + '_Cpp', x10Executable, x10ClassName))
 
-#  Clojure  ##########################################################################
-
-clojureEnvironment = Environment(tools=['javac'])
-
-for item in Glob('pi_clojure_*.clj'):
-    addRunTarget(clojureEnvironment.Command('run_' + os.path.splitext(item.name)[0], item.name, 'java -cp .:{0}/lib/Java/clojure.jar clojure.main $SOURCE'.format(os.environ['HOME'])))
-
-Depends('run_pi_clojure_processSlice', processSliceClasses)
-
 #  Groovy  ###########################################################################
 
 #  Most of the dependencies are handled with @Grab annotations in the Groovy source code.  However for the
