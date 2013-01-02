@@ -218,33 +218,6 @@ for item in Glob('pi_ocaml_*.ml'):
     executables.append(addCompileTarget(ocamlEnvironment.Command(root, item.name, 'ocamlopt -o $TARGET {} $SOURCE'.format(extraOptions))))
     SideEffect([root + '.' + extension for extension in ['cmi', 'cmx', 'o']], root)
 
-#  Go  ###############################################################################
-
-# The SCons Go tools are experimental.
-
-#goEnvironment = Environment (
-#    tools=['link', 'gccgo'], # Why in this order?
-#    GCCGOFLAGS=['-O3']
-#   )
-
-#outputPackage = goEnvironment.Library('output/output.go')
-
-#for item in Glob('pi_go_*.go'):
-#    #root = os.path.splitext(item.name)[0]
-#    executables.append(addCompileTarget(goEnvironment.Program(item)))
-
-#for item in Glob('pi_go_*.go'):
-#    root = os.path.splitext(item.name)[0]
-#    # The standard Go compiler does not generate fast code, GCCGo does.
-#    #executable = Command(root, item, 'go build $SOURCE')
-#    executable = Command(root, item, 'gccgo -o $TARGET -O3 $SOURCE')
-#    executables.append(addCompileTarget(executable))
-
-for item in Glob('pi_go_*.go'):
-    root = os.path.splitext(item.name)[0]
-    Command('run_' + root, item, 'go run $SOURCE')
-    #Command('run_' + root, item, 'go run -compiler gccgo -gccgoflags -O3 $SOURCE')
-
 #  occam  ############################################################################
 
 #  As far as is known there is no occam implementation packaged in Debian Squeeze or Ubuntu Lucid.  We
