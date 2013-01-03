@@ -1,141 +1,16 @@
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature.
+#  Calculation of π using quadrature.
 #
 #  Copyright © 2008–2013 Russel Winder
 
 import os
-import platform
-import re
 import subprocess
 import sys
 
-osName, _, _, _, platformVersion, _ = platform.uname()
-platformVersion = re.sub('i.86', 'ix86', platformVersion)
-extraLibName = os.environ['HOME'] + '/lib.' + osName + '.' + platformVersion
 
 from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, executables, createHelp
 
-##  NB We must avoid amending the globally shared environment with language or specific program dependent
-##  changes to keys used by other languages or other programs.  By specifying key/value pairs explicitly in
-##  the Program calls, a new temporary clone environment is created a so everything proceeds as expected in
-##  the C and C++ case below.  A problem arises with the D tool though.  See below.
-
-#  C  ################################################################################
-
-ccFlags = ['-O3', '-Wall', '-Wextra']
-
-cEnvironment = Environment(tools=['gcc', 'gnulink'])
-
-microsecondTimeC = cEnvironment.Object('Timing/microsecondTime.c', CFLAGS=ccFlags)
-
-def cRule(globPattern, compiler='gcc', cpppath=[], cflags=ccFlags, linkflags=[], libpath=[], libs=[]):
-    for item in Glob(globPattern):
-        executables.append(
-            addCompileTarget(
-                cEnvironment.Program(
-                    os.path.splitext(item.name)[0], [item.name, microsecondTimeC],
-                    CC=compiler, CPPPATH=['Timing'] + cpppath, CFLAGS=cflags + ['-std=c99'], LINKFLAGS=linkflags + ['-std=c99'], LIBPATH=libpath, LIBS=libs)))
-
-cRule('pi_c_sequential*.c')
-cRule('pi_c_pthread*.c', libs=['pthread'])
-cRule('pi_c_mpi*.c', compiler='mpicc')  #  This execution target runs things sequentially.  Use the command "mpirun -np N pi_c_mpi" to run the code on N processors.
-cRule('pi_c_openmp*.c', cflags=ccFlags + ['-fopenmp'], libs=['gomp'])  #  Assumes gcc is 4.2.0 or greater since that is when gomp was included.
-
-#  C++  ##############################################################################
-
-cppEnvironment = Environment(tools=['g++', 'gnulink'])
-
-def cppRule(globPattern, compiler='g++', cpppath=[], cxxflags=ccFlags, linkflags=[], libpath=[], libs=[]):
-    for item in Glob(globPattern):
-        executables.append(
-            addCompileTarget(
-                cppEnvironment.Program(
-                    os.path.splitext(item.name)[0], [item.name, microsecondTimeC],
-                    CXX=compiler, CPPPATH=['Timing'] + cpppath, CXXFLAGS=cxxflags + ['-std=c++0x'], LINKFLAGS=linkflags + ['-std=c++0x'], LIBPATH=libpath, LIBS=libs)))
-
-cppRule('pi_cpp_sequential*.cpp')
-cppRule('pi_cpp_pthread*.cpp', libs=['pthread'])
-cppRule('pi_cpp_mpi*.cpp', compiler='mpic++')  #  This MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_c_mpi" to run the code on N processors.
-cppRule('pi_cpp_openmp*.cpp', cxxflags=ccFlags + ['-fopenmp'], libs=['gomp'])  #  Assumes gcc is 4.2.0 or greater since that is when gomp was included.
-
-cppRule('pi_cpp_cppcsp2.cpp', cpppath=[os.environ['HOME'] + '/include'], libpath=[extraLibName], libs=['cppcsp2', 'pthread'])
-
-#  As from 2010-03-04 15:56+00:00, the Boost.MPI library is not in Lucid.  As is documented in the bug tracker
-#  on Launchpad (https://bugs.launchpad.net/ubuntu/+source/boost-defaults/+bug/531973 and
-#  https://bugs.launchpad.net/ubuntu/+source/boost1.42/+bug/582420), Boost.MPI has been ejected from
-#  Ubuntu!!!!!!!!  It's still in Debian though :-))
-#
-#  If BOOST_HOME is set then use that otherwise use whatever is installed, if it is!
-#
-#  NB The MPI execution targets runs things sequentially.  Use the command "mpirun -np N pi_cpp_boostMPI" to
-#  run the code on N processors.
-try:
-    boostHome = os.environ['BOOST_HOME']
-    boostInclude = boostHome + '/include'
-    boostLib = boostHome + '/lib'
-    cppRule('pi_cpp_boostThread*.cpp', cpppath=[boostInclude], libpath=[boostLib], libs=['boost_thread'])
-    cppRule('pi_cpp_boostMPI*.cpp', compiler='mpic++', cpppath=[boostInclude], libpath=[boostLib], libs=['boost_mpi', 'boost_serialization'])
-except KeyError:
-    if not os.path.isfile('/usr/lib/libboost_mpi.so'):
-        print '\nWarning:  Cannot find a Boost.MPI.\n'
-    else:
-        cppRule('pi_cpp_boostThread*.cpp', libs=['boost_thread'])
-        cppRule('pi_cpp_boostMPI*.cpp', compiler='mpic++', libs=['boost_mpi'])
-
-#  Use Anthony Williams' Just::Thread library as an implementation of C++0x threads and things.  Anthony's
-#  Ubuntu debs seems to work fine on Debian, which is good -- albeit lucky.  In order to use the standard
-#  naming in the source code we have to augment the include path.  Must also inform GCC that we are using
-#  the next standard.
-#cppRule('pi_cpp_justThread*.cpp', cpppath=['/usr/include/justthread'], libs=['justthread', 'rt'])
-# Use the pre-release Just::Thread Pro as it has the actor and dataflow support.
-cppRule('pi_cpp_justThread*.cpp', cpppath=[extraLibName + '/JustThreadPro/include'], linkflags=['--static'], libpath=[extraLibName + '/JustThreadPro/libs'], libs=['justthread', 'pthread', 'rt'])
-
-#  TBB 2.2 is packaged in Ubuntu Lucid and Debian Squeeze.  Debian Wheezy appears to package TBB 4 though it
-#  still has the SO number 2.  Deal with the situation of TBB_HOME being defined for a custom variant of
-#  TBB.  TBB only provides dynamic libraries, there are no static libraries, so we have to get into the hassle of
-#  specifying a LD_LIBRARY_PATH to run the constructed executable if the TBB libraries are not in the
-#  standard path :-( "LD_LIBRARY_PATH=$TBB_HOME pi_cpp_tbb . . . "
-try:
-    tbbHome = os.environ['TBB_HOME']
-    cppRule('pi_cpp_tbb*.cpp', cpppath=[tbbHome + '/include'], libpath=[tbbHome], libs=['tbb'])
-except KeyError:
-    cppRule('pi_cpp_tbb*.cpp', libs=['tbb'])
-
-#  D  ################################################################################
-
-##  DMD 2.059 worked, DMD 2.060 has issues – various problems with the thread.  GDC on Debian as at
-## 2012-09-06 realizes D 2.056 and so barfs on some constructs introduced after that version.  LDC compiled
-## from master/HEAD as at 2012-11--11 is D 2.060+changes and works fine. Except for
-## pi_d_threadsGlobalState_array_declarative.d. See http://d.puremagic.com/issues/show_bug.cgi?id=8774.  It
-## appears that pi_d_threadsGlobalState_array_declarative.d should never have worked under 2.059 as it was:
-## maps are iterable but lazy, the array needs to be instantiated for the algorithm to work as required.
-##
-##  pi_d_threadsGlobalState_array_iterative.d and pi_d_threadsGlobalState_threadGroup.d fail on DMD 2.060
-##  but worked under 2.059, and work under LDC2.
-
-
-dEnvironment = {
-    'dmd': Environment(tools=['link', 'dmd'], # Why is the order crucial here?
-                       DFLAGS=['-O', '-release'],
-                       #DC='gdmd'
-                       ),
-    'gdc':  Environment(tools=['link', 'gdc'], # Why is the order crucial here?
-                        DFLAGS=['-O3'],
-                        ),
-    'ldc': Environment(tools=['link', 'ldc'],
-                       ENV = os.environ,
-                       DFLAGS=['-O', '-release'],
-                       ),
-#}['dmd']
-#}['gdc']
-}['ldc']
-
-dOutput = dEnvironment.Object('output_d.d')
-
-for item in Glob('pi_d_*.d'):
-    root = os.path.splitext(item.name)[0]
-    executables.append(addCompileTarget(dEnvironment.Program([item, dOutput])))
 
 #  OCaml  ############################################################################
 
