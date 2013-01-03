@@ -1,0 +1,18 @@
+# -*- mode:python; coding:utf-8; -*-
+
+#  Calculation of Pi using quadrature.
+#
+#  Copyright © 2008–2013 Russel Winder
+
+import os
+import sys
+sys.path.append('../site_scons')
+
+from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, executables, createHelp
+
+chapelEnvironment = Environment(tools=['chapel'], ENV=os.environ, CHPLFLAGS=['-O', '--fast'])
+
+for item in Glob('pi_*.chpl'):
+    executables.append(addCompileTarget(chapelEnvironment.ChapelProgram(item.name.replace('.chpl', ''), [item, 'output.chpl'])))
+
+Help(createHelp())

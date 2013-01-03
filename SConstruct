@@ -157,13 +157,6 @@ for item in Glob('pi_d_*.d'):
     root = os.path.splitext(item.name)[0]
     executables.append(addCompileTarget(dEnvironment.Program([item, dOutput])))
 
-#  Chapel  ###########################################################################
-
-chapelEnvironment = Environment(tools=['chapel'], ENV=os.environ, CHPLFLAGS=['-O', '--fast'])
-
-for item in Glob('pi_chapel_*.chpl'):
-    executables.append(addCompileTarget(chapelEnvironment.ChapelProgram(item.name.replace('.chpl', ''), [item, 'output.chpl'])))
-
 #  Haskell  ##########################################################################
 
 #  Haskell jobs run in a single thread by default (which is what happens here).  Run the executable with
