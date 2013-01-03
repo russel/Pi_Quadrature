@@ -17,11 +17,19 @@ extraLibName = os.environ['HOME'] + '/lib.' + osName + '.' + platformVersion
 
 ccFlags = ['-O3', '-Wall', '-Wextra']
 
-cEnvironment = Environment(tools=['gcc'])
+#  We have to take into account the user environment to get reasonable versions of the compilers.
+
+cEnvironment = Environment(
+    tools=['gcc'],
+    ENV=os.environ,
+)
 
 cppFlags = ccFlags + ['-std=c++11']
 
-cppEnvironment = Environment(tools=['g++', 'gnulink'])
+cppEnvironment = Environment(
+    tools=['g++', 'gnulink'],
+    ENV=os.environ,
+)
 
 microsecondTime = cEnvironment.Object('../Timing/microsecondTime.c', CFLAGS=ccFlags)
 output = cppEnvironment.Object('output.cpp', CXXFLAGS=cppFlags)
