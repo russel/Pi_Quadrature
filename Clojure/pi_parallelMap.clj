@@ -20,9 +20,6 @@
     (outn "Parallel Map" pi n elapseTime numberOfThreads)))
 
 (execute 1)
-(println)
 (execute 2)
-(println)
 (execute 8)
-(println)
 (execute 32)

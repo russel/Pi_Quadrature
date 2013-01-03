@@ -9,6 +9,5 @@
   (println (str "\telapse time = " elapseTime)))
 
 (defn outn [name pi n elapseTime numberOfThreads]
-  (out name pi n elapseTime)
-  (println (str "\tnumber of threads = " numberOfThreads))
+  (out (str name ", task count: " numberOfThreads) pi n elapseTime)
   (println (str "\tnumber of processors = " (.. Runtime getRuntime availableProcessors))))
