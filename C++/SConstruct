@@ -35,6 +35,8 @@ def cppRule(globPattern, compiler='g++', cpppath=[], cxxflags=cppFlags, linkflag
                     CXX=compiler, CPPPATH=['../Timing'] + cpppath, CXXFLAGS=cxxflags, LINKFLAGS=linkflags + ['-std=c++11'], LIBPATH=libpath, LIBS=libs)))
 
 cppRule('pi_sequential*.cpp')
+cppRule('pi_thread*.cpp')
+cppRule('pi_futures*.cpp')
 cppRule('pi_pthread*.cpp', libs=['pthread'])
 cppRule('pi_mpi*.cpp', compiler='mpic++')  #  This MPI execution target runs things sequentially.  Use the command "mpirun -np N pi_c_mpi" to run the code on N processors.
 cppRule('pi_openmp*.cpp', cxxflags=cppFlags + ['-fopenmp'], libs=['gomp'])

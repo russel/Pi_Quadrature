@@ -1,12 +1,11 @@
 /*
- *  A C++ program to calculate π using quadrature.  This uses Anthony Williams' Just::Threads library which
- *  is an implementation of the threads specification of C++11.
+ *  A C++ program to calculate π using quadrature with parallelism provided using C++11 threads.
  *
  *  Copyright © 2009–2011, 2013  Russel Winder
  */
 
+#include <mutex>
 #include <thread>
-#include<mutex>
 
 #include "output.hpp"
 
@@ -34,11 +33,11 @@ void execute(int const numberOfThreads) {
     auto const sliceSize = n / numberOfThreads;
     std::thread threads[numberOfThreads];
     sum = 0.0;
-    for (auto i = 0; i < numberOfThreads; ++i) { threads[i] = std::thread(std::bind(partialSum, i, sliceSize, delta)); }
-    for (auto i = 0; i < numberOfThreads; ++i) { threads[i].join(); }
+    for (auto i = 0; i < numberOfThreads; ++i) { threads[i] = std::thread(partialSum, i, sliceSize, delta); }
+    for (auto && thread: threads) { thread.join(); }
     auto const pi = 4.0 * delta * sum;
     auto const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
-    out("Just::Thread Threads Global State", pi, n, elapseTime, numberOfThreads, std::thread::hardware_concurrency());
+    out("Threads Global State", pi, n, elapseTime, numberOfThreads, std::thread::hardware_concurrency());
 }
 
 int main() {
