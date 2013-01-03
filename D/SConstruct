@@ -1,6 +1,6 @@
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of Pi using quadrature using teh D programming language..
+#  Calculation of π using quadrature using teh D programming language..
 #
 #  Copyright © 2008–2013 Russel Winder
 

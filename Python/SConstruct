@@ -1,3 +1,9 @@
+# -*- mode:python; coding:utf-8; -*-
+
+#  Calculation of π using quadrature.
+#
+#  Copyright © 2008–2013 Russel Winder
+
 #  Some of the Python code relies on extensions written in various languages.  Because we have both Python 3
 #  and Python 2 versions this means that two targets are specifying the same extension, which leads SCons to
 #  deduce a "warning: Two different environments were specified for target . . . "  So we have to protect
