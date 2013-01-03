@@ -1,0 +1,39 @@
+# -*- mode:python; coding:utf-8; -*-
+
+#  Calculation of Pi using quadrature.
+#
+#  Copyright © 2008–2013 Russel Winder
+
+import os
+import sys
+sys.path.append('../site_scons')
+
+from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, executables, createHelp
+
+#  Haskell jobs run in a single thread by default (which is what happens here).  Run the executable with
+#  "+RTS -Nx" to run with x OS threads.
+
+haskellEnvironment = Environment(tools=['haskell'])
+
+generatedExtensions = ['.hi', '.o', '.hp', '.ps', '.aux']
+
+for item in Glob('pi_*.hs'):
+    root = os.path.splitext(item.name)[0]
+    options = ['-rtsopts']
+    variant = root.split('_')[1]
+    if variant == 'threads':
+        options.append('-threaded')
+    elif variant == 'parMap' or variant == 'parallel':
+        options.append('-threaded')
+        options.append('-fdph-par')
+    if True:
+        executables.append(addCompileTarget(haskellEnvironment.Command(root, [item.name, 'output.hs'], 'ghc --make -O -o $TARGET' + ''.join([' ' + x for x in options]) + ' $SOURCES')))
+        SideEffect([root + ext for ext in generatedExtensions] + ['output.hi'],  root)
+    else:
+        executables.append(addCompileTarget(haskellEnvironment.HaskellProgram(item, HSLINKFLAGS=['--make'])))
+
+
+for item in executables:
+    addRunTarget(Command('run_' + item[0].name, item, './' + item[0].name))
+
+Help(createHelp())

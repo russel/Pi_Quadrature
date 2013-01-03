@@ -137,28 +137,6 @@ for item in Glob('pi_d_*.d'):
     root = os.path.splitext(item.name)[0]
     executables.append(addCompileTarget(dEnvironment.Program([item, dOutput])))
 
-#  Haskell  ##########################################################################
-
-#  Haskell jobs run in a single thread by default (which is what happens here).  Run the executable with
-#  "+RTS -Nx" to run with x OS threads.
-
-haskellEnvironment = Environment(tools=['haskell'])
-
-for item in Glob('pi_haskell_*.hs'):
-    root = os.path.splitext(item.name)[0]
-    options = ['-rtsopts']
-    variant = root.split('_')[2]
-    if variant == 'threads':
-        options.append('-threaded')
-    elif variant == 'parMap' or variant == 'parallel':
-        options.append('-threaded')
-        options.append('-fdph-par')
-    if True:
-        executables.append(addCompileTarget(haskellEnvironment.Command(root, item.name, 'ghc --make -O -o $TARGET' + ''.join([' ' + x for x in options]) + ' $SOURCE')))
-        SideEffect([root + ext for ext in ['.hi', '.o', '.hp', '.ps', '.aux']],  root)
-    else:
-        executables.append(addCompileTarget(haskellEnvironment.HaskellProgram(item, HSLINKFLAGS=['--make'])))
-
 #  OCaml  ############################################################################
 
 ocamlEnvironment = Environment(tools=[])  #, ENV=os.environ)
