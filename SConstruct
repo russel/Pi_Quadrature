@@ -102,26 +102,6 @@ try:
 except KeyError:
     cppRule('pi_cpp_tbb*.cpp', libs=['tbb'])
 
-#  Fortran  ##########################################################################
-
-fortranFlags = ['-O3', '-std=f2008', '-ffree-form', '-pedantic', '-Wall']
-
-fortranEnvironment = Environment(tools=['gfortran', 'gnulink'], FORTRANFLAGS=fortranFlags)
-
-fortranOutput = fortranEnvironment.Object('output_f.f')
-
-def fortranRule(globPattern, compiler='gfortran', fortranflags=fortranFlags, linkflags=[], libpath=[], libs=[]):
-    for item in Glob(globPattern):
-        executables.append(
-            addCompileTarget(
-                fortranEnvironment.Program(
-                    os.path.splitext(item.name)[0], [item.name, fortranOutput],
-                    FORTRAN=compiler, FORTRANFLAGS=fortranflags, LINKFLAGS=linkflags, LIBPATH=libpath, LIBS=libs)))
-
-fortranRule('pi_fortran_sequential*.f')
-fortranRule('pi_fortran_openmp*.f', fortranflags=fortranFlags + ['-fopenmp'], libs=['gomp'])
-fortranRule('pi_fortran_mpi*.f', compiler='mpif90')
-
 #  D  ################################################################################
 
 ##  DMD 2.059 worked, DMD 2.060 has issues – various problems with the thread.  GDC on Debian as at
