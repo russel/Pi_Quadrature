@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, executables, createHelp
+from executablesupport import addCompileTarget, addRunTarget, createHelp
 
 ccFlags = ['-O3', '-Wall', '-Wextra', '-std=c99']
 
@@ -19,7 +19,7 @@ output = cEnvironment.Object('output.c', CFLAGS=ccFlags)
 
 def cRule(globPattern, compiler='gcc', cpppath=[], cflags=ccFlags, linkflags=[], libpath=[], libs=[]):
     for item in Glob(globPattern):
-        executables.append(
+        addRunTarget(cEnvironment,
             addCompileTarget(
                 cEnvironment.Program(
                     os.path.splitext(item.name)[0], [item.name, microsecondTime, output],
@@ -29,8 +29,5 @@ cRule('pi_sequential*.c')
 cRule('pi_pthread*.c', libs=['pthread'])
 cRule('pi_mpi*.c', compiler='mpicc')  #  This execution target runs things sequentially.  Use the command "mpirun -np N pi_c_mpi" to run the code on N processors.
 cRule('pi_openmp*.c', cflags=ccFlags + ['-fopenmp'], libs=['gomp'])  #  Assumes gcc is 4.2.0 or greater since that is when gomp was included.
-
-for item in executables:
-    addRunTarget(Command('run_' + item[0].name, item, './' + item[0].name))
 
 Help(createHelp())

@@ -9,7 +9,7 @@ import re
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, executables, createHelp
+from executablesupport import addCompileTarget, addRunTarget, createHelp
 
 osName, _, _, _, platformVersion = os.uname()
 platformVersion = re.sub('i.86', 'ix86', platformVersion)
@@ -36,7 +36,7 @@ output = cppEnvironment.Object('output.cpp', CXXFLAGS=cppFlags)
 
 def cppRule(globPattern, compiler='g++', cpppath=[], cxxflags=cppFlags, linkflags=[], libpath=[], libs=[]):
     for item in Glob(globPattern):
-        executables.append(
+        addRunTarget(cppEnvironment,
             addCompileTarget(
                 cppEnvironment.Program(
                     os.path.splitext(item.name)[0], [item.name, microsecondTime, output],
@@ -54,9 +54,5 @@ cppRule('pi_tbb*.cpp', libs=['tbb'])
 
 cppRule('pi_cppcsp2.cpp', cpppath=[os.environ['HOME'] + '/include'], libpath=[extraLibName], libs=['cppcsp2', 'pthread'])
 cppRule('pi_justThread*.cpp', cpppath=[extraLibName + '/JustThreadPro/include'], linkflags=['--static'], libpath=[extraLibName + '/JustThreadPro/libs'], libs=['justthread'])
-
-
-for item in executables:
-    addRunTarget(Command('run_' + item[0].name, item, './' + item[0].name))
 
 Help(createHelp())

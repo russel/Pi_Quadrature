@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, executables, createHelp
+from executablesupport import addCompileTarget, addRunTarget, createHelp
 
 #  Haskell jobs run in a single thread by default (which is what happens here).  Run the executable with
 #  "+RTS -Nx" to run with x OS threads.
@@ -27,13 +27,9 @@ for item in Glob('pi_*.hs'):
         options.append('-threaded')
         options.append('-fdph-par')
     if True:
-        executables.append(addCompileTarget(haskellEnvironment.Command(root, [item.name, 'output.hs'], 'ghc --make -O -o $TARGET' + ''.join([' ' + x for x in options]) + ' $SOURCES')))
-        SideEffect([root + ext for ext in generatedExtensions] + ['output.hi'],  root)
+        addRunTarget(haskellEnvironment, addCompileTarget(haskellEnvironment.Command(root, [item.name, 'output.hs'], 'ghc --make -O -o $TARGET' + ''.join([' ' + x for x in options]) + ' $SOURCES')))
+        SideEffect([root + ext for ext in generatedExtensions] + ['output' + ext for ext in generatedExtensions],  root)
     else:
-        executables.append(addCompileTarget(haskellEnvironment.HaskellProgram(item, HSLINKFLAGS=['--make'])))
-
-
-for item in executables:
-    addRunTarget(Command('run_' + item[0].name, item, './' + item[0].name))
+        addRunTarget(haskellEnvironment, addCompileTarget(haskellEnvironment.HaskellProgram(item, HSLINKFLAGS=['--make'])))
 
 Help(createHelp())

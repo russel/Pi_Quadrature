@@ -5,22 +5,23 @@
 #  Copyright © 2008–2013 Russel Winder
 
 import os
+import sys
+sys.path.append('../site_scons')
+
+from executablesupport import addCompileTarget, addRunTarget, createHelp
 
 erlangEnvironment = Environment(tools=['erlang'])
 
-#  The trailing slash on the OUTPUT is critical for the way the erlang tool works:-(
+#  The trailing slash on the OUTPUT is critical for the way the erlang tool works :-(
 
-microsecondTime = erlangEnvironment.Erlang('microsecondTime.erl',  OUTPUT='./')
-output = erlangEnvironment.Erlang('output.erl',  OUTPUT='./')
-
-compiled = [microsecondTime, output]
+microsecondTime = addCompileTarget(erlangEnvironment.Erlang('microsecondTime.erl',  OUTPUT='./'))
+output = addCompileTarget(erlangEnvironment.Erlang('output.erl',  OUTPUT='./'))
 
 for item in Glob('pi_*.erl'):
-    root = os.path.splitext(item.name)[0]
-    compiledFile = erlangEnvironment.Erlang(item)
-    compiled.append(compiledFile)
-    erlangEnvironment.Command('run_' + root, [compiledFile, microsecondTime, output], '$ERL -noshell -s {} -smp'.format(root))
+    compiledFile = addCompileTarget(erlangEnvironment.Erlang(item))
+    runTarget = addRunTarget(erlangEnvironment, compiledFile, '$ERL -noshell -s {} -smp', lambda x: x.replace('.beam', ''))
+    Depends(compiledFile, [microsecondTime, output])
     #  Executing an Erlang program can result in a crash dump file so let SCons know this.
-    SideEffect('erl_crash.dump',  'run_' + root)
+    SideEffect('erl_crash.dump',  runTarget[0].name)
 
-Default(compiled)
+Help(createHelp())

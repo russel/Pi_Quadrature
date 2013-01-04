@@ -8,18 +8,23 @@
 compileTargets = []
 
 def addCompileTarget(target):
-    global compileTargets
-    compileTargets.append(target[0].name)
+    try:
+        targetName = target[0].name
+    except TypeError:
+        targetName = target.name
+    compileTargets.append(targetName)
     return target
 
 runTargets = []
 
-def addRunTarget(target):
-    global runTargets
-    runTargets.append(target[0].name)
+def addRunTarget(environment, target, command='./{}', edit=None):
+    try:
+        targetName = target[0].name
+    except TypeError:
+        targetName = target.name
+    targetName = targetName if not edit else edit(targetName)
+    runTargets.append(environment.Command('run_' + targetName, target, command.format(targetName))[0].name)
     return target
-
-executables = []
 
 def createHelp():
     helpString = 'Compile targets are:\n'
