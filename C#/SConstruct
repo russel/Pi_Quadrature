@@ -1,0 +1,22 @@
+# -*- mode:python; coding:utf-8; -*-
+
+#  Calculation of π using quadrature.
+#
+#  Copyright © 2008–2013  Russel Winder
+
+import os
+import sys
+sys.path.append('../site_scons')
+
+from executablesupport import addCompileTarget, addRunTarget, createHelp
+
+cSharpEnvironment = Environment(tools=['csharp'])
+
+for item in Glob('Pi_*.cs'):
+    addRunTarget(cSharpEnvironment,
+        addCompileTarget(cSharpEnvironment.CLIProgram(item)),
+        'mono {}',
+        lambda x: x.replace('.exe', '')
+    )
+
+Help(createHelp())

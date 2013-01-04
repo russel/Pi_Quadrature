@@ -1,0 +1,19 @@
+# -*- mode:python; coding:utf-8; -*-
+
+#  Calculation of π using quadrature.
+#
+#  Copyright © 2013  Russel Winder
+
+import sys
+sys.path.append('../site_scons')
+
+from executablesupport import libraryPath
+
+ceylonEnvironment = Environment(
+    ENV = os.environ,
+    JAVA_HOME=os.path.join(libraryPath(), 'JDK7')
+    )
+
+ceylonEnvironment.Command('run_pi_sequential', 'pi_sequential.ceylon', ['ceylon compile --src . $SOURCE',
+                          'ceylon run --run main default'])
+Clean('.', 'modules')

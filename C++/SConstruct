@@ -9,11 +9,9 @@ import re
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import addCompileTarget, addRunTarget, createHelp, libraryPath
 
-osName, _, _, _, platformVersion = os.uname()
-platformVersion = re.sub('i.86', 'ix86', platformVersion)
-extraLibName = os.environ['HOME'] + '/lib.' + osName + '.' + platformVersion
+extraLibName = libraryPath()
 
 ccFlags = ['-O3', '-Wall', '-Wextra']
 

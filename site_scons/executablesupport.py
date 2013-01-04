@@ -5,6 +5,9 @@
 #
 #  Copyright © 2013  Russel Winder
 
+import os
+import re
+
 compileTargets = []
 
 def addCompileTarget(target):
@@ -37,3 +40,8 @@ def createHelp():
         helpString += '\t' + target + '\n'
     helpString += '\nDefault is to achieve all compile targets.\n'
     return helpString
+
+def libraryPath():
+    osName, _, _, _, platformVersion = os.uname()
+    platformVersion = re.sub('i.86', 'ix86', platformVersion)
+    return os.environ['HOME'] + '/lib.' + osName + '.' + platformVersion

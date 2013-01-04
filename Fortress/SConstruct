@@ -1,0 +1,24 @@
+# -*- mode:python; coding:utf-8; -*-
+
+#  Calculation of π using quadrature.
+#
+#  Copyright © 2008–2013  Russel Winder
+
+import os
+import sys
+sys.path.append('../site_scons')
+
+from executablesupport import addCompileTarget, addRunTarget, createHelp
+
+fortressEnvironment = Environment(tools=['latex'], ENV=os.environ)
+
+for item in Glob('*.fss'):
+    addRunTarget(fortressEnvironment, item, 'fortress $SOURCE')
+    #  For the moment LaTeX doesn't work correctly on Mac OS X:-(((
+    if fortressEnvironment['PLATFORM'] != 'Darwin':
+        fortressCodeRoot = os.path.splitext(item.name)[0]
+        pdfDocument = fortressEnvironment.PDF(fortressCodeRoot + '_document.ltx')
+        Depends(pdfDocument, fortressEnvironment.Command(fortressCodeRoot + '.tex', item.name, 'fortify $SOURCE'))
+        addCompileTarget(Alias('typesetFortress', pdfDocument))
+
+Help(createHelp())
