@@ -4,16 +4,23 @@
 #
 #  Copyright © 2013  Russel Winder
 
+import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import libraryPath
+from executablesupport import addCompileTarget, addRunTarget, createHelp, libraryPath
 
 ceylonEnvironment = Environment(
     ENV = os.environ,
     JAVA_HOME=os.path.join(libraryPath(), 'JDK7')
     )
 
-ceylonEnvironment.Command('run_pi_sequential', 'pi_sequential.ceylon', ['ceylon compile --src . $SOURCE',
-                          'ceylon run --run main default'])
-Clean('.', 'modules')
+buildProducts = addCompileTarget(ceylonEnvironment.Command('compile', 'pi_sequential.ceylon', 'ceylon compile --src . $SOURCE'))
+
+addRunTarget(ceylonEnvironment, buildProducts, 'ceylon run --run main default')
+
+Default(buildProducts)
+
+Clean(buildProducts, 'modules')
+
+Help(createHelp())

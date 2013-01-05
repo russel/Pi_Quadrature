@@ -19,7 +19,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, createHelp
+from executablesupport import addCompileTarget, addRunTarget, createHelp
 
 ccFlags = ['-O3', '-Wall', '-Wextra']
 
@@ -72,7 +72,6 @@ pythonEnvironment = Environment(tools=['g++', 'gcc', 'gnulink'],  # The order he
 
 for item in Glob('pi_python*.py'):
     root = os.path.splitext(item.name)[0]
-    target = 'run_' + root
     bits = root.split('_')
     if len(bits) > 5 and bits[4] == 'extension':
         extension = bits[5]
@@ -88,17 +87,13 @@ for item in Glob('pi_python*.py'):
                     CPPPATH=extensionsData[extension]['CPPPATH'],
                     CFLAGS=extensionsData[extension]['CFLAGS'], CXXFLAGS=extensionsData[extension]['CFLAGS'],
                     SHLIBPREFIX='', LINKFLAGS=extensionsData[extension]['LINKFLAGS'])
-        addRunTarget(pythonEnvironment.Command(target, [item.name, extensionsSharedLibraries[extensionName]], 'LD_LIBRARY_PATH=. ./$SOURCE'))
+        addRunTarget(pythonEnvironment, item, 'LD_LIBRARY_PATH=. ./$SOURCE')
+        Depends(item, extensionsSharedLibraries[extensionName])
     else:
-        addRunTarget(pythonEnvironment.Command(target, item.name, './$SOURCE'))
+        addRunTarget(pythonEnvironment, item)
 
 compilePythonExtensions = addCompileTarget(Alias('compilePythonExtensions', extensionsSharedLibraries.values()))
 
-
-addCompileTarget(Alias('compile', compileTargets + compilePythonExtensions))
-
-addRunTarget(Alias('run', runTargets))
-
-Default('compile')
+Default(compilePythonExtensions)
 
 Help(createHelp())
