@@ -8,17 +8,17 @@ package uk.org.winder.pi_quadrature;
 
 public class Output {
 
-    public static void out(final String prefix, final Double pi, final Integer n, final Double elapseTime) {
-        System.out.println("================ " + prefix);
-        System.out.println("\tπ = " + pi);
-        System.out.println("\titeration count = " + n);
-        System.out.println("\telapse time = " + elapseTime);
-    }
+  public static void out(final String prefix, final Double pi, final Integer n, final Double elapseTime) {
+    System.out.println("================ " + prefix);
+    System.out.println("\tπ = " + pi);
+    System.out.println("\titeration count = " + n);
+    System.out.println("\telapse time = " + elapseTime);
+  }
 
-    public static void out(final String prefix, final Double pi, final Integer n, final Double elapseTime, final Integer numberOfTasks) {
-        out(prefix, pi, n, elapseTime);
-        System.out.println("\tprocessor count = " + Runtime.getRuntime().availableProcessors());
-        System.out.println("\tnumber of tasks = " + numberOfTasks);
-    }
+  public static void out(final String prefix, final Double pi, final Integer n, final Double elapseTime, final Integer numberOfTasks) {
+    out(prefix, pi, n, elapseTime);
+    System.out.println("\tprocessor count = " + Runtime.getRuntime().availableProcessors());
+    System.out.println("\tnumber of tasks = " + numberOfTasks);
+  }
 
 }
