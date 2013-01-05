@@ -11,13 +11,13 @@
 #include "output.hpp"
 
 void out(std::string const banner, double const pi, int const n, double const elapseTime) {
-    std::cout << "==================== " << banner << '\n'
-              << "\tpi = " << std::setprecision ( 18 ) << pi << '\n'
-              << "\titeration count = " << n << '\n'
-              << "\telapse = " << elapseTime << std::endl ;
+  std::cout << "==================== " << banner << '\n'
+            << "\tpi = " << std::setprecision ( 18 ) << pi << '\n'
+            << "\titeration count = " << n << '\n'
+            << "\telapse = " << elapseTime << std::endl ;
 }
 
 void out(std::string const banner, double const pi, int const n, double const elapseTime, int const threadCount, int const processorCount) {
-    out(banner + " -- thread count: " + std::to_string(threadCount), pi, n, elapseTime);
-    std::cout << "\tprocessor count = " << processorCount << std::endl;
+  out(banner + " -- thread count: " + std::to_string(threadCount), pi, n, elapseTime);
+  std::cout << "\tprocessor count = " << processorCount << std::endl;
 }

@@ -14,38 +14,38 @@
 #include "microsecondTime.h"
 
 double partialSum(int const id, int const sliceSize, double const delta) {
-    auto const start = 1 + id * sliceSize;
-    auto const end = (id + 1) * sliceSize;
-    auto sum = 0.0;
-    for (auto i = start; i <= end; ++i) {
-        auto const x = (i - 0.5) * delta;
-        sum += 1.0 / (1.0 + x * x);
-    }
-    return sum;
+  auto const start = 1 + id * sliceSize;
+  auto const end = (id + 1) * sliceSize;
+  auto sum = 0.0;
+  for (auto i = start; i <= end; ++i) {
+    auto const x = (i - 0.5) * delta;
+    sum += 1.0 / (1.0 + x * x);
+  }
+  return sum;
 }
 
 void execute(int const numberOfThreads) {
-    auto const n = 1000000000;
-    auto const delta = 1.0 / n;
-    auto const startTimeMicros = microsecondTime();
-    auto const sliceSize = n / numberOfThreads;
-    std::packaged_task<double()> tasks[numberOfThreads];
-    for (auto i = 0; i < numberOfThreads; ++i) {
-        tasks[i] = std::packaged_task<double()>(std::bind(partialSum, i, sliceSize, delta));
-        std::thread taskThread(std::ref(tasks[i]));
-        taskThread.detach();
-    }
-    auto sum = 0.0;
-    for (auto && task: tasks) { sum += task.get_future().get(); }
-    auto const pi = 4.0 * delta * sum;
-    auto const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
-    out("Just::Thread Futures AW", pi, n, elapseTime, numberOfThreads, std::thread::hardware_concurrency());
+  auto const n = 1000000000;
+  auto const delta = 1.0 / n;
+  auto const startTimeMicros = microsecondTime();
+  auto const sliceSize = n / numberOfThreads;
+  std::packaged_task<double()> tasks[numberOfThreads];
+  for (auto i = 0; i < numberOfThreads; ++i) {
+    tasks[i] = std::packaged_task<double()>(std::bind(partialSum, i, sliceSize, delta));
+    std::thread taskThread(std::ref(tasks[i]));
+    taskThread.detach();
+  }
+  auto sum = 0.0;
+  for (auto && task: tasks) { sum += task.get_future().get(); }
+  auto const pi = 4.0 * delta * sum;
+  auto const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
+  out("Just::Thread Futures AW", pi, n, elapseTime, numberOfThreads, std::thread::hardware_concurrency());
 }
 
 int main() {
-    execute(1);
-    execute(2);
-    execute(8);
-    execute(32);
-    return 0;
+  execute(1);
+  execute(2);
+  execute(8);
+  execute(32);
+  return 0;
 }
