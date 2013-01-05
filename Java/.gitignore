@@ -1,6 +1,8 @@
-.gradle
-.idea
+/.gradle/
+/.idea/
 Pi Quadrature Java.iml
 .project
-.settings
-classes
+/.settings/
+.classpath
+/classes/
+/build/

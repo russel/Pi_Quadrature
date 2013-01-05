@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-//apply plugin: 'eclipse'
+apply plugin: 'eclipse'
 //apply plugin: 'idea'
 
 repositories {
@@ -22,8 +22,14 @@ sourceCompatibility = '8'
 
 defaultTasks 'classes'
 
-task Pi_Sequential (dependsOn: 'classes') << {
-
+new File('src/main/java/uk/org/winder/pi_quadrature').eachFileMatch(~/Pi_.*\.java/) { filename ->
+    final root = filename.name.replaceFirst(/\.java$/, '')
+    final className = 'uk.org.winder.pi_quadrature.' + root
+    task ('run_' + root, dependsOn: 'classes') << {
+        final process = ("java -cp build/classes/main ${className}").execute()
+        process.in.eachLine{line -> println line}
+        assert process.waitFor() == 0
+    }
 }
 
 task wrapper (type:Wrapper) {
