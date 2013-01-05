@@ -3,7 +3,7 @@
 /*
  *  Calculation of π using quadrature realized with a parallel algorithm based on using Futures.
  *
- *  Copyright © 2009–2012 Russel Winder
+ *  Copyright © 2009–2013  Russel Winder
  */
 
 import java.util.concurrent.Callable
@@ -17,8 +17,8 @@ def execute(final numberOfTasks) {
   final executor = new ScheduledThreadPoolExecutor(numberOfTasks)
   final futures = (0 ..< numberOfTasks).collect {taskId ->
     executor.submit(new Callable<Double>() {
-                        @Override public Double call() { PartialSum.dynamicCompile(taskId, sliceSize, delta) }
-                      })
+                      @Override public Double call() { PartialSum.dynamicCompile(taskId, sliceSize, delta) }
+                    })
   }
   final pi = 4.0 * delta * futures.sum {f -> f.get()}
   final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
