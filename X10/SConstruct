@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 ####  With X10 2.0.[23] things compile using the Java backend but the sequential code seems to cause all
 ####  cores to go to 90% for what appears to be forever.  Making use instead of the C++ backend which has
@@ -46,5 +46,7 @@ for item in Glob('Pi_*.x10'):
     SideEffect('xxx_main_xxx.cc', x10Executable)
     addCompileTarget(x10Executable)
     addRunTarget(x10Environment, x10Executable)
+
+Default(compileTargets)
 
 Help(createHelp())

@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 ccFlags = ['-O3', '-Wall', '-Wextra', '-std=c99']
 
@@ -29,5 +29,7 @@ cRule('pi_sequential*.c')
 cRule('pi_pthread*.c', libs=['pthread'])
 cRule('pi_mpi*.c', compiler='mpicc')  #  This execution target runs things sequentially.  Use the command "mpirun -np N pi_c_mpi" to run the code on N processors.
 cRule('pi_openmp*.c', cflags=ccFlags + ['-fopenmp'], libs=['gomp'])  #  Assumes gcc is 4.2.0 or greater since that is when gomp was included.
+
+Default(compileTargets)
 
 Help(createHelp())

@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 fortranFlags = ['-O3', '-std=f2008', '-ffree-form', '-pedantic', '-Wall']
 
@@ -27,5 +27,7 @@ def fortranRule(globPattern, compiler='gfortran', fortranflags=fortranFlags, lin
 fortranRule('pi_sequential*.f')
 fortranRule('pi_openmp*.f', fortranflags=fortranFlags + ['-fopenmp'], libs=['gomp'])
 fortranRule('pi_mpi*.f', compiler='mpif90')
+
+Default(compileTargets)
 
 Help(createHelp())

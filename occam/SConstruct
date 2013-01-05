@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 #  As far as is known there is no occam implementation packaged in Debian Squeeze or Ubuntu Lucid.  We
 #  therefore use KRoC which will be installed somewhere known to the shell.  It doesn't seem obvious how to
@@ -21,5 +21,7 @@ for item in Glob('pi_*.occ'):
     root = os.path.splitext(item.name)[0]
     addRunTarget(occamEnvironment,
                  addCompileTarget(occamEnvironment.Command(root, item.name, 'kroc -o $TARGET $SOURCE')))
+
+Default(compileTargets)
 
 Help(createHelp())

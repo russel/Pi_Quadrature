@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 fortressEnvironment = Environment(tools=['latex'], ENV=os.environ)
 
@@ -20,5 +20,7 @@ for item in Glob('*.fss'):
         pdfDocument = fortressEnvironment.PDF(fortressCodeRoot + '_document.ltx')
         Depends(pdfDocument, fortressEnvironment.Command(fortressCodeRoot + '.tex', item.name, 'fortify $SOURCE'))
         addCompileTarget(Alias('typesetFortress', pdfDocument))
+
+Default(compileTargets)
 
 Help(createHelp())

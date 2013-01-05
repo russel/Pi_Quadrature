@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 cSharpEnvironment = Environment(tools=['csharp'])
 
@@ -18,5 +18,7 @@ for item in Glob('Pi_*.cs'):
         'mono {}',
         lambda x: x.replace('.exe', '')
     )
+
+Default(compileTargets)
 
 Help(createHelp())

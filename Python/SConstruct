@@ -19,7 +19,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 ccFlags = ['-O3', '-Wall', '-Wextra']
 
@@ -81,19 +81,25 @@ for item in Glob('pi_python*.py'):
             extension += '_py' + majorVersion
         extensionName = '{}_{}'.format(extensionRoot, extension)
         if extensionName not in extensionsSharedLibraries.keys():
-            extensionsSharedLibraries[extensionName] = pythonEnvironment.SharedLibrary(extensionName,
-                    pythonEnvironment.Command('{}_{}.c'.format(extensionRoot, extension), '{}_{}.pyx'.format(extensionRoot, extension),
+            extensionsSharedLibraries[extensionName] = pythonEnvironment.SharedLibrary(
+                extensionName,
+                pythonEnvironment.Command(
+                    '{}_{}.c'.format(extensionRoot, extension),
+                    '{}_{}.pyx'.format(extensionRoot, extension),
                     extensionsData[extension]['COMMAND'] + ' $SOURCE') if extension.split('_')[0] in ['pyrex', 'cython'] else '{}_{}.{}'.format(extensionRoot, extension, extension),
-                    CPPPATH=extensionsData[extension]['CPPPATH'],
-                    CFLAGS=extensionsData[extension]['CFLAGS'], CXXFLAGS=extensionsData[extension]['CFLAGS'],
-                    SHLIBPREFIX='', LINKFLAGS=extensionsData[extension]['LINKFLAGS'])
-        addRunTarget(pythonEnvironment, item, 'LD_LIBRARY_PATH=. ./$SOURCE')
+                CPPPATH=extensionsData[extension]['CPPPATH'],
+                CFLAGS=extensionsData[extension]['CFLAGS'],
+                CXXFLAGS=extensionsData[extension]['CFLAGS'],
+                SHLIBPREFIX='',
+                LINKFLAGS=extensionsData[extension]['LINKFLAGS'])
         Depends(item, extensionsSharedLibraries[extensionName])
+        addRunTarget(pythonEnvironment, item, 'LD_LIBRARY_PATH=. ./$SOURCE')
     else:
         addRunTarget(pythonEnvironment, item)
 
-compilePythonExtensions = addCompileTarget(Alias('compilePythonExtensions', extensionsSharedLibraries.values()))
+for item in extensionsSharedLibraries.values():
+    addCompileTarget(item)
 
-Default(compilePythonExtensions)
+Default(compileTargets)
 
 Help(createHelp())

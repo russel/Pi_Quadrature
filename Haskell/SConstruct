@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 #  Haskell jobs run in a single thread by default (which is what happens here).  Run the executable with
 #  "+RTS -Nx" to run with x OS threads.
@@ -31,5 +31,7 @@ for item in Glob('pi_*.hs'):
         SideEffect([root + ext for ext in generatedExtensions] + ['output' + ext for ext in generatedExtensions],  root)
     else:
         addRunTarget(haskellEnvironment, addCompileTarget(haskellEnvironment.HaskellProgram(item, HSLINKFLAGS=['--make'])))
+
+Default(compileTargets)
 
 Help(createHelp())

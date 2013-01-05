@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 ocamlEnvironment = Environment(tools=[])  #, ENV=os.environ)
 
@@ -23,5 +23,7 @@ for item in Glob('pi_*.ml'):
     addRunTarget(ocamlEnvironment,
         addCompileTarget(ocamlEnvironment.Command(root, item.name, 'ocamlopt -o $TARGET {} $SOURCE'.format(extraOptions))))
     SideEffect([root + '.' + extension for extension in ['cmi', 'cmx', 'o']], root)
+
+Default(compileTargets)
 
 Help(createHelp())

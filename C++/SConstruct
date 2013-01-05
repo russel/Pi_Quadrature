@@ -9,7 +9,7 @@ import re
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp, libraryPath
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp, libraryPath
 
 extraLibName = libraryPath()
 
@@ -52,5 +52,7 @@ cppRule('pi_tbb*.cpp', libs=['tbb'])
 
 cppRule('pi_cppcsp2.cpp', cpppath=[os.environ['HOME'] + '/include'], libpath=[extraLibName], libs=['cppcsp2', 'pthread'])
 cppRule('pi_justThread*.cpp', cpppath=[extraLibName + '/JustThreadPro/include'], linkflags=['--static'], libpath=[extraLibName + '/JustThreadPro/libs'], libs=['justthread'])
+
+Default(compileTargets)
 
 Help(createHelp())

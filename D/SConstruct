@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 ##  DMD 2.059 worked, DMD 2.060 has issues – various problems with the thread. GDC on Debian as at
 ## 2012-09-06 realizes D 2.056 and so barfs on some constructs introduced after that version. LDC compiled
@@ -41,5 +41,7 @@ outputFunctions = dEnvironment.Object('outputFunctions.d')
 for item in Glob('pi_*.d'):
     root = os.path.splitext(item.name)[0]
     addRunTarget(dEnvironment, addCompileTarget(dEnvironment.Program([item, outputFunctions])))
+
+Default(compileTargets)
 
 Help(createHelp())

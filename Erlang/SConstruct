@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
 erlangEnvironment = Environment(tools=['erlang'])
 
@@ -23,5 +23,7 @@ for item in Glob('pi_*.erl'):
     Depends(compiledFile, [microsecondTime, output])
     #  Executing an Erlang program can result in a crash dump file so let SCons know this.
     SideEffect('erl_crash.dump',  runTarget[0].name)
+
+Default(compileTargets)
 
 Help(createHelp())
