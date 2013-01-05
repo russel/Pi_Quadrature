@@ -1,4 +1,4 @@
-;  Calculation of Pi using quadrature. Parallel algorithm using futures.
+;  Calculation of π using quadrature. Parallel algorithm using futures.
 ;
 ;  Copyright © 2009–2011, 2013  Russel Winder
 

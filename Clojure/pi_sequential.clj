@@ -1,4 +1,4 @@
-;  Calculation of Pi using quadrature. Sequential algorithm.
+;  Calculation of π using quadrature. Sequential algorithm.
 ;
 ;  Copyright © 2009–2011, 2013  Russel Winder
 
