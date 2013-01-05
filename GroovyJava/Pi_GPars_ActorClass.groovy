@@ -3,7 +3,7 @@
 /*
  *  Calculation of π using quadrature realized with GPars actors.  Done with class(es).
  *
- *  Copyright © 2009–2012 Russel Winder.
+ *  Copyright © 2009–2013  Russel Winder.
  */
 
 import java.util.List
@@ -49,7 +49,7 @@ public class Pi_GroovyJava_GPars_ActorClass {
     accumulator.join()
     final pi = 4.0d * delta * accumulator.sum
     final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
-    Output.out(getClass().name, pi, n, elapseTime, actorCount)
+    Output.out('Pi_GPars_ActorClass', pi, n, elapseTime, actorCount)
   }
 
   public static void main(final String[] args) {

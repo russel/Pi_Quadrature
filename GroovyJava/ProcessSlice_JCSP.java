@@ -4,8 +4,6 @@
  *  Copyright © 2010–2013  Russel Winder
  */
 
-package uk.org.winder.pi_quadrature;
-
 import org.jcsp.lang.ChannelOutput;
 import org.jcsp.lang.CSProcess;
 

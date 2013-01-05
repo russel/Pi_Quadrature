@@ -4,8 +4,6 @@
  *  Copyright © 2010–2011, 2013  Russel Winder
  */
 
-package uk.org.winder.pi_quadrature;
-
 public class ProcessSlice {
   private final int taskId;
   private final int sliceSize;

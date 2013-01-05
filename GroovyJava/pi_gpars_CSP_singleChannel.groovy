@@ -7,6 +7,7 @@
  *  Copyright © 2010–2012 Russel Winder
  */
 
+@Grab('org.codehaus.jcsp:jcsp:1.1-rc5')
 import org.jcsp.lang.Channel
 import org.jcsp.lang.CSProcess
 
@@ -18,9 +19,9 @@ void execute(final numberOfTasks) {
   final startTimeNanos = System.nanoTime()
   final sliceSize = (int)(n / numberOfTasks)
   final channel = Channel.any2one()
-  final processes = (0 ..< numberOfTasks).collect {id -> new ProcessSlice_JCSP(id, sliceSize, delta, channel.out())}
+  final processes = (0 ..< numberOfTasks).collect{id -> new ProcessSlice_JCSP(id, sliceSize, delta, channel.out())}
   processes << {
-    final pi = 4.0 * delta * (0 ..< numberOfTasks).sum {channel.in().read()}
+    final pi = 4.0 * delta * (0 ..< numberOfTasks).sum{channel.in().read()}
     final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
     Output.out(getClass().name, pi, n, elapseTime, numberOfTasks)
   } as CSProcess
