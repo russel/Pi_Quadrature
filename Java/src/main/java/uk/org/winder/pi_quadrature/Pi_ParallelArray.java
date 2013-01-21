@@ -7,10 +7,10 @@
 
 package uk.org.winder.pi_quadrature;
 
-import extra166y.CommonOps;
-import extra166y.Ops;
-import extra166y.ParallelDoubleArray;
-import extra166y.ParallelDoubleArrayWithDoubleMapping;
+import groovyx.gpars.extra166y.CommonOps;
+import groovyx.gpars.extra166y.Ops;
+import groovyx.gpars.extra166y.ParallelDoubleArray;
+import groovyx.gpars.extra166y.ParallelDoubleArrayWithDoubleMapping;
 
 public class Pi_ParallelArray {
 
