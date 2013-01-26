@@ -1,4 +1,4 @@
-= π by Quadrature
+# π by Quadrature
 
 This directory contains various implementations in various programming languages of the embarrassingly
 parallel problem of calculating and approximation of the value of π using quadrature. (Quadrature in this
