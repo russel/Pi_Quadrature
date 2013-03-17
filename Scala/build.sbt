@@ -2,11 +2,10 @@ name := "Pi Quadrature"
 
 version := "0.0.0"
 
-//scalaVersion := "2.10.0-RC5"
-scalaVersion := "2.9.2"
+scalaVersion := "2.10.0"
 
-//libraryDependencies += "org.scalaz" % "scalaz-core_2.10.0-RC5" % "7.0.0-M6"
-//libraryDependencies += "org.scalaz" % "scalaz-core_2.10.0-RC5" % "6.0.4"
-libraryDependencies += "org.scalaz" % "scalaz-core_2.9.2" % "6.0.4"
+libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.1.0"
+
+libraryDependencies += "org.scalaz" %% "scalaz-core" % "6.0.4"
 
 libraryDependencies += "org.functionaljava" % "functionaljava" % "3.0"
