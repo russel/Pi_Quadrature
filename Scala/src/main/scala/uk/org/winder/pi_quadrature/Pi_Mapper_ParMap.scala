@@ -1,5 +1,5 @@
 /*
- *  Calculation of Pi using quadrature realized with a parallel map.
+ *  Calculation of π using quadrature realized with a parallel map.
  *
  *  Copyright © 2009–2013  Russel Winder
  */

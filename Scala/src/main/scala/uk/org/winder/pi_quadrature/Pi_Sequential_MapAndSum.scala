@@ -1,5 +1,5 @@
 /*
- *  Calculation of Pi using quadrature realized with a scatter/gather approach using futures.
+ *  Calculation of π using quadrature realized with map.
  *
  *  Copyright © 2009–2013  Russel Winder
  */
@@ -20,7 +20,7 @@ object Pi_Sequential_MapAndSum {
       }
     val pi = 4.0 * delta * (0 until n).iterator.map(f).sum
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_Futures", pi, n, elapseTime)
+    out("Pi_Sequential_MapAndSum", pi, n, elapseTime)
   }
 
 }

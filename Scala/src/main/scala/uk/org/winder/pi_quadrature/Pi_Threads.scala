@@ -1,5 +1,5 @@
 /*
- *  Calculation of Pi using quadrature realized with a scatter/gather approach using threads.
+ *  Calculation of π using quadrature realized with a scatter/gather approach using threads.
  *
  *  Copyright © 2009–2013  Russel Winder
  */

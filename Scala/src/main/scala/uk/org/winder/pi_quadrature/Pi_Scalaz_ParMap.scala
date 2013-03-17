@@ -1,5 +1,5 @@
 /*
- *  Calculation of Pi using quadrature realized with a parallel map.
+ *  Calculation of π using quadrature realized with a Scalaz parallel map.
  *
  *  Copyright © 2009–2013  Russel Winder
  */
@@ -9,10 +9,9 @@ package uk.org.winder.pi_quadrature
 //  This seems to execute fine but it takes a very long time to terminate after the results have been
 //  output.  Very strange and :-((
 
-import scalaz._
-import Scalaz._
+import scalaz.Scalaz._
 
-//  This pulls in all the implicit values needed by the parmap function to make use of an Executor.
+//  This pulls in all the implicit values needed by the parMap function to make use of an Executor.
 import scalaz.concurrent.Strategy.Executor
 
 //  But now we will have to specify which Executor.

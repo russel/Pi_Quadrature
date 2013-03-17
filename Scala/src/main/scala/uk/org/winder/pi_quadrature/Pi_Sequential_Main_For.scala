@@ -1,5 +1,5 @@
 /*
- *  Calculation of Pi using quadrature realized with a basic sequential algorithm using a for statement.
+ *  Calculation of π using quadrature realized with a basic sequential algorithm using a for statement.
  *
  *  Copyright © 2009–2013  Russel Winder
  */

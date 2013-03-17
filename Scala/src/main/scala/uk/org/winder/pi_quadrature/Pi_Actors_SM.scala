@@ -1,5 +1,5 @@
 /*
- *  Calculation of Pi using quadrature realized with a scatter/gather approach using an actor system.
+ *  Calculation of π using quadrature realized with a scatter/gather approach using an actor system.
  *
  *  Copyright © 2011  SarahMount
  *  Copyright © 2011–2013  Russel Winder
@@ -9,14 +9,17 @@
 
 package uk.org.winder.pi_quadrature
 
-import scala.actors.Actor
+import akka.actor.{Actor, ActorRef, ActorSystem}
+import akka.actor.Props
 
 import Output.out
 
 object Pi_Actors_SM {
 
-  class Calculator(id:Int, sliceSize:Int, delta:Double, accumulator:Actor) extends Actor {
-    def act {
+  implicit val system = ActorSystem("PiActorsSM")
+
+  class Calculator(id:Int, sliceSize:Int, delta:Double, accumulator:ActorRef) extends Actor {
+    override def preStart {
       var sum = 0.0
       var x  = 0.0
       for (i <- 1 + id * sliceSize to (id + 1) * sliceSize + 1) {
@@ -25,21 +28,22 @@ object Pi_Actors_SM {
       }
       accumulator ! sum
     }
+    def receive = { case o:Object => }
   }
 
-  class Accumulator(numberOfActors:Int, delta:Double) extends Actor {
+  class Accumulator(numberOfActors:Int, n:Int, delta:Double, startTimeNanos:Double) extends Actor {
     var sum = 0.0
-    def act {
-      receive {
-        case i:Int =>
-          for (i <- 0 until numberOfActors) {
-            receive {
-	      case d:Double =>
-    	        sum += d.asInstanceOf[Double]
-            }
-          }
-          reply(4.0 * delta * sum)
-      }
+    var i = 0
+    def receive = {
+	  case d:Double =>
+        sum += d.asInstanceOf[Double]
+        i += 1
+        if (i == numberOfActors) {
+          val pi = 4.0 * delta * sum
+          val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
+          out("Pi_Actors_SM", pi, n, elapseTime, numberOfActors)
+          sequencer ! 0
+        }
     }
   }
 
@@ -48,23 +52,23 @@ object Pi_Actors_SM {
     val delta = 1.0 / n
     val startTimeNanos = System.nanoTime
     val sliceSize = n / numberOfActors
-    val accumulator = new Accumulator(numberOfActors, delta)
-    accumulator.start()
-    accumulator ! 0
-    val calculators = for (i <- 0 until numberOfActors) yield new Calculator(i, sliceSize, delta, accumulator)
-    calculators.foreach(_.start())
-    Actor.receive {
-      case pi:Double =>
-        val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-        out("Pi_Actors_SM", pi, n, elapseTime, numberOfActors)
-    }
+    val accumulator = system.actorOf(Props(new Accumulator(numberOfActors, n, delta, startTimeNanos)))
+    for (i <- 0 until numberOfActors) yield system.actorOf(Props(new Calculator(i, sliceSize, delta, accumulator)))
   }
 
+  val sequencer = system.actorOf(Props(new Actor {
+    val numbers = List(1, 2, 8, 32)
+    var index = -1
+    def receive = {
+      case i:Int =>
+        index += 1
+        if (index == numbers.size) { system.shutdown }
+        else { execute(numbers(index)) }
+    }
+  }))
+
   def main(args:Array[String]) {
-    execute(1)
-    execute(2)
-    execute(8)
-    execute(32)
+    sequencer ! 0
   }
 
 }

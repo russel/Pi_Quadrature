@@ -1,5 +1,5 @@
 /*
- *  Calculation of Pi using quadrature realized with a scatter/gather approach using futures.
+ *  Calculation of π using quadrature realized with a scatter/gather approach using futures.
  *
  *  Copyright © 2009–2013  Russel Winder
  */

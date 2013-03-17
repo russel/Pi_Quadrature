@@ -1,5 +1,5 @@
 /*
- *  Calculation of Pi using quadrature realized with a parallel map.
+ *  Calculation of π using quadrature realized with a parallel map.
  *
  *  Copyright © 2009–2013  Russel Winder
  */
@@ -8,7 +8,7 @@ package uk.org.winder.pi_quadrature
 
 import Output.out
 
-object Pi_ParallelMap_Batched {
+object Pi_ParMap_Batched {
 
   def execute(numberOfThreads:Int) {
     val n = 1000000000
