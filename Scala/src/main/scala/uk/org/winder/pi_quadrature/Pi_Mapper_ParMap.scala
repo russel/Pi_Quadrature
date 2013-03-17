@@ -7,12 +7,13 @@
 package uk.org.winder.pi_quadrature
 
 import scala.actors.Futures
+import scala.reflect.ClassTag
 
 import Output.out
 
 object Pi_Mapper_ParMap {
 
-  class Mapper[A,B:ClassManifest](data:List[A] , function:A => B) {
+  class Mapper[A,B:ClassTag](data:List[A] , function:A => B) {
     val pmap = {
       val buffer = new Array[B](data.length)
       val mappers = for (index <- 0 until data.length) yield Futures.future { buffer(index) = function(data(index)) }
