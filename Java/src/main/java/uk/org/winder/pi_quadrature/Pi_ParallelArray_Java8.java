@@ -12,7 +12,7 @@ import groovyx.gpars.extra166y.Ops;
 import groovyx.gpars.extra166y.ParallelDoubleArray;
 import groovyx.gpars.extra166y.ParallelDoubleArrayWithDoubleMapping;
 
-public class Pi_ParallelArray {
+public class Pi_ParallelArray_Java8 {
 
   private static void execute(final int numberOfTasks) {
     final int n = 1000000000;
@@ -20,8 +20,7 @@ public class Pi_ParallelArray {
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
     final ParallelDoubleArray initialArray = ParallelDoubleArray.create(numberOfTasks, ParallelDoubleArray.defaultExecutor());
-    final ParallelDoubleArrayWithDoubleMapping finalArray = initialArray.withIndexedMapping(new Ops.IntAndDoubleToDouble() {
-        @Override public double op(final int taskId, final double initialValue) {
+    final ParallelDoubleArrayWithDoubleMapping finalArray = initialArray.withIndexedMapping((taskId, initialValue) -> {
           final int start = 1 + taskId * sliceSize;
           final int end = (taskId + 1) * sliceSize;
           double sum = 0.0;
@@ -30,16 +29,15 @@ public class Pi_ParallelArray {
             sum += 1.0 / (1.0 + x * x);
           }
           return sum;
-        }
       });
-    final double pi = 4.0 * delta * finalArray.reduce(CommonOps.doubleAdder(), 0.0);
+    final double pi = 4.0 * delta * finalArray.reduce((a, b) -> a + b, 0.0);
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out("Pi_ParallelArray", pi, n, elapseTime, numberOfTasks);
+    Output.out("Pi_ParallelArray_Java8", pi, n, elapseTime, numberOfTasks);
   }
   public static void main(final String[] args) {
-    Pi_ParallelArray.execute(1);
-    Pi_ParallelArray.execute(2);
-    Pi_ParallelArray.execute(8);
-    Pi_ParallelArray.execute(32);
+    Pi_ParallelArray_Java8.execute(1);
+    Pi_ParallelArray_Java8.execute(2);
+    Pi_ParallelArray_Java8.execute(8);
+    Pi_ParallelArray_Java8.execute(32);
   }
 }
