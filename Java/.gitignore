@@ -1,8 +1,12 @@
 /.gradle/
 /.idea/
 Pi Quadrature Java.iml
+Pi Quadrature Java.ipr
+Pi Quadrature Java.iws
 .project
 /.settings/
 .classpath
 /classes/
 /build/
+/bin/
+/out/
