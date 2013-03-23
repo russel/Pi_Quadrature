@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 apply plugin: 'eclipse'
-//apply plugin: 'idea'
+apply plugin: 'idea'
 
 repositories {
     mavenCentral()
@@ -35,7 +35,6 @@ task wrapper (type:Wrapper) {
     gradleVersion = '1.4'
 }
 
-/*
 idea {
     module {
         excludeDirs += file('gradle/') // Gradle directory including the wrapper subdirectory.
@@ -46,7 +45,8 @@ idea {
         excludeDirs += file('docs') // Jon's book directory
     }
     project {
-        ext.javaVersion = '1.8'
+        javaVersion = '1.8'
+        jdk.languageLevel = '1.8'
         ipr {
             withXml { provider ->
                 def node = provider.asNode()
@@ -55,10 +55,6 @@ idea {
                 def gradleSettings = node.appendNode('component', [name: 'GradleSettings'])
                 gradleSettings.appendNode('option', [name: 'SDK_HOME', value: gradle.gradleHomeDir.absolutePath])
             }
-            whenMerged { project ->
-                project.jdk.languageLevel = 'JDK_1_8'
-            }
         }
     }
 }
-*/
