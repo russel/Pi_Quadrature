@@ -6,17 +6,17 @@
 
 package uk.org.winder.pi_quadrature;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
-public class Pi_SequentialStream {
+public class Pi_ParallelStream_Java8 {
   private static void execute(final int numberOfTasks) {
     final int n = 1000000000;
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
-    final ArrayList<Integer> indexes = new ArrayList<>();
-    for (int i = 0 ; i < numberOfTasks; ++i) { indexes.add(i); }
-    final double pi = 4.0 * delta * indexes.stream().map((taskId) -> {
+    final int[] indexes = new int[numberOfTasks];
+    for (int i = 0 ; i < indexes.length; ++i) { indexes[i] = i; }
+    final double pi = 4.0 * delta * Arrays.parallelStream(indexes).map((taskId) -> {
         final int start = 1 + taskId * sliceSize;
         final int end = (taskId + 1) * sliceSize;
         double sum = 0.0;
@@ -27,12 +27,12 @@ public class Pi_SequentialStream {
         return sum;
       }).reduce((a, b) -> a + b).getAsDouble();
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out("Pi_SequentialStream", pi, n, elapseTime, numberOfTasks);
+    Output.out("Pi_ParallelStream_Java8", pi, n, elapseTime, numberOfTasks);
   }
   public static void main(final String[] args) {
-    Pi_SequentialStream.execute(1);
-    Pi_SequentialStream.execute(2);
-    Pi_SequentialStream.execute(8);
-    Pi_SequentialStream.execute(32);
+    Pi_ParallelStream_Java8.execute(1);
+    Pi_ParallelStream_Java8.execute(2);
+    Pi_ParallelStream_Java8.execute(8);
+    Pi_ParallelStream_Java8.execute(32);
   }
 }
