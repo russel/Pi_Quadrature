@@ -45,8 +45,7 @@ public class Pi_GPars_DataflowAndAgent {
             final double currentSum = localSum;
             sum.send(new MessagingRunnable<Accumulator>() {
                 private static final long serialVersionUID = 1L;
-
-								@Override protected void doRun(final Accumulator t) {
+                @Override protected void doRun(final Accumulator t) {
                   t.add(currentSum);
                 }
               });
