@@ -24,17 +24,16 @@ public class Pi_ForkJoinCollection_Java8 {
     final ArrayList<Callable<Double>> callables = new ArrayList<>();
     for (int i = 0; i < numberOfTasks; ++i) {
       final int taskId = i;
-      callables.add(
-                    () -> {
-                      final int start = 1 + taskId * sliceSize;
-                      final int end = (taskId + 1) * sliceSize;
-                      double sum = 0.0;
-                      for (int ii = start; ii <= end; ++ii) {
-                        final double x = (ii - 0.5) * delta;
-                        sum += 1.0 / (1.0 + x * x);
-                      }
-                      return sum;
-                    });
+      callables.add(() -> {
+          final int start = 1 + taskId * sliceSize;
+          final int end = (taskId + 1) * sliceSize;
+          double sum = 0.0;
+          for (int ii = start; ii <= end; ++ii) {
+            final double x = (ii - 0.5) * delta;
+            sum += 1.0 / (1.0 + x * x);
+          }
+          return sum;
+        });
     }
     final ForkJoinPool pool = new ForkJoinPool(numberOfTasks);
     double sum = 0.0;

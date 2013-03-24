@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-public class Pi_Futures {
+public class Pi_Futures_Java7 {
 
   private static void execute(final int numberOfTasks) {
     final int n = 1000000000;
@@ -23,7 +23,7 @@ public class Pi_Futures {
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
     final ExecutorService executor = new ScheduledThreadPoolExecutor(numberOfTasks);
-    final ArrayList<Future<Double>> futures = new ArrayList<Future<Double>>();
+    final ArrayList<Future<Double>> futures = new ArrayList<>();
     for (int i = 0; i < numberOfTasks; ++i) {
       final int taskId = i;
       futures.add(executor.submit(new Callable<Double>() {
@@ -42,19 +42,18 @@ public class Pi_Futures {
     double sum = 0.0;
     for (final Future<Double> f : futures) {
       try { sum += f.get(); }
-      catch(final InterruptedException ie) { throw new RuntimeException(ie); }
-      catch(final ExecutionException ee) { throw new RuntimeException(ee); }
+      catch (InterruptedException | ExecutionException e) { throw new RuntimeException(e); }
     }
+    executor.shutdown();
     final double pi = 4.0 * delta * sum;
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    executor.shutdown();
-    Output.out("Pi_Futures", pi, n, elapseTime, numberOfTasks);
+    Output.out("Pi_Futures_Java7", pi, n, elapseTime, numberOfTasks);
   }
 
   public static void main(final String[] args) {
-    Pi_Futures.execute(1);
-    Pi_Futures.execute(2);
-    Pi_Futures.execute(8);
-    Pi_Futures.execute(32);
+    Pi_Futures_Java7.execute(1);
+    Pi_Futures_Java7.execute(2);
+    Pi_Futures_Java7.execute(8);
+    Pi_Futures_Java7.execute(32);
   }
 }
