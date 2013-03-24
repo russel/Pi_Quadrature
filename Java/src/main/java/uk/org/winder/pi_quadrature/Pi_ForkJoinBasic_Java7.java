@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 
-public class Pi_ForkJoinBasic {
+public class Pi_ForkJoinBasic_Java7 {
 
   private static void execute(final int numberOfTasks) {
     final int n = 1000000000;
@@ -39,19 +39,18 @@ public class Pi_ForkJoinBasic {
     double sum = 0.0;
     for (final ForkJoinTask<Double> f : futures) {
       try { sum += f.get(); }
-      catch(final InterruptedException ie) { throw new RuntimeException(ie); }
-      catch(final ExecutionException ee) { throw new RuntimeException(ee); }
+      catch (InterruptedException | ExecutionException e) { throw new RuntimeException(e); }
     }
+    //pool.shutdown();
     final double pi = 4.0 * delta * sum;
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    //pool.shutdown();
-    Output.out("Pi_ForkJoinBasic", pi, n, elapseTime, numberOfTasks);
+    Output.out("Pi_ForkJoinBasic_Java7", pi, n, elapseTime, numberOfTasks);
   }
 
   public static void main(final String[] args) {
-    Pi_ForkJoinBasic.execute(1);
-    Pi_ForkJoinBasic.execute(2);
-    Pi_ForkJoinBasic.execute(8);
-    Pi_ForkJoinBasic.execute(32);
+    Pi_ForkJoinBasic_Java7.execute(1);
+    Pi_ForkJoinBasic_Java7.execute(2);
+    Pi_ForkJoinBasic_Java7.execute(8);
+    Pi_ForkJoinBasic_Java7.execute(32);
   }
 }
