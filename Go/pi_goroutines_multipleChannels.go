@@ -30,15 +30,11 @@ func execute(numberOfTasks int) {
 	runtime.GOMAXPROCS(numberOfTasks)
 	sliceSize := n / numberOfTasks
 	channels := make([]chan float64, numberOfTasks)
-	for i := 0; i < numberOfTasks; i++ {
+	for i := 0; i < len(channels); i++ {
 		channels[i] = make(chan float64)
 		go processSlice(i, sliceSize, delta, channels[i])
 	}
-	sum := float64(0.0)
-	for _, c := range channels {
-		sum += <- c
-	}
-	pi := 4.0 * delta * sum
+	pi := 4.0 * delta * func() (sum float64) { for _, c := range channels { sum += <- c }; return }()
 	elapseTime := time.Now().Sub(startTime)
 	output.OutP("Goroutines Multiple Channels", pi, n, elapseTime, numberOfTasks)
 }
