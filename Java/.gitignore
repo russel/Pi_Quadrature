@@ -1,12 +1,13 @@
 /.gradle/
 /.idea/
-Pi Quadrature Java.iml
-Pi Quadrature Java.ipr
-Pi Quadrature Java.iws
-.project
+/Pi Quadrature Java.iml
+/Pi Quadrature Java.ipr
+/Pi Quadrature Java.iws
+/.project
 /.settings/
-.classpath
+/.classpath
 /classes/
 /build/
 /bin/
 /out/
+/gradle-app.setting
