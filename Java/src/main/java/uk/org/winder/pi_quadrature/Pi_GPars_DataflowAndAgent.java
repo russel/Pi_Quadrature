@@ -30,7 +30,7 @@ public class Pi_GPars_DataflowAndAgent {
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
     final Promise<?>[] tasks = new Promise[numberOfTasks];
-    final Agent<Accumulator> sum = new Agent<Accumulator>(new Accumulator());
+    final Agent<Accumulator> sum = new Agent<>(new Accumulator());
     for (int i = 0; i < numberOfTasks; ++i) {
       final int taskId = i;
       tasks[taskId] = Dataflow.task(new Runnable() {
