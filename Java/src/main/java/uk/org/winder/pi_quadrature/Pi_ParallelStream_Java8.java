@@ -6,7 +6,7 @@
 
 package uk.org.winder.pi_quadrature;
 
-import java.util.Arrays;
+import java.util.stream.Streams;
 
 public class Pi_ParallelStream_Java8 {
   private static void execute(final int numberOfTasks) {
@@ -14,9 +14,7 @@ public class Pi_ParallelStream_Java8 {
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
-    final int[] indexes = new int[numberOfTasks];
-    for (int i = 0 ; i < indexes.length; ++i) { indexes[i] = i; }
-    final double pi = 4.0 * delta * Arrays.parallelStream(indexes).map(taskId -> {
+    final double pi = 4.0 * delta * Streams.intRange(0, numberOfTasks).parallel().map(taskId -> {
         final int start = 1 + taskId * sliceSize;
         final int end = (taskId + 1) * sliceSize;
         double sum = 0.0;
