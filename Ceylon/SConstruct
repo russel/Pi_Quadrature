@@ -11,8 +11,7 @@ sys.path.append('../site_scons')
 from executablesupport import addCompileTarget, addRunTarget, createHelp, libraryPath
 
 ceylonEnvironment = Environment(
-    ENV = os.environ,
-    JAVA_HOME=os.path.join(libraryPath(), 'JDK7')
+    ENV=os.environ,  # Needed as the Ceylon script requires tput and hence $TERM.
     )
 
 buildProducts = addCompileTarget(ceylonEnvironment.Command('compile', 'pi_sequential.ceylon', 'ceylon compile --src . $SOURCE'))
