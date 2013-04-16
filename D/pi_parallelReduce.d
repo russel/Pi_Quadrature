@@ -26,7 +26,7 @@ int main(immutable string[] args) {
   //  for specifying a lambda function.
   //immutable pi = 4.0 * delta * taskPool.reduce !((a, b) { return a + b; }) (
   //immutable pi = 4.0 * delta * taskPool.reduce !((a, b) => a + b) (
-  immutable pi = 4.0 * delta * taskPool.reduce!("a + b")(
+  immutable pi = 4.0 * delta * taskPool.reduce!"a + b"(
       map!((int i) { immutable x = (i - 0.5) * delta; return 1.0 / (1.0 + x * x); })(iota(n)));
   stopWatch.stop();
   immutable elapseTime = stopWatch.peek().hnsecs * 100e-9;
