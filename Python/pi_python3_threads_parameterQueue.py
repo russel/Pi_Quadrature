@@ -3,7 +3,7 @@
 #  Calculation of π using quadrature. Uses threads but this gives no parallelism because of the GIL.
 #  This version passes a reference to a thread-safe list to each child to pass back results to the parent.
 #
-#  Copyright © 2008–2012 Russel Winder
+#  Copyright © 2008–2013 Russel Winder
 
 from output import out
 from queue import Queue
@@ -26,9 +26,7 @@ def execute(threadCount):
     threads = [Thread(target=processSlice, args=(i, sliceSize, delta, results)) for i in range(0, threadCount)]
     for thread in threads:
         thread.start()
-    for thread in threads:
-        thread.join()
-    pi = 4.0 * delta * sum([results.get() for i in range(threadCount)])
+    pi = 4.0 * delta * sum(results.get() for i in range(threadCount))
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, threadCount)
 

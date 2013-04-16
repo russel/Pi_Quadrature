@@ -3,7 +3,7 @@
 
 #  Calculation of π using quadrature. Uses the pycsp package byRune Møllegaard Friborg.
 #
-#  Copyright © 2009–2012 Russel Winder
+#  Copyright © 2009–2013 Russel Winder
 
 from output import out
 from pycsp.processes import process, Channel, Parallel
@@ -19,7 +19,7 @@ def calculator(channel, id, sliceSize, delta):
 
 @process
 def accumulator(channel, n, delta, startTime, processCount):
-    pi = 4.0 * delta * sum([channel() for i in xrange(0, processCount)])
+    pi = 4.0 * delta * sum(channel() for i in xrange(0, processCount))
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
 

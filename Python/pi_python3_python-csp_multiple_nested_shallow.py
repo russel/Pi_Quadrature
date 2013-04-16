@@ -2,7 +2,7 @@
 
 #  Calculation of π using quadrature. Uses the python-csp package by Sarah Mount.
 #
-#  Copyright © 2009–2012 Russel Winder
+#  Copyright © 2009–2013 Russel Winder
 
 from csp.os_process import process, Channel, Par
 from output import out
@@ -25,7 +25,7 @@ def execute(processCount):
 
     @process
     def accumulator():
-        pi = 4.0 * delta * sum([channel.read() for channel in channels])
+        pi = 4.0 * delta * sum(channel.read() for channel in channels)
         elapseTime = time() - startTime
         out(__file__, pi, n, elapseTime, processCount)
 

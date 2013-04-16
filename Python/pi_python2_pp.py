@@ -3,7 +3,7 @@
 
 #  Calculation of π using quadrature. Use the Parallel Python package.
 #
-#  Copyright © 2008–2012 Russel Winder
+#  Copyright © 2008–2013 Russel Winder
 
 from output import out
 from pp import Server
@@ -23,7 +23,7 @@ def execute(processCount):
     sliceSize = n / processCount
     server = Server(secret='blahblahblah')
     jobs = [server.submit(processSlice, (i, sliceSize, delta)) for i in xrange(0, processCount)]
-    pi = 4.0 * delta * sum([job() for job in jobs])
+    pi = 4.0 * delta * sum(job() for job in jobs)
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
     server.print_stats()

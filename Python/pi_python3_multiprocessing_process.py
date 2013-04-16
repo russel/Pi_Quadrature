@@ -3,7 +3,7 @@
 #  Calculation of π using quadrature. Uses the multiprocessing package with processes sending messages to
 #  a collecting queue.
 #
-#  Copyright © 2008–2012 Russel Winder
+#  Copyright © 2008–2013 Russel Winder
 
 from multiprocessing import Queue, Process
 from output import out
@@ -25,7 +25,7 @@ def execute(processCount):
     processes = [Process(target=processSlice, args=(i, sliceSize, delta, resultsQueue)) for i in range(0, processCount)]
     for p in processes:
         p.start()
-    pi = 4.0 * delta * sum([resultsQueue.get() for i in range(0, processCount)])
+    pi = 4.0 * delta * sum(resultsQueue.get() for i in range(0, processCount))
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
 

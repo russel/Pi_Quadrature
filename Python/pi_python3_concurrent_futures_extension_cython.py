@@ -3,7 +3,7 @@
 #  Calculation of π using quadrature. Make use of the concurrent.futures facilities that are new in Python
 #  3.2.
 #
-#  Copyright © 2011–2012 Russel Winder
+#  Copyright © 2011–2013 Russel Winder
 
 from concurrent.futures import ProcessPoolExecutor
 from output import out
@@ -18,7 +18,7 @@ def execute(processCount):
     sliceSize = n // processCount
     with ProcessPoolExecutor(max_workers=processCount) as executor:
         results = [executor.submit(processSlice, i, sliceSize, delta) for i in range(processCount)]
-    pi = 4.0 * delta * sum([item.result() for item in results])
+    pi = 4.0 * delta * sum(item.result() for item in results)
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
 
