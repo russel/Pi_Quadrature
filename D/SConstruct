@@ -32,9 +32,9 @@ dEnvironment = {
                        ENV = os.environ,
                        DFLAGS=['-O', '-release'],
                        ),
-}['dmd']
+#}['dmd']
 #}['gdc']
-#}['ldc']
+}['ldc']
 
 outputFunctions = dEnvironment.Object('outputFunctions.d')
 
