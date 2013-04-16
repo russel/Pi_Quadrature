@@ -19,7 +19,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, createHelp
 
 ccFlags = ['-O3', '-Wall', '-Wextra']
 
@@ -101,5 +101,11 @@ for item in extensionsSharedLibraries.values():
     addCompileTarget(item)
 
 Default(compileTargets)
+
+def runAllTargets(targets, sources, env):
+    for s in sources:
+        print(s)
+
+Command('runAll', runTargets, runAllTargets)
 
 Help(createHelp())
