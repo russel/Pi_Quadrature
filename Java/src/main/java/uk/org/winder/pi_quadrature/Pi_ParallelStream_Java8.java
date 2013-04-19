@@ -14,7 +14,7 @@ public class Pi_ParallelStream_Java8 {
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
-    final double pi = 4.0 * delta * Streams.intRange(0, numberOfTasks).parallel().map(taskId -> {
+    final double pi = 4.0 * delta * Streams.intRange(0, numberOfTasks).parallel().mapToDouble(taskId -> {
         final int start = 1 + taskId * sliceSize;
         final int end = (taskId + 1) * sliceSize;
         double sum = 0.0;
