@@ -12,7 +12,7 @@ import ctypes
 
 @process
 def calculator(channel, id, sliceSize, delta):
-    channel.write(processSlice.processSlice(id, sliceSize, delta))
+    channel.write(processSliceModule.processSlice(id, sliceSize, delta))
 
 @process
 def accumulator(channel, n, delta, startTime, processCount):
@@ -33,9 +33,9 @@ def execute(processCount):
     Par(*processes).start()
 
 if __name__ == '__main__':
-    processSlice = ctypes.cdll.LoadLibrary('processSlice_c.so')
-    processSlice.processSlice.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_double]
-    processSlice.processSlice.restype = ctypes.c_double
+    processSliceModule = ctypes.cdll.LoadLibrary('processSlice_c.so')
+    processSliceModule.processSlice.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_double]
+    processSliceModule.processSlice.restype = ctypes.c_double
     execute(1)
     execute(2)
     execute(8)
