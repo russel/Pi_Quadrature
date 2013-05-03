@@ -19,7 +19,7 @@ import java.util.concurrent.Executors
 
 import Output.out
 
-object Pi_Scalaz_ParMap {
+object Pi_Scalaz_ParMap_Batched {
 
   implicit val pool = Executors.newCachedThreadPool
 
@@ -40,7 +40,7 @@ object Pi_Scalaz_ParMap {
     }
     val pi = 4.0 * delta * List.range(0, numberOfThreads).parMap(partialSum).get.reduceLeft(_ + _)
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_Scalaz_ParMap", pi, n, elapseTime, numberOfThreads)
+    out("Pi_Scalaz_ParMap_Batched", pi, n, elapseTime, numberOfThreads)
   }
 
   def main(args:Array[String]) {
