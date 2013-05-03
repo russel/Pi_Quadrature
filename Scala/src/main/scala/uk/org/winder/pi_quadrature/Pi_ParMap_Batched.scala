@@ -27,7 +27,7 @@ object Pi_ParMap_Batched {
     }
     val pi = 4.0 * delta * (0 until numberOfThreads).par.map(partialSum).sum
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_ParallelMap_Batched", pi, n, elapseTime, numberOfThreads)
+    out("Pi_ParMap_Batched", pi, n, elapseTime, numberOfThreads)
   }
 
   def main(args:Array[String]) {

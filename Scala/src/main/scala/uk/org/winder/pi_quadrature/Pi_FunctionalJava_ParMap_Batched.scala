@@ -19,7 +19,7 @@ import fj.data.List
 
 import Output.out
 
-object Pi_FunctionalJava_ParMap {
+object Pi_FunctionalJava_ParMap_Batched {
 
   def execute(numberOfThreads:Int) {
     val n = 1000000000
@@ -48,7 +48,7 @@ object Pi_FunctionalJava_ParMap {
       .claim
       .foldLeft1(sum)
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_FunctionalJava", pi, n, elapseTime, numberOfThreads)
+    out("Pi_FunctionalJava_ParMap_Batched", pi, n, elapseTime, numberOfThreads)
   }
 
   def main(args:Array[String]) {
