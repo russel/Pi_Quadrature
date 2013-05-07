@@ -22,6 +22,4 @@ import groovy.transform.CompileStatic
   Output.out(getClass().name, pi, n, elapseTime)
 }
 
-//execute()
-
-println "================ ${getClass().name}\nNot executed until GROOVY-5789 gets fixed."
+execute()
