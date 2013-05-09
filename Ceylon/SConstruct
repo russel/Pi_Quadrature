@@ -16,7 +16,7 @@ ceylonEnvironment = Environment(
 
 buildProducts = addCompileTarget(ceylonEnvironment.Command('compile', 'pi_sequential.ceylon', 'ceylon compile --src . $SOURCE'))
 
-addRunTarget(ceylonEnvironment, buildProducts, 'ceylon run --run main default')
+addRunTarget(ceylonEnvironment, buildProducts, 'ceylon run default')
 
 Default(buildProducts)
 
