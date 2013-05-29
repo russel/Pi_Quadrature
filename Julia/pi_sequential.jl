@@ -2,7 +2,7 @@
 
 #  Calculation of π using quadrature. Sequential algorithm using a for loop.
 #
-#  Copyright © 2012 Russel Winder
+#  Copyright © 2012–2013  Russel Winder
 
 require("output.jl")
 
@@ -20,3 +20,5 @@ function execute()
 end
 
 execute()
+
+# No observable warm-up effect for this code.

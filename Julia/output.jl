@@ -7,9 +7,9 @@ function out(name, pi, n, elapseTime)
     println("\tπ = " , pi)
     println("\titeration count = " , n)
     println("\telapse time = ", elapseTime)
+    println("\tprocessor count = ", CPU_CORES)
 end
 
 function out(name, pi, n, elapseTime, taskCount)
     out("$name: task count = $taskCount", pi, n, elapseTime)
-    println("\tprocessor count = ", CPU_CORES)
 end
