@@ -4,7 +4,7 @@
 #
 #  Copyright © 2012 Russel Winder
 
-load("output.jl")
+require("output.jl")
 
 n = 10000000  # 100 times fewer than C due to speed issues.
 delta = 1.0 / n
