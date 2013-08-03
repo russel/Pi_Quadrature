@@ -12,7 +12,7 @@ package uk.org.winder.pi_quadrature
 import scalaz.Scalaz._
 
 //  This pulls in all the implicit values needed by the parMap function to make use of an Executor.
-import scalaz.concurrent.Strategy.Executor
+//import scalaz.concurrent.Strategy.Executor
 
 //  But now we will have to specify which Executor.
 import java.util.concurrent.Executors
