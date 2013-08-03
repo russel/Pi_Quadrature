@@ -1,0 +1,6 @@
+import os
+
+environment = Environment(ENV=os.environ)
+
+for name in Glob('*.go'):
+    environment.Command(name.name.replace('.go', ''), name.name, 'go build -compiler gccgo -gccgoflags -O $SOURCE')
