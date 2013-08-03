@@ -10,7 +10,7 @@ import scala.collection.parallel.immutable.ParRange
 
 import Output.out
 
-object Pi_ParArray {
+object Pi_ParRange {
 
   def execute(numberOfThreads:Int) {
     val n = 1000000000
