@@ -9,7 +9,7 @@
 /*
  *  Use Float not Decimal so as to get some form of sane performance -- Decimals are realized as
  *  java.math.BigDecimal which whilst accurate are extraordinarily slow compared to java.lang.Double which
- *  is how Floats are realized.
+ *  is how Floats are realized – actually it is double, but let's not worry about that.
  */
 
 class Main {
@@ -29,28 +29,18 @@ class Main {
       }
       return sum
     }
-    /*
-     *  The following leads to a compilation error.
-     * /
-    values := (0 ..< numberOfTasks).toList().map |i -> concurrent::Future|{
+    values := (0 ..< numberOfTasks).map |i -> concurrent::Future|{
       return concurrent::Actor(pool, partialSumEvaluator).send(i)
     }
-    / **/
-    values := concurrent::Future[,]
-    (0 ..< numberOfTasks).each |i|{values.add(concurrent::Actor(pool, partialSumEvaluator).send(i))}
-    /**/
     pi := 4.0f * delta * (Float) values.reduce(0.0f) |Float l, concurrent::Future r -> Float|{return l + (Float) r.get()}
     elapseTime := (sys::DateTime.nowTicks() - startTimeNanos) / 1e9f
-    Output.out("Fantom Futures", pi, n, elapseTime, numberOfTasks)
+    pi_quadrature_output::Output.outN("Parallel Futures", pi, n, elapseTime, numberOfTasks)
   }
 
-  static Void main ( ) {
-    execute ( 1 )
-    echo ( )
-    execute ( 2 )
-    echo ( )
-    execute ( 8 )
-    echo ( )
-    execute ( 32 )
+  static Void main() {
+    execute(1)
+    execute(2)
+    execute(8)
+    execute(32)
   }
 }

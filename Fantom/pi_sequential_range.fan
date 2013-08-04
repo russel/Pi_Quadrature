@@ -9,7 +9,7 @@
 /*
  *  Use Float not Decimal so as to get some form of sane performance -- Decimals are realized as
  *  java.math.BigDecimal which whilst accurate are extraordinarily slow compared to java.lang.Double which
- *  is how Floats are realized.
+ *  is how Floats are realized – actually it is double, but let's not worry about that.
  *
  *  Int type in Fantom is 64-bit and there is no 32-bit integer type.  This means Fantom running on the JVM
  *  will always suffer the obvious JVM JIT startup issue.  Using a closure for the tight loop allows the JIT
@@ -18,7 +18,7 @@
 
 class Main {
   static Void main() {
-    n := 1000000000
+    n := 100000000 // 10 times fewer than Java due to speed issues.
     delta := 1.0f / n
     startTimeNanos := sys::DateTime.nowTicks()
     sum := 0.0f
@@ -28,6 +28,6 @@ class Main {
     }
     pi := 4.0f * delta * sum
     elapseTime := (sys::DateTime.nowTicks() - startTimeNanos) / 1e9f
-    Output.out("Fantom Sequential Range", pi, n, elapseTime)
+    pi_quadrature_output::Output.out("Sequential Range", pi, n, elapseTime)
   }
 }
