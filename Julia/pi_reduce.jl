@@ -1,14 +1,12 @@
 #! /usr/bin/env julia
 
-#  Calculation of π using quadrature. Sequential algorithm using a for loop.
+#  Calculation of π using quadrature. Using a parallel for loop.
 #
 #  Copyright © 2012–2013  Russel Winder
 
 require("output.jl")
 
-addprocs(CPU_CORES -1)
-
-# For some unknown reasons this code loops infinitely unless it is in a function.
+# For some reason(s) the parallel for code loops infinitely unless it is in a function.
 
 function execute()
     n = 1000000000
@@ -19,10 +17,10 @@ function execute()
     end
     pi = 4.0 * delta * sum
     elapseTime = time() - startTime
-    out("pi_julia_reduce", pi, n, elapseTime)
+    out("pi_reduce", pi, n, elapseTime)
 end
 
-# There is a noticeable "warm-up" effect for this code so only take the second run.
-
+addprocs(CPU_CORES -1)
+println("There is a noticeable 'warm-up' effect for this code so only take the second run.")
 execute()
 execute()

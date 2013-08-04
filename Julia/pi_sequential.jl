@@ -16,9 +16,7 @@ function execute()
     end
     pi = 4.0 * delta * sum
     elapseTime = time() - startTime
-    out("pi_julia_sequential", pi, n, elapseTime)
+    out("pi_sequential", pi, n, elapseTime)
 end
 
 execute()
-
-# No observable warm-up effect for this code.
