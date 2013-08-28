@@ -1,14 +1,13 @@
-#! /usr/bin/env python
-# -*- coding:utf-8; -*-
+#! /usr/bin/env python3
 
 #  Calculation of π using quadrature. Sequential algorithm using Numexpr evaluate.
 #
-#  Copyright © 2008–2013  Russel Winder
+#  Copyright © 2013 Russel Winder
 
+from numexpr import evaluate, set_num_threads
+from numpy import arange, double
 from output import out
 from time import time
-from numpy import arange, double
-from numexpr import evaluate, set_num_threads
 
 def execute(threadCount):
     n = 100000000  # 10 times fewer than C due to speed issues.
