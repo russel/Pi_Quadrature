@@ -42,7 +42,7 @@ extensionsData = {
         'COMMAND': 'pyrexc'
         },
     'pyrex_py3': {
-        'CPPPATH': ['/usr/include/python3.2mu'],
+        'CPPPATH': ['/usr/include/python3.3'],
         'CFLAGS': ccFlags,
         'LINKFLAGS':  [],
         'COMMAND': 'pyrexc'
@@ -54,7 +54,7 @@ extensionsData = {
         'COMMAND': 'cython'
         },
     'cython_py3': {
-        'CPPPATH': ['/usr/include/python3.2mu'],
+        'CPPPATH': ['/usr/include/python3.3'],
         'CFLAGS': ccFlags,
         'LINKFLAGS': [],
         'COMMAND': 'cython'
