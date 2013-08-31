@@ -2,8 +2,9 @@
 ;
 ;  Copyright © 2009–2011, 2013  Russel Winder
 
-(load "output")
+(ns pi-quadrature.pi-futures)
 
+(load "output")
 (load "partialSum")
 
 (import '(java.util.concurrent Executors))
@@ -27,7 +28,8 @@
           ]
       (outn "Futures" pi n elapseTime numberOfThreads))))
 
-(execute 1)
-(execute 2)
-(execute 8)
-(execute 32)
+(defn -main []
+  (execute 1)
+  (execute 2)
+  (execute 8)
+  (execute 32))

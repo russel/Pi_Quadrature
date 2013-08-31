@@ -2,6 +2,8 @@
 ;
 ;  Copyright © 2010–2011, 2013  Russel Winder
 
+(ns pi-quadrature.pi-parallelMap-javaProcessSlice)
+
 (load "output")
 
 (defn execute [numberOfThreads]
@@ -15,7 +17,8 @@
         ]
     (outn "Parallel Map ProcessSlice" pi n elapseTime numberOfThreads)))
 
-(execute 1)
-(execute 2)
-(execute 8)
-(execute 32)
+(defn -main []
+  (execute 1)
+  (execute 2)
+  (execute 8)
+  (execute 32))

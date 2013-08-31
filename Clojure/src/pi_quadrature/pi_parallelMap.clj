@@ -4,8 +4,9 @@
 
 ;  TODO : Find out why the very long delay between completing the computation and terminating?
 
-(load "output")
+(ns pi-quadrature.pi-parallelMap)
 
+(load "output")
 (load "partialSum")
 
 (defn execute [numberOfThreads]
@@ -19,7 +20,8 @@
         ]
     (outn "Parallel Map" pi n elapseTime numberOfThreads)))
 
-(execute 1)
-(execute 2)
-(execute 8)
-(execute 32)
+(defn -main []
+  (execute 1)
+  (execute 2)
+  (execute 8)
+  (execute 32))
