@@ -6,7 +6,6 @@
 
 package uk.org.winder.pi_quadrature
 
-import scala.actors.Future
 import scala.actors.Futures
 
 import Output.out
