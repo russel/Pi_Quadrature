@@ -32,7 +32,7 @@ new File("${projectDir}/src/main/java/uk/org/winder/pi_quadrature").eachFileMatc
 }
 
 task wrapper (type:Wrapper) {
-    gradleVersion = '1.6'
+    gradleVersion = '1.8'
 }
 
 idea {
@@ -45,7 +45,7 @@ idea {
         excludeDirs += file('docs') // Jon's book directory
     }
     project {
-        jdkName '1.8_L'
+        jdkName '1.8'
         languageLevel '1.8'
         ipr {
             withXml { provider ->
