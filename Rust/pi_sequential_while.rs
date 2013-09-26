@@ -19,9 +19,9 @@ fn main() {
     while i < n {
         let x = (i as float - 0.5) * delta;
         sum += 1.0 / (1.0 + x * x);
-        i += 1;
+        i += 1
     }
     let pi = 4.0 * delta * sum;
     let elapseTime = precise_time_s() - startTime;
-    output("pi_sequential_while", pi, n, elapseTime);
+    output("pi_sequential_while", pi, n, elapseTime)
 }
