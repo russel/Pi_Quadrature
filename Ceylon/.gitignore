@@ -1,1 +1,8 @@
-modules
+/modules
+/classes
+/bin
+/.ceylon
+/.classpath
+/.project
+/.pydevproject
+/.settings

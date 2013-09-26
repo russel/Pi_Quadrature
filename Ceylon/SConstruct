@@ -14,7 +14,9 @@ ceylonEnvironment = Environment(
     ENV=os.environ,  # Needed as the Ceylon script requires tput and hence $TERM.
     )
 
-buildProducts = addCompileTarget(ceylonEnvironment.Command('compile', 'pi_sequential.ceylon', 'ceylon compile --src . $SOURCE'))
+sourceDirectory = 'src'
+
+buildProducts = addCompileTarget(ceylonEnvironment.Command('compile', '{}/pi_sequential.ceylon'.format(sourceDirectory), 'ceylon compile --src {} $SOURCE'.format(sourceDirectory)))
 
 addRunTarget(ceylonEnvironment, buildProducts, 'ceylon run default')
 
