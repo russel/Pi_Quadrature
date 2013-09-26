@@ -9,7 +9,6 @@ extern mod output;
 
 use std::vec::from_fn;
 use extra::future::Future;
-use extra::future::spawn;
 use extra::time::precise_time_s;
 use output::outputN;
 
@@ -24,7 +23,7 @@ fn execute(numberOfTasks:uint) {
     let delta = 1.0 / n as float;
     let startTime = precise_time_s();
     let sliceSize = n / numberOfTasks;
-    let futures = from_fn(numberOfTasks, |id| @mut spawn(||->float {
+    let futures = from_fn(numberOfTasks, |id| @mut Future::spawn(||->float {
         let mut sum = 0.0;
         for i in range(1 + id * sliceSize, (id + 1) * sliceSize) {
             let x = (i as float - 0.5) * delta;
