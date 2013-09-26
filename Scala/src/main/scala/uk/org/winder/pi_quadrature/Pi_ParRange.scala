@@ -7,6 +7,7 @@
 package uk.org.winder.pi_quadrature
 
 import scala.collection.parallel.immutable.ParRange
+import scala.language.postfixOps
 
 import Output.out
 
