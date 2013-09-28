@@ -49,7 +49,7 @@ cppRule('pi_openmp*.cpp', cxxflags=cppFlags + ['-fopenmp'], libs=['gomp'])
 cppRule('pi_boostThread*.cpp', libs=['boost_thread'])
 cppRule('pi_boostMPI*.cpp', compiler='mpic++', libs=['boost_mpi'])
 cppRule('pi_tbb*.cpp', libs=['tbb'])
-cppRule('pi_cppcsp2.cpp', cpppath=[os.environ['HOME'] + '/include'], libpath=[extraLibName], libs=['cppcsp2', 'pthread'])
+cppRule('pi_cppcsp2.cpp', cpppath=[os.environ['HOME'] + '/include'], libpath=[extraLibName], libs=['cppcsp2', 'libboost_system', 'pthread'])
 cppRule('pi_justThread*.cpp', cpppath=[extraLibName + '/JustThreadPro/include'], linkflags=['--static'], libpath=[extraLibName + '/JustThreadPro/libs'], libs=['justthread'])
 
 Default(compileTargets)
