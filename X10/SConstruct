@@ -2,51 +2,34 @@
 
 #  Calculation of π using quadrature.
 #
-#  Copyright © 2008–2013 Russel Winder
+#  Copyright © 2008–2013  Russel Winder
 
 import os
-import sys
-sys.path.append('../site_scons')
 
-from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
-
-####  With X10 2.0.[23] things compile using the Java backend but the sequential code seems to cause all
-####  cores to go to 90% for what appears to be forever.  Making use instead of the C++ backend which has
-####  had much more work done on it allows the code to run. The parallel code doesn't work as yet due to
-####  some class cast problem.
-
-####  With X10 2.1.0 everything seems to be working as it should be once the various Rail -> Array changes
-####  and use of DistArray has been sorted.
-
-####  For some forgotten reason 2.1.1 failed to work as required and was ignored.
-
-####  2.1.2 seems to work sort of but the old runx10 command that was used to launch the C++ target
-####  versions has been removed, the generated executables are native executables that are MPI aware.  So
-####  they run on 1 core unless the mpirun command is used.  One downside though the Java backend version
-####  appears to show no scaling at all.  And the MPI execution is bizarre, and shows no scaling at all.
+packagePath = 'uk/org/winder/pi_quadrature'
 
 x10Environment = Environment(
-    tools=['x10'],
     ENV=os.environ,
 )
 
-for item in Glob('Pi_*.x10'):
+outputClass = 'src/{}/Output.x10'.format(packagePath)
+
+compileTargets = []
+
+for item in Glob('src/{}/Pi_*.x10'.format(packagePath)):
     x10ClassName = os.path.splitext(item.name)[0]
     #
     #  Java backend bits.
     #
-    x10ClassFile = x10Environment.X10Classes(item)
-    addCompileTarget(x10ClassFile)
-    SideEffect(item.name.replace('.x10', '$$Main.class'), x10ClassFile)
-    addRunTarget(x10Environment, x10ClassFile, 'x10 {}')
+    x10ClassFile = x10Environment.Command('{}/{}.class'.format(packagePath, x10ClassName), [item, outputClass], 'x10c $SOURCES')
+    compileTargets.append(x10ClassFile)
     #
     # C++ backend bits.
     #
-    x10Executable = x10Environment.X10Program(item, X10FLAGS=['-O'])
+    x10Executable = x10Environment.Command(x10ClassName, [item, outputClass], 'x10c++ -O -o $TARGET $SOURCES')
     SideEffect('xxx_main_xxx.cc', x10Executable)
-    addCompileTarget(x10Executable)
-    addRunTarget(x10Environment, x10Executable)
+    compileTargets.append(x10Executable)
 
 Default(compileTargets)
 
-Help(createHelp())
+Clean('.', 'uk')
