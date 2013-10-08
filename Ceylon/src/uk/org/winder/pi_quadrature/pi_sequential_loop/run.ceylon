@@ -6,15 +6,7 @@
  */
 
 import java.lang { System { nanoTime } }
-
-"A function to output stuff."
-by("Russel Winder")
-void output(String name, Float pi, Integer n, Float elapseTime) {
-  print("================ ``name``");
-  print("\tπ = ``pi``");
-  print("\titeration count = ``n``");
-  print("\telapse time = ``elapseTime``");
-}
+import uk.org.winder.pi_quadrature.tools { output }
 
 "The function that does the hard work."
 by("Russel Winder")
