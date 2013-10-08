@@ -20,5 +20,5 @@ void run() {
   value startTime = nanoTime();
   value pi = 4.0 * delta * sum({for (i in 1..n) f(i, delta)});
   value elapseTime = (nanoTime() - startTime) / 1.0e9;
-  output("pi_ceylon_sequential", pi, n, elapseTime);
+  output("pi_ceylon_comprehension", pi, n, elapseTime);
 }
