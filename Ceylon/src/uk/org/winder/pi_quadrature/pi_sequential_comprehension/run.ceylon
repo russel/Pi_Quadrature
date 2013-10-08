@@ -7,18 +7,18 @@
 import java.lang { System { nanoTime } }
 import uk.org.winder.pi_quadrature.tools { output }
 
+Float f(Integer i, Float delta) {
+	value x = (i - 0.5) * delta;
+  return 1.0 / (1.0 + x * x);
+}
+
 "Caclculate π using quadrature realized with a basic sequential algorithm."
 by("Russel Winder")
 void run() {
   value n = 100000000; // 10 times fewer than Java due to speed issues.
   value delta = 1.0 / n;
   value startTime = nanoTime();
-  variable Float sum = 0.0;
-  for (i in 1..n) {
-    value x = (i - 0.5) * delta;
-    sum += 1.0 / (1.0 + x * x);
-  }
-  value pi = 4.0 * delta * sum;
+  value pi = 4.0 * delta * sum({for (i in 1..n) f(i, delta)});
   value elapseTime = (nanoTime() - startTime) / 1.0e9;
   output("pi_ceylon_sequential", pi, n, elapseTime);
 }
