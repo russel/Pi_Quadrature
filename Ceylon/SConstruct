@@ -6,22 +6,19 @@
 
 import os
 import sys
-sys.path.append('../site_scons')
-
-from executablesupport import addCompileTarget, addRunTarget, createHelp, libraryPath
 
 ceylonEnvironment = Environment(
     ENV=os.environ,  # Needed as the Ceylon script requires tput and hence $TERM.
     )
 
 sourceDirectory = 'src'
+moduleName = 'uk.org.winder.pi_quadrature'
 
-buildProducts = addCompileTarget(ceylonEnvironment.Command('compile', '{}/pi_sequential.ceylon'.format(sourceDirectory), 'ceylon compile --src {} $SOURCE'.format(sourceDirectory)))
+moduleDirectory = sourceDirectory + '/' + moduleName.replace('.', '/')
 
-addRunTarget(ceylonEnvironment, buildProducts, 'ceylon run default')
+buildProducts = ceylonEnvironment.Command('compile', moduleDirectory, 'ceylon compile --src={} {}'.format(sourceDirectory, moduleName))
 
-Default(buildProducts)
-
-Clean(buildProducts, 'modules')
-
-Help(createHelp())
+runTargets = [
+    ceylonEnvironment.Command('run_' + package, buildProducts,  'ceylon run --run={} {}'.format(package, moduleName))
+    for package in [package.path.replace('src/', '').replace('/', '.') for package in Glob(moduleDirectory + '/pi_*')]
+]
