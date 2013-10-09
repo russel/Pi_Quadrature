@@ -13,27 +13,27 @@ Callable<Float> createCallable(Integer id, Integer sliceSize, Float delta) {
 	object callable satisfies Callable<Float> {
 		shared actual Float call() {
 			value start = 1 + id * sliceSize;
-      value end = (id + 1) * sliceSize;
-      variable Float sum = 0.0;
-      for (i in start..end) {
-        value x = (i - 0.5) * delta;
-        sum += 1.0 / (1.0 + x * x);
-      }
-      return sum;
-    }
+			value end = (id + 1) * sliceSize;
+			variable Float sum = 0.0;
+			for (i in start..end) {
+				value x = (i - 0.5) * delta;
+				sum += 1.0 / (1.0 + x * x);
+			}
+			return sum;
+		}
 	}
 	return callable;
 }
 
 void execute(Integer numberOfTasks) {
-  value n = 100000000; // 10 times fewer than Java due to speed issues.
-  value delta = 1.0 / n;
-  value startTime = nanoTime();
-  Integer sliceSize = n / numberOfTasks;
-  value executor = ScheduledThreadPoolExecutor(numberOfTasks);
-  value pi = 4.0 * delta * sum({for (f in {for (i in 1..numberOfTasks) executor.submit(createCallable(i, sliceSize, delta))}) f.get()});
-  value elapseTime = (nanoTime() - startTime) / 1.0e9;
-  outputN("pi_ceylon_futures", pi, n, elapseTime, numberOfTasks);
+	value n = 100000000; // 10 times fewer than Java due to speed issues.
+	value delta = 1.0 / n;
+	value startTime = nanoTime();
+	Integer sliceSize = n / numberOfTasks;
+	value executor = ScheduledThreadPoolExecutor(numberOfTasks);
+	value pi = 4.0 * delta * sum({for (f in {for (i in 1..numberOfTasks) executor.submit(createCallable(i, sliceSize, delta))}) f.get()});
+	value elapseTime = (nanoTime() - startTime) / 1.0e9;
+	outputN("pi_ceylon_futures", pi, n, elapseTime, numberOfTasks);
 }
 
 "Calculate π using quadrature realized with a parallel algorithm using callables, futures and executors."
