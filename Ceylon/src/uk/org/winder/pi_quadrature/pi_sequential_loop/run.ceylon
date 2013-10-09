@@ -7,7 +7,7 @@
 import java.lang { System { nanoTime } }
 import uk.org.winder.pi_quadrature.tools { output }
 
-"Caclculate π using quadrature realized with a basic sequential algorithm."
+"Calculate π using quadrature realized with a basic sequential algorithm."
 by("Russel Winder")
 void run() {
   value n = 100000000; // 10 times fewer than Java due to speed issues.

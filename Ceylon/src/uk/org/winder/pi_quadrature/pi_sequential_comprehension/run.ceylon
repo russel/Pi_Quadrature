@@ -1,5 +1,5 @@
 /*
- *  Calculation of π using quadrature realized with a basic sequential algorithm.
+ *  Calculation of π using quadrature realized with a sequential algorithm using a comprehension.
  *
  *  Copyright © 2012, 2013  Russel Winder
  */
@@ -12,7 +12,7 @@ Float f(Integer i, Float delta) {
   return 1.0 / (1.0 + x * x);
 }
 
-"Caclculate π using quadrature realized with a basic sequential algorithm."
+"Calculate π using quadrature realized with a sequential algorithm using a comprehension."
 by("Russel Winder")
 void run() {
   value n = 100000000; // 10 times fewer than Java due to speed issues.

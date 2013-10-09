@@ -1,5 +1,6 @@
 /*
- *  Calculation of π using quadrature realized with a basic sequential algorithm.
+ *  Calculation of π using quadrature realized with a parallel algorithm using
+ *  callables, futures and executors.
  *
  *  Copyright © 2012, 2013  Russel Winder
  */
@@ -30,13 +31,12 @@ void execute(Integer numberOfTasks) {
   value startTime = nanoTime();
   Integer sliceSize = n / numberOfTasks;
   value executor = ScheduledThreadPoolExecutor(numberOfTasks);
-  value futures = [for (i in 0..numberOfTasks) executor.submit(createCallable(i, sliceSize, delta))];
-  value pi = 4.0 * delta * sum({for (f in futures) f.get()});
+  value pi = 4.0 * delta * sum({for (f in {for (i in 1..numberOfTasks) executor.submit(createCallable(i, sliceSize, delta))}) f.get()});
   value elapseTime = (nanoTime() - startTime) / 1.0e9;
   outputN("pi_ceylon_futures", pi, n, elapseTime, numberOfTasks);
 }
 
-"Caclculate π using quadrature realized with a basic sequential algorithm."
+"Calculate π using quadrature realized with a parallel algorithm using callables, futures and executors."
 by("Russel Winder")
 void run() {
 	execute(1);
