@@ -8,7 +8,6 @@
 package uk.org.winder.pi_quadrature;
 
 import java.util.ArrayList;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ExecutionException;

@@ -7,7 +7,6 @@
 
 package uk.org.winder.pi_quadrature;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;

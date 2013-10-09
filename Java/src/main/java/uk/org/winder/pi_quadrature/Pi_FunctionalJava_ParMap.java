@@ -14,8 +14,6 @@ import fj.data.Array;
 import fj.control.parallel.ParModule;
 import fj.control.parallel.Strategy;
 
-//import java.util.concurrent.Executors;
-
 public class Pi_FunctionalJava_ParMap {
 
   private static void execute(final int numberOfTasks) {
@@ -39,7 +37,6 @@ public class Pi_FunctionalJava_ParMap {
     final F2<Double,Double,Double> add = new F2<Double,Double,Double>() {
       @Override public Double f(final Double a, final Double b) { return a + b; }
     };
-    //final Strategy<Unit> strategy = Strategy.executorStrategy(Executors.newCachedThreadPool());
     final Strategy<Unit> strategy = Strategy.simpleThreadStrategy();
     final double pi = 4.0 * delta * ParModule.parModule(strategy).parMap(inputData, sliceCalculator).claim().foldLeft(add, 0.0);
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
