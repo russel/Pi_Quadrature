@@ -27,6 +27,7 @@ void execute(Integer numberOfTasks) {
 		}
 	}
 	value pi = 4.0 * delta * sum({for (f in [for (i in 1..numberOfTasks) executor.submit(Task(i))]) f.get()});
+	executor.shutdown();
 	value elapseTime = (process.nanoseconds - startTime) / 1.0e9;
 	outputN("pi_ceylon_futures", pi, n, elapseTime, numberOfTasks);
 }
