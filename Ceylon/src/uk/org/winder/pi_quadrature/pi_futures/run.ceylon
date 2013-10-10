@@ -5,12 +5,16 @@
  *  Copyright © 2012, 2013  Russel Winder
  */
 
-import java.lang { System { nanoTime } }
 import java.util.concurrent { Callable, ScheduledThreadPoolExecutor }
 import uk.org.winder.pi_quadrature.tools { outputN }
 
-Callable<Float> createCallable(Integer id, Integer sliceSize, Float delta) {
-	object callable satisfies Callable<Float> {
+void execute(Integer numberOfTasks) {
+	value n = 100000000; // 10 times fewer than Java due to speed issues.
+	value delta = 1.0 / n;
+	value startTime = process.nanoseconds;
+	Integer sliceSize = n / numberOfTasks;
+	value executor = ScheduledThreadPoolExecutor(numberOfTasks);
+	class Task(Integer id) satisfies Callable<Float> {
 		shared actual Float call() {
 			value start = 1 + id * sliceSize;
 			value end = (id + 1) * sliceSize;
@@ -22,17 +26,8 @@ Callable<Float> createCallable(Integer id, Integer sliceSize, Float delta) {
 			return sum;
 		}
 	}
-	return callable;
-}
-
-void execute(Integer numberOfTasks) {
-	value n = 100000000; // 10 times fewer than Java due to speed issues.
-	value delta = 1.0 / n;
-	value startTime = nanoTime();
-	Integer sliceSize = n / numberOfTasks;
-	value executor = ScheduledThreadPoolExecutor(numberOfTasks);
-	value pi = 4.0 * delta * sum({for (f in {for (i in 1..numberOfTasks) executor.submit(createCallable(i, sliceSize, delta))}) f.get()});
-	value elapseTime = (nanoTime() - startTime) / 1.0e9;
+	value pi = 4.0 * delta * sum({for (f in [for (i in 1..numberOfTasks) executor.submit(Task(i))]) f.get()});
+	value elapseTime = (process.nanoseconds - startTime) / 1.0e9;
 	outputN("pi_ceylon_futures", pi, n, elapseTime, numberOfTasks);
 }
 
