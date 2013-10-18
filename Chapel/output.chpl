@@ -6,10 +6,10 @@
 
 module Output {
   proc output(banner:string, pi:real, n:int, elapseTime:real) {
-    writeln("======================== " + banner );
-    writeln("\tπ = " , pi );
-    writeln("\titeration count = " , n ) ;
-    writeln("\telapse time = " , elapseTime ) ;
+    writeln("======================== " + banner);
+    writeln("\tπ = " , format("#.################", pi));
+    writeln("\titeration count = " , n);
+    writeln("\telapse time = " , elapseTime);
   }
 
   proc output_more(banner:string, pi:real, n:int, elapseTime:real, numberOfTasks:int) {
