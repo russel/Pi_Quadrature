@@ -11,7 +11,7 @@ import uk.org.winder.pi_quadrature.tools { outputN }
 void execute(Integer numberOfTasks) {
 	value n = 100000000; // 10 times fewer than Java due to speed issues.
 	value delta = 1.0 / n;
-	value startTime = process.nanoseconds;
+	value startTime = system.nanoseconds;
 	Integer sliceSize = n / numberOfTasks;
 	value executor = ScheduledThreadPoolExecutor(numberOfTasks);
 	class Task(Integer id) satisfies Callable<Float> {
@@ -28,7 +28,7 @@ void execute(Integer numberOfTasks) {
 	}
 	value pi = 4.0 * delta * sum({for (f in [for (i in 1..numberOfTasks) executor.submit(Task(i))]) f.get()});
 	executor.shutdown();
-	value elapseTime = (process.nanoseconds - startTime) / 1.0e9;
+	value elapseTime = (system.nanoseconds - startTime) / 1.0e9;
 	outputN("pi_ceylon_futures", pi, n, elapseTime, numberOfTasks);
 }
 
