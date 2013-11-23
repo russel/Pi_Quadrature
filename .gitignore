@@ -11,3 +11,4 @@ DataRush.slc
 *.exe
 *~
 *.pyc
+/Java/.nb-gradle/profiles/private/
