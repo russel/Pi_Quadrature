@@ -12,3 +12,4 @@ DataRush.slc
 *~
 *.pyc
 /Java/.nb-gradle/profiles/private/
+/Java/.nb-gradle-properties
