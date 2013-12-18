@@ -1,10 +1,9 @@
-#! /usr/bin/env python
-# -*- coding:utf-8; -*-
+#! /usr/bin/env python3
 
 #  Calculation of π using quadrature. This is an SPMD, Python with C extension via ctypes realization using
 #  OpenMPI under the mpi4py package that provides Python binding to MPI.
 #
-#  Copyright © 2010–2012 Russel Winder
+#  Copyright © 2010–2013 Russel Winder
 
 from mpi4py import MPI
 from numpy import array
@@ -22,7 +21,7 @@ if __name__ == '__main__':
     startTime = time()
     comm = MPI.COMM_WORLD
     myId = comm.Get_rank()
-    sliceSize = n / comm.Get_size()
+    sliceSize = n // comm.Get_size()
     localSum = array([processSliceModule.processSlice(myId, sliceSize, delta)])
     sum = array([0.0])
     comm.Reduce((localSum, MPI.DOUBLE), (sum, MPI.DOUBLE))
