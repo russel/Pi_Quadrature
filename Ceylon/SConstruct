@@ -19,6 +19,6 @@ moduleDirectory = sourceDirectory + '/' + moduleName.replace('.', '/')
 buildProducts = ceylonEnvironment.Command('compile', moduleDirectory, 'ceylon compile --src={} {}'.format(sourceDirectory, moduleName))
 
 runTargets = [
-    ceylonEnvironment.Command('run_' + package, buildProducts,  'ceylon run --run={} {}'.format(package, moduleName))
+    ceylonEnvironment.Command('run_' + package, buildProducts,  'ceylon run --run={}.run {}'.format(package, moduleName))
     for package in [package.path.replace('src/', '').replace('/', '.') for package in Glob(moduleDirectory + '/pi_*')]
 ]
