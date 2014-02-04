@@ -1,12 +1,14 @@
 /*
  *  Calculation of π using quadrature realized with a scatter/gather approach using futures.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature
 
-import scala.actors.Futures
+import scala.concurrent.{Await, Future, future}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
 
 import Output.out
 
@@ -18,7 +20,7 @@ object Pi_Futures {
     val startTimeNanos = System.nanoTime
     val sliceSize = n / numberOfWorkers
     val partialSums = for (index <- 0 until numberOfWorkers) yield
-      Futures.future {
+      future {
         val start = 1 + index * sliceSize
         val end = (index + 1)* sliceSize
         var sum = 0.0
@@ -28,9 +30,7 @@ object Pi_Futures {
         }
         sum
       }
-    //  NB The second parameter of the function passed into the reduce is a Future[Double] which is a
-    //  function that must be called to obtain the value.  Hence _+_() instead of _+_.
-    val pi = 4.0 * delta * ((0.0 /: partialSums)(_ + _()))
+    val pi = 4.0 * delta * Await.result(Future.reduce(partialSums)(_ + _), Duration.Inf)
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
     out("Pi_Futures", pi, n, elapseTime, numberOfWorkers)
   }

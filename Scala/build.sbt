@@ -2,10 +2,6 @@ name := "Pi Quadrature"
 
 version := "0.0.0"
 
-scalaVersion := "2.11.0-M5"
+scalaVersion := "2.11.0-M8"
 
-libraryDependencies += "org.scala-lang" % "scala-actors" % "2.11.0-M5"
-
-libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.2.1"
-
-libraryDependencies += "org.functionaljava" % "functionaljava" % "3.0"
+libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.2.3"
