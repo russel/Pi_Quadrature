@@ -35,29 +35,15 @@ extensionsData = {
         'CFLAGS': ccFlags + ['-std=c++11'],
         'LINKFLAGS': ['-std=c++11']
         },
-    'pyrex_py2': {
-        'CPPPATH': ['/usr/include/python2.7'],
-        'CFLAGS': ccFlags,
-        'LINKFLAGS': [],
-        'COMMAND': 'pyrexc'
-        },
-    'pyrex_py3': {
-        'CPPPATH': ['/usr/include/python3.3'],
-        'CFLAGS': ccFlags,
-        'LINKFLAGS':  [],
-        'COMMAND': 'pyrexc'
-        },
     'cython_py2': {
         'CPPPATH': ['/usr/include/python2.7'],
         'CFLAGS': ccFlags,
         'LINKFLAGS': [],
-        'COMMAND': 'cython'
         },
     'cython_py3': {
         'CPPPATH': ['/usr/include/python3.3'],
         'CFLAGS': ccFlags,
         'LINKFLAGS': [],
-        'COMMAND': 'cython'
         },
     }
 
@@ -76,7 +62,7 @@ for item in Glob('pi_python*.py'):
     if len(bits) > 5 and bits[4] == 'extension':
         extension = bits[5]
         assert item.name.find(extension) != -1
-        if extension in ['cython', 'pyrex']:
+        if extension == 'cython':
             majorVersion = bits[1][-1:]
             extension += '_py' + majorVersion
         extensionName = '{}_{}'.format(extensionRoot, extension)
@@ -86,7 +72,7 @@ for item in Glob('pi_python*.py'):
                 pythonEnvironment.Command(
                     '{}_{}.c'.format(extensionRoot, extension),
                     '{}_{}.pyx'.format(extensionRoot, extension),
-                    extensionsData[extension]['COMMAND'] + ' $SOURCE') if extension.split('_')[0] in ['pyrex', 'cython'] else '{}_{}.{}'.format(extensionRoot, extension, extension),
+                    'cython $SOURCE') if extension.split('_')[0] == 'cython' else '{}_{}.{}'.format(extensionRoot, extension, extension),
                 CPPPATH=extensionsData[extension]['CPPPATH'],
                 CFLAGS=extensionsData[extension]['CFLAGS'],
                 CXXFLAGS=extensionsData[extension]['CFLAGS'],
