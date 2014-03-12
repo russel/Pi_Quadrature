@@ -19,7 +19,7 @@ public class Pi_ParallelStream_Java8_Alt {
         return 1.0 / (1.0 + x * x);
       }).sum();
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out("Pi_ParallelStream_Java8", pi, n, elapseTime, numberOfTasks);
+    Output.out("Pi_ParallelStream_Java8_NotBatched", pi, n, elapseTime, numberOfTasks);
   }
   public static void main(final String[] args) {
     Pi_ParallelStream_Java8_Alt.execute(1);
