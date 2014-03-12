@@ -2,7 +2,7 @@
  *  Calculation of π using quadrature realized with a fork/join approach with threads and futures (hidden
  *  by using executors) to partition the problem and hence harness all processors available to the JVM.
  *
- *  Copyright © 2008–2013  Russel Winder
+ *  Copyright © 2008–2014  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature;
@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-public class Pi_Futures_Java8 {
+public class Pi_Futures_Java8_Batched {
 
   private static void execute(final int numberOfTasks) {
     final int n = 1000000000;
@@ -43,13 +43,13 @@ public class Pi_Futures_Java8 {
     executor.shutdown();
     final double pi = 4.0 * delta * sum;
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out("Pi_Futures_Java8", pi, n, elapseTime, numberOfTasks);
+    Output.out("Pi_Futures_Java8_Batched", pi, n, elapseTime, numberOfTasks);
   }
 
   public static void main(final String[] args) {
-    Pi_Futures_Java8.execute(1);
-    Pi_Futures_Java8.execute(2);
-    Pi_Futures_Java8.execute(8);
-    Pi_Futures_Java8.execute(32);
+    Pi_Futures_Java8_Batched.execute(1);
+    Pi_Futures_Java8_Batched.execute(2);
+    Pi_Futures_Java8_Batched.execute(8);
+    Pi_Futures_Java8_Batched.execute(32);
   }
 }
