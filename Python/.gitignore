@@ -8,3 +8,4 @@ processSlice_pyrex_py2.c
 .project
 .settings
 .pydevproject
+*.o
