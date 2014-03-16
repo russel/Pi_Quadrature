@@ -2,27 +2,26 @@
  *  A C++ program to calculate π using quadrature.  This uses Anthony Williams' Just::Threads Pro library which
  *  is an implementation of the threads specification of C++11 and has realizations of actors and dataflow.
  *
- *  Copyright © 2011–2013  Russel Winder
+ *  Copyright © 2011–2014  Russel Winder
  */
 
+#include <chrono>
 #include <memory>
 
 #include <jss/actor.hpp>
 
 #include "output.hpp"
 
-#include "microsecondTime.h"
-
 void execute(int const numberOfWorkerActors) {
   auto const n = 1000000000;
   auto const delta = 1.0 / n;
-  auto const startTimeMicros = microsecondTime();
+  auto const startTime = std::chrono::steady_clock::now();
   auto const sliceSize = n / numberOfWorkerActors;
   jss::actor accumulator([&]() {
       auto sum = 0.0;
       for (auto i = 0; i < numberOfWorkerActors; ++i) { jss::actor::receive().match<double>([&](double d) { sum += d; }); }
       auto const pi = 4.0 * delta * sum;
-      auto const elapseTime = ( microsecondTime() - startTimeMicros) / 1e6;
+      auto const elapseTime = std::chrono::steady_clock::now() - startTime;
       out("Just::Thread Actors", pi, n, elapseTime, numberOfWorkerActors, std::thread::hardware_concurrency());
     });
   std::unique_ptr<const jss::actor> calculators [ numberOfWorkerActors ];

@@ -1,19 +1,19 @@
 /*
  *  A C program to calculate π using quadrature as an OpenMP annotated algorithm.
  *
- *  Copyright © 2009–2011, 2013  Russel Winder
+ *  Copyright © 2009–2011, 2013, 2014  Russel Winder
  */
+
+#include <chrono>
 
 #include <omp.h>
 
 #include "output.hpp"
 
-#include "microsecondTime.h"
-
 void execute(int const numberOfThreads) {
   auto const n = 1000000000;
   auto const delta = 1.0 / n;
-  auto const startTimeMicros = microsecondTime();
+  auto const startTime = std::chrono::steady_clock::now();
   auto const sliceSize = n / numberOfThreads;
   auto sum = 0.0;
 #pragma omp parallel for reduction(+: sum)
@@ -26,7 +26,7 @@ void execute(int const numberOfThreads) {
     }
   }
   auto const pi = 4.0 * delta * sum;
-  auto const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
+  auto const elapseTime = std::chrono::steady_clock::now() - startTime;
   out("OpenMP Explicit", pi, n, elapseTime, numberOfThreads, omp_get_num_procs());
 }
 

@@ -1,8 +1,10 @@
 /*
  *  A C program to calculate π using quadrature as a TBB implemented algorithm.
  *
- *  Copyright © 2009–2012, 2013  Russel Winder
+ *  Copyright © 2009–2012, 2013, 2014  Russel Winder
  */
+
+#include <chrono>
 
 #include "tbb/task_scheduler_init.h"
 #include "tbb/blocked_range.h"
@@ -10,8 +12,6 @@
 #include "tbb/mutex.h"
 
 #include "output.hpp"
-
-#include "microsecondTime.h"
 
 tbb::mutex joinMutex;
 
@@ -38,12 +38,12 @@ class partialSum {
 int main() {
   auto const n = 1000000000;
   auto const delta = 1.0 / n;
-  auto const startTimeMicros = microsecondTime();
+  auto const startTime = std::chrono::steady_clock::now();
   tbb::task_scheduler_init tbb_initializer;
   partialSum accumulator(delta);
   tbb::parallel_reduce(tbb::blocked_range<long>(0, n), accumulator, tbb::auto_partitioner());
   auto const pi = 4.0 * delta * accumulator.getSum();
-  auto const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
+  auto const elapseTime = std::chrono::steady_clock::now() - startTime;
   out("TBB Implicit", pi, n, elapseTime, tbb::task_scheduler_init::default_num_threads(), tbb::task_scheduler_init::default_num_threads());
   return 0;
 }

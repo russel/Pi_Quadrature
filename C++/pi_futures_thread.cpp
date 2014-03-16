@@ -1,15 +1,14 @@
 /*
  *  A C++ program to calculate π using quadrature.    This uses threads à la C++11 for parallelism.
  *
- *  Copyright © 2009–2011, 2013  Russel Winder
+ *  Copyright © 2009–2011, 2013, 2014  Russel Winder
  */
 
+#include <chrono>
 #include <future>
 #include <thread>
 
 #include "output.hpp"
-
-#include "microsecondTime.h"
 
 double partialSum(int const id, int const sliceSize, double const delta) {
   auto const start = 1 + id * sliceSize;
@@ -25,7 +24,7 @@ double partialSum(int const id, int const sliceSize, double const delta) {
 void execute(const int numberOfThreads) {
   auto const n = 1000000000;
   auto const delta = 1.0 / n;
-  auto const startTimeMicros = microsecondTime();
+  auto const startTime = std::chrono::steady_clock::now();
   auto const sliceSize = n / numberOfThreads;
   std::shared_future<double> futures[numberOfThreads];
   for (auto i = 0; i < numberOfThreads; ++i) {
@@ -37,8 +36,8 @@ void execute(const int numberOfThreads) {
   auto sum = 0.0;
   for (auto && future: futures) { sum += future.get(); }
   auto const pi = 4.0 * delta * sum;
-  auto const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
-  out("Just::Thread Futures", pi, n, elapseTime, numberOfThreads, std::thread::hardware_concurrency());
+  auto const elapseTime = std::chrono::steady_clock::now() - startTime;
+  out("Futures Thread", pi, n, elapseTime, numberOfThreads, std::thread::hardware_concurrency());
 }
 
 int main() {

@@ -1,16 +1,16 @@
 /*
- *  A C++ program to calculate π using quadrature.    This uses threads à la C++11 for parallelism.
+ *  A C++ program to calculate π using quadrature.  This uses threads à la C++11 for parallelism with
+ *  lambdas à la C++14 from GCC 4.9 onward.
  *
- *  Copyright © 2009–2011, 2013  Russel Winder
+ *  Copyright © 2009–2011, 2013, 2014  Russel Winder
  */
 
+#include <chrono>
 #include <vector>
 #include <future>
 #include <numeric>
 
 #include "output.hpp"
-
-#include "microsecondTime.h"
 
 double partialSum(int const id, int const sliceSize, double const delta) {
   auto const start = 1 + id * sliceSize;
@@ -26,7 +26,7 @@ double partialSum(int const id, int const sliceSize, double const delta) {
 void execute(const int numberOfThreads) {
   auto const n = 1000000000;
   auto const delta = 1.0 / n;
-  auto const startTimeMicros = microsecondTime();
+  auto const startTime = std::chrono::steady_clock::now();
   auto const sliceSize = n / numberOfThreads;
   std::vector<std::shared_future<double>> futures;
   for (auto i = 0; i < numberOfThreads; ++i) {
@@ -34,8 +34,8 @@ void execute(const int numberOfThreads) {
   }
   auto const sum = std::accumulate(futures.begin(), futures.end(), 0.0, [](double a, std::shared_future<double>b) { return a + b.get();});
   auto const pi = 4.0 * delta * sum;
-  auto const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
-  out("Just::Thread Futures", pi, n, elapseTime, numberOfThreads, std::thread::hardware_concurrency());
+  auto const elapseTime = std::chrono::steady_clock::now() - startTime;
+  out("Futures Async", pi, n, elapseTime, numberOfThreads, std::thread::hardware_concurrency());
 }
 
 int main() {

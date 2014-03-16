@@ -1,15 +1,15 @@
 /*
  *  A C++ program to calculate π using quadrature as a CSP implemented algorithm.
  *
- *  Copyright © 2010–2011, 2013  Russel Winder
+ *  Copyright © 2010–2011, 2013, 2014  Russel Winder
  */
 
+#include <chrono>
 #include <vector>
+
 #include <cppcsp/cppcsp.h>
 
 #include "output.hpp"
-
-#include "microsecondTime.h"
 
 class Compute: public csp::CSProcess {
  private:
@@ -37,19 +37,19 @@ class Accumulate: public csp::CSProcess {
  private:
   int const n;
   int const numberOfProcesses;
-  long long const startTimeMicros;
+  std::chrono::steady_clock::time_point const startTime;
   int const sliceSize;
   double const delta;
   csp::AltChanin<double> const chanin;
  public:
-  Accumulate(int const ni, int const np, long long const st, int const s, double const d, csp::AltChanin<double> const c)
-    : n(ni), numberOfProcesses(np), startTimeMicros(st), sliceSize(s), delta(d), chanin(c) {
+  Accumulate(int const ni, int const np, std::chrono::steady_clock::time_point const st, int const s, double const d, csp::AltChanin<double> const c)
+    : n(ni), numberOfProcesses(np), startTime(st), sliceSize(s), delta(d), chanin(c) {
   }
   void run() {
     auto sum = 0.0;
     for (auto i = 0; i < numberOfProcesses; ++i) { double s; chanin >> s; sum += s; }
     auto const pi = 4.0 * delta * sum;
-    auto const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
+    auto const elapseTime = std::chrono::steady_clock::now() - startTime;
     out("C++ CSP 2", pi, n, elapseTime, numberOfProcesses, 0);
   }
 };
@@ -57,12 +57,12 @@ class Accumulate: public csp::CSProcess {
 void execute(int const numberOfProcesses) {
   auto const n = 1000000000;
   auto const delta = 1.0 / n;
-  auto const startTimeMicros = microsecondTime();
+  auto const startTime = std::chrono::steady_clock::now();
   auto const sliceSize = n / numberOfProcesses;
   csp::Start_CPPCSP();
   csp::Any2OneChannel<double> results;
   std::vector<csp::CSProcessPtr> processes;
-  processes.push_back(new Accumulate(n, numberOfProcesses, startTimeMicros, sliceSize, delta, results.reader()));
+  processes.push_back(new Accumulate(n, numberOfProcesses, startTime, sliceSize, delta, results.reader()));
   for (auto i = 0; i < numberOfProcesses; ++i) { processes.push_back(new Compute(i, sliceSize, delta, results.writer())); }
   csp::Run(csp::InParallel(processes.begin(), processes.end()));
   csp::End_CPPCSP();

@@ -1,19 +1,19 @@
 /*
  *  A C++ program to calculate π using quadrature as anMPI-based algorithm.
  *
- *  Copyright © 2009–2011, 2013  Russel Winder
+ *  Copyright © 2009–2011, 2013, 2014  Russel Winder
  */
+
+#include<chrono>
 
 #include <boost/mpi.hpp>
 
 #include "output.hpp"
 
-#include "microsecondTime.h"
-
 int main(int ac, char ** av) { // MPI requires writeable access to these parameters :-(
   auto const n = 1000000000;
   auto const delta = 1.0 / n;
-  auto const startTimeMicros = microsecondTime();
+  auto const startTime = std::chrono::steady_clock::now();
   boost::mpi::environment environment(ac, av);
   boost::mpi::communicator world;
   auto const nProcessors = world.size();
@@ -30,7 +30,7 @@ int main(int ac, char ** av) { // MPI requires writeable access to these paramet
   boost::mpi::reduce(world, localSum, sum, std::plus<double>(), 0);
   if (myId == 0) {
     auto const pi = 4.0 * delta * sum;
-    auto const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
+    auto const elapseTime = std::chrono::steady_clock::now() - startTime;
     out("Boost MPI", pi, n, elapseTime, 0, nProcessors);
   }
   return 0;

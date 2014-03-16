@@ -3,15 +3,14 @@
  *
  *  This is a variant of my original by Anthony Williams which made it into the Just::Thread tests.
  *
- *  Copyright © 2009–2011, 2013  Russel Winder
+ *  Copyright © 2009–2011, 2013, 2014  Russel Winder
  */
 
+#include <chrono>
 #include <thread>
-#include<future>
+#include <future>
 
 #include "output.hpp"
-
-#include "microsecondTime.h"
 
 double partialSum(int const id, int const sliceSize, double const delta) {
   auto const start = 1 + id * sliceSize;
@@ -27,7 +26,7 @@ double partialSum(int const id, int const sliceSize, double const delta) {
 void execute(int const numberOfThreads) {
   auto const n = 1000000000;
   auto const delta = 1.0 / n;
-  auto const startTimeMicros = microsecondTime();
+  auto const startTime = std::chrono::steady_clock::now();
   auto const sliceSize = n / numberOfThreads;
   std::packaged_task<double()> tasks[numberOfThreads];
   for (auto i = 0; i < numberOfThreads; ++i) {
@@ -38,8 +37,8 @@ void execute(int const numberOfThreads) {
   auto sum = 0.0;
   for (auto && task: tasks) { sum += task.get_future().get(); }
   auto const pi = 4.0 * delta * sum;
-  auto const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
-  out("Just::Thread Futures AW", pi, n, elapseTime, numberOfThreads, std::thread::hardware_concurrency());
+  auto const elapseTime = std::chrono::steady_clock::now() - startTime;
+  out("Futures Thread AW", pi, n, elapseTime, numberOfThreads, std::thread::hardware_concurrency());
 }
 
 int main() {
