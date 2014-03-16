@@ -1,37 +1,32 @@
 /*
  *  Sequential implementation of π by quadrature using imperative approach.
  *
- *  Copyright © 2013  Russel Winder
+ *  Copyright © 2013, 2014  Russel Winder
  */
 
-extern mod extra;
-extern mod output;
+extern crate sync;
+extern crate time;
+extern crate output;
 
 use std::vec::from_fn;
-use extra::future::Future;
-use extra::time::precise_time_s;
+use sync::Future;
+use time::precise_time_s;
 use output::outputN;
-
-fn sum_futures(futures:~[@mut Future<float>])->float {
-    let mut sum = 0.0;
-    for f in futures.iter() { sum += f.get() }
-    sum
-}
 
 fn execute(numberOfTasks:uint) {
     let n = 1000000000u;
-    let delta = 1.0 / n as float;
+    let delta = 1.0 / n as f64;
     let startTime = precise_time_s();
     let sliceSize = n / numberOfTasks;
-    let futures = from_fn(numberOfTasks, |id| @mut Future::spawn(||->float {
-        let mut sum = 0.0;
+    let mut futures = from_fn(numberOfTasks, |id| Future::spawn(proc() {
+        let mut sum:f64 = 0.0;
         for i in range(1 + id * sliceSize, (id + 1) * sliceSize) {
-            let x = (i as float - 0.5) * delta;
+            let x = (i as f64 - 0.5) * delta;
             sum += 1.0 / (1.0 + x * x)
         }
         sum
     }));
-    let pi = 4.0 * delta * sum_futures(futures);
+    let pi = 4.0 * delta * futures.mut_iter().fold(0.0, |acc, i| acc + i.get());
     let elapseTime = precise_time_s() - startTime;
     outputN("pi_sequential_spawn", pi, n, elapseTime, numberOfTasks)
 }

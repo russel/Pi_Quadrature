@@ -4,7 +4,7 @@ environment = Environment(
     ENV = os.environ
 )
 
-outputCrate = environment.Command('liboutput-52a66ec24f687f3-0.0.so', 'output.rs', 'rustc --lib -O $SOURCE')
+outputCrate = environment.Command('liboutput-048e8aee-0.0.so', 'output.rs', 'rustc --crate-type dylib -O $SOURCE')
 
 for f in Glob('pi_*.rs'):
     environment.Command(f.name.replace('.rs', ''), [f, outputCrate], 'rustc -o $TARGET -O $SOURCE -L .')
