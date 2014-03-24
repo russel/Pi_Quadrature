@@ -12,7 +12,7 @@ import static groovyx.gpars.dataflow.Dataflow.task
 void execute(final operatorCount) {
   final n = 1000000000
   final delta = 1.0 / n
-  final startTimeNanos = System.nanoTime ()
+  final startTimeNanos = System.nanoTime()
   final sliceSize = (int)(n / operatorCount)
   final partialSums = []
   (0 ..< operatorCount).each {index ->

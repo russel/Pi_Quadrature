@@ -14,7 +14,7 @@ void execute(final operatorCount) {
   final delta = 1.0 / n
   final startTimeNanos = System.nanoTime()
   final sliceSize = (int)(n / operatorCount)
-  final partialSums = [ ]
+  final partialSums = []
   (0 ..< operatorCount).each {index ->
     final variable = new DataflowVariable()
     partialSums << variable
