@@ -8,10 +8,7 @@
 package uk.org.winder.pi_quadrature;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.CompletableFuture;
 
 public class Pi_Futures_Java8_Batched {
 
@@ -20,11 +17,10 @@ public class Pi_Futures_Java8_Batched {
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
-    final ExecutorService executor = new ScheduledThreadPoolExecutor(numberOfTasks);
-    final ArrayList<Future<Double>> futures = new ArrayList<>();
+    final ArrayList<CompletableFuture<Double>> futures = new ArrayList<>();
     for (int i = 0; i < numberOfTasks; ++i) {
       final int taskId = i;
-      futures.add(executor.submit(() -> {
+      futures.add(CompletableFuture.supplyAsync(() -> {
               final int start = 1 + taskId * sliceSize;
               final int end = (taskId + 1) * sliceSize;
               double sum = 0.0;
@@ -35,13 +31,7 @@ public class Pi_Futures_Java8_Batched {
               return sum;
             }));
     }
-    double sum = 0.0;
-    for (final Future<Double> f : futures) {
-      try { sum += f.get(); }
-      catch (InterruptedException | ExecutionException e) { throw new RuntimeException(e); }
-    }
-    executor.shutdown();
-    final double pi = 4.0 * delta * sum;
+    final double pi = 4.0 * delta * futures.stream().mapToDouble(CompletableFuture::join).sum();
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
     Output.out("Pi_Futures_Java8_Batched", pi, n, elapseTime, numberOfTasks);
   }
