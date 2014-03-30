@@ -7,8 +7,8 @@
 
 package uk.org.winder.pi_quadrature;
 
-import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.IntStream;
 
 public class Pi_Futures_Java8_Batched {
 
@@ -17,21 +17,17 @@ public class Pi_Futures_Java8_Batched {
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
-    final ArrayList<CompletableFuture<Double>> futures = new ArrayList<>();
-    for (int i = 0; i < numberOfTasks; ++i) {
-      final int taskId = i;
-      futures.add(CompletableFuture.supplyAsync(() -> {
-              final int start = 1 + taskId * sliceSize;
-              final int end = (taskId + 1) * sliceSize;
-              double sum = 0.0;
-              for (int ii = start; ii <= end; ++ii) {
-                final double x = (ii - 0.5) * delta;
-                sum += 1.0 / (1.0 + x * x);
-              }
-              return sum;
-            }));
-    }
-    final double pi = 4.0 * delta * futures.stream().mapToDouble(CompletableFuture::join).sum();
+    final double pi = 4.0d * delta * IntStream.range(0, numberOfTasks).parallel().mapToObj(taskId ->
+        CompletableFuture.supplyAsync(() -> {
+          final int start = 1 + taskId * sliceSize;
+          final int end = (taskId + 1) * sliceSize;
+          double sum = 0.0;
+          for (int i = start; i <= end; ++i) {
+            final double x = (i - 0.5) * delta;
+            sum += 1.0 / (1.0 + x * x);
+          }
+          return sum;
+        })).mapToDouble(CompletableFuture::join).sum();
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
     Output.out("Pi_Futures_Java8_Batched", pi, n, elapseTime, numberOfTasks);
   }

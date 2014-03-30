@@ -7,8 +7,8 @@
 
 package uk.org.winder.pi_quadrature;
 
-import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.IntStream;
 
 public class Pi_Futures_Java8_NotBatched {
 
@@ -16,15 +16,11 @@ public class Pi_Futures_Java8_NotBatched {
     final int n = 1000000000;
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
-    final ArrayList<CompletableFuture<Double>> futures = new ArrayList<>();
-    for (int i = 0; i < n; ++i) {
-      final int taskId = i;
-      futures.add(CompletableFuture.supplyAsync(() -> {
+    final double pi = 4.0 * delta * IntStream.range(0, n).parallel().mapToObj((taskId)->
+      CompletableFuture.supplyAsync(() -> {
         final double x = (taskId - 0.5) * delta;
         return 1.0 / (1.0 + x * x);
-       }));
-    }
-    final double pi = 4.0 * delta * futures.stream().mapToDouble(CompletableFuture::join).sum();
+      })).mapToDouble(CompletableFuture::join).sum();
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
     Output.out("Pi_Futures_Java8_NotBatched", pi, n, elapseTime, numberOfTasks);
   }
