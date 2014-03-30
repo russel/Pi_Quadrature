@@ -6,13 +6,13 @@
 
 package uk.org.winder.pi_quadrature
 
-import scala.concurrent.{Await, Future, future}
+import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
 import Output.out
 
-object Pi_Futures {
+object Pi_Futures_Batched {
 
   def execute(numberOfWorkers:Int) {
     val n = 1000000000
@@ -20,7 +20,7 @@ object Pi_Futures {
     val startTimeNanos = System.nanoTime
     val sliceSize = n / numberOfWorkers
     val partialSums = for (index <- 0 until numberOfWorkers) yield
-      future {
+      Future {
         val start = 1 + index * sliceSize
         val end = (index + 1)* sliceSize
         var sum = 0.0
@@ -32,7 +32,7 @@ object Pi_Futures {
       }
     val pi = 4.0 * delta * Await.result(Future.reduce(partialSums)(_ + _), Duration.Inf)
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_Futures", pi, n, elapseTime, numberOfWorkers)
+    out("Pi_Futures_Batched", pi, n, elapseTime, numberOfWorkers)
   }
 
   def main(args:Array[String]){

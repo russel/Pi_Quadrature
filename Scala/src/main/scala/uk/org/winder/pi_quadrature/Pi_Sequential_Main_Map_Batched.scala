@@ -1,14 +1,14 @@
 /*
  *  Calculation of π using quadrature realized with a map.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature
 
 import Output.out
 
-object Pi_SequentialMap_Batched {
+object Pi_Sequential_Main_Map_Batched {
 
   def execute(numberOfThreads:Int) {
     val n = 1000000000
@@ -27,7 +27,7 @@ object Pi_SequentialMap_Batched {
     }
     val pi = 4.0 * delta * (0 until numberOfThreads).map(partialSum).sum
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
-    out("Pi_SequentialMap_Batched", pi, n, elapseTime, numberOfThreads)
+    out("Pi_Sequential_Main_Map_Batched", pi, n, elapseTime, numberOfThreads)
   }
 
   def main(args:Array[String]) {

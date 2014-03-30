@@ -1,23 +1,19 @@
 /*
  *  Calculation of π using quadrature realized with a parallel map.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature
-
-import scala.collection.parallel.immutable.ParRange
-import scala.language.postfixOps
 
 import Output.out
 
 object Pi_ParRange {
 
   def execute(numberOfThreads:Int) {
-    val n = 1000000000
+    val n = 10000000  // 100 fewer times due to performance.
     val delta = 1.0 / n
     val startTimeNanos = System.nanoTime
-    val sliceSize = n / numberOfThreads
     val value = (index:Int) => {
       val x = (index - 0.5) * delta
       1.0 / (1.0 + x * x)

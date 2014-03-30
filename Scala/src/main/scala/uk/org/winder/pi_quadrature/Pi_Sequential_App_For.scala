@@ -21,4 +21,5 @@ object Pi_Sequential_App_For extends App {
   val pi = 4.0 * delta * sum
   val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
   out("Pi_Sequential_App_For", pi, n, elapseTime)
+
 }

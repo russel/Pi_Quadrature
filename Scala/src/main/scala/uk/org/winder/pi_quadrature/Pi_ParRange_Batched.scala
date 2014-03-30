@@ -1,13 +1,10 @@
 /*
  *  Calculation of π using quadrature realized with a parallel map.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature
-
-import scala.collection.parallel.immutable.ParRange
-import scala.language.postfixOps
 
 import Output.out
 
