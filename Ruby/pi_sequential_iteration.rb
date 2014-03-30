@@ -3,7 +3,7 @@
 
 #  Calculation of π using quadrature. Sequential algorithm.
 #
-#  Copyright © 2008–2009,2011,2012 Russel Winder
+#  Copyright © 2008–2009, 2011, 2012, 2014  Russel Winder
 
 require 'time'
 
@@ -15,8 +15,8 @@ startTime = Time.now
 sum = 0.0
 i = 1
 while i <= n do
-  x = ( i - 0.5 ) * delta
-  sum += 1.0 / ( 1.0 + x * x )
+  x = (i - 0.5) * delta
+  sum += 1.0 / (1.0 + x * x)
   i += 1
 end
 pi = 4.0 * delta * sum
