@@ -28,7 +28,7 @@ fn execute(numberOfTasks:uint) {
     }));
     let pi = 4.0 * delta * futures.mut_iter().fold(0.0, |acc, i| acc + i.get());
     let elapseTime = precise_time_s() - startTime;
-    outputN("pi_sequential_spawn", pi, n, elapseTime, numberOfTasks)
+    outputN("pi_parallel_futures", pi, n, elapseTime, numberOfTasks)
 }
 
 fn main() {
