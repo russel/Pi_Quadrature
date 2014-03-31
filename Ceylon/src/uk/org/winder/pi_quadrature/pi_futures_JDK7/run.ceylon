@@ -2,7 +2,7 @@
  *  Calculation of π using quadrature realized with a parallel algorithm using
  *  callables, futures and executors.
  *
- *  Copyright © 2012, 2013  Russel Winder
+ *  Copyright © 2012–2014  Russel Winder
  */
 
 import java.util.concurrent { Callable, ScheduledThreadPoolExecutor }
@@ -29,7 +29,7 @@ void execute(Integer numberOfTasks) {
 	value pi = 4.0 * delta * sum({for (f in [for (i in 1..numberOfTasks) executor.submit(Task(i))]) f.get()});
 	executor.shutdown();
 	value elapseTime = (system.nanoseconds - startTime) / 1.0e9;
-	outputN("pi_ceylon_futures", pi, n, elapseTime, numberOfTasks);
+	outputN("pi_ceylon_futures_JDK7", pi, n, elapseTime, numberOfTasks);
 }
 
 "Calculate π using quadrature realized with a parallel algorithm using callables, futures and executors."
