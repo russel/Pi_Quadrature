@@ -1,3 +1,9 @@
+/*
+ *  Calculation of π using quadrature realized with Java 8 parallel streams.
+ *
+ *  Copyright © 2013, 2014  Russel Winder
+ */
+
 package uk.org.winder.pi_quadrature.pi_streams
 
 import java.util.stream.IntStream

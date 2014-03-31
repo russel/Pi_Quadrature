@@ -1,3 +1,9 @@
+/*
+ *  Output functions for calculations of π using quadrature.
+ *
+ *  Copyright © 2013, 2014  Russel Winder
+ */
+
 package uk.org.winder.pi_quadrature
 
 fun out(banner:String, pi:Double, n:Int, elapseTime:Double) {

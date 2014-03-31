@@ -1,3 +1,9 @@
+/*
+ *  Calculation of π using quadrature realized with sequential for loop.
+ *
+ *  Copyright © 2013, 2014  Russel Winder
+ */
+
 package uk.org.winder.pi_quadrature.pi_sequential_loop
 
 import uk.org.winder.pi_quadrature.out
