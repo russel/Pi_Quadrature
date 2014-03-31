@@ -20,10 +20,10 @@ public class Pi_ForkJoinBasic_Java7 {
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
     final ForkJoinPool pool = new ForkJoinPool(numberOfTasks);
-    @SuppressWarnings("unchecked") final ForkJoinTask<Double>[] futures = new ForkJoinTask[numberOfTasks];
+    @SuppressWarnings("unchecked") final ForkJoinTask<Double>[] tasks = new ForkJoinTask[numberOfTasks];
     for (int i = 0; i < numberOfTasks; ++i) {
       final int taskId = i;
-      futures[taskId] = pool.submit(new Callable<Double>() {
+      tasks[taskId] = pool.submit(new Callable<Double>() {
           @Override public Double call() {
             final int start = 1 + taskId * sliceSize;
             final int end = (taskId + 1) * sliceSize;
@@ -37,8 +37,8 @@ public class Pi_ForkJoinBasic_Java7 {
         });
     }
     double sum = 0.0;
-    for (final ForkJoinTask<Double> f : futures) {
-      try { sum += f.get(); }
+    for (final ForkJoinTask<Double> t: tasks) {
+      try { sum += t.get(); }
       catch (InterruptedException | ExecutionException e) { throw new RuntimeException(e); }
     }
     //pool.shutdown();

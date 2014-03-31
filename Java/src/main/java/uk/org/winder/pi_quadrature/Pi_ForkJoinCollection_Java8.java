@@ -36,7 +36,7 @@ public class Pi_ForkJoinCollection_Java8 {
     }
     final ForkJoinPool pool = new ForkJoinPool(numberOfTasks);
     double sum = 0.0;
-    for (final Future<Double> f : pool.invokeAll(callables)) {
+    for (final Future<Double> f: pool.invokeAll(callables)) {
       try { sum += f.get(); }
       catch(InterruptedException | ExecutionException e) { throw new RuntimeException(e); }
     }
