@@ -4,7 +4,7 @@
  *  Copyright © 2013, 2014  Russel Winder
  */
 
-#[crate_id = "output#0.0"];
+#![crate_id = "output#0.0"]
 
 pub fn output(banner:&str, pi:f64, n:uint, elapseTime:f64) {
     println!("======================== {}", banner);

@@ -8,7 +8,7 @@ extern crate sync;
 extern crate time;
 extern crate output;
 
-use std::vec::from_fn;
+use std::vec::Vec;
 use sync::Future;
 use time::precise_time_s;
 use output::outputN;
@@ -18,7 +18,7 @@ fn execute(numberOfTasks:uint) {
     let delta = 1.0 / n as f64;
     let startTime = precise_time_s();
     let sliceSize = n / numberOfTasks;
-    let mut futures = from_fn(numberOfTasks, |id| Future::spawn(proc() {
+    let mut futures = Vec::from_fn(numberOfTasks, |id| Future::spawn(proc() {
         let mut sum:f64 = 0.0;
         for i in range(1 + id * sliceSize, (id + 1) * sliceSize) {
             let x = (i as f64 - 0.5) * delta;
