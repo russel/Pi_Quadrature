@@ -34,12 +34,14 @@ public class Pi_DistArray_MapReduce {
     Output.out("Parallel", pi, n, elapseTime, numberOfTasks);
   }
   public static def main(args:Rail[String]):void {
+    // Warm up the JIT
+    execute(32);
+    execute(32);
+    execute(32);
+    Console.OUT.println("\nIgnore the above, it's the JIT warm up for when using the JVM backend.\n");
     execute(1);
-    Console.OUT.println();
     execute(2);
-    Console.OUT.println();
     execute(8);
-    Console.OUT.println();
     execute(32);
   }
 }
