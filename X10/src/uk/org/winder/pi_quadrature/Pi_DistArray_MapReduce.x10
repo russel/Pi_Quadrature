@@ -1,7 +1,7 @@
 /*
  *  Calculation of  π using quadrature realized with a data parallel algorithm.
  *
- *  Copyright © 2009–2012   Russel Winder <russel@winder.org.uk>
+ *  Copyright © 2009–2012, 2014  Russel Winder <russel@winder.org.uk>
  */
 
 package uk.org.winder.pi_quadrature;
@@ -9,7 +9,7 @@ package uk.org.winder.pi_quadrature;
 import x10.array.DistArray_Block_1;
 import x10.io.Console;
 
-public class Pi_Parallel {
+public class Pi_DistArray_MapReduce {
   private static def partialSum(id:long, sliceSize:long, delta:double):double {
     val start = 1 + id * sliceSize;
     val end = (id + 1) * sliceSize;
