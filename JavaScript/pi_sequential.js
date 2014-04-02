@@ -1,11 +1,12 @@
 #! /usr/bin/env jjs
 
-function out(prefix, pi, n, elapseTime) {
-  print('==================== ' + prefix);
-  print('\tπ = ' + pi);
-  print('\titeration count = ' + n);
-  print('\telapse time = ' + elapseTime);
-}
+/*
+ *  Calculation of π using quadrature realized with a basic sequential algorithm.
+ *
+ *  Copyright © 2014  Russel Winder
+ */
+
+load('output.js')
 
 var n = 100000000 // 10 times fewer.
 var delta = 1.0 / n
