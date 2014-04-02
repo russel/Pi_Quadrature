@@ -1,11 +1,12 @@
 #! /usr/bin/env dart
 
-void out(prefix, pi, n, elapseTime) {
-  print('==================== ${prefix}');
-  print('\tπ = ${pi}');
-  print('\titeration count = ${n}');
-  print('\telapse time = ${elapseTime}');
-}
+/*
+ *  Calculation of π using quadrature realized with a basic sequential algorithm.
+ *
+ *  Copyright © 2014  Russel Winder
+ */
+
+import 'output.dart';
 
 void main() {
   final n = 100000000; // 10 times fewer.
