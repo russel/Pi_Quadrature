@@ -12,15 +12,15 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 void execute(final int numberOfTasks) {
-  final int n = 100000000i // 10 times fewer than Java due to speed issues.
-  final double delta = 1.0d / n
+  final int n = 100_000_000 // 10 times fewer than Java due to speed issues.
+  final double delta = 1.0 / n
   final startTimeNanos = System.nanoTime ()
-  final double pi = 4.0d * delta * IntStream.range(0i, n).parallel().mapToDouble{int i ->
+  final double pi = 4.0 * delta * IntStream.range(0i, n).parallel().mapToDouble{int i ->
     final double x = (i - 0.5d) * delta
     1.0d / (1.0d + x * x)
   }.sum()
   final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
-  Output.out(getClass().name, pi, n, elapseTime, numberOfTasks)
+  Output.out getClass(), pi, n, elapseTime, numberOfTasks
 }
 
 execute 1

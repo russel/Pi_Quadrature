@@ -3,15 +3,15 @@
 /*
  *  Calculation of π using quadrature realized with GPars actors. Scripty.
  *
- *  Copyright © 2009–2012 Russel Winder.
+ *  Copyright © 2009–2012, 2014  Russel Winder.
  */
 
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.group.DefaultPGroup
 
 void execute(final actorCount) {
-  final n = 1000000000
-  final delta = 1.0d / n
+  final n = 1_000_000_000
+  final delta = 1.0 / n
   final startTimeNanos = System.nanoTime ()
   final sliceSize = (int)(n / actorCount)
   final group = new DefaultPGroup(actorCount + 1)
@@ -23,7 +23,7 @@ void execute(final actorCount) {
       if (++count == actorCount) {
         final pi = 4.0 * delta * sum
         final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
-        Output.out(getClass().name, pi, n, elapseTime, actorCount)
+        Output.out getClass(), pi, n, elapseTime, actorCount
         terminate()
       }
     }

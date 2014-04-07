@@ -10,7 +10,7 @@
 import java.util.concurrent.LinkedBlockingQueue
 
 def execute(numberOfThreads) {
-  final n = 1000000000
+  final n = 1_000_000_000
   final delta = 1.0 / n
   final startTime = System.nanoTime()
   final sliceSize = (int)(n / numberOfThreads)
@@ -18,7 +18,7 @@ def execute(numberOfThreads) {
   (0 ..< numberOfThreads).each {id -> new Thread({results << PartialSum.staticCompile(id, sliceSize, delta)}).start()}
   final pi = 4.0 * delta * (0 ..< numberOfThreads).sum{results.take()}
   final elapseTime = (System.nanoTime() - startTime) / 1e9
-  Output.out(getClass().name, pi, n, elapseTime, numberOfThreads)
+  Output.out getClass(), pi, n, elapseTime, numberOfThreads
 }
 
 execute 1

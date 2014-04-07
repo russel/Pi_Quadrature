@@ -6,19 +6,19 @@ import groovyx.gpars.GParsPool
  *  Calculation of π using quadrature realized with a map/reduce approach with GPars and hence harness all
  *  processors available to the JVM.
  *
- *  Copyright © 2012 Russel Winder
+ *  Copyright © 2012, 2014  Russel Winder
  */
 void execute(final numberOfTasks) {
   GParsPool.withPool {
-    final n = 1000000000
+    final n = 1_000_000_000
     final delta = 1.0 / n
     final startTimeNanos = System.nanoTime ()
     final sliceSize = (int)(n / numberOfTasks)
-    final pi = 4.0 * delta * (0 ..< numberOfTasks).parallel.map {taskId ->
+    final pi = 4.0 * delta * (0 ..< numberOfTasks).parallel.map{taskId ->
       PartialSum.staticCompile(taskId, sliceSize, delta)
     }.sum()
     final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
-    Output.out(getClass().name, pi, n, elapseTime, numberOfTasks)
+    Output.out getClass(), pi, n, elapseTime, numberOfTasks
   }
 }
 

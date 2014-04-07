@@ -9,15 +9,15 @@
 import java.util.stream.IntStream
 
 void execute(final int numberOfTasks) {
-  final int n = 1000000000i
-  final double delta = 1.0d / n
+  final int n = 1_000_000_000
+  final double delta = 1.0 / n
   final startTimeNanos = System.nanoTime ()
   final int sliceSize = n / numberOfTasks
-  final double pi = 4.0d * delta * IntStream.range(0i, numberOfTasks).parallel().mapToDouble{int taskId ->
+  final double pi = 4.0 * delta * IntStream.range(0i, numberOfTasks).parallel().mapToDouble{int taskId ->
     PartialSum.dynamicCompile(taskId, sliceSize, delta)
   }.sum()
-  final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9d
-  Output.out(getClass().name, pi, n, elapseTime, numberOfTasks)
+  final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
+  Output.out getClass(), pi, n, elapseTime, numberOfTasks
 }
 
 execute 1
