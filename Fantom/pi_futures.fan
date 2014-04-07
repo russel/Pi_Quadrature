@@ -3,13 +3,7 @@
 /*
  *  Calculation of Pi using quadrature realized with a data parallel algorithm realized with actors.
  *
- *  Copyright © 2011, 2013  Russel Winder <russel@winder.org.uk>
- */
-
-/*
- *  Use Float not Decimal so as to get some form of sane performance -- Decimals are realized as
- *  java.math.BigDecimal which whilst accurate are extraordinarily slow compared to java.lang.Double which
- *  is how Floats are realized – actually it is double, but let's not worry about that.
+ *  Copyright © 2011, 2013, 2014  Russel Winder <russel@winder.org.uk>
  */
 
 class Main {

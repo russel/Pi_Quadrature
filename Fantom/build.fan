@@ -1,3 +1,5 @@
+#! /usr/bin/env fan
+
 class Build : build::BuildPod {
   new make() {
     podName    = "pi_quadrature_output"

@@ -3,17 +3,7 @@
 /*
  *  Calculation of Pi using quadrature with a basic sequential algorithm realized via for statement.
  *
- *  Copyright © 2011, 2013  Russel Winder <russel@winder.org.uk>
- */
-
-/*
- *  Use Float not Decimal so as to get some form of sane performance -- Decimals are realized as
- *  java.math.BigDecimal which whilst accurate are extraordinarily slow compared to java.lang.Double which
- *  is how Floats are realized – actually it is double, but let's not worry about that.
- *
- *  Int type in Fantom is 64-bit and there is no 32-bit integer type.  This means Fantom running on the JVM
- *  will always suffer the obvious JVM JIT startup issue.  So the following code will be slow since the JIT
- *  does not kick in.
+ *  Copyright © 2011, 2013, 2014  Russel Winder <russel@winder.org.uk>
  */
 
 class Main {
