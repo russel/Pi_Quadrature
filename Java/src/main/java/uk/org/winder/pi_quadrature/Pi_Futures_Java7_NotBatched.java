@@ -17,7 +17,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 public class Pi_Futures_Java7_NotBatched {
 
   private static void execute(final int numberOfTasks) {
-    final int n = 1000000000;
+    final int n = 1_000_000_000;
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final ExecutorService executor = new ScheduledThreadPoolExecutor(numberOfTasks);
@@ -39,7 +39,7 @@ public class Pi_Futures_Java7_NotBatched {
     executor.shutdown();
     final double pi = 4.0 * delta * sum;
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out("Pi_Futures_Java7_NotBatched", pi, n, elapseTime, numberOfTasks);
+    Output.out(Pi_Futures_Java7_NotBatched.class, pi, n, elapseTime, numberOfTasks);
   }
 
   public static void main(final String[] args) {

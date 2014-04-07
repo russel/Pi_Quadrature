@@ -15,9 +15,17 @@ public class Output {
     System.out.println("\telapse time = " + elapseTime);
   }
 
+  public static void out(final Class klass, final Double pi, final Integer n, final Double elapseTime) {
+    out(klass.getSimpleName(), pi, n, elapseTime);
+  }
+
   public static void out(final String prefix, final Double pi, final Integer n, final Double elapseTime, final Integer numberOfTasks) {
     out(prefix + ": task count = " + numberOfTasks.toString(), pi, n, elapseTime);
     System.out.println("\tprocessor count = " + Runtime.getRuntime().availableProcessors());
+  }
+
+  public static void out(final Class klass, final Double pi, final Integer n, final Double elapseTime, final Integer numberOfTasks) {
+    out(klass.getSimpleName(), pi, n, elapseTime, numberOfTasks);
   }
 
 }

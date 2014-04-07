@@ -2,7 +2,7 @@
  *  Calculation of π using quadrature realized with a dataflow architecture implemented using Pervasive
  *  DataRush 5.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  *  Copyright © 2009  Pervasive Software Inc.
  */
 
@@ -29,7 +29,7 @@ import com.pervasive.datarush.ports.DoubleOutput;
  *  @author Matt Walker
  */
 public class Pi_DataRush5 {
-  private static final int n = 1000000000;
+  private static final int n = 1_000_000_000;
   private static final double delta = 1.0 / n;
 
   private static final class ComputeProcess extends DataflowProcess {
@@ -79,7 +79,7 @@ public class Pi_DataRush5 {
       }
       final double pi = 4.0 * delta * sum;
       final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-      Output.out("Pi_DataRush5", pi, n, elapseTime, inputs.length + 1);
+      Output.out(Pi_DataRush5.class, pi, n, elapseTime, inputs.length + 1);
     }
   }
 

@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 public class Pi_Futures_Java8_NotBatched {
 
   private static void execute(final int numberOfTasks) {
-    final int n = 1000000000;
+    final int n = 1_000_000_000;
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final double pi = 4.0 * delta * IntStream.range(0, n).parallel().mapToObj((taskId)->
@@ -22,7 +22,7 @@ public class Pi_Futures_Java8_NotBatched {
         return 1.0 / (1.0 + x * x);
       })).mapToDouble(CompletableFuture::join).sum();
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out("Pi_Futures_Java8_NotBatched", pi, n, elapseTime, numberOfTasks);
+    Output.out(Pi_Futures_Java8_NotBatched.class, pi, n, elapseTime, numberOfTasks);
   }
 
   public static void main(final String[] args) {

@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 
 public class Pi_ParallelStream_Java8_NotBatched {
   public static void main(final String[] args) {
-    final int n = 1000000000;
+    final int n = 1_000_000_000;
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final double pi = 4.0 * delta * IntStream.range(0, n).parallel().mapToDouble(i -> {
@@ -18,6 +18,6 @@ public class Pi_ParallelStream_Java8_NotBatched {
         return 1.0 / (1.0 + x * x);
       }).sum();
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out("Pi_ParallelStream_Java8_NotBatched", pi, n, elapseTime);
+    Output.out(Pi_ParallelStream_Java8_NotBatched.class, pi, n, elapseTime);
   }
 }

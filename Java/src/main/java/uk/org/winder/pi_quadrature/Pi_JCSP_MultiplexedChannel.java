@@ -2,7 +2,7 @@
  *  Calculation of π using quadrature realized with a fork/join approach with JCSP to partition the problem
  *  and hence harness all processors available to the JVM.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature;
@@ -18,7 +18,7 @@ import java.util.List;
 public class Pi_JCSP_MultiplexedChannel {
 
   private static void execute(final int numberOfTasks) {
-    final int n = 1000000000;
+    final int n = 1_000_000_000;
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
@@ -45,7 +45,7 @@ public class Pi_JCSP_MultiplexedChannel {
           for (int i = 0; i < numberOfTasks; ++i) { sum += channel.in().read(); }
           final double pi = 4.0 * delta * sum;
           final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-          Output.out("Pi_JCSP_MultiplexedChannel", pi, n, elapseTime, numberOfTasks);
+          Output.out(Pi_JCSP_MultiplexedChannel.class, pi, n, elapseTime, numberOfTasks);
         }
       });
     new Parallel(processes.toArray(new CSProcess[0])).run();

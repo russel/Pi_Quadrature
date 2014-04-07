@@ -2,11 +2,15 @@
  *  Calculation of π using quadrature realized with an approached based on evolving values in an array with
  *  implicit parallelism.  This is material that probably won't actually be in Java 7.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature;
 
+/*
+ *  Use the GPars fork of extra166y (rather than extra166y itself) as
+ *  it is a dependency of this project anyway.
+ */
 import groovyx.gpars.extra166y.CommonOps;
 import groovyx.gpars.extra166y.Ops;
 import groovyx.gpars.extra166y.ParallelDoubleArray;
@@ -15,7 +19,7 @@ import groovyx.gpars.extra166y.ParallelDoubleArrayWithDoubleMapping;
 public class Pi_ParallelArray_Java7 {
 
   private static void execute(final int numberOfTasks) {
-    final int n = 1000000000;
+    final int n = 1_000_000_000;
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
@@ -34,7 +38,7 @@ public class Pi_ParallelArray_Java7 {
       });
     final double pi = 4.0 * delta * finalArray.reduce(CommonOps.doubleAdder(), 0.0);
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out("Pi_ParallelArray_Java7", pi, n, elapseTime, numberOfTasks);
+    Output.out(Pi_ParallelArray_Java7.class, pi, n, elapseTime, numberOfTasks);
   }
   public static void main(final String[] args) {
     Pi_ParallelArray_Java7.execute(1);
