@@ -9,7 +9,7 @@ import uk.org.winder.pi_quadrature.tools { output }
 "Calculate π using quadrature realized with a basic sequential algorithm."
 by("Russel Winder")
 void run() {
-	value n = 100000000; // 10 times fewer than Java due to speed issues.
+	value n = 100_000_000; // 10 times fewer than Java due to speed issues.
 	value delta = 1.0 / n;
 	value startTime = system.nanoseconds;
 	variable Float sum = 0.0;
@@ -19,5 +19,5 @@ void run() {
 	}
 	value pi = 4.0 * delta * sum;
 	value elapseTime = (system.nanoseconds - startTime) / 1.0e9;
-	output("pi_ceylon_sequential", pi, n, elapseTime);
+	output("pi_sequential_loop", pi, n, elapseTime);
 }
