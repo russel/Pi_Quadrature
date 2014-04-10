@@ -1,3 +1,7 @@
+!  Output functions for the Fortran programs to calculate π using quadrature.
+!
+!  Copyright © 2012, 2014  Russel Winder
+
 subroutine out(banner, pi_, n, elapseTime)
   character (len = 10):: banner
   integer:: n
