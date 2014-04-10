@@ -1,0 +1,2 @@
+For GFortran 6, 15, 18, 33 are known precisions.  It is assumed that 6 maps to 32-bit, 15 to 64-bit, and 18
+to 80-bit (if present). 33 presumably maps to a software 128-bit floating point library.
