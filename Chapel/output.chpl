@@ -1,5 +1,5 @@
 /*
- * A Chapel procedure for doing result output.
+ *  Chapel procedures for doing π calculation result output.
  *
  *  Copyright © 2012, 2013  Russel Winder
  */
