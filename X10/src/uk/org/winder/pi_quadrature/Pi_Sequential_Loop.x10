@@ -12,7 +12,7 @@ public class Pi_Sequential_Loop {
     val delta = 1.0 / n;
     val startTimeNanos = System.nanoTime();
     var sum:double = 0.0;
-    for (var i:long = 1; i <= n; ++i) {
+    for (i in 1..n) {
       val x = (i - 0.5) * delta;
       sum += 1.0 / (1.0 + x * x);
     }

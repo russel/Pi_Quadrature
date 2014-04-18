@@ -14,7 +14,7 @@ public class Pi_DistArray_MapReduce {
     val start = 1 + id * sliceSize;
     val end = (id + 1) * sliceSize;
     var sum:double = 0.0;
-    for (var i:long = start; i < end; ++i) {
+    for (i in start..end) {
       val x = (i - 0.5) * delta;
       sum += 1.0 / (1.0 + x * x);
     }
