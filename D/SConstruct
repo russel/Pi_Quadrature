@@ -1,8 +1,8 @@
 # -*- mode:python; coding:utf-8; -*-
 
-#  Calculation of π using quadrature using teh D programming language..
+#  Calculation of π using quadrature using the D programming language.
 #
-#  Copyright © 2008–2013 Russel Winder
+#  Copyright © 2008–2014 Russel Winder
 
 import os
 import sys
@@ -10,8 +10,8 @@ sys.path.append('../site_scons')
 
 from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
-##  DMD 2.059 worked, DMD 2.060 has issues – various problems with the thread. GDC on Debian as at
-## 2012-09-06 realizes D 2.056 and so barfs on some constructs introduced after that version. LDC compiled
+## DMD 2.059 worked, DMD 2.060 had issues – various problems with threads. GDC on Debian as at
+## 2012-09-06 realizes D 2.056 and barfs on some constructs introduced after that version. LDC compiled
 ## from master/HEAD as at 2012-11--11 is D 2.060+changes and works fine. Except for
 ## pi_d_threadsGlobalState_array_declarative.d. See http://d.puremagic.com/issues/show_bug.cgi?id=8774. It
 ## appears that pi_d_threadsGlobalState_array_declarative.d should never have worked under 2.059 as it was:
@@ -19,22 +19,26 @@ from executablesupport import compileTargets, addCompileTarget, addRunTarget, cr
 ##
 ##  pi_d_threadsGlobalState_array_iterative.d and pi_d_threadsGlobalState_threadGroup.d fail on DMD 2.060
 ##  but worked under 2.059, and work under LDC2.
+##
+## As at 2014-04-21, DMD at version 2.065 works fine. as does LDC compiled from master (794d5d, v2.063.2,
+## LLVM 3.4). GDC 4.8.1 however gives some errors compiling std.parallelism.
+
+## As at 2013-04-21, SCons mainline repository has all the D tools in that work properly :-)
 
 dEnvironment = {
-    'dmd': Environment(tools=['link', 'dmd'],  # Why is the order crucial here?
+    'dmd': Environment(tools=['dmd', 'link'],
                        DFLAGS=['-O', '-release'],
-                       #DC='gdmd'
                        ),
-    'gdc':  Environment(tools=['link', 'gdc'],  # Why is the order crucial here?
+    'gdc':  Environment(tools=['gdc', 'link'],
                         DFLAGS=['-O3'],
                         ),
-    'ldc': Environment(tools=['link', 'ldc'],  # Why is the order crucial here?
+    'ldc': Environment(tools=['ldc', 'link'],
                        ENV = os.environ,
                        DFLAGS=['-O', '-release'],
                        ),
-#}['dmd']
-#}['gdc']
-}['ldc']
+    #}['dmd']
+    #}['gdc']
+    }['ldc']
 
 outputFunctions = dEnvironment.Object('outputFunctions.d')
 
