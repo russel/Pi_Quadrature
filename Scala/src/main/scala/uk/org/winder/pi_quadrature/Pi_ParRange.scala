@@ -6,6 +6,8 @@
 
 package uk.org.winder.pi_quadrature
 
+import scala.language.postfixOps
+
 import Output.out
 
 object Pi_ParRange {
