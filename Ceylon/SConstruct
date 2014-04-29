@@ -8,7 +8,9 @@ import os
 import sys
 
 ceylonEnvironment = Environment(
-    ENV=os.environ,  # Needed as the Ceylon script requires tput and hence $TERM.
+    # Needed as the Ceylon script requires tput and hence $TERM.
+    # Definitely needed now we need to use Git master.
+    ENV=os.environ,
     )
 
 sourceDirectory = 'src'
@@ -22,3 +24,5 @@ runTargets = [
     ceylonEnvironment.Command('run_' + package, buildProducts,  'ceylon run --run={}.run {}'.format(package, moduleName))
     for package in [package.path.replace('src/', '').replace('/', '.') for package in Glob(moduleDirectory + '/pi_*')]
 ]
+
+Clean('.', ['modules'])
