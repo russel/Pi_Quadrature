@@ -14,22 +14,21 @@ x10Environment = Environment(
 
 outputClass = 'src/{}/Output.x10'.format(packagePath)
 
-compileTargets = []
-
 for item in Glob('src/{}/Pi_*.x10'.format(packagePath)):
     x10ClassName = os.path.splitext(item.name)[0]
     #
     #  Java backend bits.
     #
+    # This gnerates a large collection of class files in directory uk, too many to name explicitly as side
+    # effects, so just set up a clean rule for the whole directory later.
+    #
     x10ClassFile = x10Environment.Command('{}/{}.class'.format(packagePath, x10ClassName), [item, outputClass], 'x10c $SOURCES')
-    compileTargets.append(x10ClassFile)
     #
     # C++ backend bits.
     #
     x10Executable = x10Environment.Command(x10ClassName, [item, outputClass], 'x10c++ -O -o $TARGET $SOURCES')
     SideEffect('xxx_main_xxx.cc', x10Executable)
-    compileTargets.append(x10Executable)
 
-Default(compileTargets)
+# Deal with all the generated class files.
 
 Clean('.', 'uk')
