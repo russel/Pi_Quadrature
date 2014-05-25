@@ -8,6 +8,7 @@ package uk.org.winder.pi_quadrature;
 
 import x10.array.DistArray_Block_1;
 import x10.io.Console;
+import x10.compiler.Native;
 
 public class Pi_DistArray_MapReduce {
   private static def partialSum(id:long, sliceSize:long, delta:double):double {
@@ -33,12 +34,17 @@ public class Pi_DistArray_MapReduce {
     val elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
     Output.out("Parallel", pi, n, elapseTime, numberOfTasks);
   }
+  @Native("java", "true")
+  @Native("c++", "false")
+  private static native def onJVM():Boolean;
   public static def main(args:Rail[String]):void {
-    // Warm up the JIT
-    execute(32);
-    execute(32);
-    execute(32);
-    Console.OUT.println("\nIgnore the above, it's the JIT warm up for when using the JVM backend.\n");
+    if (onJVM()) {
+      // Warm up the JIT
+      execute(32);
+      execute(32);
+      execute(32);
+      Console.OUT.println("\nIgnore the above, it's the JIT warm up.\n");
+    }
     execute(1);
     execute(2);
     execute(8);
