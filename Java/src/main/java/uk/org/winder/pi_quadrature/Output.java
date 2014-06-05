@@ -1,7 +1,7 @@
 /*
  *  Output functions for π using quadrature codes.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature;
@@ -15,7 +15,7 @@ public class Output {
     System.out.println("\telapse time = " + elapseTime);
   }
 
-  public static void out(final Class klass, final Double pi, final Integer n, final Double elapseTime) {
+  public static void out(final Class<?> klass, final Double pi, final Integer n, final Double elapseTime) {
     out(klass.getSimpleName(), pi, n, elapseTime);
   }
 
@@ -24,7 +24,7 @@ public class Output {
     System.out.println("\tprocessor count = " + Runtime.getRuntime().availableProcessors());
   }
 
-  public static void out(final Class klass, final Double pi, final Integer n, final Double elapseTime, final Integer numberOfTasks) {
+  public static void out(final Class<?> klass, final Double pi, final Integer n, final Double elapseTime, final Integer numberOfTasks) {
     out(klass.getSimpleName(), pi, n, elapseTime, numberOfTasks);
   }
 
