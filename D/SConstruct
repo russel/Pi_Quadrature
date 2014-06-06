@@ -26,19 +26,22 @@ from executablesupport import compileTargets, addCompileTarget, addRunTarget, cr
 ## As at 2013-04-21, SCons mainline repository has all the D tools in that work properly :-)
 
 dEnvironment = {
-    'dmd': Environment(tools=['dmd', 'link'],
-                       DFLAGS=['-O', '-release'],
-                       ),
-    'gdc':  Environment(tools=['gdc', 'link'],
-                        DFLAGS=['-O3'],
-                        ),
-    'ldc': Environment(tools=['ldc', 'link'],
-                       ENV = os.environ,
-                       DFLAGS=['-O', '-release'],
-                       ),
-    #}['dmd']
-    #}['gdc']
-    }['ldc']
+    'dmd': Environment(
+        tools=['dmd', 'link'],
+        DFLAGS=['-O', '-release'],
+    ),
+    'gdc':  Environment(
+        tools=['gdc', 'link'],
+        DFLAGS=['-O3'],
+    ),
+    'ldc': Environment(
+        tools=['ldc', 'link'],
+        ENV = os.environ,
+        DFLAGS=['-O', '-release'],
+    ),
+#}['dmd']
+#}['gdc']
+}['ldc']
 
 outputFunctions = dEnvironment.Object('outputFunctions.d')
 
