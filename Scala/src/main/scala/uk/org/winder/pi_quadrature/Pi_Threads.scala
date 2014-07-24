@@ -1,12 +1,12 @@
 /*
  *  Calculation of π using quadrature realized with a scatter/gather approach using threads.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature
 
-import scala.concurrent.Lock
+import java.util.concurrent.locks.ReentrantLock
 
 import Output.out
 
@@ -18,7 +18,7 @@ object Pi_Threads {
     val startTimeNanos = System.nanoTime
     val sliceSize = n / numberOfTasks
     var sum = 0.0
-    val lock = new Lock
+    val lock = new ReentrantLock
     var threads = for (index <- 0 until numberOfTasks) yield
       new Thread(new Runnable {
         def run() {
@@ -29,9 +29,9 @@ object Pi_Threads {
             val x = (i - 0.5) * delta
             localSum += 1.0 / (1.0 + x * x)
           }
-          lock.acquire
+          lock.lock
           sum += localSum
-          lock.release
+          lock.unlock
         }
       })
     threads.foreach(t => t.start)
