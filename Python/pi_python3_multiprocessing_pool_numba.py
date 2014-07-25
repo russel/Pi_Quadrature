@@ -3,7 +3,7 @@
 #  Calculation of π using quadrature. Uses the multiprocessing package to provide a process pool to enable
 #  asynchronous function calls very akin to futures.
 #
-#  Copyright © 2008–2013 Russel Winder
+#  Copyright © 2008–2014  Russel Winder
 
 from multiprocessing import Pool
 from output import out
@@ -12,15 +12,18 @@ from time import time
 from numba import autojit
 
 @autojit
-def processSlice(id, sliceSize, delta):
+def processSliceSupport(id, sliceSize, delta):
     sum = 0.0
     for i in range(1 + id * sliceSize, (id + 1) * sliceSize + 1):
         x = (i - 0.5) * delta
         sum += 1.0 / (1.0 + x * x)
     return sum
 
+def processSlice(id, sliceSize, delta):
+    return processSliceSupport(id, sliceSize, delta)
+
 def execute(processCount):
-    n = 10000000  # 100 times fewer than C due to speed issues.
+    n = 1000000000
     delta = 1.0 / n
     startTime = time()
     sliceSize = n // processCount
