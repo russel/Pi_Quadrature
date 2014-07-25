@@ -41,7 +41,7 @@ extensionsData = {
         'LINKFLAGS': [],
         },
     'cython_py3': {
-        'CPPPATH': ['/usr/include/python3.3'],
+        'CPPPATH': ['/usr/include/python3.4'],
         'CFLAGS': ccFlags,
         'LINKFLAGS': [],
         },
@@ -87,7 +87,7 @@ for item in Glob('pi_python*.py'):
                     cppEnvironment.Command(
                         '{}_{}.c'.format(extensionRoot, extension),
                         '{}_{}.pyx'.format(extensionRoot, extension),
-                        'cython $SOURCE') if extension.split('_')[0] == 'cython' else '{}_{}.{}'.format(extensionRoot, extension, extension),
+                        'cython3 $SOURCE') if extension.split('_')[0] == 'cython' else '{}_{}.{}'.format(extensionRoot, extension, extension),
                     CPPPATH=extensionsData[extension]['CPPPATH'],
                     CFLAGS=extensionsData[extension]['CFLAGS'],
                     CXXFLAGS=extensionsData[extension]['CFLAGS'],
