@@ -4,11 +4,7 @@
 #
 #  Copyright © 2008–2014  Russel Winder
 
-#  Some of the Python code relies on extensions written in various languages.  Because we have both Python 3
-#  and Python 2 versions this means that two targets are specifying the same extension, which leads SCons to
-#  deduce a "warning: Two different environments were specified for target . . . "  So we have to protect
-#  against trying to issue two SharedLibrary calls for the same extensions.  This leads to apparent
-#  inefficiency in handling the libraries due to wanting to use node references for dependency handling.
+#  Some of the Python code relies on extensions written in various languages.
 #
 #  Cython and Pyrex need access to the Python headers when compiling the generated C and so are Python
 #  version dependent.
@@ -16,10 +12,6 @@
 #  This is all grossly over-complicated and needs a complete rethink.
 
 import os
-import sys
-sys.path.append('../site_scons')
-
-from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, createHelp
 
 ccFlags = ['-O3', '-Wall', '-Wextra']
 
@@ -34,11 +26,6 @@ extensionsData = {
         'CPPPATH': [],
         'CFLAGS': ccFlags + ['-std=c++11'],
         'LINKFLAGS': ['-std=c++11']
-        },
-    'cython_py2': {
-        'CPPPATH': ['/usr/include/python2.7'],
-        'CFLAGS': ccFlags,
-        'LINKFLAGS': [],
         },
     'cython_py3': {
         'CPPPATH': ['/usr/include/python3.4'],
@@ -75,7 +62,6 @@ for item in Glob('pi_python*.py'):
         if extension == 'd':
             extensionsSharedLibraries[extension] = dEnvironment.SharedLibrary(dRoot + '.so',  dRoot + '.d')
             Depends(item, extensionsSharedLibraries[extension])
-            addRunTarget(dEnvironment, item, 'LD_LIBRARY_PATH=. ./$SOURCE')
         else:
             if extension == 'cython':
                 majorVersion = bits[1][-1:]
@@ -93,19 +79,3 @@ for item in Glob('pi_python*.py'):
                     CXXFLAGS=extensionsData[extension]['CFLAGS'],
                     LINKFLAGS=extensionsData[extension]['LINKFLAGS'])
             Depends(item, extensionsSharedLibraries[extensionName])
-            addRunTarget(cppEnvironment, item, 'LD_LIBRARY_PATH=. ./$SOURCE')
-    else:
-        addRunTarget(cppEnvironment, item)
-
-for item in extensionsSharedLibraries.values():
-    addCompileTarget(item)
-
-Default(compileTargets)
-
-def runAllTargets(targets, sources, env):
-    for s in sources:
-        print(s)
-
-Command('runAll', runTargets, runAllTargets)
-
-Help(createHelp())
