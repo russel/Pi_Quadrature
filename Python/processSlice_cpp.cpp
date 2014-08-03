@@ -5,12 +5,12 @@
  */
 
 extern "C"
-double processSlice(const int id, const int sliceSize, const double delta) {
-  const auto start = 1 + id * sliceSize;
-  const auto end = (id + 1) * sliceSize;
+double processSlice(int const id, int const sliceSize, double const delta) {
+  auto const start = 1 + id * sliceSize;
+  auto const end = (id + 1) * sliceSize;
   auto sum = 0.0;
   for (auto i = start; i <= end; ++i) {
-    const auto x = (i - 0.5) * delta;
+    auto const x = (i - 0.5) * delta;
     sum += 1.0 / (1.0 + x * x);
   }
   return sum;
