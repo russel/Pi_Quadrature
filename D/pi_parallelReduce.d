@@ -2,19 +2,19 @@
  *  A D program to calculate π using quadrature as a parallel reduce of individual expression evaluations
  *  with no manual batching.
  *
- *  Copyright © 2011–2013  Russel Winder
+ *  Copyright © 2011–2014  Russel Winder
  */
 
 //  This version originally due to David Simcha, stemming from various emails on the various D email lists
 //  and reified in the documentation for std.parallelism: http://dlang.org/phobos/std_parallelism.html,
 //  http://cis.jhu.edu/~dsimcha/d/phobos/std_parallelism.html
 
-import std.algorithm;
-import std.datetime;
-import std.parallelism;
-import std.range;
+import std.algorithm: map;
+import std.datetime: StopWatch;
+import std.parallelism: taskPool;
+import std.range: iota;
 
-import outputFunctions;
+import outputFunctions: output;
 
 int main(immutable string[] args) {
   immutable n = 1000000000;

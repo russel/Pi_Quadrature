@@ -2,13 +2,13 @@
  *  A D program to calculate π using quadrature as a spawn-based approach.  Make use of actor-style message
  *  passing capability.
  *
- *  Copyright © 2010–2013  Russel Winder
+ *  Copyright © 2010–2014  Russel Winder
  */
 
-import std.concurrency;
-import std.datetime;
+import std.concurrency;//: Tid, thisTid, receiveOnly, spawn;
+import std.datetime: StopWatch;
 
-import outputFunctions;
+import outputFunctions: output;
 
 void partialSum(Tid parent, immutable int id, immutable int sliceSize, immutable double delta) {
   immutable start = 1 + id * sliceSize;
@@ -18,7 +18,7 @@ void partialSum(Tid parent, immutable int id, immutable int sliceSize, immutable
     immutable x = (i - 0.5) * delta;
     sum += 1.0 / (1.0 + x * x);
   }
-  parent.send (sum);
+  parent.send(sum);
 }
 
 void execute(immutable int numberOfTasks) {
@@ -28,10 +28,10 @@ void execute(immutable int numberOfTasks) {
   stopWatch.start();
   immutable sliceSize = n / numberOfTasks;
   foreach (i; 0 .. numberOfTasks) {
-    spawn(& partialSum, thisTid, cast(immutable(int)) i, sliceSize, delta);
+    spawn(&partialSum, thisTid, cast(immutable(int)) i, sliceSize, delta);
   }
   auto sum = 0.0;
-  foreach (i; 0 .. numberOfTasks) { sum += receiveOnly ! double(); }
+  foreach (i; 0 .. numberOfTasks) { sum += receiveOnly!double(); }
   immutable pi = 4.0 * delta * sum;
   stopWatch.stop();
   immutable elapseTime = stopWatch.peek().hnsecs * 100e-9;

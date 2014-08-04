@@ -1,18 +1,18 @@
 /*
  *  A D program to calculate π using quadrature as a parallel reduction of sequential maps.
  *
- *  Copyright © 2010–2013  Russel Winder
+ *  Copyright © 2010–2014  Russel Winder
  */
 
-import std.algorithm;
-import std.datetime;
-import std.parallelism;
-import std.range;
-import std.typecons;
+import std.algorithm: map;
+import std.datetime: StopWatch;
+import std.parallelism: taskPool;
+import std.range: iota;
+import std.typecons: Tuple, tuple;
 
-import outputFunctions;
+import outputFunctions:output;
 
-double partialSum(immutable Tuple !(int, int, double) data) {
+double partialSum(immutable Tuple!(int, int, double) data) {
   immutable start = 1 + data[0] * data[1];
   immutable end = (data[0] + 1) * data[1];
   auto sum = 0.0;

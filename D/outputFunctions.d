@@ -4,9 +4,9 @@
  *  Copyright © 2012, 2014  Russel Winder
  */
 
-import std.conv;
-import std.parallelism;
-import std.stdio;
+import std.conv: to;
+import std.parallelism: totalCPUs;
+import std.stdio: writeln, writefln;
 
 void output(in string banner, in double pi, in int n, in double elapseTime) {
   writeln("======================== " ~ banner);

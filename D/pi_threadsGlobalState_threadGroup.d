@@ -1,16 +1,14 @@
 /*
  *  A D program to calculate π using quadrature as a threads-based approach.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  */
 
-import std.algorithm ;
-import std.datetime;
-import std.range;
+import std.datetime: StopWatch;
 
-import core.thread;
+import core.thread: ThreadGroup;
 
-import outputFunctions;
+import outputFunctions: output;
 
 shared double sum;
 shared Object sumMutex;

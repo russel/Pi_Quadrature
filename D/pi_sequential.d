@@ -1,12 +1,12 @@
 /*
  *  A D program to calculate π using quadrature as a sequential algorithm.
  *
- *  Copyright © 2009–2013  Russel Winder
+ *  Copyright © 2009–2014  Russel Winder
  */
 
-import std.datetime;
+import std.datetime: StopWatch;
 
-import outputFunctions;
+import outputFunctions: output;
 
 int main(immutable string[] args) {
   immutable n = 1000000000;
