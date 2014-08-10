@@ -7,6 +7,7 @@
 extern crate time;
 extern crate output;
 
+use std::iter::range_inclusive;
 use time::precise_time_s;
 use output::output;
 
@@ -15,11 +16,11 @@ fn main() {
     let delta = 1.0 / n as f64;
     let startTime = precise_time_s();
     let mut sum = 0.0;
-    for i in range(0u, n) {
+    for i in range_inclusive(1u, n) {
         let x = (i as f64 - 0.5) * delta;
         sum += 1.0 / (1.0 + x * x)
     }
     let pi = 4.0 * delta * sum;
     let elapseTime = precise_time_s() - startTime;
-    output("pi_sequential_for", pi, n, elapseTime)
+    output("pi_sequential_for".to_string(), pi, n, elapseTime)
 }

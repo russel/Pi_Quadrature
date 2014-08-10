@@ -1,10 +1,11 @@
 import os
 
 environment = Environment(
-    ENV = os.environ
+    ENV=os.environ,
+    RUST_HOME=os.environ['RUST_HOME'],
 )
 
-outputCrate = environment.Command('liboutput-048e8aee-0.0.so', 'output.rs', 'rustc --crate-type dylib -O $SOURCE')
+outputCrate = environment.Command('liboutput.rlib', 'output.rs', 'LD_LIBRARY_PATH=$RUST_HOME/lib rustc --crate-type lib -O $SOURCE')
 
 for f in Glob('pi_*.rs'):
-    environment.Command(f.name.replace('.rs', ''), [f, outputCrate], 'rustc -o $TARGET -O $SOURCE -L .')
+    environment.Command(f.name.replace('.rs', ''), [f, outputCrate], 'LD_LIBRARY_PATH=$RUST_HOME/lib rustc -o $TARGET -O $SOURCE -L .')

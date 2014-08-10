@@ -9,9 +9,9 @@ extern crate time;
 extern crate output;
 
 use std::vec::Vec;
-use sync::Future;
+use std::sync::Future;
 use time::precise_time_s;
-use output::outputN;
+use output::output_n;
 
 fn execute(numberOfTasks:uint) {
     let n = 1000000000u;
@@ -28,12 +28,12 @@ fn execute(numberOfTasks:uint) {
     }));
     let pi = 4.0 * delta * futures.mut_iter().fold(0.0, |acc, i| acc + i.get());
     let elapseTime = precise_time_s() - startTime;
-    outputN("pi_parallel_futures", pi, n, elapseTime, numberOfTasks)
+    output_n("pi_parallel_futures".to_string(), pi, n, elapseTime, numberOfTasks)
 }
 
 fn main() {
-    execute(1);
-    execute(2);
-    execute(8);
-    execute(32)
+    execute(1u);
+    execute(2u);
+    execute(8u);
+    execute(32u)
 }
