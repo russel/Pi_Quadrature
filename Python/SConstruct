@@ -8,74 +8,46 @@
 #
 #  Cython and Pyrex need access to the Python headers when compiling the generated C and so are Python
 #  version dependent.
-#
-#  This is all grossly over-complicated and needs a complete rethink.
 
 import os
+from os.path import splitext
 
-ccFlags = ['-O3', '-Wall', '-Wextra']
+cEnvironment = Environment(
+    tools=['gcc', 'gnulink'],
+    CPPPATH=[],
+    CFLAGS=['-std=c99', '-O3', '-Wall', '-Wextra'],
+    LINKFLAGS=[],
+    SHLIBPREFIX='',
+)
 
-extensionRoot = 'processSlice'
-extensionsData = {
-    'c': {
-        'CPPPATH': [],
-        'CFLAGS': ccFlags + ['-std=c99'],
-        'LINKFLAGS': ['-std=c99']
-        },
-    'cpp': {
-        'CPPPATH': [],
-        'CFLAGS': ccFlags + ['-std=c++11'],
-        'LINKFLAGS': ['-std=c++11']
-        },
-    'cython_py3': {
-        'CPPPATH': ['/usr/include/python3.4'],
-        'CFLAGS': ccFlags,
-        'LINKFLAGS': [],
-        },
-    }
-
-dRoot = extensionRoot + '_d'
-
-#  A number of the Python codes use the same extensions.  The extension only needs to be constructed once.
-#  Keep a dictionary of items made,
-
-extensionsSharedLibraries = {}
+cythonEnvironment = cEnvironment.Clone()
+cythonEnvironment.Append(CPPPATH=['/usr/include/python3.4'], CFLAGS=['-fopenmp'], LIBS=['-lgomp'])
 
 cppEnvironment = Environment(
-    tools=['g++', 'gcc', 'gnulink'],  # The order here is crucial:-((
-    ENV=os.environ,  # Need this for the Python 3 extensions code to run out of the box.
+    tools=['g++', 'gnulink'],
+    CPPPATH=[],
+    CXXFLAGS=['-std=c++1y', '-O3', '-Wall', '-Wextra'],
+    LINKFLAGS=[],
     SHLIBPREFIX='',
 )
 
 dEnvironment = Environment(
     tools=['dmd', 'link'],
-    DFLAGS=['-O', '-release'],
+    ENV=os.environ,
+    DFLAGS=['-O'],#['-O', '-release'],
     SHLIBPREFIX='',
 )
 
-for item in Glob('pi_python*.py'):
-    root = os.path.splitext(item.name)[0]
-    bits = root.split('_')
-    if len(bits) > 5 and bits[4] == 'extension':
-        extension = bits[5]
-        assert item.name.find(extension) != -1
-        if extension == 'd':
-            extensionsSharedLibraries[extension] = dEnvironment.SharedLibrary(dRoot + '.so',  dRoot + '.d')
-            Depends(item, extensionsSharedLibraries[extension])
-        else:
-            if extension == 'cython':
-                majorVersion = bits[1][-1:]
-                extension += '_py' + majorVersion
-            extensionName = '{}_{}'.format(extensionRoot, extension)
-            if extensionName not in extensionsSharedLibraries.keys():
-                extensionsSharedLibraries[extensionName] = cppEnvironment.SharedLibrary(
-                    extensionName,
-                    cppEnvironment.Command(
-                        '{}_{}.c'.format(extensionRoot, extension),
-                        '{}_{}.pyx'.format(extensionRoot, extension),
-                        'cython3 $SOURCE') if extension.split('_')[0] == 'cython' else '{}_{}.{}'.format(extensionRoot, extension, extension),
-                    CPPPATH=extensionsData[extension]['CPPPATH'],
-                    CFLAGS=extensionsData[extension]['CFLAGS'],
-                    CXXFLAGS=extensionsData[extension]['CFLAGS'],
-                    LINKFLAGS=extensionsData[extension]['LINKFLAGS'])
-            Depends(item, extensionsSharedLibraries[extensionName])
+for item in ('processSlice_c.c',):
+    cEnvironment.SharedLibrary(splitext(item)[0] + '.so', item)
+
+for item in ('processSlice_cpp.cpp',):
+    cppEnvironment.SharedLibrary(splitext(item)[0] + '.so', item)
+
+for item in Glob('*.pyx'):
+    root, _ = splitext(item.name)
+    cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, 'cython3 $SOURCE'))
+
+
+for item in Glob('*.d'):
+    dEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
