@@ -8,7 +8,7 @@ from csp.os_process import process, Channel, Par
 from output import out
 from time import time
 
-from processSlice_cython_py3 import processSlice
+from processSlice_cython import processSlice
 
 @process
 def calculator(channel, id, sliceSize, delta):

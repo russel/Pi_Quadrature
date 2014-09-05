@@ -10,7 +10,7 @@ from queue import Queue
 from threading import Thread
 from time import time
 
-from processSlice_cython_py3 import processSlice
+from processSlice_cython import processSlice
 
 def calculator(id, sliceSize, delta, results):
     results.put(processSlice(id, sliceSize, delta))
