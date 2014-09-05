@@ -32,9 +32,9 @@ cppEnvironment = Environment(
 )
 
 dEnvironment = Environment(
-    tools=['dmd', 'link'],
+    tools=['ldc', 'link'],
     ENV=os.environ,
-    DFLAGS=['-O'],#['-O', '-release'],
+    DFLAGS=['-O', '-release'],
     SHLIBPREFIX='',
 )
 
@@ -47,7 +47,6 @@ for item in ('processSlice_cpp.cpp',):
 for item in Glob('*.pyx'):
     root, _ = splitext(item.name)
     cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, 'cython3 $SOURCE'))
-
 
 for item in Glob('*.d'):
     dEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
