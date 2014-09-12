@@ -13,7 +13,7 @@ use output::output;
 fn main() {
     let n = 1000000000u;
     let delta = 1.0 / n as f64;
-    let startTime = precise_time_s();
+    let start_time = precise_time_s();
     let mut sum = 0.0;
     let mut i = 1;
     while i <= n {
@@ -22,6 +22,6 @@ fn main() {
         i += 1
     }
     let pi = 4.0 * delta * sum;
-    let elapseTime = precise_time_s() - startTime;
-    output("pi_sequential_while".to_string(), pi, n, elapseTime)
+    let elapse_time = precise_time_s() - start_time;
+    output("pi_sequential_while".to_string(), pi, n, elapse_time)
 }
