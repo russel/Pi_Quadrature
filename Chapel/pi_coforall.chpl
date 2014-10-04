@@ -14,8 +14,8 @@ proc execute(numberOfTasks:int) {
   var timer:Timer;
   timer.start();
   const sliceSize = n / numberOfTasks;
-  const eachProcessor = {0..(numberOfTasks - 1)};
-  const results:[eachProcessor]real;
+  const eachProcessor = 0..(numberOfTasks - 1);
+  var results:[eachProcessor]real;
   proc partialSum(const id:int):real {
     const start = 1 + id * sliceSize;
     const end = (id + 1) * sliceSize;
