@@ -26,7 +26,7 @@ public class Pi_DistArray_MapReduce {
     val delta = 1.0 / n;
     val startTimeNanos = System.nanoTime();
     val sliceSize = n / numberOfTasks;
-    val pg = PlaceGroup.WORLD;
+    val pg = Place.places();
     val source = new DistArray_Block_1[Long](numberOfTasks, pg, (i:long) => i);
     val partialSums = new DistArray_Block_1[Double](numberOfTasks, pg);
     source.map(partialSums, (id:long) => partialSum(id, sliceSize, delta));
