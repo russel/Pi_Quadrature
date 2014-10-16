@@ -26,7 +26,7 @@ fn execute(number_of_tasks:uint) {
         }
         sum
     }));
-    let pi = 4.0 * delta * futures.mut_iter().fold(0.0, |acc, i| acc + i.get());
+    let pi = 4.0 * delta * futures.iter_mut().fold(0.0, |acc, i| acc + i.get());
     let elapse_time = precise_time_s() - start_time;
     output_n("pi_parallel_futures".to_string(), pi, n, elapse_time, number_of_tasks)
 }
