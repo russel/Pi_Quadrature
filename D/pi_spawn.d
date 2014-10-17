@@ -5,7 +5,7 @@
  *  Copyright © 2010–2014  Russel Winder
  */
 
-import std.concurrency;//: Tid, thisTid, receiveOnly, spawn;
+import std.concurrency: Tid, thisTid, receiveOnly, send, spawn;
 import std.datetime: StopWatch;
 
 import outputFunctions: output;
@@ -18,7 +18,7 @@ void partialSum(Tid parent, immutable int id, immutable int sliceSize, immutable
     immutable x = (i - 0.5) * delta;
     sum += 1.0 / (1.0 + x * x);
   }
-  parent.send(sum);
+  send(parent, sum);
 }
 
 void execute(immutable int numberOfTasks) {
