@@ -1,14 +1,14 @@
 /*
  *  Calculation of π using quadrature realized with a basic sequential algorithm.
  *
- *  Copyright © 2012, 2013  Russel Winder
+ *  Copyright © 2012–2014  Russel Winder
  */
 
 import uk.org.winder.pi_quadrature.tools { output }
 
 "Calculate π using quadrature realized with a basic sequential algorithm."
 by("Russel Winder")
-void run() {
+shared void run() {
 	value n = 100_000_000; // 10 times fewer than Java due to speed issues.
 	value delta = 1.0 / n;
 	value startTime = system.nanoseconds;

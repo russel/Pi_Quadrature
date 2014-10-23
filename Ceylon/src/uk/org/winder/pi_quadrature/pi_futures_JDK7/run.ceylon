@@ -34,7 +34,7 @@ void execute(Integer numberOfTasks) {
 
 "Calculate π using quadrature realized with a parallel algorithm using callables, futures and executors."
 by("Russel Winder")
-void run() {
+shared void run() {
 	execute(1);
 	execute(2);
 	execute(8);
