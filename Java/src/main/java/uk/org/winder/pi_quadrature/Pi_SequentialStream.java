@@ -8,7 +8,7 @@ package uk.org.winder.pi_quadrature;
 
 import java.util.stream.IntStream;
 
-public class Pi_SequentialStream_Java8 {
+public class Pi_SequentialStream {
   public static void main(final String[] args) {
     final int n = 1_000_000_000;
     final double delta = 1.0 / n;
@@ -18,6 +18,6 @@ public class Pi_SequentialStream_Java8 {
         return 1.0 / (1.0 + x * x);
       }).sum();
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out(Pi_SequentialStream_Java8.class, pi, n, elapseTime);
+    Output.out(Pi_SequentialStream.class, pi, n, elapseTime);
   }
 }

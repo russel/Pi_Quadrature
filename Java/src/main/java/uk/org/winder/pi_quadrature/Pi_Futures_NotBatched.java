@@ -10,7 +10,7 @@ package uk.org.winder.pi_quadrature;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
 
-public class Pi_Futures_Java8_NotBatched {
+public class Pi_Futures_NotBatched {
 
   private static void execute(final int numberOfTasks) {
     final int n = 1_000_000_000;
@@ -22,13 +22,13 @@ public class Pi_Futures_Java8_NotBatched {
         return 1.0 / (1.0 + x * x);
       })).mapToDouble(CompletableFuture::join).sum();
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out(Pi_Futures_Java8_NotBatched.class, pi, n, elapseTime, numberOfTasks);
+    Output.out(Pi_Futures_NotBatched.class, pi, n, elapseTime, numberOfTasks);
   }
 
   public static void main(final String[] args) {
-    Pi_Futures_Java8_NotBatched.execute(1);
-    Pi_Futures_Java8_NotBatched.execute(2);
-    Pi_Futures_Java8_NotBatched.execute(8);
-    Pi_Futures_Java8_NotBatched.execute(32);
+    Pi_Futures_NotBatched.execute(1);
+    Pi_Futures_NotBatched.execute(2);
+    Pi_Futures_NotBatched.execute(8);
+    Pi_Futures_NotBatched.execute(32);
   }
 }

@@ -8,7 +8,7 @@ package uk.org.winder.pi_quadrature;
 
 import java.util.stream.IntStream;
 
-public class Pi_ParallelStream_Java8_Batched_Alt {
+public class Pi_ParallelStream_Batched_Alt {
   private static void execute(final int numberOfTasks) {
     final int n = 1_000_000_000;
     final double delta = 1.0 / n;
@@ -20,12 +20,12 @@ public class Pi_ParallelStream_Java8_Batched_Alt {
           return 1.0 / (1.0 + x * x);
         }).sum()).sum();
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out(Pi_ParallelStream_Java8_Batched_Alt.class, pi, n, elapseTime, numberOfTasks);
+    Output.out(Pi_ParallelStream_Batched_Alt.class, pi, n, elapseTime, numberOfTasks);
   }
   public static void main(final String[] args) {
-    Pi_ParallelStream_Java8_Batched_Alt.execute(1);
-    Pi_ParallelStream_Java8_Batched_Alt.execute(2);
-    Pi_ParallelStream_Java8_Batched_Alt.execute(8);
-    Pi_ParallelStream_Java8_Batched_Alt.execute(32);
+    Pi_ParallelStream_Batched_Alt.execute(1);
+    Pi_ParallelStream_Batched_Alt.execute(2);
+    Pi_ParallelStream_Batched_Alt.execute(8);
+    Pi_ParallelStream_Batched_Alt.execute(32);
   }
 }

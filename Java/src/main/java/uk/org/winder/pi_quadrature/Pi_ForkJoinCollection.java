@@ -8,13 +8,12 @@
 package uk.org.winder.pi_quadrature;
 
 import java.util.ArrayList;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 
-public class Pi_ForkJoinCollection_Java7 {
+public class Pi_ForkJoinCollection {
 
   private static void execute(final int numberOfTasks) {
     final int n = 1_000_000_000;
@@ -24,35 +23,33 @@ public class Pi_ForkJoinCollection_Java7 {
     final ArrayList<Callable<Double>> callables = new ArrayList<>();
     for (int i = 0; i < numberOfTasks; ++i) {
       final int taskId = i;
-      callables.add(new Callable<Double>() {
-          @Override public Double call() {
-            final int start = 1 + taskId * sliceSize;
-            final int end = (taskId + 1) * sliceSize;
-            double sum = 0.0;
-            for (int i = start; i <= end; ++i) {
-              final double x = (i - 0.5) * delta;
-              sum += 1.0 / (1.0 + x * x);
-            }
-            return sum;
+      callables.add(() -> {
+          final int start = 1 + taskId * sliceSize;
+          final int end = (taskId + 1) * sliceSize;
+          double sum = 0.0;
+          for (int j = start; j <= end; ++j) {
+            final double x = (j - 0.5) * delta;
+            sum += 1.0 / (1.0 + x * x);
           }
+          return sum;
         });
     }
     final ForkJoinPool pool = new ForkJoinPool(numberOfTasks);
     double sum = 0.0;
     for (final Future<Double> f: pool.invokeAll(callables)) {
       try { sum += f.get(); }
-      catch (InterruptedException | ExecutionException e) { throw new RuntimeException(e); }
+      catch(InterruptedException | ExecutionException e) { throw new RuntimeException(e); }
     }
     //pool.shutdown();
     final double pi = 4.0 * delta * sum;
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out(Pi_ForkJoinCollection_Java7.class, pi, n, elapseTime, numberOfTasks);
+    Output.out(Pi_ForkJoinCollection.class, pi, n, elapseTime, numberOfTasks);
   }
 
   public static void main(final String[] args) {
-    Pi_ForkJoinCollection_Java7.execute(1);
-    Pi_ForkJoinCollection_Java7.execute(2);
-    Pi_ForkJoinCollection_Java7.execute(8);
-    Pi_ForkJoinCollection_Java7.execute(32);
+    Pi_ForkJoinCollection.execute(1);
+    Pi_ForkJoinCollection.execute(2);
+    Pi_ForkJoinCollection.execute(8);
+    Pi_ForkJoinCollection.execute(32);
   }
 }
