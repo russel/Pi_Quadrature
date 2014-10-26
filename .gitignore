@@ -1,5 +1,6 @@
 .sconsign.dblite
 DataRush.slc
+*.o
 *.hi
 *.cm[xi]
 *.class
