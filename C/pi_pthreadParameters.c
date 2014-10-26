@@ -21,9 +21,9 @@ typedef struct CalculationParameters {
 } CalculationParameters;
 
 void * partialSum(void *const arg ) {
-  int const start = 1 + ((CalculationParameters *const) arg)->id * ((CalculationParameters *const) arg)->sliceSize;
-  int const end = (((CalculationParameters *const) arg)->id + 1) * ((CalculationParameters *const) arg)->sliceSize;
-  double const delta = ((CalculationParameters *const) arg)->delta;
+  int const start = 1 + ((CalculationParameters *const)arg)->id * ((CalculationParameters *const)arg)->sliceSize;
+  int const end = (((CalculationParameters *const)arg)->id + 1) * ((CalculationParameters *const)arg)->sliceSize;
+  double const delta = ((CalculationParameters *const)arg)->delta;
   double localSum = 0.0;
   for (int i = start; i <= end; ++i) {
     double const x = (i - 0.5) * delta;
@@ -52,11 +52,11 @@ void execute(int const numberOfThreads) {
     parameters[i].id = i;
     parameters[i].sliceSize = sliceSize;
     parameters[i].delta = delta;
-    if (pthread_create (&threads[i], &attributes, partialSum, (void *) &parameters[i]) != 0) { exit(1); }
+    if (pthread_create (&threads[i], &attributes, partialSum, (void *)&parameters[i]) != 0) { exit(1); }
   }
   pthread_attr_destroy(&attributes);
   int status;
-  for (int i = 0; i < numberOfThreads; ++i) { pthread_join(threads[i], (void **) &status); }
+  for (int i = 0; i < numberOfThreads; ++i) { pthread_join(threads[i], (void **)&status); }
   double const pi = 4.0 * delta * sum;
   double const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
   outn("PThread Parameters", pi, n, elapseTime, numberOfThreads, sysconf(_SC_NPROCESSORS_ONLN));

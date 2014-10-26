@@ -17,7 +17,7 @@ int main() {
     sum += 1.0 / (1.0 + x * x);
   }
   double const pi = 4.0 * delta * sum;
-  double const elapseTime = (microsecondTime () - startTimeMicros) / 1e6;
+  double const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
   out("Sequential", pi, n, elapseTime);
   return 0;
 }

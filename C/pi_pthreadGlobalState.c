@@ -20,8 +20,8 @@ double sum;
 pthread_mutex_t sumMutex;
 
 void * partialSum(void *const arg ) {
-  int const start = 1 + ((long) arg) * sliceSize;
-  int const end = (((long) arg) + 1) * sliceSize;
+  int const start = 1 + ((long)arg) * sliceSize;
+  int const end = (((long)arg) + 1) * sliceSize;
   double localSum = 0.0;
   for (int i = start; i <= end; ++i) {
     double const x = (i - 0.5) * delta;
@@ -43,14 +43,14 @@ void execute (const int numberOfThreads) {
   pthread_attr_init(&attributes);
   pthread_attr_setdetachstate(&attributes, PTHREAD_CREATE_JOINABLE);
   pthread_t threads[numberOfThreads];
-  for (int i = 0; i < numberOfThreads; ++i) {
-    if (pthread_create (&threads[i], &attributes, partialSum, (void *) i) != 0) { exit(1); }
+  for (long i = 0; i < numberOfThreads; ++i) {
+    if (pthread_create (&threads[i], &attributes, partialSum, (void *)i) != 0) { exit(1); }
   }
   pthread_attr_destroy(&attributes);
   int status;
-  for (int i = 0; i < numberOfThreads; ++i) { pthread_join (threads[i], (void **) &status); }
+  for (int i = 0; i < numberOfThreads; ++i) { pthread_join (threads[i], (void **)&status); }
   double const pi = 4.0 * delta * sum;
-  double const elapseTime = (microsecondTime () - startTimeMicros) / 1e6;
+  double const elapseTime = (microsecondTime() - startTimeMicros) / 1e6;
   outn("PThread Global", pi, n, elapseTime, numberOfThreads, sysconf(_SC_NPROCESSORS_ONLN));
 }
 
