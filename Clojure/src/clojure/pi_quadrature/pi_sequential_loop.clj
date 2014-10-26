@@ -1,17 +1,20 @@
 ;  Calculation of π using quadrature. Sequential algorithm.
 ;
-;  Copyright © 2013  Russel Winder
+;  Copyright © 2009–2011, 2013, 2014  Russel Winder
 
-(ns pi-quadrature.pi-sequential-map-reduce)
+(ns pi-quadrature.pi-sequential-loop)
 
 (load "output")
 
-(defn calculate [delta i]
-  (let [x (* (- i 0.5) delta)]
-    (/ 1.0 (+ 1.0 (* x x)))))
-
-(defn summation [n delta]
-   (reduce + (map (partial calculate delta) (range n))))
+(defn summation [count delta]
+  (loop [
+          i count
+          s 0.0
+         ]
+    (if (zero? i)
+      s
+      (let [x (* (- i 0.5) delta)]
+        (recur (dec i) (+ s (/ 1.0 (+ 1.0 (* x x)))))))))
 
 (defn -main []
   (let [
@@ -21,4 +24,4 @@
         pi  (* 4.0 delta (summation n delta))
         elapseTime  (/ (- (System/nanoTime) startTimeNanos) 1e9)
         ]
-    (out "Sequential_Map_Reduce" pi n elapseTime)))
+    (out "Sequential" pi n elapseTime)))
