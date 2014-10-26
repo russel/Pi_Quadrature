@@ -28,7 +28,7 @@ def cppRule(globPattern, compiler='g++', cpppath=[], cxxflags=cppFlags, linkflag
             addCompileTarget(
                 cppEnvironment.Program(
                     os.path.splitext(item.name)[0], [item.name, output],
-                    CXX=compiler, CPPPATH=['../Timing'] + cpppath, CXXFLAGS=cxxflags, LINKFLAGS=linkflags + ['-std=c++1y'], LIBPATH=libpath, LIBS=libs)))
+                    CXX=compiler, CPPPATH=cpppath, CXXFLAGS=cxxflags, LINKFLAGS=['-std=c++1y'] + linkflags, LIBPATH=libpath, LIBS=libs)))
 
 cppRule('pi_sequential*.cpp')
 cppRule('pi_thread*.cpp', libs=['pthread'])

@@ -19,6 +19,6 @@ void out(std::string const banner, double const pi, int const n, std::chrono::st
 }
 
 void out(std::string const banner, double const pi, int const n, std::chrono::steady_clock::duration const elapseTime, int const threadCount, int const processorCount) {
-  out(banner + " -- thread count: " + std::to_string(threadCount), pi, n, elapseTime);
+  out(banner + " — thread count: " + std::to_string(threadCount), pi, n, elapseTime);
   std::cout << "\tprocessor count = " << processorCount << std::endl;
 }
