@@ -1,10 +1,10 @@
 --  Haskell implementation of π by Quadrature.  Parallel version using parMap.
 --
---  Copyright © 2009–2011, 2013  Russel Winder
+--  Copyright © 2009–2011, 2013, 2014  Russel Winder
 
 module Main where
 
-import Control.Parallel.Strategies (rwhnf , parMap)
+import Control.Parallel.Strategies (rseq, parMap)
 
 import Output (outn)
 
@@ -25,9 +25,9 @@ execute :: Int -> IO ()
 execute numberOfSlices = do
   let n = 1000000000
   let delta = 1.0 / (fromIntegral n)
-  startTime <- getCurrentTime
+  --startTime <- getCurrentTime
   let sliceSize = n `div` numberOfSlices
-  let pi = sum (parMap rwhnf (piQuadSlice delta sliceSize) [0 .. (numberOfSlices - 1)])
+  let pi = sum (parMap rseq (piQuadSlice delta sliceSize) [0 .. (numberOfSlices - 1)])
   outn "ParMap" pi n numberOfSlices
 
 main :: IO ()

@@ -10,27 +10,29 @@ sys.path.append('../site_scons')
 
 from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
 
-#  Haskell jobs run in a single thread by default (which is what happens here).  Run the executable with
-#  "+RTS -Nx" to run with x OS threads.
+#  Haskell jobs run in a single thread by default.  Run the executable with "+RTS -Nx" to run with x kernel
+#  threads.
 
 haskellEnvironment = Environment(tools=['haskell'])
 
 generatedExtensions = ['.hi', '.o', '.hp', '.ps', '.aux']
 
+compileAllSource = True
+
+if not compileAllSource:
+    outputModule = haskellEnvironment.HaskellObject('Output.hs')
+
 for item in Glob('pi_*.hs'):
     root = os.path.splitext(item.name)[0]
     options = ['-rtsopts']
     variant = root.split('_')[1]
-    if variant == 'threads':
+    if variant in ('threads', 'parMap', 'parallel'):
         options.append('-threaded')
-    elif variant == 'parMap' or variant == 'parallel':
-        options.append('-threaded')
-        options.append('-fdph-par')
-    if True:
-        addRunTarget(haskellEnvironment, addCompileTarget(haskellEnvironment.Command(root, [item.name, 'output.hs'], 'ghc --make -O -o $TARGET' + ''.join([' ' + x for x in options]) + ' $SOURCES')))
-        SideEffect([root + ext for ext in generatedExtensions] + ['output' + ext for ext in generatedExtensions],  root)
+    if compileAllSource:
+        addRunTarget(haskellEnvironment, addCompileTarget(haskellEnvironment.Command(root, [item.name, 'Output.hs'], 'ghc --make -O -o $TARGET' + ''.join([' ' + x for x in options]) + ' $SOURCES')))
+        SideEffect([root + ext for ext in generatedExtensions] + ['Output' + ext for ext in generatedExtensions],  root)
     else:
-        addRunTarget(haskellEnvironment, addCompileTarget(haskellEnvironment.HaskellProgram(item, HSLINKFLAGS=['--make'])))
+        addRunTarget(haskellEnvironment, addCompileTarget(haskellEnvironment.HaskellProgram([item, outputModule])))
 
 Default(compileTargets)
 

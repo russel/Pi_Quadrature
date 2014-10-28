@@ -1,6 +1,6 @@
 --  Output functions for the Haskell implementation of π by Quadrature.
 --
---  Copyright © 2009–2011, 2013  Russel Winder
+--  Copyright © 2009–2011, 2013, 2014  Russel Winder
 
 module Output where
 
@@ -10,8 +10,8 @@ import GHC.Conc (numCapabilities)
 out banner pi n = do
   putStrLn ("==================== " ++ show banner)
   startTime <- getCurrentTime
-  --outputStrLn ("\tπ = " ++ show pi)
-  putStrLn ("\tpi = " ++ show pi)
+  putStrLn ("\tπ = " ++ show pi)
+  --putStrLn ("\tpi = " ++ show pi)
   putStrLn ("\titeration count = " ++ show n)
   endTime <- getCurrentTime
   putStrLn ("\telapse time = " ++ show (diffUTCTime endTime startTime))
