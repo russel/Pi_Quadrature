@@ -1,5 +1,6 @@
 /*
- *  A C++ program to calculate π using quadrature as a threads-based algorithm.
+ *  A C++ program to calculate π using quadrature: this uses a global accumulator with parallelism provided
+ *  using Boost threads and safety with locks.
  *
  *  Copyright © 2009–2011, 2013, 2014  Russel Winder
  */

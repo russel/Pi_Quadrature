@@ -47,7 +47,11 @@ class Accumulate: public csp::CSProcess {
   }
   void run() {
     auto sum = 0.0;
-    for (auto i = 0; i < numberOfProcesses; ++i) { double s; chanin >> s; sum += s; }
+    for (auto i = 0; i < numberOfProcesses; ++i) {
+			double s;
+			chanin >> s;
+			sum += s;
+		}
     auto const pi = 4.0 * delta * sum;
     auto const elapseTime = std::chrono::steady_clock::now() - startTime;
     out("C++ CSP 2", pi, n, elapseTime, numberOfProcesses, 0);

@@ -1,6 +1,5 @@
 /*
- *  A C++ program to calculate π using quadrature.  This uses threads à la C++11 for parallelism with
- *  lambdas à la C++14 from GCC 4.9 onward.
+ *  A C++ program to calculate π using quadrature.  This uses asynchronous function call with futures.
  *
  *  Copyright © 2009–2011, 2013, 2014  Russel Winder
  */

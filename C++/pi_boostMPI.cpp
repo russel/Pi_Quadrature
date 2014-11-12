@@ -1,5 +1,5 @@
 /*
- *  A C++ program to calculate π using quadrature as anMPI-based algorithm.
+ *  A C++ program to calculate π using quadrature as an MPI-based algorithm.
  *
  *  Copyright © 2009–2011, 2013, 2014  Russel Winder
  */
