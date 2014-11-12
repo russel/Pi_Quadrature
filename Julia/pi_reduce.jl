@@ -1,12 +1,14 @@
 #! /usr/bin/env julia
 
-#  Calculation of π using quadrature. Using a parallel for loop.
+#  Calculation of π using quadrature. Using a parallel for reduction.
 #
-#  Copyright © 2012–2013  Russel Winder
+#  Copyright © 2012–2014  Russel Winder
 
 require("output.jl")
 
-# For some reason(s) the parallel for code loops infinitely unless it is in a function.
+# Write this as a function that gets called so as to get the JIT to operate. If just the sequence of
+# statements is executed as a script (which is perfectly legal code), it gets interpreted and takes an
+# absolute age. Actually we need to call this twice anyway because there is a JIT warm up issue.
 
 function execute()
     n = 1000000000
@@ -20,7 +22,7 @@ function execute()
     out("pi_reduce", pi, n, elapseTime)
 end
 
-addprocs(CPU_CORES -1)
+addprocs(CPU_CORES)
 println("There is a noticeable 'warm-up' effect for this code so only take the second run.")
 execute()
 execute()

@@ -2,9 +2,13 @@
 
 #  Calculation of π using quadrature. Sequential algorithm using a for loop.
 #
-#  Copyright © 2012–2013  Russel Winder
+#  Copyright © 2012–2014  Russel Winder
 
 require("output.jl")
+
+# Write this as a function that gets called so as to get the JIT to operate. If just the sequence of
+# statements is executed as a script (which is perfectly legal code), it gets interpreted and takes an
+# absolute age.
 
 function execute()
     n = 1000000000
