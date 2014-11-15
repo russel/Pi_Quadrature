@@ -4,7 +4,7 @@
  *  Copyright © 2013, 2014  Russel Winder
  */
 
-package uk.org.winder.pi_quadrature.pi_streams
+package uk.org.winder.pi_quadrature.pi_parallel_streams
 
 import java.util.stream.IntStream
 
@@ -19,5 +19,5 @@ fun main(args:Array<String>) {
     1.0 / (1.0 + x * x)
   }).sum()
   val elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
-  out("pi_streams", pi, n, elapseTime)
+  out("pi_parallel_streams", pi, n, elapseTime)
 }
