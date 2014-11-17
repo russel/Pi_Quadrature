@@ -1,7 +1,7 @@
 #! /usr/bin/env groovy
 
 /*
- *  Caluclation of π using quadrature realized with GPars dataflow tasks and a dataflow queue.
+ *  Calculation of π using quadrature realized with GPars dataflow tasks and a dataflow queue.
  *
  *  Copyright © 2011–2012, 2014  Russel Winder
  */
