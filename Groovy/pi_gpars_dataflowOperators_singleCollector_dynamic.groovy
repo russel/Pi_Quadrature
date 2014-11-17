@@ -18,7 +18,7 @@ void execute(final operatorCount) {
   final partialSums = new DataflowQueue()
   final scatterQueues = (0 ..< operatorCount).collect{new DataflowQueue()}
   (0 ..< operatorCount).each {index ->
-    operator(inputs:[scatterQueues[index]], outputs:[partialSums]) {i ->
+    operator(inputs: [scatterQueues[index]], outputs: [partialSums]){i ->
       bindOutput 0, PartialSum.dynamicCompile(i, sliceSize, delta)
     }
     scatterQueues[index] << index

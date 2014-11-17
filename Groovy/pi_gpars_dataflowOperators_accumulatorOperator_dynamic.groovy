@@ -9,8 +9,6 @@
 
 import groovyx.gpars.dataflow.DataflowVariable
 import static groovyx.gpars.dataflow.Dataflow.operator
-import static groovyx.gpars.dataflow.Dataflow.select
-import static groovyx.gpars.dataflow.Dataflow.task
 
 void execute(final operatorCount) {
   final n = 1_000_000_000
@@ -19,9 +17,10 @@ void execute(final operatorCount) {
   final sliceSize = (int)(n / operatorCount)
   final scatterChannels = (0 ..< operatorCount).collect{new DataflowVariable()}
   final gatherChannels = (0 ..< operatorCount).collect{new DataflowVariable()}
-  final accumulator = task {
-    final selector = select gatherChannels
-    return  (0 ..< operatorCount).inject(0.0){t, i -> t + selector().value}
+  final sum = new DataflowVariable()
+  operator(inputs: gatherChannels, outputs: [sum], stateObject: [accumulator: 0.0, count: 0]){Double... values ->
+    while (stateObject.count < operatorCount) { stateObject.accumulator += values.sum() }
+    bindOutput 0, stateObject.accumulator
   }
   (0 ..< operatorCount).each{index ->
     operator(inputs: [scatterChannels[index]], outputs: [gatherChannels[index]]){i ->
@@ -29,7 +28,7 @@ void execute(final operatorCount) {
     }
     scatterChannels[index] << index
   }
-  final pi = 4.0 * delta * accumulator.val
+  final pi = 4.0 * delta * sum.val
   final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
   Output.out getClass(), pi, n, elapseTime, operatorCount
 }
