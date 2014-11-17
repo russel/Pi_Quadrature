@@ -20,7 +20,7 @@ void execute(final operatorCount) {
     partialSums << variable
     task {variable << PartialSum.dynamicCompile(index, sliceSize, delta)}
   }
-  final pi = 4.0 * delta * partialSums.sum {it.val}
+  final pi = 4.0 * delta * partialSums.sum{it.val}
   final elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
   Output.out getClass(), pi, n, elapseTime, operatorCount
 }
