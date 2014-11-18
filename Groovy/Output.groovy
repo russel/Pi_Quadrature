@@ -1,5 +1,5 @@
 /**
- *  Output functions for the Groovy codes.
+ *  Output functions for the Groovy codes that calculate π using quadrature.
  *
  *  Copyright © 2012–2014  Russel Winder
  */
