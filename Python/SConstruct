@@ -12,6 +12,24 @@
 import os
 from os.path import splitext
 
+os_name = os.uname()[0]
+
+if os_name == 'Darwin':
+    cython_command_name = 'cython'
+    python_include_path = (
+        # MacPorts location of Python 3.4 header files.
+        '/opt/local/Library/Frameworks/Python.framework/Versions/3.4/include/python3.4m',
+    )
+elif os_name == 'Linux':
+    cython_command_name = 'cython3'
+    python_include_path = (
+        # Debian and Fedora location of Python 3.4 header files.
+        '/usr/include/python3.4m',
+    )
+else:
+    print 'Unknown platform.'
+    Exit(1)
+
 cEnvironment = Environment(
     tools=['gcc', 'gnulink'],
     CPPPATH=[],
@@ -21,7 +39,7 @@ cEnvironment = Environment(
 )
 
 cythonEnvironment = cEnvironment.Clone()
-cythonEnvironment.Append(CPPPATH=['/usr/include/python3.4'], CFLAGS=['-fopenmp'], LIBS=['-lgomp'])
+cythonEnvironment.Append(CPPPATH=python_include_path, CFLAGS=['-fopenmp'], LIBS=['-lgomp'])
 
 cppEnvironment = Environment(
     tools=['g++', 'gnulink'],
@@ -46,7 +64,7 @@ for item in ('processSlice_cpp.cpp',):
 
 for item in Glob('*.pyx'):
     root, _ = splitext(item.name)
-    cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, 'cython3 $SOURCE'))
+    cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, '{} $SOURCE'.format(cython_command_name)))
 
 for item in Glob('*.d'):
     dEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
