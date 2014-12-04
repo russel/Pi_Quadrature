@@ -1,0 +1,28 @@
+# -*- mode:python; coding:utf-8; -*-
+
+#  Calculation of π using quadrature.
+#
+#  Copyright © 2013–2014  Russel Winder
+
+import os
+import sys
+
+kotlinEnvironment = Environment(
+    ENV=os.environ,
+    KOTLIN_HOME=os.environ['HOME'] + '/lib/Java/kotlin',
+)
+
+sourceDirectory = 'src'
+sourceFiles = Glob('{}/*.kt'.format(sourceDirectory))
+buildDirectory = 'build'
+
+targetNames = [f.name.replace('.kt', '') for f in Glob('{}/pi_*.kt'.format(sourceDirectory))]
+
+buildProducts = kotlinEnvironment.Command('compile', sourceFiles, '$KOTLIN_HOME/bin/kotlinc -d {} $SOURCES'.format(buildDirectory))
+
+runTargets = [
+kotlinEnvironment.Command('run_{}'.format(f), buildProducts,  'java -cp {}:$KOTLIN_HOME/lib/kotlin-runtime.jar uk.org.winder.pi_quadrature.{}.{}'.format(buildDirectory, f, f.replace('pi_', 'Pi_') + 'Package'))
+for f in targetNames
+]
+
+Clean('.', buildDirectory)
