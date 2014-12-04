@@ -2,16 +2,16 @@
 
 #  Calculation of π using quadrature.
 #
-#  Copyright © 2013  Russel Winder
+#  Copyright © 2013–2014  Russel Winder
 
 import os
 import sys
 
 ceylonEnvironment = Environment(
-    # Needed as the Ceylon script requires tput and hence $TERM.
-    # Definitely needed now we need to use Git master.
+    # Needed as the Ceylon script requires tput and hence $TERM – affects the rendering of Unicode
+    # codepoints.
     ENV=os.environ,
-    )
+)
 
 sourceDirectory = 'src'
 moduleName = 'uk.org.winder.pi_quadrature'
