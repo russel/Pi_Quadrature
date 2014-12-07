@@ -1,0 +1,10 @@
+# -*- mode: python; -*-
+
+Import('environment')
+
+outputCrate = environment.Command('liboutput.rlib', 'src/output.rs',
+                                  'LD_LIBRARY_PATH=$RUST_HOME/lib rustc --crate-type lib -O -o $TARGET $SOURCE')
+
+for f in Glob('src/pi_*.rs'):
+    environment.Command(f.name.replace('.rs', ''), [f, outputCrate],
+                        'LD_LIBRARY_PATH=$RUST_HOME/lib rustc -o $TARGET -O $SOURCE -L {}'.format(environment['BUILD_PATH']))

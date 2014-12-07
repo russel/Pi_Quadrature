@@ -1,11 +1,15 @@
+# -*- mode: python; -*-
+
 import os
 
 environment = Environment(
     ENV=os.environ,
     RUST_HOME=os.environ['RUST_HOME'],
+    BUILD_PATH='build'
 )
 
-outputCrate = environment.Command('liboutput.rlib', 'output.rs', 'LD_LIBRARY_PATH=$RUST_HOME/lib rustc --crate-type lib -O $SOURCE')
+Export('environment')
 
-for f in Glob('pi_*.rs'):
-    environment.Command(f.name.replace('.rs', ''), [f, outputCrate], 'LD_LIBRARY_PATH=$RUST_HOME/lib rustc -o $TARGET -O $SOURCE -L .')
+SConscript('SConscript', variant_dir=environment['BUILD_PATH'], duplicate=0)
+
+Clean('.', environment['BUILD_PATH'])
