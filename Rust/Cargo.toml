@@ -1,0 +1,31 @@
+[package]
+name = "π by Quadrature in Rust"
+version = "0.0.1"
+authors = ["Russel Winder <russel@winder.org.uk>"]
+
+[[bin]]
+name = "pi_sequential_for"
+path = "src/pi_sequential_for.rs"
+
+[[bin]]
+name = "pi_sequential_while"
+path = "src/pi_sequential_while.rs"
+
+[[bin]]
+name = "pi_sequential_fold"
+path = "src/pi_sequential_fold.rs"
+
+[[bin]]
+name = "pi_sequential_mapfold"
+path = "src/pi_sequential_mapfold.rs"
+
+[[bin]]
+name = "pi_parallel_futures"
+path = "src/pi_parallel_futures.rs"
+
+[lib]
+name = "output"
+crate-type = ["rlib"]
+
+[dependencies.time]
+git = "https://github.com/rust-lang/time"
