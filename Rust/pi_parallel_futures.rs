@@ -4,7 +4,6 @@
  *  Copyright © 2013, 2014  Russel Winder
  */
 
-extern crate sync;
 extern crate time;
 extern crate output;
 

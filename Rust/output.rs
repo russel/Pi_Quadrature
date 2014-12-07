@@ -11,7 +11,7 @@ use std::rt::default_sched_threads;
 
 pub fn output(banner:String, pi:f64, n:uint, elapse_time:f64) {
     println!("======================== {}", banner);
-    println!("\tπ = {:.18f}", pi);
+    println!("\tπ = {:.18}", pi);
     println!("\titeration count = {}", n);
     println!("\telapse time = {}", elapse_time);
 }
