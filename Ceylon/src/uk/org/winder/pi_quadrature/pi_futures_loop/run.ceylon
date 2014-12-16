@@ -10,17 +10,6 @@ import java.util.\ifunction { Supplier }
 
 import uk.org.winder.pi_quadrature.tools { outputN }
 
-Float partialSum(Integer id, Integer sliceSize, Float delta) {
-  value start = 1 + id * sliceSize;
-  value end = (id + 1) * sliceSize;
-  variable Float sum = 0.0;
-  for (i in start..end) {
-    value x = (i - 0.5) * delta;
-    sum += 1.0 / (1.0 + x * x);
-  }
-  return sum;
-}
-
 void execute(Integer numberOfTasks) {
 	value n = 100_000_000; // 10 times fewer than Java due to speed issues.
 	value delta = 1.0 / n;
@@ -40,7 +29,7 @@ void execute(Integer numberOfTasks) {
 	}
 	value pi = 4.0 * delta * sum({for (f in [for (i in 1..numberOfTasks) CompletableFuture<Float>.supplyAsync(Task(i))]) f.get()});
 	value elapseTime = (system.nanoseconds - startTime) / 1.0e9;
-	outputN("pi_futures_JDK8", pi, n, elapseTime, numberOfTasks);
+	outputN("pi_futures_loop", pi, n, elapseTime, numberOfTasks);
 }
 
 "Calculate π using quadrature realized with a parallel algorithm using callables, futures and executors."
