@@ -13,12 +13,20 @@ from executablesupport import compileTargets, addCompileTarget, addRunTarget, cr
 
 extraLibName = libraryPath()
 
-cppFlags = ['-std=c++1y', '-O3', '-Wall', '-Wextra']
+print extraLibName
+
+cppFlags = ['-std=c++14', '-O3', '-Wall', '-Wextra']
 
 cppEnvironment = Environment(
     tools=['g++', 'gnulink'],
     ENV=os.environ,
 )
+
+# Fedora Rawhide packaging does not put symbolic links to the executables into /usr/bin, so we must add the
+# /usr/lib64/openmpi/bin directory to the path.
+fedoraOpenMPIDirectory = '/usr/lib64/openmpi/bin'
+if os.path.exists(fedoraOpenMPIDirectory):
+    cppEnvironment['ENV']['PATH'] += ':{}'.format(fedoraOpenMPIDirectory)
 
 output = cppEnvironment.Object('output.cpp', CXXFLAGS=cppFlags)
 
@@ -28,7 +36,7 @@ def cppRule(globPattern, compiler='g++', cpppath=[], cxxflags=cppFlags, linkflag
             addCompileTarget(
                 cppEnvironment.Program(
                     os.path.splitext(item.name)[0], [item.name, output],
-                    CXX=compiler, CPPPATH=cpppath, CXXFLAGS=cxxflags, LINKFLAGS=['-std=c++1y'] + linkflags, LIBPATH=libpath, LIBS=libs)))
+                    CXX=compiler, CPPPATH=cpppath, CXXFLAGS=cxxflags, LINKFLAGS=['-std=c++14'] + linkflags, LIBPATH=libpath, LIBS=libs)))
 
 cppRule('pi_sequential*.cpp')
 cppRule('pi_thread*.cpp', libs=['pthread'])
@@ -39,7 +47,7 @@ cppRule('pi_openmp*.cpp', cxxflags=cppFlags + ['-fopenmp'], libs=['gomp'])
 cppRule('pi_boostThread*.cpp', libs=['boost_thread', 'boost_system'])
 cppRule('pi_boostMPI*.cpp', compiler='mpic++', libs=['boost_mpi'])
 cppRule('pi_tbb*.cpp', libs=['tbb'])
-cppRule('pi_cppcsp2.cpp', cpppath=[os.environ['HOME'] + '/include'], libpath=[extraLibName], libs=['cppcsp2', 'boost_system', 'pthread'])
+cppRule('pi_cppcsp2.cpp', cpppath=[os.environ['HOME'] + '/include'], libpath=[os.environ['HOME'] + '/Built/lib'], libs=['cppcsp2', 'boost_system', 'pthread'])
 #cppRule('pi_justThread*.cpp', cpppath=[extraLibName + '/JustThreadPro/include'], linkflags=['--static'], libpath=[extraLibName + '/JustThreadPro/libs'], libs=['justthread', 'pthread'])
 
 Default(compileTargets)
