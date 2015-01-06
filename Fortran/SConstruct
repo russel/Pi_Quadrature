@@ -14,6 +14,12 @@ fortranFlags = ['-O3', '-std=f2008', '-ffree-form', '-pedantic', '-Wall']
 
 fortranEnvironment = Environment(tools=['gfortran', 'gnulink'], FORTRANFLAGS=fortranFlags)
 
+# Fedora Rawhide packaging does not put symbolic links to the executables into /usr/bin, so we must add the
+# /usr/lib64/openmpi/bin directory to the path.
+fedoraOpenMPIDirectory = '/usr/lib64/openmpi/bin'
+if os.path.exists(fedoraOpenMPIDirectory):
+    fortranEnvironment['ENV']['PATH'] += ':{}'.format(fedoraOpenMPIDirectory)
+
 fortranOutput = fortranEnvironment.Object('output.f')
 
 def fortranRule(globPattern, compiler='gfortran', fortranflags=fortranFlags, linkflags=[], libpath=[], libs=[]):
