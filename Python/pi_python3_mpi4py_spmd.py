@@ -3,9 +3,12 @@
 #  Calculation of π using quadrature. This is an SPMD, pure Python realization using OpenMPI under the
 #  mpi4py package that provides Python binding to MPI.
 #
-#  Copyright © 2010–2013 Russel Winder
+#  Copyright © 2010–2014 Russel Winder
 
-from mpi4py import MPI
+try:
+    from mpi4py import MPI
+except:
+    from openmpi.mpi4py import MPI
 from numpy import array
 from output import out
 from time import time
