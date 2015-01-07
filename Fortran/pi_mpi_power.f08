@@ -20,7 +20,7 @@ program pi
   end = (myId + 1) * sliceSize
   do i = start, end
     localSum = localSum + 1.0 /(1.0 +(( i - 0.5) * delta) ** 2)
-  end do
+  enddo
   call MPI_Reduce(localSum, sum, 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, errorState)
   call MPI_Finalize(errorState)
   if (myId == 0) then
@@ -29,5 +29,5 @@ program pi
      elapseTime = endTime - startTime
      elapseTime = elapseTime / startFrequency
      call out("MPI", pi_, n, elapseTime, nProcessors)
-  end if
-end program
+  endif
+endprogram

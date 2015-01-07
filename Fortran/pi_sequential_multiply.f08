@@ -13,10 +13,10 @@ program pi
   do i = 1, n
      x = (i - 0.5) * delta
      sum = sum + 1.0 / (1.0 + x * x)
-  end do
+  enddo
   pi_ = 4.0 * delta * sum
   call system_clock(endTime, endFrequency)
   elapseTime = endTime - startTime
   elapseTime = elapseTime / startFrequency
   call out("Sequential Multiply", pi_, n, elapseTime)
-end program pi
+endprogram pi

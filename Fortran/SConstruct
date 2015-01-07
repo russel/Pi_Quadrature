@@ -4,6 +4,9 @@
 #
 #  Copyright © 2008–2013 Russel Winder
 
+#### NB This will only work for SCons after 2.3.4 since the f08 extension does not work in SCons before
+#### 2.3.5.
+
 import os
 import sys
 sys.path.append('../site_scons')
@@ -12,7 +15,7 @@ from executablesupport import compileTargets, addCompileTarget, addRunTarget, cr
 
 fortranFlags = ['-O3', '-std=f2008', '-ffree-form', '-pedantic', '-Wall']
 
-fortranEnvironment = Environment(tools=['gfortran', 'gnulink'], FORTRANFLAGS=fortranFlags)
+fortranEnvironment = Environment(tools=['gfortran', 'gnulink'], F08FLAGS=fortranFlags)
 
 # Fedora Rawhide packaging does not put symbolic links to the executables into /usr/bin, so we must add the
 # /usr/lib64/openmpi/bin directory to the path.
@@ -20,19 +23,21 @@ fedoraOpenMPIDirectory = '/usr/lib64/openmpi/bin'
 if os.path.exists(fedoraOpenMPIDirectory):
     fortranEnvironment['ENV']['PATH'] += ':{}'.format(fedoraOpenMPIDirectory)
 
-fortranOutput = fortranEnvironment.Object('output.f')
+fortranOutput = fortranEnvironment.Object('output.f08')
 
-def fortranRule(globPattern, compiler='gfortran', fortranflags=fortranFlags, linkflags=[], libpath=[], libs=[]):
+def fortranRule(globPattern, compiler='gfortran', fortranflags=fortranFlags, linker='gfortran', linkflags=[], libpath=[], libs=[]):
     for item in Glob(globPattern):
         addRunTarget(fortranEnvironment,
             addCompileTarget(
                 fortranEnvironment.Program(
                     os.path.splitext(item.name)[0], [item.name, fortranOutput],
-                    FORTRAN=compiler, FORTRANFLAGS=fortranflags, LINKFLAGS=linkflags, LIBPATH=libpath, LIBS=libs)))
+                    F08=compiler, F08FLAGS=fortranflags, FORTRAN=linker, LINKFLAGS=linkflags, LIBPATH=libpath, LIBS=libs)))
 
-fortranRule('pi_sequential*.f')
-fortranRule('pi_openmp*.f', fortranflags=fortranFlags + ['-fopenmp'], libs=['gomp'])
-fortranRule('pi_mpi*.f', compiler='mpif90')
+fortranRule('pi_sequential*.f08')
+fortranRule('pi_openmp*.f08', fortranflags=fortranFlags + ['-fopenmp'], libs=['gomp'])
+fortranRule('pi_mpi*.f08', compiler='mpif90', linker='mpif90')
+#fortranRule('pi_coarray*.f08', fortranflags=fortranFlags + ['-fcoarray=lib'], linker='mpif90', libs=['caf_mpi'])
+fortranRule('pi_coarray*.f08', fortranflags=fortranFlags + ['-fcoarray=single'])
 
 Default(compileTargets)
 
