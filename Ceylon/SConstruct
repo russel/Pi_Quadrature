@@ -13,16 +13,39 @@ ceylonEnvironment = Environment(
     ENV=os.environ,
 )
 
-sourceDirectory = 'src'
+version = '1.0.0'
+
+sourceDirectory = 'source'
 moduleName = 'uk.org.winder.pi_quadrature'
 
-moduleDirectory = sourceDirectory + '/' + moduleName.replace('.', '/')
+moduleSourceDirectory = sourceDirectory + '/' + moduleName.replace('.', '/')
 
-buildProducts = ceylonEnvironment.Command('compile', moduleDirectory, 'ceylon compile --src={} {}'.format(sourceDirectory, moduleName))
+
+sourceFiles = Glob(moduleSourceDirectory + '/*.ceylon') + Glob(moduleSourceDirectory + '/*/*.ceylon')
+
+modulesCarDirectory = 'modules/' + moduleName.replace('.', '/') + '/' + version
+
+moduleRoot = modulesCarDirectory + '/' + moduleName + '-' + version
+
+carFile = Command(moduleRoot + '.car', sourceFiles, 'ceylon compile {}'.format(moduleName))
+SideEffect([moduleRoot + extension for extension in ('car.sha1', '.src', '.src.sha1')], carFile)
+
+Alias('compile', carFile)
 
 runTargets = [
-    ceylonEnvironment.Command('run_' + package, buildProducts,  'ceylon run --run={}.run {}'.format(package, moduleName))
-    for package in [package.path.replace('src/', '').replace('/', '.') for package in Glob(moduleDirectory + '/pi_*')]
+    ceylonEnvironment.Command('run_' + package, carFile,  'ceylon run --run={}.run {}'.format(package, moduleName))
+    for package in [package.path.replace(sourceDirectory + '/', '').replace('/', '.') for package in Glob(moduleSourceDirectory + '/pi_*')]
 ]
 
+Alias('runAll', runTargets)
+
+Default('compile')
+
 Clean('.', ['modules'])
+
+Help('''
+compile (default)
+runAll
+
+''' + '\n'.join(t[0].name for t in runTargets) + '\n'
+)
