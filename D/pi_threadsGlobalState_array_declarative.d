@@ -1,7 +1,7 @@
 /*
  *  A D program to calculate π using quadrature as a threads-based approach.
  *
- *  Copyright © 2009–2014  Russel Winder
+ *  Copyright © 2009–2015  Russel Winder
  */
 
 import std.algorithm: map;
@@ -9,22 +9,22 @@ import std.array: array;
 import std.datetime: StopWatch;
 import std.range: iota;
 
+import core.atomic: atomicOp;
 import core.thread: Thread;
 
 import outputFunctions: output;
 
 shared double sum;
-shared Object sumMutex;
 
 void partialSum(immutable int id, immutable int sliceSize, immutable double delta) {
   immutable start = 1 + id * sliceSize;
   immutable end = (id + 1) * sliceSize;
   auto localSum = 0.0;
-  foreach (i; start .. end + 1) {
+  foreach (immutable i; start .. end + 1) {
     immutable x = (i - 0.5) * delta;
     localSum += 1.0 / (1.0 + x * x);
   }
-  synchronized (sumMutex) { sum += localSum; }
+  atomicOp!"+="(sum, localSum);
 }
 
 void execute(immutable int numberOfThreads) {
@@ -34,9 +34,7 @@ void execute(immutable int numberOfThreads) {
   stopWatch.start();
   immutable sliceSize = n / numberOfThreads;
   sum = 0.0;
-  auto threads = map!((int i) {
-          return new Thread({ partialSum(i, sliceSize, delta); });
-      })(iota(numberOfThreads)).array;
+  auto threads = map!((int i){return new Thread({partialSum(i, sliceSize, delta);});})(iota(numberOfThreads)).array;
   foreach (thread; threads) { thread.start(); }
   foreach (thread; threads) { thread.join(); }
   immutable pi = 4.0 * delta * sum;
@@ -46,7 +44,6 @@ void execute(immutable int numberOfThreads) {
 }
 
 int main(immutable string[] args) {
-  sumMutex = new shared(Object);
   execute(1);
   execute(2);
   execute(8);

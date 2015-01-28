@@ -1,7 +1,7 @@
 /*
  *  A D program to calculate π using quadrature as a parallel reduction of sequential maps.
  *
- *  Copyright © 2010–2014  Russel Winder
+ *  Copyright © 2010–2015  Russel Winder
  */
 
 import std.algorithm: map;
@@ -16,7 +16,7 @@ double partialSum(immutable Tuple!(int, int, double) data) {
   immutable start = 1 + data[0] * data[1];
   immutable end = (data[0] + 1) * data[1];
   auto sum = 0.0;
-  foreach (i; start .. end + 1) {
+  foreach (immutable i; start .. end + 1) {
     immutable x = (i - 0.5) * data[2];
     sum += 1.0 / (1.0 + x * x);
   }
@@ -30,10 +30,7 @@ void execute(immutable int numberOfTasks) {
   stopWatch.start();
   immutable sliceSize = n / numberOfTasks;
   //  There is a problem using a lambda function here.  David Simcha reports it is a consequence of issue
-  //  5710 http://d.puremagic.com/issues/show_bug.cgi?id=5710.  Live with this and use the string syntax
-  //  for specifying a lambda function.
-  //immutable pi = 4.0 * delta * taskPool.reduce !((a, b) { return a + b; })(0.0, map !(partialSum) (
-  //immutable pi = 4.0 * delta * taskPool.reduce !((a, b) => a + b)(0.0, map !(partialSum) (
+  //  5710 http://d.puremagic.com/issues/show_bug.cgi?id=5710.
   immutable pi = 4.0 * delta * taskPool.reduce!("a + b")(0.0, map!(partialSum)(
     map!(i => tuple(i, cast(int) sliceSize, cast(double) delta))(iota(numberOfTasks))));
   stopWatch.stop();
