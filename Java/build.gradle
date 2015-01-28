@@ -1,7 +1,6 @@
 apply plugin: 'java'
 
 apply plugin: 'eclipse'
-apply plugin: 'idea'
 
 repositories {
     mavenLocal()
@@ -35,25 +34,4 @@ new File("${projectDir}/src/main/java/uk/org/winder/pi_quadrature").eachFileMatc
 
 task wrapper (type:Wrapper) {
     gradleVersion = '2.2.1'
-}
-
-idea {
-    module {
-        excludeDirs += file('gradle/') // Gradle directory including the wrapper subdirectory.
-        excludeDirs += file('.settings/') // Eclipse settings directory.
-        excludeDirs += file('bin') // Eclipse compilation directory.
-        excludeDirs += file('out') // IDEA compilation directory.
-        excludeDirs += file('build') // Gradle compilation directory.
-        excludeDirs += file('docs') // Jon's book directory
-    }
-    project {
-        jdkName '1.8'
-        languageLevel '1.8'
-        ipr {
-            withXml { provider ->
-                def node = provider.asNode()
-                node.component.find{it.'@name' == 'VcsDirectoryMappings'}.mapping[0].'@vcs' = 'Git'
-            }
-        }
-    }
 }
