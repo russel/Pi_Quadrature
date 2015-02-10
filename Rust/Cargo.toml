@@ -27,5 +27,5 @@ path = "src/pi_parallel_futures.rs"
 name = "output"
 crate-type = ["rlib"]
 
-[dependencies.time]
-git = "https://github.com/rust-lang/time"
+[dependencies]
+time = "*"
