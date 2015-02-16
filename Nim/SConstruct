@@ -1,0 +1,8 @@
+import os
+
+environment = Environment(
+    ENV = os.environ,
+)
+
+for item in Glob('pi_*.nim'):
+    environment.Command(item.name.replace('.nim', ''), [item, 'output.nim'], 'nim c --opt:speed $SOURCE')
