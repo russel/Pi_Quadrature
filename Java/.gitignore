@@ -1,8 +1,6 @@
 /.gradle/
 /.idea/
-/Pi Quadrature Java.iml
-/Pi Quadrature Java.ipr
-/Pi Quadrature Java.iws
+/Pi_Quadrature_Java.iml
 /.project
 /.settings/
 /.classpath
