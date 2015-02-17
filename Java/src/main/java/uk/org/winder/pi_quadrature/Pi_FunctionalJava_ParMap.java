@@ -1,15 +1,12 @@
 /*
  *  Calculation of π using quadrature realized with an approached based on using parallel map from
- *  Functional Java.
+ *  FunctionalJava.
  *
- *  Copyright © 2010–2014  Russel Winder
+ *  Copyright © 2010–2015  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature;
 
-import fj.F;
-import fj.F2;
-import fj.Unit;
 import fj.data.Array;
 import fj.control.parallel.ParModule;
 import fj.control.parallel.Strategy;
@@ -21,24 +18,16 @@ public class Pi_FunctionalJava_ParMap {
     final double delta = 1.0 / n;
     final long startTimeNanos = System.nanoTime();
     final int sliceSize = n / numberOfTasks;
-    final Array<Integer> inputData = Array.range(0, numberOfTasks);
-    final F<Integer,Double> sliceCalculator = new F<Integer,Double>() {
-      @Override public Double f(final Integer taskId) {
-        final int start = 1 + taskId * sliceSize;
-        final int end = (taskId + 1) * sliceSize;
-        double sum = 0.0;
-        for (int i = start; i <= end; ++i) {
-          final double x = (i - 0.5) * delta;
-          sum += 1.0 / (1.0 + x * x);
-        }
-        return sum;
+    final double pi = 4.0 * delta * ParModule.parModule(Strategy.simpleThreadStrategy()).parMap(Array.range(0, numberOfTasks), taskId -> {
+      final int start = 1 + taskId * sliceSize;
+      final int end = (taskId + 1) * sliceSize;
+      double sum = 0.0;
+      for (int i = start; i <= end; ++i) {
+        final double x = (i - 0.5) * delta;
+        sum += 1.0 / (1.0 + x * x);
       }
-    };
-    final F2<Double,Double,Double> add = new F2<Double,Double,Double>() {
-      @Override public Double f(final Double a, final Double b) { return a + b; }
-    };
-    final Strategy<Unit> strategy = Strategy.simpleThreadStrategy();
-    final double pi = 4.0 * delta * ParModule.parModule(strategy).parMap(inputData, sliceCalculator).claim().foldLeft(add, 0.0);
+      return sum;
+    }).claim().foldLeft((a, b) -> a + b, 0.0);
     final double elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
     Output.out(Pi_FunctionalJava_ParMap.class, pi, n, elapseTime, numberOfTasks);
   }
