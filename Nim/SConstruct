@@ -4,5 +4,8 @@ environment = Environment(
     ENV = os.environ,
 )
 
-for item in Glob('pi_*.nim'):
+for item in Glob('pi_sequential*.nim'):
     environment.Command(item.name.replace('.nim', ''), [item, 'output.nim'], 'nim c --opt:speed $SOURCE')
+
+for item in Glob('pi_parallel*.nim'):
+    environment.Command(item.name.replace('.nim', ''), [item, 'output.nim'], 'nim c --opt:speed --threads:on $SOURCE')

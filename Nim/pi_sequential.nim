@@ -2,7 +2,7 @@
 #
 #  Copyright © 2015 Russel Winder
 
-import output
+from output import out_s
 from times import epochTime
 
 when isMainModule:
@@ -15,4 +15,4 @@ when isMainModule:
     sum += 1.0 / (1.0 + x * x)
   let pi = 4.0 * delta * sum
   let elapseTime = epochTime() - startTime
-  output.sequential("Sequential", pi, n, elapseTime)
+  out_s("Sequential", pi, n, elapseTime)
