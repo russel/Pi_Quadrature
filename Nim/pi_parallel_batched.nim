@@ -19,7 +19,7 @@ proc sum(sums:openarray[float]):float =
     result += sums[i]
 
 proc execute(taskCount:int) =
-  const n = 100000000 # 10 times fewer due to speed problems
+  const n = 1000000000
   const delta = 1.0 / n
   let startTime = epochTime()
   let sliceSize = toInt(n / taskCount)

@@ -6,7 +6,7 @@ from output import out_s
 from times import epochTime
 
 when isMainModule:
-  const n = 100000000 # 10 times fewer due to speed problems
+  const n = 1000000000
   const delta = 1.0 / n
   let startTime = epochTime()
   var sum:float = 0.0

@@ -5,7 +5,7 @@ environment = Environment(
 )
 
 for item in Glob('pi_sequential*.nim'):
-    environment.Command(item.name.replace('.nim', ''), [item, 'output.nim'], 'nim c --opt:speed $SOURCE')
+    environment.Command(item.name.replace('.nim', ''), [item, 'output.nim'], 'nim c -d:release $SOURCE')
 
 for item in Glob('pi_parallel*.nim'):
-    environment.Command(item.name.replace('.nim', ''), [item, 'output.nim'], 'nim c --opt:speed --threads:on $SOURCE')
+    environment.Command(item.name.replace('.nim', ''), [item, 'output.nim'], 'nim c -d:release --threads:on $SOURCE')
