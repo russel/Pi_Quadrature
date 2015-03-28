@@ -40,8 +40,8 @@ dEnvironment = {
         DFLAGS=['-O', '-release'],
     ),
 #}['dmd']
-}['gdc']
-#}['ldc']
+#}['gdc']
+}['ldc']
 
 outputFunctions = dEnvironment.Object('outputFunctions.d')
 
