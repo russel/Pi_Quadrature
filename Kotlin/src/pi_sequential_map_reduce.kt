@@ -1,7 +1,7 @@
 /*
  *  Calculation of π using quadrature realized with map and reduce.
  *
- *  Copyright © 2013, 2014  Russel Winder
+ *  Copyright © 2013–2015  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature.pi_sequential_map_reduce
