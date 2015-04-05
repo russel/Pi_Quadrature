@@ -4,6 +4,10 @@
  *  Copyright © 2013–2015  Russel Winder
  */
 
+// std::sync::Future is deemed unstable and so is not present in 1.0.0 beta, must use the nightly builds and
+// have the following so as to enable the unstable features.
+#![feature(std_misc)]
+
 extern crate time;
 extern crate output;
 
