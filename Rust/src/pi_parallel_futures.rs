@@ -4,15 +4,17 @@
  *  Copyright © 2013–2015  Russel Winder
  */
 
-// std::sync::Future is deemed unstable and so is not present in 1.0.0 beta, must use the nightly builds and
-// have the following so as to enable the unstable features.
-#![feature(std_misc)]
+// std::sync::Future is deemed unstable and so is not present in 1.0.0 beta, must either use the nightly
+// builds or use an external package such as eventual.  Choose the latter for now since it is the mainline
+// of Rust.
 
-extern crate time;
+extern crate eventual;
 extern crate output;
+extern crate time;
 
 use std::vec::Vec;
-use std::sync::Future;
+use eventual::Async;
+use eventual::Future;
 use time::precise_time_s;
 use output::output_n;
 
@@ -21,7 +23,7 @@ fn execute(number_of_tasks:u64) {
     let delta = 1.0 / n as f64;
     let start_time = precise_time_s();
     let slice_size = n / number_of_tasks;
-    let mut futures: Vec<Future<f64>> = (0 .. number_of_tasks).map(|id| Future::spawn(move || {
+    let futures: Vec<Future<f64, ()>> = (0 .. number_of_tasks).map(|id| Future::spawn(move || {
         let mut sum = 0.0f64;
         for i in (1 + id * slice_size) .. ((id + 1) * slice_size) {
             let x = (i as f64 - 0.5) * delta;
@@ -29,7 +31,7 @@ fn execute(number_of_tasks:u64) {
         }
         sum
     })).collect();
-    let pi = 4.0 * delta * futures.iter_mut().fold(0.0, |acc, i| acc + i.get());
+    let pi = 4.0 * delta * futures.into_iter().fold(0.0, |acc, i| acc + i.await().unwrap());
     let elapse_time = precise_time_s() - start_time;
     output_n("pi_parallel_futures".to_string(), pi, n, elapse_time, number_of_tasks)
 }

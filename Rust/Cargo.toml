@@ -30,3 +30,4 @@ crate-type = ["rlib"]
 [dependencies]
 time = "*"
 num_cpus = "*"
+eventual = "*"
