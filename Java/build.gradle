@@ -26,10 +26,9 @@ defaultTasks 'classes'
 new File("${projectDir}/src/main/java/uk/org/winder/pi_quadrature").eachFileMatch(~/Pi_.*\.java/) { filename ->
     final root = filename.name.replaceFirst(/\.java$/, '')
     final className = 'uk.org.winder.pi_quadrature.' + root
-    task ('run_' + root, dependsOn: 'classes') << {
-        final process = ("java -cp build/classes/main ${className}").execute()
-        process.in.eachLine{line -> println line}
-        assert process.waitFor() == 0
+    task ('run_' + root, type: JavaExec, dependsOn: 'classes') {
+        main = className
+        classpath = sourceSets.main.runtimeClasspath
     }
 }
 
