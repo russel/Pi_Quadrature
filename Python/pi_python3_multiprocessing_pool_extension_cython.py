@@ -3,7 +3,7 @@
 #  Calculation of π using quadrature. Uses the multiprocessing package to provide a process pool to enable
 #  asynchronous function calls very akin to futures.
 #
-#  Copyright © 2008–2013 Russel Winder
+#  Copyright © 2008–2013, 2015 Russel Winder
 
 from multiprocessing import Pool
 from output import out
@@ -16,9 +16,9 @@ def execute(processCount):
     delta = 1.0 / n
     startTime = time()
     sliceSize = n // processCount
-    pool = Pool(processes=processCount)
-    results = [pool.apply_async(processSlice, args=(i, sliceSize, delta)) for i in range(0, processCount)]
-    pi = 4.0 * delta * sum(item.get() for item in results)
+    with Pool(processes=processCount) as pool:
+        results = [pool.apply_async(processSlice, args=(i, sliceSize, delta)) for i in range(0, processCount)]
+        pi = 4.0 * delta * sum(item.get() for item in results)
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
 
