@@ -1,5 +1,6 @@
 /*
- *  Sequential implementation of π by quadrature using imperative approach.
+ *  Parallel implementation of π by quadrature using a map of asynchronous function returning a future and
+ *  chunking of partial sum calculation.
  *
  *  Copyright © 2013–2015  Russel Winder
  */
