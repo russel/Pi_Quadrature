@@ -6,7 +6,6 @@ repositories {
     mavenLocal()
     jcenter()
     mavenCentral()
-    flatDir { dirs System.properties.'user.home' + '/lib/Java/DataRush/lib' }
 }
 
 dependencies {
@@ -14,9 +13,6 @@ dependencies {
     compile 'org.codehaus.gpars:gpars:1.2.1'
     compile 'org.codehaus.groovy:groovy-all:2.4.3'
     compile 'org.functionaljava:functionaljava-java8:4.2'
-    compile ':datarush-library:5.1.0-49'
-    // This is needed by DataRush but not automatically included.
-    compile 'commons-logging:commons-logging:1.2'
 }
 
 sourceCompatibility = 8
@@ -33,5 +29,5 @@ new File("${projectDir}/src/main/java/uk/org/winder/pi_quadrature").eachFileMatc
 }
 
 task wrapper (type:Wrapper) {
-    gradleVersion = '2.3'
+    gradleVersion = '2.4'
 }
