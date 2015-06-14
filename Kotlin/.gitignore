@@ -1,3 +1,9 @@
 /.idea/
 /out/
 Pi_Quadrature_Kotlin.iml
+/.gradle/
+/.classpath
+/.project
+/.settings/
+/.sconsign.dblite
+/bin/
