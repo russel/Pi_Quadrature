@@ -16,9 +16,8 @@ object Output {
   }
 
   def out(banner:String, pi:Double, n:Int, elapseTime:Double, numberOfTasks:Int) {
-    out(banner, pi, n, elapseTime)
+    out(banner + ": task count = " + numberOfTasks, pi, n, elapseTime)
     println("\tprocessor count = " + Runtime.getRuntime.availableProcessors)
-    println("\tnumber of tasks = " + numberOfTasks)
   }
 
 }
