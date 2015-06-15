@@ -20,8 +20,8 @@ name = "pi_sequential_mapfold"
 path = "src/pi_sequential_mapfold.rs"
 
 [[bin]]
-name = "pi_parallel_futures"
-path = "src/pi_parallel_futures.rs"
+name = "pi_parallel_eventual_futures"
+path = "src/pi_parallel_eventual_futures.rs"
 
 [lib]
 name = "output"
@@ -30,4 +30,9 @@ crate-type = ["rlib"]
 [dependencies]
 time = "*"
 num_cpus = "*"
-eventual = "*"
+
+[dependencies.eventual]
+git = "https://github.com/carllerche/eventual"
+
+[dependencies.simple_parallel]
+git = "https://github.com/huonw/simple_parallel.git"
