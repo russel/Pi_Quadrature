@@ -12,12 +12,8 @@ fun main(args:Array<String>) {
   val n = 1000000000
   val delta = 1.0 / n
   val startTimeNanos = System.nanoTime()
-  /*
-  val pi = 4.0 * delta * (1..n).asSequence().map{i ->
-    val x = (i - 0.5) * delta
-    1.0 / (1.0 + x * x)
-  }.reduce{t, i -> t + i}
-  */
+  // cf. KT-8067 Type inference and overload resolution with reduce function,
+  // https://youtrack.jetbrains.com/issue/KT-8067
   val r = (1..n).asSequence().map{i ->
     val x = (i - 0.5) * delta
     1.0 / (1.0 + x * x)
