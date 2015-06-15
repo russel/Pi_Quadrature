@@ -1,10 +1,13 @@
 .sconsign.dblite
-/modules
-/classes
-/bin
+/modules/
+/classes/
+/bin/
 /.ceylon
 /.classpath
 /.project
 /.pydevproject
-/.settings
+/.settings/
 /.exploded/
+/.idea/
+/out/
+/Pi_Quadrature_Ceylon.iml
