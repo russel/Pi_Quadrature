@@ -18,7 +18,7 @@ from cffi import FFI
 if __name__ == '__main__':
     ffi = FFI()
     ffi.cdef('double processSlice(int, int, double);')
-    processSliceModule = ffi.dlopen('processSlice_c.so')
+    processSliceModule = ffi.dlopen('processSlice_library_c.so')
     n = 1000000000
     delta = 1.0 / n
     startTime = time()

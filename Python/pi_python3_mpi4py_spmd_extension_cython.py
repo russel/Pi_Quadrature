@@ -13,7 +13,7 @@ from numpy import array
 from output import out
 from time import time
 
-from processSlice_cython import processSlice
+from processSlice_extension_cython import processSlice
 
 if __name__ == '__main__':
     n = 1000000000

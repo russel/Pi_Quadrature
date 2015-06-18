@@ -50,21 +50,21 @@ cppEnvironment = Environment(
 )
 
 dEnvironment = Environment(
-    tools=['ldc', 'link'],
+    tools=['dmd', 'link'],
     ENV=os.environ,
     DFLAGS=['-O', '-release'],
     SHLIBPREFIX='',
 )
 
-for item in ('processSlice_c.c',):
-    cEnvironment.SharedLibrary(splitext(item)[0] + '.so', item)
+for item in Glob('*library_*.c'):
+    cEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
 
-for item in ('processSlice_cpp.cpp',):
-    cppEnvironment.SharedLibrary(splitext(item)[0] + '.so', item)
+for item in Glob('*_library_*.cpp'):
+    cppEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
 
 for item in Glob('*.pyx'):
     root, _ = splitext(item.name)
     cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, '{} $SOURCE'.format(cython_command_name)))
 
-for item in Glob('*.d'):
+for item in Glob('*library_*.d'):
     dEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)

@@ -9,7 +9,7 @@ from multiprocessing import Queue, Process
 from output import out
 from time import time
 
-from processSlice_cython import processSlice
+from processSlice_extension_cython import processSlice
 
 def calculator(id, sliceSize, delta, output):
     output.put(processSlice(id, sliceSize, delta))

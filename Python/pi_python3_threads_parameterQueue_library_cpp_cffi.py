@@ -31,7 +31,7 @@ def execute(threadCount):
 if __name__ == '__main__':
     ffi = FFI()
     ffi.cdef('double processSlice(int, int, double);')
-    processSliceModule = ffi.dlopen('processSlice_cpp.so')
+    processSliceModule = ffi.dlopen('processSlice_library_cpp.so')
     execute(1)
     execute(2)
     execute(8)

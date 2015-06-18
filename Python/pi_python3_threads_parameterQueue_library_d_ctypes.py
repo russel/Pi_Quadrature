@@ -29,7 +29,7 @@ def execute(threadCount):
     out(__file__, pi, n, elapseTime, threadCount)
 
 if __name__ == '__main__':
-    processSliceModule = ctypes.cdll.LoadLibrary('processSlice_d.so')
+    processSliceModule = ctypes.cdll.LoadLibrary('processSlice_library_d.so')
     processSliceModule.processSlice.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_double]
     processSliceModule.processSlice.restype = ctypes.c_double
     execute(1)

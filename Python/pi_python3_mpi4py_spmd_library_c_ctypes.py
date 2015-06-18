@@ -16,7 +16,7 @@ from time import time
 import ctypes
 
 if __name__ == '__main__':
-    processSliceModule = ctypes.cdll.LoadLibrary('processSlice_c.so')
+    processSliceModule = ctypes.cdll.LoadLibrary('processSlice_library_c.so')
     processSliceModule.processSlice.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_double]
     processSliceModule.processSlice.restype = ctypes.c_double
     n = 1000000000
