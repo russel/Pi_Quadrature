@@ -18,7 +18,7 @@ object Pi_Sequential_Main_Map {
       val x = (i - 0.5) * delta
       1.0 / (1.0 + x * x)
     }
-    val pi = 4.0 * delta * (0 until n).iterator.map(f).sum
+    val pi = 4.0 * delta * (1 to n).iterator.map(f).sum
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
     out("Pi_Sequential_Main_Map", pi, n, elapseTime)
   }
