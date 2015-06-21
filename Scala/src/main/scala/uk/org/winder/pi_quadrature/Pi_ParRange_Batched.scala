@@ -27,7 +27,7 @@ object Pi_ParRange_Batched {
       }
       sum
     }
-    val pi = 4.0 * delta * (1 to numberOfThreads par).map(partialSum).sum
+    val pi = 4.0 * delta * (0 until numberOfThreads par).map(partialSum).sum
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
     out("Pi_ParRange_Batched", pi, n, elapseTime, numberOfThreads)
   }
