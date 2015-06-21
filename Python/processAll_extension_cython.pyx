@@ -12,7 +12,7 @@ def sequential(int n, double delta):
     for i in range(1, n):
         x = (i - 0.5) * delta
         sum += 1.0 / (1.0 + x * x)
-    return sum
+    return 4.0 * delta * sum
 
 def parallel(int n, double delta):
     cdef int i = 0
@@ -21,4 +21,4 @@ def parallel(int n, double delta):
     for i in prange(1, n, nogil=True):
         x = (i - 0.5) * delta
         sum += 1.0 / (1.0 + x * x)
-    return sum
+    return 4.0 * delta * sum
