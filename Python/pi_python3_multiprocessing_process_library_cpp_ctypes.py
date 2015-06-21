@@ -11,8 +11,10 @@ from time import time
 
 import ctypes
 
+
 def processSlice(id, sliceSize, delta, output):
     output.put(processSliceModule.processSlice(id, sliceSize, delta))
+
 
 def execute(processCount):
     n = 1000000000
@@ -26,6 +28,7 @@ def execute(processCount):
     pi = 4.0 * delta * sum(resultsQueue.get() for i in range(0, processCount))
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
+
 
 if __name__ == '__main__':
     processSliceModule = ctypes.cdll.LoadLibrary('processSlice_library_cpp.so')

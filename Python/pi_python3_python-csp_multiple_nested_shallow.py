@@ -8,6 +8,7 @@ from csp.os_process import process, Channel, Par
 from output import out
 from time import time
 
+
 def execute(processCount):
     n = 10000000  # 100 times fewer than C due to speed issues.
     delta = 1.0 / n
@@ -36,6 +37,7 @@ def execute(processCount):
         processes.append(calculator(channel, i))
     processes.append(accumulator())
     Par(*processes).start()
+
 
 if __name__ == '__main__':
     execute(1)

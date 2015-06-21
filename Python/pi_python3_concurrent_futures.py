@@ -8,12 +8,14 @@ from concurrent.futures import ProcessPoolExecutor
 from output import out
 from time import time
 
+
 def processSlice(id, sliceSize, delta):
     sum = 0.0
     for i in range(1 + id * sliceSize, (id + 1) * sliceSize + 1):
         x = (i - 0.5) * delta
         sum += 1.0 / (1.0 + x * x)
     return sum
+
 
 def execute(processCount):
     n = 10000000  # 100 times fewer than C due to speed issues.
@@ -25,6 +27,7 @@ def execute(processCount):
         pi = 4.0 * delta * sum(item.result() for item in results)
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
+
 
 if __name__ == '__main__':
     execute(1)

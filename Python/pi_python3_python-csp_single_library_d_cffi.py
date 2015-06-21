@@ -10,15 +10,18 @@ from time import time
 
 from cffi import FFI
 
+
 @process
 def calculator(channel, id, sliceSize, delta):
     channel.write(processSliceModule.processSlice(id, sliceSize, delta))
+
 
 @process
 def accumulator(channel, n, delta, startTime, processCount):
     pi = 4.0 * delta * sum(channel.read() for i in range(0, processCount))
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
+
 
 def execute(processCount):
     n = 1000000000
@@ -31,6 +34,7 @@ def execute(processCount):
         processes.append(calculator(channel, i, sliceSize, delta))
     processes.append(accumulator(channel, n, delta, startTime, processCount))
     Par(*processes).start()
+
 
 if __name__ == '__main__':
     ffi = FFI()

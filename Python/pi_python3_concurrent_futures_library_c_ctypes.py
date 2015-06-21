@@ -10,10 +10,10 @@ from time import time
 
 import ctypes
 
-#  Cannot call the C function directly in the executor submit call.
 
 def processSlice(id, sliceSize, delta):
     return processSliceModule.processSlice(id, sliceSize, delta)
+
 
 def execute(processCount):
     n = 1000000000
@@ -25,6 +25,7 @@ def execute(processCount):
         pi = 4.0 * delta * sum(item.result() for item in results)
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
+
 
 if __name__ == '__main__':
     processSliceModule = ctypes.cdll.LoadLibrary('processSlice_library_c.so')

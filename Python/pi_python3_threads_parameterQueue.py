@@ -10,12 +10,14 @@ from queue import Queue
 from threading import Thread
 from time import time
 
+
 def processSlice(id, sliceSize, delta, results):
     sum = 0.0
     for i in range(1 + id * sliceSize, (id + 1) * sliceSize + 1):
         x = (i - 0.5) * delta
         sum += 1.0 / (1.0 + x * x)
     results.put(sum)
+
 
 def execute(threadCount):
     n = 10000000  # 100 times fewer than C due to speed issues.
@@ -29,6 +31,7 @@ def execute(threadCount):
     pi = 4.0 * delta * sum(results.get() for i in range(threadCount))
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, threadCount)
+
 
 if __name__ == '__main__':
     execute(1)

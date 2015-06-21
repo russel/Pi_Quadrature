@@ -9,6 +9,7 @@ A module providing an output function for all the variants of the "Π by Quadrat
 from multiprocessing import cpu_count
 from os.path import basename
 
+
 def out(name, pi, n, elapseTime, *args):
     outputString = '================ {}'.format(basename(name))
     pCount = len(args)

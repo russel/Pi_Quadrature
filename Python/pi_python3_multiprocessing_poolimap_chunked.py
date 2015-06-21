@@ -10,9 +10,11 @@ from functools import partial
 from output import out
 from time import time
 
+
 def f(i, delta):
     x = (i - 0.5) * delta
     return 1.0 / (1.0 + x * x)
+
 
 def execute(processCount):
     n = 10000000  # 100 times fewer than C due to speed issues.
@@ -22,6 +24,7 @@ def execute(processCount):
         pi = 4.0 * delta * sum(pool.imap(partial(f, delta=delta), range(1, n), n // processCount))
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
+
 
 if __name__ == '__main__':
     execute(1)

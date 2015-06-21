@@ -8,9 +8,11 @@ from functools import reduce
 from output import out
 from time import time
 
+
 def f(s, i):
     x = (i - 0.5) * delta
     return s + 1.0 / (1.0 + x * x)
+
 
 if __name__ == '__main__':
     n = 10000000  # 100 times fewer than C due to speed issues.

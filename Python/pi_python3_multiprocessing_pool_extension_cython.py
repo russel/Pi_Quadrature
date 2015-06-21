@@ -11,6 +11,7 @@ from time import time
 
 from processSlice_extension_cython import processSlice
 
+
 def execute(processCount):
     n = 1000000000
     delta = 1.0 / n
@@ -21,6 +22,7 @@ def execute(processCount):
         pi = 4.0 * delta * sum(item.get() for item in results)
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
+
 
 if __name__ == '__main__':
     execute(1)

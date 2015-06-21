@@ -10,6 +10,7 @@ from time import time
 
 from csp.os_process import process, Channel, Par
 
+
 @process
 def calculator(channel, id, sliceSize, delta):
     sum = 0.0
@@ -18,11 +19,13 @@ def calculator(channel, id, sliceSize, delta):
         sum += 1.0 / (1.0 + x * x)
     channel.write(sum)
 
+
 @process
 def accumulator(channels, n, delta, startTime, processCount):
     pi = 4.0 * delta * sum(channel.read() for channel in channels)
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
+
 
 def execute(processCount):
     n = 10000000  # 100 times fewer than C due to speed issues.
@@ -37,6 +40,7 @@ def execute(processCount):
         processes.append(calculator(channel, i, sliceSize, delta))
     processes.append(accumulator(channels, n, delta, startTime, processCount))
     Par(*processes).start()
+
 
 if __name__ == '__main__':
     execute(1)

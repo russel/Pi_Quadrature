@@ -1,5 +1,6 @@
 /*
- *  A C++ function to calculate a the overall calculation of π using quadrature.
+ *  C++ functions to calculate π using quadrature employing Boost as needed to create a Python extension
+ *  module.
  *
  *  Copyright © 2009–2011, 2013–2015  Russel Winder
  */

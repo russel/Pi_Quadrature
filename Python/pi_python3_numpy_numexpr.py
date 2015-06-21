@@ -9,6 +9,7 @@ from numpy import arange, double
 from output import out
 from time import time
 
+
 def execute(threadCount):
     n = 100000000  # 10 times fewer than C due to speed issues.
     delta = 1.0 / n
@@ -18,6 +19,7 @@ def execute(threadCount):
     pi = 4.0 * delta * evaluate('1.0 / (1.0 + ((value - 0.5) * delta) ** 2)').sum()
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, threadCount)
+
 
 if __name__ == '__main__':
     execute(1)

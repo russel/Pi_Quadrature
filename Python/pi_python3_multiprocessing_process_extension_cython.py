@@ -11,8 +11,10 @@ from time import time
 
 from processSlice_extension_cython import processSlice
 
+
 def calculator(id, sliceSize, delta, output):
     output.put(processSlice(id, sliceSize, delta))
+
 
 def execute(processCount):
     n = 1000000000
@@ -26,6 +28,7 @@ def execute(processCount):
     pi = 4.0 * delta * sum(resultsQueue.get() for i in range(0, processCount))
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
+
 
 if __name__ == '__main__':
     execute(1)

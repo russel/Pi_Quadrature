@@ -11,6 +11,7 @@ from time import time
 
 from numba import autojit
 
+
 @autojit
 def processSliceSupport(id, sliceSize, delta):
     sum = 0.0
@@ -19,8 +20,10 @@ def processSliceSupport(id, sliceSize, delta):
         sum += 1.0 / (1.0 + x * x)
     return sum
 
+
 def processSlice(id, sliceSize, delta, output):
     output.put(processSliceSupport(id, sliceSize, delta))
+
 
 def execute(processCount):
     n = 1000000000
@@ -34,6 +37,7 @@ def execute(processCount):
     pi = 4.0 * delta * sum(resultsQueue.get() for i in range(0, processCount))
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
+
 
 if __name__ == '__main__':
     execute(1)

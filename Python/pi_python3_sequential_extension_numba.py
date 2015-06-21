@@ -9,6 +9,7 @@ from time import time
 
 from numba import autojit
 
+
 @autojit
 def compute(n, delta):
     sum = 0.0
@@ -16,6 +17,7 @@ def compute(n, delta):
         x = (i - 0.5) * delta
         sum += 1.0 / (1.0 + x * x)
     return sum
+
 
 if __name__ == '__main__':
     n = 1000000000
