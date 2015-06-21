@@ -62,13 +62,13 @@ for item in Glob('*library_*.c'):
 for item in Glob('*_library_*.cpp'):
     cppEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
 
-for item in Glob('*.pyx'):
-    root, _ = splitext(item.name)
-    cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, '{} $SOURCE'.format(cython_command_name)))
-
 for item in Glob('*library_*.d'):
     dEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
 
+
+for item in Glob('*.pyx'):
+    root, _ = splitext(item.name)
+    cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, '{} $SOURCE'.format(cython_command_name)))
 
 cppExtensionEnvironment = cppEnvironment.Clone()
 cppExtensionEnvironment.Append(CXXFLAGS='-fPIC')
