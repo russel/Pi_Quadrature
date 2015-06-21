@@ -23,18 +23,25 @@ double sequential(long const n, double const delta) {
   return 4.0 * delta * sum_up(1, n, delta);
 }
 
-double partial_sum(int const id, long const slice_size, double const delta) {
-	return sum_up(1 + id * slice_size, (id + 1) * slice_size, delta);
-}
-
 double parallel(long const n, double const delta) {
   int const task_count = std::thread::hardware_concurrency();
 	long const slice_size = n / task_count;
 	std::vector<std::shared_future<double>> futures;
 	for (auto i = 0; i < task_count; ++i) {
-    futures.push_back(std::async(std::launch::async, partial_sum, i, slice_size, delta));
+    futures.push_back(std::async(
+																 std::launch::async,
+																 [](int const id, long const slice_size, double const delta){
+																	 return sum_up(1 + id * slice_size, (id + 1) * slice_size, delta);
+																 },
+																 i,
+																 slice_size,
+																 delta));
   }
-  return 4.0 * delta * std::accumulate(futures.begin(), futures.end(), 0.0, [](double a, std::shared_future<double> b) { return a + b.get();});
+  return 4.0 * delta * std::accumulate(
+																			 futures.begin(),
+																			 futures.end(),
+																			 0.0,
+																			 [](double a, std::shared_future<double> b) { return a + b.get();});
 }
 
 BOOST_PYTHON_MODULE(processAll_extension_boost) {
