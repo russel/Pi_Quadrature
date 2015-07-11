@@ -1,6 +1,6 @@
 --  Haskell implementation of π by Quadrature
 --
---  Copyright © 2009–2011, 2013  Russel Winder
+--  Copyright © 2009–2011, 2013, 2015  Russel Winder
 
 module Main where
 
@@ -16,6 +16,6 @@ piQuad :: Int -> Double
 piQuad n = piIter n (1.0 / (fromIntegral n)) 0.0
 
 main :: IO()
-main = do
-  let n = 1000000000
-  out "Sequential" (piQuad n) n
+main = out "Sequential Iteration Where" (piQuad n) n
+  where
+    n = 1000000000

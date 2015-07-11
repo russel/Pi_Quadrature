@@ -17,9 +17,10 @@ haskellEnvironment = Environment(tools=['haskell'])
 
 generatedExtensions = ['.hi', '.o', '.hp', '.ps', '.aux']
 
-compileAllSource = True
+#useGHCMake = False
+useGHCMake = True
 
-if not compileAllSource:
+if not useGHCMake:
     outputModule = haskellEnvironment.HaskellObject('Output.hs')
 
 for item in Glob('pi_*.hs'):
@@ -28,7 +29,7 @@ for item in Glob('pi_*.hs'):
     variant = root.split('_')[1]
     if variant in ('threads', 'parMap', 'parallel'):
         options.append('-threaded')
-    if compileAllSource:
+    if useGHCMake:
         addRunTarget(haskellEnvironment, addCompileTarget(haskellEnvironment.Command(root, [item.name, 'Output.hs'], 'ghc --make -O -o $TARGET' + ''.join([' ' + x for x in options]) + ' $SOURCES')))
         SideEffect([root + ext for ext in generatedExtensions] + ['Output' + ext for ext in generatedExtensions],  root)
     else:

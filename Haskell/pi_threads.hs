@@ -1,6 +1,6 @@
 --  Haskell implementation of π by Quadrature.  This uses threads to parallelize.
 --
---  Copyright © 2009–2011, 2013  Russel Winder
+--  Copyright © 2009–2011, 2013, 2015  Russel Winder
 
 module Main where
 
