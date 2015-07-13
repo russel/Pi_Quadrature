@@ -2,15 +2,15 @@
 
 #  Calculation of π using quadrature. Sequential algorithm using a for loop with a range.
 #
-#  Copyright © 2008–2012, 2014  Russel Winder
+#  Copyright © 2008–2012, 2014, 2015  Russel Winder
 
 from output import out
 from time import time
 
-from numba import autojit
+from numba import jit
 
 
-@autojit
+@jit
 def compute(n, delta):
     sum = 0.0
     for i in range(1, n + 1):

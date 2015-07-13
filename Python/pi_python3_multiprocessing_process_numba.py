@@ -3,26 +3,22 @@
 #  Calculation of π using quadrature. Uses the multiprocessing package with processes sending messages to
 #  a collecting queue.
 #
-#  Copyright © 2008–2014  Russel Winder
+#  Copyright © 2008–2015  Russel Winder
 
 from multiprocessing import Queue, Process
 from output import out
 from time import time
 
-from numba import autojit
+from numba import jit
 
 
-@autojit
-def processSliceSupport(id, sliceSize, delta):
+@jit
+def processSlice(id, sliceSize, delta, output):
     sum = 0.0
     for i in range(1 + id * sliceSize, (id + 1) * sliceSize + 1):
         x = (i - 0.5) * delta
         sum += 1.0 / (1.0 + x * x)
-    return sum
-
-
-def processSlice(id, sliceSize, delta, output):
-    output.put(processSliceSupport(id, sliceSize, delta))
+    output.put(sum)
 
 
 def execute(processCount):

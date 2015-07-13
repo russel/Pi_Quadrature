@@ -1,11 +1,10 @@
 #! /usr/bin/env python3
 
-#  Calculation of π using quadrature. Uses the multiprocessing package to provide a process pool to enable
-#  asynchronous function calls very akin to futures.
+#  Calculation of π using quadrature. Make use of the concurrent.futures facilities that are new in Python 3.2.
 #
-#  Copyright © 2008–2015  Russel Winder
+#  Copyright © 2011–2013, 2015  Russel Winder
 
-from multiprocessing import Pool
+from concurrent.futures import ProcessPoolExecutor
 from output import out
 from time import time
 
@@ -26,9 +25,9 @@ def execute(processCount):
     delta = 1.0 / n
     startTime = time()
     sliceSize = n // processCount
-    with Pool(processes=processCount) as pool:
-        results = [pool.apply_async(processSlice, args=(i, sliceSize, delta)) for i in range(0, processCount)]
-        pi = 4.0 * delta * sum(item.get() for item in results)
+    with ProcessPoolExecutor(max_workers=processCount) as executor:
+        results = [executor.submit(processSlice, i, sliceSize, delta) for i in range(processCount)]
+        pi = 4.0 * delta * sum(item.result() for item in results)
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime, processCount)
 

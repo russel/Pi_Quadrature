@@ -74,8 +74,8 @@ cppExtensionEnvironment = cppEnvironment.Clone()
 cppExtensionEnvironment.Append(CXXFLAGS='-fPIC')
 cppExtensionEnvironment.Append(CPPPATH=python_include_path)
 cppExtensionEnvironment.Append(RPATH='./')
-cppExtensionEnvironment.Append(LIBS='-lboost_python3')#Fedora
-#cppExtensionEnvironment.Append(LIBS='-lboost_python_py34')#Debian
+#cppExtensionEnvironment.Append(LIBS='-lboost_python3')#Fedora
+cppExtensionEnvironment.Append(LIBS='-lboost_python-py34')#Debian
 
 for item in Glob('*_extension_*.cpp'):
     cppExtensionEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item, SHLIBPREFIX='')
