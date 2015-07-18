@@ -1,7 +1,7 @@
 /*
  *  A Chapel program to calculate π using quadrature as a sequential algorithm.
  *
- *  Copyright © 2009, 2011–2014  Russel Winder
+ *  Copyright © 2009, 2011–2015  Russel Winder
  */
 
 use Time;
@@ -18,5 +18,5 @@ proc main() {
   }
   const pi = 4.0 * delta * sum;
   timer.stop();
-  output("Chapel Sequential For Power", pi, n, timer.elapsed());
+  output("Sequential For Power", pi, n, timer.elapsed());
 }
