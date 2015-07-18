@@ -1,6 +1,6 @@
 /*
- *  A Chapel program to calculate π using quadrature as a reduce-based algorithm but with an explicit
- *  coforall.
+ *  A Chapel program to calculate π using quadrature as an explicitly batched, reduce-based algorithm with
+ *  an explicit coforall.
  *
  *  Copyright © 2009–2015  Russel Winder
  */
@@ -28,7 +28,7 @@ proc execute(numberOfTasks:int) {
   coforall i in eachProcessor do results[i] = partialSum(i);
   const pi = 4.0 * delta * (+ reduce results);
   timer.stop();
-  output_more("Coforall", pi, n,  timer.elapsed(), numberOfTasks);
+  output_more("Coforall Batched", pi, n,  timer.elapsed(), numberOfTasks);
 }
 
 proc main() {

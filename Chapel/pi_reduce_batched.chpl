@@ -25,7 +25,7 @@ proc execute(numberOfTasks:int) {
   }
   const pi = 4.0 * delta * (+ reduce [i in eachProcessor] partialSum(i));
   timer.stop();
-  output_more("Reduce", pi, n,  timer.elapsed(), numberOfTasks);
+  output_more("Reduce Batched", pi, n,  timer.elapsed(), numberOfTasks);
 }
 
 proc main() {
