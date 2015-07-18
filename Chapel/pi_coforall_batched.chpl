@@ -20,9 +20,7 @@ proc execute(numberOfTasks:int) {
     const start = 1 + id * sliceSize;
     const end = (id + 1) * sliceSize;
     var sum = 0.0;
-    for i in start..end {
-      sum += 1.0 / (1.0 + ((i - 0.5) * delta) ** 2);
-    }
+    for i in start..end { sum += 1.0 / (1.0 + ((i - 0.5) * delta) ** 2); }
     return sum;
   }
   coforall i in eachProcessor do results[i] = partialSum(i);
