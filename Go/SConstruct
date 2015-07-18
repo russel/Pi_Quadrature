@@ -6,4 +6,4 @@ for name in Glob('*.go'):
     goName = name.name.replace('.go', '_go')
     gccgoName = name.name.replace('.go', '_gccgo')
     environment.Command(goName, name.name, 'go build -o {} $SOURCE'.format(goName))
-    environment.Command(gccgoName, name.name, 'go build -o {} -compiler gccgo -gccgoflags -O $SOURCE'.format(gccgoName))
+    environment.Command(gccgoName, name.name, 'go build -o {} -compiler gccgo $SOURCE'.format(gccgoName))
