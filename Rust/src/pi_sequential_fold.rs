@@ -19,5 +19,5 @@ fn main() {
         acc + 1.0 / (1.0 + x * x)
     });
     let elapse_time = precise_time_s() - start_time;
-    output("pi_sequential_fold".to_string(), pi, n, elapse_time)
+    output("Sequential Fold".to_string(), pi, n, elapse_time)
 }

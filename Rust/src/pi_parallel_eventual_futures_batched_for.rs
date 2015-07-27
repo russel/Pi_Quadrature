@@ -34,7 +34,7 @@ fn execute(number_of_tasks:u64) {
     })).collect();
     let pi = 4.0 * delta * futures.into_iter().fold(0.0, |acc, i| acc + i.await().unwrap());
     let elapse_time = precise_time_s() - start_time;
-    output_n("pi_parallel_futures".to_string(), pi, n, elapse_time, number_of_tasks)
+    output_n("Parallel Eventual Futures Batched For".to_string(), pi, n, elapse_time, number_of_tasks)
 }
 
 fn main() {

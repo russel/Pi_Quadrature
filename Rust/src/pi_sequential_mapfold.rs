@@ -19,5 +19,5 @@ fn main() {
         1.0 / (1.0 + x * x)
     }).fold(0.0, |acc, x| acc + x);
     let elapse_time = precise_time_s() - start_time;
-    output("pi_sequential_mapfold".to_string(), pi, n, elapse_time)
+    output("Sequential Map Fold".to_string(), pi, n, elapse_time)
 }
