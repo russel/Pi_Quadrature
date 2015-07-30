@@ -1,0 +1,32 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    maven { url "https://oss.sonatype.org/content/groups/public" }
+    jcenter()
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'org.frege-lang:frege-gradle-plugin:0.4.1'
+  }
+}
+
+// NB The Frege plugin assumes the Java plugin is present.
+
+apply plugin: 'java'
+apply plugin: 'frege'
+apply plugin: 'application'
+
+repositories {
+  mavenLocal()
+  maven { url "https://oss.sonatype.org/content/groups/public" }
+  jcenter()
+  mavenCentral()
+}
+
+dependencies {
+  compile 'org.frege-lang:frege-gradle-plugin:0.4.1'
+}
+
+mainClassName = 'Main'
+
+defaultTasks 'run'
