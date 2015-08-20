@@ -2,7 +2,7 @@
 
 #  Calculation of π using quadrature.
 #
-#  Copyright © 2008–2013  Russel Winder
+#  Copyright © 2008–2013, 2015  Russel Winder
 
 import os
 import sys
@@ -12,11 +12,13 @@ from executablesupport import compileTargets, addCompileTarget, addRunTarget, cr
 
 cSharpEnvironment = Environment(tools=['csharp'])
 
+output = cSharpEnvironment.CLILibrary("Output.cs")
+
 for item in Glob('Pi_*.cs'):
     addRunTarget(cSharpEnvironment,
-        addCompileTarget(cSharpEnvironment.CLIProgram(item)),
+        addCompileTarget(cSharpEnvironment.CLIProgram([item, "Output.cs"])),
         'mono {}',
-        lambda x: x.replace('.exe', '')
+        lambda x: x # lambda x: x.replace('.exe', '')
     )
 
 Default(compileTargets)
