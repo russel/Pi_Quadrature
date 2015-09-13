@@ -19,5 +19,5 @@ piQuad n = piIter n (1.0 / (fromIntegral n)) 0.0
 
 main :: IO()
 main = do
-  let n = 10000000 -- 100 times fewer than Java due to speed issues.
+  let n = 100000000 -- 10 times fewer than Java due to speed issues.
   out "Sequential" (piQuad n) n
