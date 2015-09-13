@@ -11,9 +11,10 @@ import Output (outn)
 piIter :: Int -> Int -> Double -> Double -> Double
 piIter  n to delta accumulator
   | n > to = 4.0 * delta * accumulator
-  | otherwise = piIter (n + 1) to delta (accumulator + 4.0 / (1.0 + x * x))
+  | otherwise = piIter (n + 1) to delta value
   where
     x = ((fromIntegral n) - 0.5) * delta
+    value = accumulator + 4.0 / (1.0 + x * x)
 
 piQuadSlice :: Double -> Int -> Int -> Double
 piQuadSlice delta sliceSize index = piIter start end delta 0.0
@@ -30,7 +31,7 @@ parallelMap _ _  = [ ]
 execute :: Int -> IO()
 execute numberOfSlices = outn "Parallel Batched Iteration Where" pi n numberOfSlices
   where
-    n = 1000000000
+    n = 100000000 -- 10 times fewer for speed reasons.
     delta = 1.0 / (fromIntegral n)
     sliceSize = n `div` numberOfSlices
     pi = sum (parallelMap (piQuadSlice delta sliceSize) [0 .. (numberOfSlices - 1)])

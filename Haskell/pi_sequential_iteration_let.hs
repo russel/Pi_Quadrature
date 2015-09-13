@@ -21,5 +21,5 @@ piQuad n = piIter n (1.0 / (fromIntegral n)) 0.0
 
 main :: IO()
 main =
-  let n = 1000000000
+  let n = 100000000 -- 10 times fewer for speed reasons.
   in out "Sequential Iteration Let" (piQuad n) n

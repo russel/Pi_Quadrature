@@ -34,7 +34,7 @@ spawnWorkersAndSum i delta sliceSize = do
 
 execute :: Int -> IO()
 execute numberOfSlices = do
-  let n = 1000000000
+  let n = 100000000 -- 10 times fewer due to speed.
   let delta = 1.0 / (fromIntegral n)
   let sliceSize = n `div` numberOfSlices
   pi <- spawnWorkersAndSum numberOfSlices delta sliceSize

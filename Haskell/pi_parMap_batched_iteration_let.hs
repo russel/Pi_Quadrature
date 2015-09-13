@@ -13,11 +13,10 @@ piIter  n to delta accumulator
   | n > to = 4.0 * delta * accumulator
   | otherwise =
       let
-        nPlus1 = n + 1
         x = ((fromIntegral n) - 0.5) * delta
         value = accumulator + 1.0 / (1.0 + x * x)
       in
-        piIter nPlus1 to delta value
+        piIter (n + 1) to delta value
 
 piQuadSlice :: Double -> Int -> Int -> Double
 piQuadSlice delta sliceSize index =
@@ -30,7 +29,7 @@ piQuadSlice delta sliceSize index =
 execute :: Int -> IO ()
 execute numberOfSlices =
   let
-    n = 1000000000
+    n = 100000000 -- 10 times fewer for speed reasons.
     delta = 1.0 / (fromIntegral n)
     sliceSize = n `div` numberOfSlices
     pi = sum (parMap rseq (piQuadSlice delta sliceSize) [0 .. (numberOfSlices - 1)])

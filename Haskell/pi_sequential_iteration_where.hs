@@ -18,4 +18,4 @@ piQuad n = piIter n (1.0 / (fromIntegral n)) 0.0
 main :: IO()
 main = out "Sequential Iteration Where" (piQuad n) n
   where
-    n = 1000000000
+    n = 100000000 -- 10 times fewer for speed reasons.
