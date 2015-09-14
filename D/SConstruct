@@ -35,8 +35,10 @@ dEnvironment = {
         DFLAGS=['-O3'],
     ),
     'ldc': Environment(
+        # Two ldc2 installed, one in the standard place another in the personal path.
+        # Comment this for the system install, uncomment for the personal install.
+        #ENV = os.environ,
         tools=['ldc', 'link'],
-        ENV = os.environ,
         DFLAGS=['-O', '-release'],
     ),
 #}['dmd']

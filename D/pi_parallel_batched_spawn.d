@@ -1,24 +1,21 @@
 /*
- *  A D program to calculate π using quadrature as a spawn-based approach.  Make use of actor-style message
- *  passing capability.
+ *  A D program to calculate π using quadrature using multiple processes and message passing.
  *
  *  Copyright © 2010–2015  Russel Winder
  */
 
+import std.algorithm: reduce;
 import std.concurrency: Tid, thisTid, receiveOnly, send, spawn;
 import std.datetime: StopWatch;
+import std.range: iota;
 
 import outputFunctions: output;
 
 void partialSum(Tid parent, immutable int id, immutable int sliceSize, immutable double delta) {
-  immutable start = 1 + id * sliceSize;
-  immutable end = (id + 1) * sliceSize;
-  auto sum = 0.0;
-  foreach (immutable i; start .. end + 1) {
-    immutable x = (i - 0.5) * delta;
-    sum += 1.0 / (1.0 + x * x);
-  }
-  send(parent, sum);
+  send(parent, reduce!(delegate double(double t, int i) {
+        immutable x = (i - 0.5) * delta;
+        return t + 1.0 / (1.0 + x * x);})
+    (0.0, iota(1 + id * sliceSize, (id + 1) * sliceSize)));
 }
 
 void execute(immutable int numberOfTasks) {
@@ -28,9 +25,7 @@ void execute(immutable int numberOfTasks) {
   stopWatch.start();
   immutable sliceSize = n / numberOfTasks;
   foreach (immutable i; 0 .. numberOfTasks) { spawn(&partialSum, thisTid, i, sliceSize, delta); }
-  auto sum = 0.0;
-  foreach (immutable i; 0 .. numberOfTasks) { sum += receiveOnly!double(); }
-  immutable pi = 4.0 * delta * sum;
+  immutable pi = 4.0 * delta * reduce!((t, i) => t + receiveOnly!double())(0.0, iota(0, numberOfTasks));
   stopWatch.stop();
   immutable elapseTime = stopWatch.peek().hnsecs * 100e-9;
   output(__FILE__, pi, n, elapseTime, numberOfTasks);

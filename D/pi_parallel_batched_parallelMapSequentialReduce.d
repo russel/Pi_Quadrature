@@ -13,14 +13,10 @@ import std.typecons: Tuple, tuple;
 import outputFunctions: output;
 
 double partialSum(immutable Tuple!(int, int, double) data) {
-  immutable start = 1 + data[0] * data[1];
-  immutable end = (data[0] + 1) * data[1];
-  auto sum = 0.0;
-  foreach (immutable i; start .. end + 1) {
-    immutable x = (i - 0.5) * data[2];
-    sum += 1.0 / (1.0 + x * x);
-  }
-  return sum;
+  return reduce!(delegate double(double t, int i) {
+      immutable x = (i - 0.5) * data[2];
+      return t + 1.0 / (1.0 + x * x);})
+    (0.0, iota(1 + data[0] * data[1], (data[0] + 1) * data[1] + 1));
 }
 
 void execute(immutable int numberOfTasks) {
