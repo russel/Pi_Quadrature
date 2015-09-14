@@ -16,7 +16,7 @@ int main(immutable string[] args) {
   immutable delta = 1.0 / n;
   StopWatch stopWatch;
   stopWatch.start();
-  const f = delegate double (double t, int i) {
+  const f = (double t, int i){
       immutable x = (i - 0.5) * delta;
       return t + 1.0 / (1.0 + x * x);};
   immutable pi = 4.0 * delta * reduce!(f)(0.0, iota(1, n + 1));

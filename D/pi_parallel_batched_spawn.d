@@ -12,7 +12,7 @@ import std.range: iota;
 import outputFunctions: output;
 
 void partialSum(Tid parent, immutable int id, immutable int sliceSize, immutable double delta) {
-  send(parent, reduce!(delegate double(double t, int i) {
+  send(parent, reduce!((double t, int i){
         immutable x = (i - 0.5) * delta;
         return t + 1.0 / (1.0 + x * x);})
     (0.0, iota(1 + id * sliceSize, (id + 1) * sliceSize)));

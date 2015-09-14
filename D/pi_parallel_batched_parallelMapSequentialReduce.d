@@ -13,7 +13,7 @@ import std.typecons: Tuple, tuple;
 import outputFunctions: output;
 
 double partialSum(immutable Tuple!(int, int, double) data) {
-  return reduce!(delegate double(double t, int i) {
+  return reduce!((double t, int i){
       immutable x = (i - 0.5) * data[2];
       return t + 1.0 / (1.0 + x * x);})
     (0.0, iota(1 + data[0] * data[1], (data[0] + 1) * data[1] + 1));
