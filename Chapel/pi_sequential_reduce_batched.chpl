@@ -15,13 +15,7 @@ proc execute(numberOfTasks:int) {
   const sliceSize = n / numberOfTasks;
   const eachProcessor = {0 ..(numberOfTasks - 1)};
   proc partialSum(const id:int):real {
-    const start = 1 + id * sliceSize;
-    const end = (id + 1) * sliceSize;
-    var sum = 0.0;
-    for i in start..end {
-      sum += 1.0 / (1.0 + ((i - 0.5) * delta) ** 2);
-    }
-    return sum;
+    return + reduce [i in (1 + id * sliceSize)..((id + 1) * sliceSize)] 1.0 / (1.0 + ((i - 0.5) * delta) ** 2) ;
   }
   const pi = 4.0 * delta * (+ reduce [i in eachProcessor] partialSum(i));
   timer.stop();
