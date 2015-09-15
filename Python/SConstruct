@@ -2,9 +2,9 @@
 
 #  Calculation of π using quadrature.
 #
-#  Copyright © 2008–2014  Russel Winder
+#  Copyright © 2008–2015  Russel Winder
 
-#  Some of the Python code relies on extensions written in various languages.
+#  Some of the Python codes rely on extensions written in various languages, natably C, C++, D, Chapel.
 #
 #  Cython and Pyrex need access to the Python headers when compiling the generated C and so are Python
 #  version dependent.
@@ -12,7 +12,7 @@
 import os
 from os.path import splitext
 
-os_name = os.uname()[0]
+os_name, _, os_number, _, _ = os.uname()
 
 if os_name == 'Darwin':
     cython_command_name = 'cython'
@@ -29,6 +29,8 @@ elif os_name == 'Linux':
 else:
     print 'Unknown platform.'
     Exit(1)
+
+is_fedora = '.fc' in os_number
 
 cEnvironment = Environment(
     tools=['gcc', 'gnulink'],
@@ -49,33 +51,59 @@ cppEnvironment = Environment(
     SHLIBPREFIX='',
 )
 
-dEnvironment = Environment(
-    tools=['ldc', 'link'],
-    ENV=os.environ,
+cppLibraryEnvironment = cppEnvironment.Clone()
+cppLibraryEnvironment.Append(CXXFLAGS='-fPIC')
+
+dEnvironment = {
+    'dmd': Environment(
+    tools=['dmd', 'link'],
     DFLAGS=['-O', '-release', '-inline'],
     SHLIBPREFIX='',
+    ),
+    'ldc': Environment(
+        # LDC is installed from packages for the production version and I compile head of the latest branch.
+        # Having this ENV set or not switches between them: not means package.
+    #ENV=os.environ,
+    tools=['ldc', 'link'],
+    DFLAGS=['-O', '-release', '-inline'],
+    SHLIBPREFIX='',
+    ),
+    'gdc': Environment(
+    tools=['gdc', 'link'],
+    DFLAGS=['-O3'],
+    SHLIBPREFIX='',
+    ),
+}[
+    #'dmd'
+    'ldc'
+    #'gdc'
+]
+
+chapelEnvironment = Environment(
+    ENV=os.environ,
 )
 
 for item in Glob('*_library_*.c'):
     cEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
 
 for item in Glob('*_library_*.cpp'):
-    cppEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
+    cppLibraryEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
 
 for item in Glob('*_library_*.d'):
     dEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
 
+for item in Glob('*_library_*.chpl'):
+    so_name = splitext(item.name)[0]
+    chapelEnvironment.Command(so_name + '.so', item, 'chpl --dynamic --library -o {} $SOURCE'.format(so_name))
 
 for item in Glob('*.pyx'):
     root, _ = splitext(item.name)
     cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, '{} $SOURCE'.format(cython_command_name)))
 
-cppExtensionEnvironment = cppEnvironment.Clone()
-cppExtensionEnvironment.Append(CXXFLAGS='-fPIC')
+cppExtensionEnvironment = cppLibraryEnvironment.Clone()
 cppExtensionEnvironment.Append(CPPPATH=python_include_path)
 cppExtensionEnvironment.Append(RPATH='./')
-#cppExtensionEnvironment.Append(LIBS='-lboost_python3')#Fedora
-cppExtensionEnvironment.Append(LIBS='-lboost_python-py34')#Debian
+cppExtensionEnvironment.Append(LIBS='-lboost_python3' if is_fedora else '-lboost_python-py34')
 
 for item in Glob('*_extension_*.cpp'):
-    cppExtensionEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item, SHLIBPREFIX='')
+    cppExtensionEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
