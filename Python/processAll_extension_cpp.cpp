@@ -31,12 +31,10 @@ double parallel(long const n, double const delta) {
 	for (auto i = 0; i < task_count; ++i) {
     futures.push_back(std::async(
 																 std::launch::async,
-																 [](int const id, long const slice_size, double const delta){
+																 [=](int const id){
 																	 return sum_up(1 + id * slice_size, (id + 1) * slice_size, delta);
 																 },
-																 i,
-																 slice_size,
-																 delta));
+																 i));
   }
   return 4.0 * delta * std::accumulate(
 																			 futures.begin(),
@@ -45,7 +43,7 @@ double parallel(long const n, double const delta) {
 																			 [](double a, std::shared_future<double> b) { return a + b.get();});
 }
 
-BOOST_PYTHON_MODULE(processAll_extension_boost) {
+BOOST_PYTHON_MODULE(processAll_extension_cpp) {
   boost::python::def("sequential", sequential);
   boost::python::def("parallel", parallel);
 }

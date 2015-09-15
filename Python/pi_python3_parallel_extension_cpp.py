@@ -2,12 +2,12 @@
 
 #  Calculation of π using quadrature. Sequential algorithm using Boost.
 #
-#  Copyright © 2008–2012, 2014, 2015  Russel Winder
+#  Copyright © 2008–2012, 2014–2015  Russel Winder
 
 from output import out
 from time import time
 
-from processAll_extension_boost import parallel
+from processAll_extension_cpp import parallel
 
 if __name__ == '__main__':
     n = 1000000000
