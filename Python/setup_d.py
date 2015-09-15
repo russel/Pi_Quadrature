@@ -1,15 +1,32 @@
 from pyd.support import setup, Extension
 
-projName = 'processAll_extension_d'
+all_name = 'processAll_extension_d'
+slice_name = 'processSlice_extension_d'
+
+compile_arguments = ['-O', '-inline', '-release']
 
 setup(
-    name=projName,
+    name=all_name,
     version='0.1',
     ext_modules=[
         Extension(
-            projName,
+            slice_name,
             ['processAll_extension_d.d'],
-            extra_compile_args=['-O', '-inline', '-release'],
+            extra_compile_args=compile_arguments,
+            build_deimos=True,
+            d_lump=True
+        )
+    ],
+)
+
+setup(
+    name=slice_name,
+    version='0.1',
+    ext_modules=[
+        Extension(
+            slice_name,
+            ['processSlice_extension_d.d'],
+            extra_compile_args=compile_arguments,
             build_deimos=True,
             d_lump=True
         )
