@@ -22,6 +22,6 @@ int main() {
   }
   const auto pi = 4.0 * delta * sum;
   const auto elapseTime = std::chrono::steady_clock::now() - startTime;
-  out("OpenMP Implicit", pi, n, elapseTime, 0, omp_get_num_procs());
+  out("OpenMP Unbatched", pi, n, elapseTime, 0, omp_get_num_procs());
   return 0;
 }

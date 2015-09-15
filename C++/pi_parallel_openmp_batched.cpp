@@ -27,7 +27,7 @@ void execute(int const numberOfThreads) {
   }
   auto const pi = 4.0 * delta * sum;
   auto const elapseTime = std::chrono::steady_clock::now() - startTime;
-  out("OpenMP Explicit", pi, n, elapseTime, numberOfThreads, omp_get_num_procs());
+  out("OpenMP Batched", pi, n, elapseTime, numberOfThreads, omp_get_num_procs());
 }
 
 int main() {

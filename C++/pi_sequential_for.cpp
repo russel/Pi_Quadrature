@@ -19,6 +19,6 @@ int main() {
   }
   auto const pi = 4.0 * delta * sum;
   auto const elapseTime = std::chrono::steady_clock::now() - startTime;
-  out("Sequential", pi, n, elapseTime);
+  out("Sequential For", pi, n, elapseTime);
   return 0;
 }
