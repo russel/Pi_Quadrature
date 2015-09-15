@@ -32,16 +32,14 @@ else:
 
 is_fedora = '.fc' in os_number
 
-cEnvironment = Environment(
+cythonEnvironment = Environment(
     tools=['gcc', 'gnulink'],
-    CPPPATH=[],
-    CFLAGS=['-std=c11', '-O3', '-Wall', '-Wextra'],
+    CPPPATH=[python_include_path],
+    CFLAGS=['-std=c11', '-O3', '-Wall', '-Wextra', '-fopenmp'],
     LINKFLAGS=[],
+    LIBS=['-lgomp'],
     SHLIBPREFIX='',
 )
-
-cythonEnvironment = cEnvironment.Clone()
-cythonEnvironment.Append(CPPPATH=python_include_path, CFLAGS=['-fopenmp'], LIBS=['-lgomp'])
 
 cppEnvironment = Environment(
     tools=['g++', 'gnulink'],
@@ -83,8 +81,9 @@ chapelEnvironment = Environment(
     ENV=os.environ,
 )
 
-for item in Glob('*_library_*.c'):
-    cEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
+for item in Glob('*.pyx'):
+    root, _ = splitext(item.name)
+    cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, '{} $SOURCE'.format(cython_command_name)))
 
 for item in Glob('*_library_*.cpp'):
     cppLibraryEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
@@ -95,10 +94,6 @@ for item in Glob('*_library_*.d'):
 for item in Glob('*_library_*.chpl'):
     so_name = splitext(item.name)[0]
     chapelEnvironment.Command(so_name + '.so', item, 'chpl --dynamic --library -o {} $SOURCE'.format(so_name))
-
-for item in Glob('*.pyx'):
-    root, _ = splitext(item.name)
-    cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, '{} $SOURCE'.format(cython_command_name)))
 
 cppExtensionEnvironment = cppLibraryEnvironment.Clone()
 cppExtensionEnvironment.Append(CPPPATH=python_include_path)
