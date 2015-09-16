@@ -18,6 +18,6 @@ if __name__ == '__main__':
     n = 10000000  # 100 times fewer than C due to speed issues.
     delta = 1.0 / n
     startTime = time()
-    pi = 4.0 * delta * reduce(f, range(n), 0.0)
+    pi = 4.0 * delta * reduce(f, range(n))
     elapseTime = time() - startTime
     out(__file__, pi, n, elapseTime)
