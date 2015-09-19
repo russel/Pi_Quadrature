@@ -11,7 +11,7 @@ from time import time
 from numba import jit
 
 
-@jit
+@jit(nopython=True)
 def processSlice(id, sliceSize, delta):
     sum = 0.0
     for i in range(1 + id * sliceSize, (id + 1) * sliceSize + 1):

@@ -11,7 +11,7 @@ from time import time
 from numba import jit
 
 
-@jit
+@jit(nopython=True)
 def compute(n, delta):
     def f(t, i):
         x = (i - 0.5) * delta

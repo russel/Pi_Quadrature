@@ -10,7 +10,7 @@ from time import time
 from numba import jit
 
 
-@jit
+@jit(nopython=True)
 def compute(n, delta):
     sum = 0.0
     for i in range(1, n + 1):
