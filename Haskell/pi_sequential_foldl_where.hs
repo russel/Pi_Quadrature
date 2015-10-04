@@ -7,7 +7,7 @@ module Main where
 import Output (out)
 
 f :: Double -> Double -> Int -> Double
-f delta t n = 1.0 / (1.0 + x * x)
+f delta t n = t + 1.0 / (1.0 + x * x)
   where
     x = ((fromIntegral n) - 0.5) * delta
 
