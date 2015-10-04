@@ -1,6 +1,6 @@
 ;  Calculation of π using quadrature. Parallel algorithm using futures.
 ;
-;  Copyright © 2009–2011, 2013, 2014  Russel Winder
+;  Copyright © 2009–2011, 2013–2015  Russel Winder
 
 (ns pi-quadrature.pi-futures)
 
@@ -24,7 +24,7 @@
 
 (defn execute [numberOfThreads]
   (let [
-         n  10000000 ; 100 times fewer due to speed issues.
+         n  100000000 ; 10 times fewer than Java due to speed issues.
          delta  (/ 1.0 n)
          startTimeNanos  (System/nanoTime)
          sliceSize  (/ n numberOfThreads)
