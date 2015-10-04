@@ -1,7 +1,7 @@
 /*
  *  A C++ program to calculate π using quadrature.  This uses asynchronous function call with futures.
  *
- *  Copyright © 2009–2011, 2013, 2014  Russel Winder
+ *  Copyright © 2009–2011, 2013–2014  Russel Winder
  */
 
 #include <chrono>

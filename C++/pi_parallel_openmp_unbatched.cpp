@@ -15,7 +15,7 @@ int main() {
   const auto delta = 1.0 / n;
   const auto startTime = std::chrono::steady_clock::now();
   auto sum = 0.0;
-#pragma omp parallel for reduction(+ : sum)
+#pragma omp parallel for reduction(+: sum)
   for (auto i = 1; i <= n; ++i) {
     const auto x = (i - 0.5) * delta;
     sum += 1.0 / (1.0 + x * x);

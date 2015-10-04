@@ -41,10 +41,10 @@ def cppRule(globPattern, compiler='g++', cpppath=[], cxxflags=cppFlags, linkflag
 cppRule('pi_sequential*.cpp')
 cppRule('pi_mpi*.cpp', compiler='mpic++')  # This MPI execution target runs things sequentially.  Use the command "mpirun -np N" to run the code on N processors.
 cppRule('pi_boostMPI*.cpp', compiler='mpic++', libs=['boost_mpi'])  # This MPI execution target runs things sequentially.  Use the command "mpirun -np N" to run the code on N processors.
-cppRule('pi_tbb*.cpp', libs=['tbb'])
 cppRule('pi_parallel_thread*.cpp', libs=['pthread'])
 cppRule('pi_parallel_boostThread*.cpp', libs=['boost_thread', 'boost_system'])
 cppRule('pi_parallel_futures*.cpp', libs=['pthread'])
+cppRule('pi_parallel_tbb*.cpp', libs=['tbb'])
 cppRule('pi_parallel_openmp*.cpp', cxxflags=cppFlags + ['-fopenmp'], libs=['gomp'])
 cppRule('pi_parallel_cppcsp2.cpp', cpppath=[os.environ['HOME'] + '/include'], libpath=[os.environ['HOME'] + '/Built/lib'], libs=['cppcsp2', 'boost_system', 'pthread'])
 #cppRule('pi_parallel_justThread*.cpp', cpppath=[extraLibName + '/JustThreadPro/include'], linkflags=['--static'], libpath=[extraLibName + '/JustThreadPro/libs'], libs=['justthread', 'pthread'])
