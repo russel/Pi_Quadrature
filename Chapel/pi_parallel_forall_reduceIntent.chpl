@@ -13,7 +13,7 @@ proc main() {
   var timer:Timer;
   timer.start();
   var sum: real = 0.0;
-  forall i in 1..n with (+ reduce sum) { sum += 1.0 / (1.0 + ((i - 0.5) * delta) ** 2); }
+  //forall i in 1..n with (+ reduce sum) { sum += 1.0 / (1.0 + ((i - 0.5) * delta) ** 2); }
   const pi = 4.0 * delta * sum;
   timer.stop();
   output("Forall Reduce Intent", pi, n,  timer.elapsed());

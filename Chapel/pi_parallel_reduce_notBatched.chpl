@@ -14,5 +14,5 @@ proc main() {
   timer.start();
   const pi = 4.0 * delta * (+ reduce [i in 1..n] 1.0 / (1.0 + ((i - 0.5) * delta) ** 2));
   timer.stop();
-  output("Reduce Power", pi, n, timer.elapsed());
+  output("Reduce Not Batched", pi, n, timer.elapsed());
 }
