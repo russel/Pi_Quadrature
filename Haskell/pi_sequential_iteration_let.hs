@@ -16,10 +16,10 @@ piIter n delta accumulator =
   in
     piIter nMinus1 delta value
 
-piQuad :: Int -> Double
-piQuad n = piIter n (1.0 / (fromIntegral n)) 0.0
-
 main :: IO()
 main =
-  let n = 100000000 -- 10 times fewer for speed reasons.
-  in out "Sequential Iteration Let" (piQuad n) n
+  let
+      n = 100000000 -- 10 times fewer for speed reasons.
+      delta = 1.0 / (fromIntegral n)
+  in
+    out "Sequential Iteration Let" (piIter n delta 0.0) n

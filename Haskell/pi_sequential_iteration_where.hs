@@ -12,10 +12,8 @@ piIter n delta accumulator = piIter (n - 1) delta (accumulator + 1.0 / (1.0 + x 
     where
       x = ((fromIntegral n) - 0.5) * delta
 
-piQuad :: Int -> Double
-piQuad n = piIter n (1.0 / (fromIntegral n)) 0.0
-
 main :: IO()
-main = out "Sequential Iteration Where" (piQuad n) n
+main = out "Sequential Iteration Where" (piIter n delta 0.0) n
   where
     n = 100000000 -- 10 times fewer for speed reasons.
+    delta = 1.0 / (fromIntegral n)
