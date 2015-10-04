@@ -6,6 +6,7 @@
 
 module Output where
 
+out :: String -> Double -> Int -> IO()
 out banner pi n = do
   println ("==================== " ++ show banner)
   startTime <- System.nanoTime()

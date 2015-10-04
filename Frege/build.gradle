@@ -1,20 +1,6 @@
-buildscript {
-  repositories {
-    mavenLocal()
-    maven { url "https://oss.sonatype.org/content/groups/public" }
-    jcenter()
-    mavenCentral()
-  }
-  dependencies {
-    classpath 'org.frege-lang:frege-gradle-plugin:0.4.1'
-  }
+plugins {
+  id "org.frege-lang" version "0.5"
 }
-
-// NB The Frege plugin assumes the Java plugin is present.
-
-apply plugin: 'java'
-apply plugin: 'frege'
-apply plugin: 'application'
 
 repositories {
   mavenLocal()
@@ -24,9 +10,15 @@ repositories {
 }
 
 dependencies {
-  compile 'org.frege-lang:frege-gradle-plugin:0.4.1'
+  compile 'org.frege-lang:frege:3.23.288-gaa3af0c'
 }
 
-mainClassName = 'Main'
+defaultTasks 'classes'
 
-defaultTasks 'run'
+new File("${projectDir}/src/main/frege/").eachFileMatch(~/pi_.*\.fr/) { filename ->
+  final className = filename.name.replaceFirst(/\.fr$/, '').replaceFirst(/^p/, 'P').replaceAll(/_([a-z])/){a, b -> "_${b.toUpperCase()}"}
+    task ('run_' + className, type: JavaExec, dependsOn: 'classes') {
+        main = className
+        classpath = sourceSets.main.runtimeClasspath
+    }
+}
