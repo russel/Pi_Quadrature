@@ -4,6 +4,8 @@
 
 module Main where
 
+import Data.List (foldl')
+
 import Output (out)
 
 f :: Double -> Double -> Int -> Double
@@ -17,4 +19,4 @@ main =
     n = 100000000 -- 10 times fewer for speed reasons.
     delta = 1.0 / (fromIntegral n)
   in
-    out "Sequential Foldl Let" (4.0 * delta * foldl (f delta) 0.0 [1..n]) n
+    out "Sequential Foldl Let" (4.0 * delta * foldl' (f delta) 0.0 [1..n]) n
