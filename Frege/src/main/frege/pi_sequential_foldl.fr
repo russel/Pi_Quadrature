@@ -13,8 +13,9 @@ f delta t n = t + 1.0 / (1.0 + x * x)
   where
     x = ((fromIntegral n) - 0.5) * delta
 
+-- NB Must use foldl' to avoid a stack overflow – strictness is required.
 main :: IO()
-main =  out "Sequential Foldl" (4.0 * delta * foldl (f delta) 0.0 [1..n]) n
+main =  out "Sequential Foldl" (4.0 * delta * foldl' (f delta) 0.0 [1..n]) n
   where
     n = 100000000 -- 10 times fewer due to speed.
     delta = 1.0 / (fromIntegral n)
