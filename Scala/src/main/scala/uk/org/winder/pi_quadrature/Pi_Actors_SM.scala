@@ -62,7 +62,7 @@ object Pi_Actors_SM {
     def receive = {
       case i:Int =>
         index += 1
-        if (index == numbers.size) { system.shutdown }
+        if (index == numbers.size) { system.terminate }
         else { execute(numbers(index)) }
     }
   }))

@@ -8,7 +8,7 @@ repositories {
 
 dependencies {
   compile 'org.scala-lang:scala-library:2.11.7'
-  compile 'com.typesafe.akka:akka-actor_2.11:2.3.12'
+  compile 'com.typesafe.akka:akka-actor_2.11:2.4.0'
 }
 
 defaultTasks 'classes'
@@ -23,5 +23,5 @@ new File("${projectDir}/src/main/scala/uk/org/winder/pi_quadrature").eachFileMat
 }
 
 task wrapper (type:Wrapper) {
-    gradleVersion = '2.5'
+    gradleVersion = '2.7'
 }

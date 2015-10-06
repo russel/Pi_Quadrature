@@ -59,7 +59,7 @@ object Pi_Actors_Classes extends App {
     def receive = {
       case i:Int =>
         index += 1
-        if (index == numbers.size) { system.shutdown }
+        if (index == numbers.size) { system.terminate }
         else { execute(numbers(index)) }
     }
   }))
