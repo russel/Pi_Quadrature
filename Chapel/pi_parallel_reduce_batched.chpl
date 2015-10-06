@@ -1,5 +1,6 @@
 /*
- *  A Chapel program to calculate π using quadrature as a parallel reduce-based algorithm.
+ *  A Chapel program to calculate π using quadrature as an explicitly batched, sequential reduce-based
+ *  algorithm with a parallel reduce for parallelism.
  *
  *  Copyright © 2009–2015  Russel Winder
  */
@@ -15,12 +16,7 @@ proc execute(numberOfTasks:int) {
   const sliceSize = n / numberOfTasks;
   const eachProcessor = {0 ..(numberOfTasks - 1)};
   proc partialSum(const id:int):real {
-    // Ensure this is a sequential calculation, do not use reduce!
-    var sum: real = 0.0;
-    for i in (1 + id * sliceSize)..((id + 1) * sliceSize) {
-      sum += 1.0 / (1.0 + ((i - 0.5) * delta) ** 2);
-    }
-    return sum;
+    return + reduce for i in (1 + id * sliceSize)..((id + 1) * sliceSize) do 1.0 / (1.0 + ((i - 0.5) * delta) ** 2);
   }
   const pi = 4.0 * delta * (+ reduce [i in eachProcessor] partialSum(i));
   timer.stop();
