@@ -17,5 +17,5 @@ f delta t n = t + 1.0 / (1.0 + x * x)
 main :: IO()
 main =  out "Sequential Foldl" (4.0 * delta * foldl' (f delta) 0.0 [1..n]) n
   where
-    n = 100000000 -- 10 times fewer due to speed.
+    n = 10000000 -- 100 times fewer due to speed.
     delta = 1.0 / (fromIntegral n)

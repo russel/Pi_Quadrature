@@ -13,7 +13,7 @@ out banner pi n = do
   println ("\tπ = " ++ show pi)
   println ("\titeration count = " ++ show n)
   endTime <- System.nanoTime()
-  println ("\telapse time = " ++ show ((fromIntegral (endTime - startTime)) / 10e9))
+  println ("\telapse time = " ++ show ((fromIntegral (endTime - startTime)) / 1e9))
 
 outn banner pi n itemCount = do
   out (banner ++ ": item count: " ++ show itemCount) pi n
