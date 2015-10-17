@@ -1,6 +1,4 @@
 /.classpath
 /.project
 /.settings
-/uk/
-xxx_main_xxx.cc
-Pi_*
+/Build_*/

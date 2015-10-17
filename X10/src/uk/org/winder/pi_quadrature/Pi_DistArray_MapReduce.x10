@@ -1,16 +1,19 @@
 /*
  *  Calculation of  π using quadrature realized with a data parallel algorithm.
  *
- *  Copyright © 2009–2012, 2014  Russel Winder <russel@winder.org.uk>
+ *  Copyright © 2009–2012, 2014, 2015  Russel Winder <russel@winder.org.uk>
  */
+
+// This implementation realizes parallelism using places. Set the number of places using the environment
+// variable X10_NPLACES.
 
 package uk.org.winder.pi_quadrature;
 
 import x10.array.DistArray_Block_1;
-import x10.io.Console;
 import x10.compiler.Native;
 
 public class Pi_DistArray_MapReduce {
+
   private static def partialSum(id:long, sliceSize:long, delta:double):double {
     val start = 1 + id * sliceSize;
     val end = (id + 1) * sliceSize;
@@ -21,6 +24,7 @@ public class Pi_DistArray_MapReduce {
     }
     return sum;
   }
+
   private static def execute(numberOfTasks:long):void {
     val n = 1000000000;
     val delta = 1.0 / n;
@@ -32,11 +36,13 @@ public class Pi_DistArray_MapReduce {
     source.map(partialSums, (id:long) => partialSum(id, sliceSize, delta));
     val pi = 4.0 * delta * partialSums.reduce((t:double, a:double) => t + a, 0.0);
     val elapseTime = (System.nanoTime() - startTimeNanos) / 1e9;
-    Output.out("Parallel", pi, n, elapseTime, numberOfTasks);
+    Output.out("Parallel DistArray MapReduce", pi, n, elapseTime, numberOfTasks);
   }
+
   @Native("java", "true")
   @Native("c++", "false")
   private static native def onJVM():Boolean;
+
   public static def main(args:Rail[String]):void {
     if (onJVM()) {
       // Warm up the JIT

@@ -6,7 +6,12 @@
 
 import os
 
+cppBuildDirectory = 'Build_C++'
+javaBuildDirectory = 'Build_Java'
+
 packagePath = 'uk/org/winder/pi_quadrature'
+
+cppGeneratedFilename = 'xxx_main_xxx.cc'
 
 x10Environment = Environment(
     ENV=os.environ,
@@ -19,16 +24,10 @@ for item in Glob('src/{}/Pi_*.x10'.format(packagePath)):
     #
     #  Java backend bits.
     #
-    # This gnerates a large collection of class files in directory uk, too many to name explicitly as side
-    # effects, so just set up a clean rule for the whole directory later.
-    #
-    x10ClassFile = x10Environment.Command('{}/{}.class'.format(packagePath, x10ClassName), [item, outputClass], 'x10c $SOURCES')
+    x10ClassFile = x10Environment.Command('{}/{}/{}.class'.format(javaBuildDirectory, packagePath, x10ClassName), [item, outputClass], 'x10c -d {} -O $SOURCES'.format(javaBuildDirectory))
     #
     # C++ backend bits.
     #
-    x10Executable = x10Environment.Command(x10ClassName, [item, outputClass], 'x10c++ -O -o $TARGET $SOURCES')
-    SideEffect('xxx_main_xxx.cc', x10Executable)
+    x10Executable = x10Environment.Command(cppBuildDirectory + '/' + x10ClassName, [item, outputClass], 'x10c++ -O -d {0} -o {0}/{1} $SOURCES'.format(cppBuildDirectory, x10ClassName))
 
-# Deal with all the generated class files.
-
-Clean('.', 'uk')
+Clean('.', [cppBuildDirectory, javaBuildDirectory])
