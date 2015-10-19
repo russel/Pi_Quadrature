@@ -2,13 +2,15 @@
 
 #  Calculation of π using quadrature.
 #
-#  Copyright © 2008–2013  Russel Winder
+#  Copyright © 2008–2013, 2015  Russel Winder
 
 import os
 import sys
 sys.path.append('../site_scons')
 
 from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
+
+compilationExtensions = ['cmi', 'cmx', 'o']
 
 ocamlEnvironment = Environment(tools=[])  #, ENV=os.environ)
 
@@ -17,12 +19,13 @@ for item in Glob('pi_*.ml'):
     extraOptions = ''
     variant = root.split('_')[1]
     if variant == 'threads':
-        extraOptions = '-thread unix.cmxa threads.cmxa'
+        extraOptions = '-thread threads.cmxa'
     if variant == 'mpi':
-        extraOptions = '-I ' + os.environ['OCAMLMPI_HOME'] + ' mpi.cmxa unix.cmxa'  #  These programs get run as sequential ones from SCons.  Use the command "mpirun -np N . . . " to run the code on N processors.
+        #  These programs get run as sequential ones from SCons.  Use the command "mpirun -np N . . . " to run the code on N processors.
+        extraOptions = '-I ' + os.environ['HOME'] + '/.opam/system/lib/mpi mpi.cmxa'
     addRunTarget(ocamlEnvironment,
-        addCompileTarget(ocamlEnvironment.Command(root, item.name, 'ocamlopt -o $TARGET {} $SOURCE'.format(extraOptions))))
-    SideEffect([root + '.' + extension for extension in ['cmi', 'cmx', 'o']], root)
+        addCompileTarget(ocamlEnvironment.Command(root, ['output.ml', item.name], 'ocamlopt -o $TARGET unix.cmxa {} $SOURCES'.format(extraOptions))))
+    SideEffect([base + '.' + extension for base in [root, 'output'] for extension in compilationExtensions], root)
 
 Default(compileTargets)
 
