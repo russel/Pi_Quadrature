@@ -12,19 +12,22 @@ from executablesupport import compileTargets, addCompileTarget, addRunTarget, cr
 
 compilationExtensions = ['cmi', 'cmx', 'o']
 
-ocamlEnvironment = Environment(tools=[])  #, ENV=os.environ)
+ocamlEnvironment = Environment(
+    tools=[],
+    ENV=os.environ,
+)
 
 for item in Glob('pi_*.ml'):
     root = os.path.splitext(item.name)[0]
     extraOptions = ''
     variant = root.split('_')[1]
     if variant == 'threads':
-        extraOptions = '-thread threads.cmxa'
+        extraOptions = '-thread -package threads'
     if variant == 'mpi':
         #  These programs get run as sequential ones from SCons.  Use the command "mpirun -np N . . . " to run the code on N processors.
-        extraOptions = '-I ' + os.environ['HOME'] + '/.opam/system/lib/mpi mpi.cmxa'
+        extraOptions = '-package mpi'
     addRunTarget(ocamlEnvironment,
-        addCompileTarget(ocamlEnvironment.Command(root, ['output.ml', item.name], 'ocamlopt -o $TARGET unix.cmxa {} $SOURCES'.format(extraOptions))))
+        addCompileTarget(ocamlEnvironment.Command(root, ['output.ml', item.name], 'ocamlfind ocamlopt -o $TARGET -linkpkg -package unix {} $SOURCES'.format(extraOptions))))
     SideEffect([base + '.' + extension for base in [root, 'output'] for extension in compilationExtensions], root)
 
 Default(compileTargets)
