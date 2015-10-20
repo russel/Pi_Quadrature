@@ -6,22 +6,21 @@
  */
 
 import std.algorithm: map, reduce;
-import std.datetime: StopWatch;
 import std.range: iota;
+
+import core.time: MonoTime;
 
 import outputFunctions: output;
 
 int main(immutable string[] args) {
   immutable n = 1000000000;
   immutable delta = 1.0 / n;
-  StopWatch stopWatch;
-  stopWatch.start();
+  immutable startTime = MonoTime.currTime;
   const f = (double t, int i){
       immutable x = (i - 0.5) * delta;
       return t + 1.0 / (1.0 + x * x);};
   immutable pi = 4.0 * delta * reduce!(f)(0.0, iota(1, n + 1));
-  stopWatch.stop();
-  immutable elapseTime = stopWatch.peek().hnsecs * 100e-9;
+  immutable elapseTime = (MonoTime.currTime - startTime).total!"hnsecs" * 100e-9;
   output(__FILE__, pi, n, elapseTime);
   return 0;
 }

@@ -5,10 +5,11 @@
  */
 
 import std.algorithm: reduce;
-import std.datetime: StopWatch;
 import std.parallelism: map, taskPool;
 import std.range: iota;
 import std.typecons: Tuple, tuple;
+
+import core.time: MonoTime;
 
 import outputFunctions: output;
 
@@ -22,13 +23,11 @@ double partialSum(immutable Tuple!(int, int, double) data) {
 void execute(immutable int numberOfTasks) {
   immutable n = 1000000000;
   immutable delta = 1.0 / n;
-  StopWatch stopWatch;
-  stopWatch.start();
+  immutable startTime = MonoTime.currTime;
   immutable sliceSize = n / numberOfTasks;
   immutable pi = 4.0 * delta * reduce!"a + b"(0.0, taskPool.amap!partialSum(
     map!(i => tuple(i, cast(int) sliceSize, cast(double) delta))(iota(numberOfTasks))));
-  stopWatch.stop();
-  immutable elapseTime = stopWatch.peek().hnsecs * 100e-9;
+  immutable elapseTime = (MonoTime.currTime - startTime).total!"hnsecs" * 100e-9;
   output(__FILE__, pi, n, elapseTime, numberOfTasks);
 }
 

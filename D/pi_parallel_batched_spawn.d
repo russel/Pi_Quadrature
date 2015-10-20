@@ -6,8 +6,9 @@
 
 import std.algorithm: reduce;
 import std.concurrency: Tid, thisTid, receiveOnly, send, spawn;
-import std.datetime: StopWatch;
 import std.range: iota;
+
+import core.time: MonoTime;
 
 import outputFunctions: output;
 
@@ -21,13 +22,11 @@ void partialSum(Tid parent, immutable int id, immutable int sliceSize, immutable
 void execute(immutable int numberOfTasks) {
   immutable n = 1000000000;
   immutable delta = 1.0 / n;
-  StopWatch stopWatch;
-  stopWatch.start();
+  immutable startTime = MonoTime.currTime;
   immutable sliceSize = n / numberOfTasks;
   foreach (immutable i; 0 .. numberOfTasks) { spawn(&partialSum, thisTid, i, sliceSize, delta); }
   immutable pi = 4.0 * delta * reduce!((t, i) => t + receiveOnly!double())(0.0, iota(0, numberOfTasks));
-  stopWatch.stop();
-  immutable elapseTime = stopWatch.peek().hnsecs * 100e-9;
+  immutable elapseTime = (MonoTime.currTime - startTime).total!"hnsecs" * 100e-9;
   output(__FILE__, pi, n, elapseTime, numberOfTasks);
 }
 

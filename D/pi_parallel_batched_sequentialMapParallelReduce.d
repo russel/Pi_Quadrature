@@ -5,10 +5,11 @@
  */
 
 import std.algorithm: map, reduce;
-import std.datetime: StopWatch;
 import std.parallelism: taskPool;
 import std.range: iota;
 import std.typecons: Tuple, tuple;
+
+import core.time: MonoTime;
 
 import outputFunctions: output;
 
@@ -22,15 +23,13 @@ double partialSum(immutable Tuple!(int, int, double) data) {
 void execute(immutable int numberOfTasks) {
   immutable n = 1000000000;
   immutable delta = 1.0 / n;
-  StopWatch stopWatch;
-  stopWatch.start();
+  immutable startTime = MonoTime.currTime;
   immutable sliceSize = n / numberOfTasks;
   //  There is a problem using a lambda function here.  David Simcha reports it is a consequence of issue
   //  5710 http://d.puremagic.com/issues/show_bug.cgi?id=5710.
   immutable pi = 4.0 * delta * taskPool.reduce!"a + b"(map!(partialSum)(
     map!(i => tuple(i, cast(int) sliceSize, cast(double) delta))(iota(numberOfTasks))));
-  stopWatch.stop();
-  immutable elapseTime = stopWatch.peek().hnsecs * 100e-9;
+  immutable elapseTime = (MonoTime.currTime - startTime).total!"hnsecs" * 100e-9;
   output(__FILE__, pi, n, elapseTime, numberOfTasks);
 }
 
