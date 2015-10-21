@@ -9,3 +9,5 @@ for item in Glob('pi_sequential*.nim'):
 
 for item in Glob('pi_parallel*.nim'):
     environment.Command(item.name.replace('.nim', ''), [item, 'output.nim'], 'nim c -d:release --threads:on $SOURCE')
+
+Clean('.', 'nimcache')

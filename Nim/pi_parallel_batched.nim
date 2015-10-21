@@ -18,6 +18,7 @@ proc sum(sums:openarray[float]):float =
   for i in 0 .. sums.high:
     result += sums[i]
 
+{. experimental .}
 proc execute(taskCount:int) =
   const n = 1000000000
   const delta = 1.0 / n
