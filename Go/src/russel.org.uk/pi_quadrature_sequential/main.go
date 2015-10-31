@@ -1,8 +1,7 @@
-//  A Go program to calculate π using quadrature as a sequential algorithm.
-//
-//  Copyright © 2010–2013, 2015  Russel Winder
-
+//  A Go program to calculate π using quadrature employing a sequential algorithm.
 package main
+
+//  Copyright © 2010–2013, 2015  Russel Winder
 
 import (
 	"russel.org.uk/pi_quadrature_output"
@@ -20,5 +19,5 @@ func main() {
 	}
 	pi := 4.0 * delta * sum
 	elapseTime := time.Now().Sub(startTime)
-	output.OutS("Sequential", pi, n, elapseTime)
+	output.Out("Sequential", pi, n, elapseTime)
 }

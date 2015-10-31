@@ -1,9 +1,8 @@
-//  A Go program to calculate π using quadrature as a parallel algorithm employing goroutines and multiple
+//  A Go program to calculate π using quadrature employing a parallel algorithm with goroutines and multiple
 //  channels.
-//
-//  Copyright © 2010–2013, 2015  Russel Winder
-
 package main
+
+//  Copyright © 2010–2013, 2015  Russel Winder
 
 import (
 	"runtime"
@@ -23,6 +22,14 @@ func processSlice(id int, sliceSize int, delta float64, channel chan float64) {
 	close(channel)
 }
 
+func sumItems(channels []chan float64) float64 {
+	sum := 0.0
+	for _, c := range channels {
+		sum += <-c
+	}
+	return sum
+}
+
 func execute(numberOfTasks int) {
 	const n = 1000000000
 	const delta = 1.0 / float64(n)
@@ -34,14 +41,9 @@ func execute(numberOfTasks int) {
 		channels[i] = make(chan float64)
 		go processSlice(i, sliceSize, delta, channels[i])
 	}
-	pi := 4.0 * delta * func() (sum float64) {
-		for _, c := range channels {
-			sum += <-c
-		}
-		return
-	}()
+	pi := 4.0 * delta * sumItems(channels)
 	elapseTime := time.Now().Sub(startTime)
-	output.OutP("Goroutines Multiple Channels", pi, n, elapseTime, numberOfTasks)
+	output.OutN("Goroutines Multiple Channels", pi, n, elapseTime, numberOfTasks)
 }
 
 func main() {
