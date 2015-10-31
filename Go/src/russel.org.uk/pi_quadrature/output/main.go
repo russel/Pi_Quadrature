@@ -1,6 +1,6 @@
 // An output function for all the various versions of calculating π using quadrature.
 //
-//  Copyright © 2012–2013 Russel Winder
+//  Copyright © 2012–2013, 2015  Russel Winder
 
 package output
 

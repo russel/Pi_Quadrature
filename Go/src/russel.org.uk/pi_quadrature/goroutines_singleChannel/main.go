@@ -1,12 +1,12 @@
-//  A Go program to calculate π using quadrature as a parallel algorithm employing goroutines and multiple
-//  channels.
+//  A Go program to calculate π using quadrature as a parallel algorithm employing goroutines and a single
+//  channel.
 //
-//  Copyright © 2010–2013 Russel Winder
+//  Copyright © 2010–2013, 2015  Russel Winder
 
 package main
 
 import (
-	"./output"
+	"russel.org.uk/pi_quadrature/output"
 	"runtime"
 	"time"
 )
@@ -20,7 +20,6 @@ func processSlice(id int, sliceSize int, delta float64, channel chan float64) {
 		sum += 1.0 / (1.0 + x*x)
 	}
 	channel <- sum
-	close(channel)
 }
 
 func execute(numberOfTasks int) {
@@ -29,14 +28,17 @@ func execute(numberOfTasks int) {
 	startTime := time.Now()
 	runtime.GOMAXPROCS(numberOfTasks)
 	sliceSize := n / numberOfTasks
-	channels := make([]chan float64, numberOfTasks)
-	for i := 0; i < len(channels); i++ {
-		channels[i] = make(chan float64)
-		go processSlice(i, sliceSize, delta, channels[i])
+	channel := make(chan float64, numberOfTasks)
+	for i := 0; i < numberOfTasks; i++ {
+		go processSlice(i, sliceSize, delta, channel)
 	}
-	pi := 4.0 * delta * func() (sum float64) { for _, c := range channels { sum += <- c }; return }()
+	sum := float64(0.0)
+	for i := 0; i < numberOfTasks; i++ {
+		sum += <-channel
+	}
+	pi := 4.0 * delta * sum
 	elapseTime := time.Now().Sub(startTime)
-	output.OutP("Goroutines Multiple Channels", pi, n, elapseTime, numberOfTasks)
+	output.OutP("Goroutines Single Channel", pi, n, elapseTime, numberOfTasks)
 }
 
 func main() {
