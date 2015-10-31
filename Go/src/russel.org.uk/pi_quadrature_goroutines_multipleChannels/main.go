@@ -6,8 +6,8 @@
 package main
 
 import (
-	"russel.org.uk/pi_quadrature/output"
 	"runtime"
+	"russel.org.uk/pi_quadrature_output"
 	"time"
 )
 
@@ -34,7 +34,12 @@ func execute(numberOfTasks int) {
 		channels[i] = make(chan float64)
 		go processSlice(i, sliceSize, delta, channels[i])
 	}
-	pi := 4.0 * delta * func() (sum float64) { for _, c := range channels { sum += <- c }; return }()
+	pi := 4.0 * delta * func() (sum float64) {
+		for _, c := range channels {
+			sum += <-c
+		}
+		return
+	}()
 	elapseTime := time.Now().Sub(startTime)
 	output.OutP("Goroutines Multiple Channels", pi, n, elapseTime, numberOfTasks)
 }

@@ -6,8 +6,8 @@
 package main
 
 import (
-	"russel.org.uk/pi_quadrature/output"
 	"runtime"
+	"russel.org.uk/pi_quadrature_output"
 	"time"
 )
 
