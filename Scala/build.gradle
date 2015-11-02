@@ -11,8 +11,6 @@ dependencies {
   compile 'com.typesafe.akka:akka-actor_2.11:2.4.0'
 }
 
-defaultTasks 'classes'
-
 new File("${projectDir}/src/main/scala/uk/org/winder/pi_quadrature").eachFileMatch(~/Pi_.*\.scala/) { filename ->
     final root = filename.name.replaceFirst(/\.scala$/, '')
     final className = 'uk.org.winder.pi_quadrature.' + root
@@ -23,5 +21,7 @@ new File("${projectDir}/src/main/scala/uk/org/winder/pi_quadrature").eachFileMat
 }
 
 task wrapper (type:Wrapper) {
-    gradleVersion = '2.7'
+    gradleVersion = '2.8'
 }
+
+defaultTasks 'classes'
