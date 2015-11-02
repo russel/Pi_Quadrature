@@ -1,3 +1,5 @@
+// Until Kotlin Gradle plugin is formally released use the nightly.
+
 buildscript {
   repositories {
     maven {
@@ -26,8 +28,8 @@ dependencies {
   compile 'org.jetbrains.kotlin:kotlin-stdlib:0.1-SNAPSHOT'
 }
 
-defaultTasks 'classes'
-
 task wrapper(type:Wrapper) {
-  gradleVersion = '2.4'
+  gradleVersion = '2.8'
 }
+
+defaultTasks 'classes'
