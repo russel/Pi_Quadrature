@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-  compile 'org.frege-lang:frege:3.23.288-gaa3af0c'
+  compile 'org.frege-lang:frege:3.23.370-g898bc8c'
 }
 
 defaultTasks 'classes'
@@ -21,4 +21,8 @@ new File("${projectDir}/src/main/frege/").eachFileMatch(~/pi_.*\.fr/) { filename
         main = className
         classpath = sourceSets.main.runtimeClasspath
     }
+}
+
+task wrapper(type:Wrapper) {
+  gradleVersion = '2.8'
 }
