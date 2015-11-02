@@ -23,8 +23,12 @@ sourceSets {
   }
 }
 
+clean {
+  delete fileTree(dir: '.', include: '*.class')
+}
+
 task wrapper(type:Wrapper) {
-  gradleVersion = '2.3'
+  gradleVersion = '2.8'
 }
 
 defaultTasks 'classes'
