@@ -12,15 +12,15 @@ import (
 
 // Out outputs a calculation result. This function is used explicitly for sequential codes and implicitly
 // for parallel codes.
-func Out(banner string, pi float64, n int32, elapseTime time.Duration) {
+func Out(banner string, π float64, n int32, δt time.Duration) {
 	fmt.Printf("======================== %s\n", banner)
-	fmt.Printf("\tπ = %.18f\n", pi)
+	fmt.Printf("\tπ = %.18f\n", π)
 	fmt.Printf("\titeration count = %d\n", n)
-	fmt.Printf("\telapse time = %v\n", elapseTime)
+	fmt.Printf("\telapse time = %v\n", δt)
 }
 
 // OutN outputs a calculation result from a parallel code using many tasks.
-func OutN(banner string, pi float64, n int32, elapseTime time.Duration, numberOfTasks int) {
-	Out(banner+fmt.Sprintf(", number of tasks: %d", numberOfTasks), pi, n, elapseTime)
+func OutN(banner string, π float64, n int32, δt time.Duration, numberOfTasks int) {
+	Out(banner+fmt.Sprintf(", number of tasks: %d", numberOfTasks), π, n, δt)
 	fmt.Printf("\tnumber of processors = %d\n", runtime.NumCPU())
 }

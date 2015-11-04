@@ -10,40 +10,40 @@ import (
 	"time"
 )
 
-func processSlice(id int, sliceSize int, delta float64, channel chan float64) {
+func calculatePartialSum(id int, sliceSize int, δ float64, channel chan float64) {
 	start := 1 + id*sliceSize
 	end := (id + 1) * sliceSize
-	sum := float64(0.0)
+	total := float64(0.0)
 	for i := start; i <= end; i++ {
-		x := (float64(i) - 0.5) * delta
-		sum += 1.0 / (1.0 + x*x)
+		x := (float64(i) - 0.5) * δ
+		total += 1.0 / (1.0 + x*x)
 	}
-	channel <- sum
+	channel <- total
 	close(channel)
 }
 
-func sumItems(channels []chan float64) float64 {
-	sum := 0.0
+func Σ(channels []chan float64) float64 {
+	total := 0.0
 	for _, c := range channels {
-		sum += <-c
+		total += <-c
 	}
-	return sum
+	return total
 }
 
 func execute(numberOfTasks int) {
 	const n = 1000000000
-	const delta = 1.0 / float64(n)
-	startTime := time.Now()
+	const δ = 1.0 / float64(n)
+	t_start := time.Now()
 	runtime.GOMAXPROCS(numberOfTasks)
 	sliceSize := n / numberOfTasks
 	channels := make([]chan float64, numberOfTasks)
 	for i := 0; i < len(channels); i++ {
 		channels[i] = make(chan float64)
-		go processSlice(i, sliceSize, delta, channels[i])
+		go calculatePartialSum(i, sliceSize, δ, channels[i])
 	}
-	pi := 4.0 * delta * sumItems(channels)
-	elapseTime := time.Now().Sub(startTime)
-	output.OutN("Goroutines Multiple Channels", pi, n, elapseTime, numberOfTasks)
+	π := 4.0 * δ * Σ(channels)
+	t_elapse := time.Now().Sub(t_start)
+	output.OutN("Goroutines Multiple Channels", π, n, t_elapse, numberOfTasks)
 }
 
 func main() {
