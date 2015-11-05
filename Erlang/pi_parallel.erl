@@ -32,10 +32,7 @@ execute(NWorkers) ->
 
 start() ->
     execute(1),
-    io:format("~n"),
     execute(2),
-    io:format("~n"),
     execute(8),
-    io:format("~n"),
     execute(32),
     halt().
