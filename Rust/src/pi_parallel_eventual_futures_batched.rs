@@ -5,10 +5,7 @@
  *  Copyright © 2013–2015  Russel Winder
  */
 
-// std::sync::Future is deemed unstable and so is not present in stable or beta releases,
-// must either use the nightly builds or use an external package such as eventual.
-// Choose the latter for now since it is the mainline of Rust.
-
+// std::sync::Future was deemed unfit for purpose and so implementation has been moved out to the eventual crate.
 extern crate eventual;
 extern crate output;
 extern crate time;
@@ -32,7 +29,7 @@ fn execute(number_of_tasks:u64) {
     })).collect();
     let pi = 4.0 * delta * futures.into_iter().fold(0.0, |acc, i| acc + i.await().unwrap());
     let elapse_time = precise_time_s() - start_time;
-    output_n("Parallel Eventual Futures Batched Fold".to_string(), pi, n, elapse_time, number_of_tasks)
+    output_n("Parallel Eventual Futures Batched".to_string(), pi, n, elapse_time, number_of_tasks)
 }
 
 fn main() {

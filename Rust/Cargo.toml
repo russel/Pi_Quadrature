@@ -20,12 +20,16 @@ name = "pi_sequential_mapfold"
 path = "src/pi_sequential_mapfold.rs"
 
 [[bin]]
-name = "pi_parallel_eventual_futures_batched_for"
-path = "src/pi_parallel_eventual_futures_batched_for.rs"
+name = "pi_parallel_eventual_futures_batched"
+path = "src/pi_parallel_eventual_futures_batched.rs"
 
 [[bin]]
-name = "pi_parallel_eventual_futures_batched_fold"
-path = "src/pi_parallel_eventual_futures_batched_fold.rs"
+name = "pi_parallel_threads_single_channel_batched"
+path = "src/pi_parallel_threads_single_channel_batched.rs"
+
+[[bin]]
+name = "pi_parallel_threads_multiple_channels_batched"
+path = "src/pi_parallel_threads_multiple_channels_batched.rs"
 
 [lib]
 name = "output"
