@@ -6,16 +6,20 @@
  *  Copyright © 2014  Russel Winder
  */
 
-load('output.js')
+'use strict';
 
-var n = 100000000 // 10 times fewer.
-var delta = 1.0 / n
+const out = require('./output.js')
+
+var n = 1000000000
+var ð = 1.0 / n
 var startTime = Date.now()
-var sum = 0.0
+
+var Σ = 0.0
+
 for (var i = 0; i < n; ++i) {
-  var x = (i - 0.5) * delta
-  sum += 1.0 / (1.0 + x * x)
+  var x = (i - 0.5) * ð
+  Σ += 1.0 / (1.0 + x * x)
 }
-var pi = 4.0 * delta * sum
+var π = 4.0 * ð * Σ
 var elapseTime = (Date.now() - startTime) / 1e3
-out('pi_sequential', pi, n, elapseTime)
+out('pi_sequential', π, n, elapseTime, 1)
