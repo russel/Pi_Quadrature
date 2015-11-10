@@ -4,9 +4,7 @@
  *  Copyright © 2013–2015  Russel Winder
  */
 
-package uk.org.winder.pi_quadrature.pi_sequential_map_reduce
-
-import uk.org.winder.pi_quadrature.out
+package uk.org.winder.pi_quadrature
 
 fun main(args:Array<String>) {
   val n = 1000000000
@@ -20,5 +18,5 @@ fun main(args:Array<String>) {
   }.reduce{t, i -> t + i}
   val pi = 4.0 * delta * r
   val elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
-  out("pi_sequential_map_reduce", pi, n, elapseTime)
+  out("Sequential Map Reduce", pi, n, elapseTime)
 }

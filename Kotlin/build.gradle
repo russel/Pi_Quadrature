@@ -1,7 +1,8 @@
 // Until Kotlin Gradle plugin is formally released use the nightly.
 
 buildscript {
-  repositories {
+    ext.kotlin_version = '1.0.0-beta-1103'
+    repositories {
     maven {
       url 'http://oss.sonatype.org/content/repositories/snapshots'
     }
@@ -10,6 +11,7 @@ buildscript {
   }
   dependencies {
     classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.1-SNAPSHOT'
+      classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
 
@@ -26,6 +28,16 @@ repositories {
 
 dependencies {
   compile 'org.jetbrains.kotlin:kotlin-stdlib:0.1-SNAPSHOT'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+new File("${projectDir}/src/main/kotlin").eachFileMatch(~/pi_.*\.kt/) { filename ->
+    final root = filename.name.replaceFirst(/\.kt$/, '')
+    final className = 'uk.org.winder.pi_quadrature.' + root
+    task ('run_' + root, type: JavaExec, dependsOn: 'classes') {
+        main = className
+        classpath = sourceSets.main.runtimeClasspath
+    }
 }
 
 task wrapper(type:Wrapper) {
@@ -33,3 +45,6 @@ task wrapper(type:Wrapper) {
 }
 
 defaultTasks 'classes'
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
