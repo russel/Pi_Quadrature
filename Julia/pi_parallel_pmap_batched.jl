@@ -1,10 +1,12 @@
-#! /usr/bin/env julia
+#!/usr/bin/env julia
 
 #  Calculation of π using quadrature. Use a batched parallel map.
 #
-#  Copyright © 2012–2014  Russel Winder
+#  Copyright © 2012–2015  Russel Winder
 
 require("output.jl")
+
+addprocs(CPU_CORES)
 
 @everywhere using Functions: partialSum
 
@@ -15,13 +17,13 @@ function execute(taskCount)
     sliceSize::Int = n / taskCount
     pi = 4.0 * delta * sum(pmap(partialSum, [(i, sliceSize, delta) for i = 1:taskCount]))
     elapseTime = time() - startTime
-    out("pi_reduce_batched", pi, n, elapseTime, taskCount)
+    out("Parallel Pmap Batched", pi, n, elapseTime, taskCount)
 end
 
-addprocs(CPU_CORES)
-println("There is a noticeable 'warm-up' effect for this code so only take the second run.")
-execute(1)
+println("There is a noticeable 'warm-up' effect for this code so ignore the first two runs.")
+execute(32)
+execute(32)
 execute(1)
 execute(2)
 execute(8)
-#execute(32)
+execute(32)

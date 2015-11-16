@@ -1,8 +1,8 @@
-#! /usr/bin/env julia
+#!/usr/bin/env julia
 
 #  Calculation of π using quadrature. Sequential algorithm using a for loop.
 #
-#  Copyright © 2012–2014  Russel Winder
+#  Copyright © 2012–2015  Russel Winder
 
 require("output.jl")
 
@@ -11,16 +11,16 @@ require("output.jl")
 # absolute age.
 
 function execute()
-    n = 1000000000
+    n = 10000000 # 100 times fewer than canonical for performance reasons.
     delta = 1.0 / n
     startTime = time()
-    sum = 0.0
-    for i = 1:(n + 1)
-        sum += 1.0 / (1.0 + ((i - 0.5) * delta) ^ 2)
-    end
-    pi = 4.0 * delta * sum
+    pi = 4.0 * delta * reduce((t, x) -> t + 1.0 / (1.0 + ((x - 0.5) * delta) ^ 2), 1:(n + 1))
     elapseTime = time() - startTime
-    out("pi_sequential", pi, n, elapseTime)
+    out("Sequential Reduce", pi, n, elapseTime)
 end
 
+# No apparent 'warm up' effect.
+#execute()
+#execute()
+#execute()
 execute()
