@@ -4,16 +4,9 @@
  *  Copyright © 2014  Russel Winder
  */
 
-// For nodejs
-if (typeof print === 'undefined') var print = (msg) => {console.log(msg)};
-
-function out(prefix, π, n, elapseTime, workers) {
+function out(prefix, pi, n, elapseTime) {
   print('==================== ' + prefix);
-  print('\tπ = ' + π);
+  print('\tπ = ' + pi);
   print('\titeration count = ' + n);
   print('\telapse time = ' + elapseTime);
-  print('\tworkers = ' + workers);
 }
-
-// For nodejs
-module.exports = out;
