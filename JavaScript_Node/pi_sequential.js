@@ -1,7 +1,9 @@
-#! /usr/bin/env jjs
+#! /usr/bin/env nodejs
 
 /*
  *  Calculation of π using quadrature realized with a basic sequential algorithm.
+ *
+ *  This expects nodejs 4.
  *
  *  Copyright © 2014  Russel Winder
  */

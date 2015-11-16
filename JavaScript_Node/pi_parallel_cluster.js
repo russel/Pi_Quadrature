@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#! /usr/bin/env nodejs
 
 /*
  *  Calculation of π using quadrature realized with a parallel algorithm in cluster.
@@ -7,7 +7,7 @@
  *
  *  Copyright © 2015 Fredrik Liljegren
  *
- *  Interresting note: I started using `let` instead of `var` everywhere, but when using `let` in
+ *  Interesting note: I started using `let` instead of `var` everywhere, but when using `let` in
  *  the partialSum function, the calculation took very much longer to perform.  I guess the scoping
  *  of the variable adds some extra overhead…
  */
