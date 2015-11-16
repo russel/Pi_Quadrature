@@ -1,0 +1,12 @@
+{
+  "name": "pi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/russel/Pi_Quadrature.git"
+  },
+  "dependencies": {
+    "asyncawait": "^1.0.0",
+    "bluebird": "^2.10.1"
+  },
+  "license": "GPL-3.0"
+}
