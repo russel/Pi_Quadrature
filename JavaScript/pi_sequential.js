@@ -22,4 +22,4 @@ for (let i = 0; i < n; ++i) {
 }
 const π = 4.0 * δ * Σ
 const elapseTime = (Date.now() - startTime) / 1e3
-out('pi_sequential', π, n, elapseTime)
+out('Sequential', π, n, elapseTime)
