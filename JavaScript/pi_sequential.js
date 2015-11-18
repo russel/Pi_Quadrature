@@ -1,21 +1,25 @@
-#! /usr/bin/env jjs
+#! /usr/bin/env jjs_es6
 
 /*
  *  Calculation of π using quadrature realized with a basic sequential algorithm.
  *
- *  Copyright © 2014  Russel Winder
+ *  Requires ES6. e,g. jjs --language=es6 pi_sequential.js
+ *
+ *  Copyright © 2014, 2015  Russel Winder
  */
+
+'use strict'
 
 load('output.js')
 
-var n = 100000000 // 10 times fewer.
-var delta = 1.0 / n
-var startTime = Date.now()
-var sum = 0.0
-for (var i = 0; i < n; ++i) {
-  var x = (i - 0.5) * delta
-  sum += 1.0 / (1.0 + x * x)
+const n = 100000000 // 10 times fewer.
+const δ = 1.0 / n
+const startTime = Date.now()
+let Σ = 0.0
+for (let i = 0; i < n; ++i) {
+  const x = (i - 0.5) * δ
+  Σ += 1.0 / (1.0 + x * x)
 }
-var pi = 4.0 * delta * sum
-var elapseTime = (Date.now() - startTime) / 1e3
-out('pi_sequential', pi, n, elapseTime)
+const π = 4.0 * δ * Σ
+const elapseTime = (Date.now() - startTime) / 1e3
+out('pi_sequential', π, n, elapseTime)
