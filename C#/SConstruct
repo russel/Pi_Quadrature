@@ -18,7 +18,7 @@ for item in Glob('Pi_*.cs'):
     addRunTarget(cSharpEnvironment,
         addCompileTarget(cSharpEnvironment.CLIProgram([item, "Output.cs"])),
         'mono {}',
-        lambda x: x # lambda x: x.replace('.exe', '')
+        lambda x: x
     )
 
 Default(compileTargets)

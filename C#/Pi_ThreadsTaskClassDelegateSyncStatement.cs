@@ -4,18 +4,16 @@
  *  Copyright © 2009, 2011, 2015  Russel Winder
  */
 
-using static Output;
-
 public class Pi_CS_ThreadsTaskClassDelegateSyncStatement {
 
   private static double sum = 0.0;
   private static object sumMutex = new object();
 
   private class Task {
-    private readonly long start;
-    private readonly long end;
+    private readonly int start;
+    private readonly int end;
     private readonly double delta;
-    public Task(long start , long end , double delta) {
+    public Task(int start , int end , double delta) {
       this.start = start;
       this.end = end;
       this.delta = delta;
@@ -23,7 +21,7 @@ public class Pi_CS_ThreadsTaskClassDelegateSyncStatement {
 
     public void execute() {
       double localSum = 0.0;
-      for (long i = start; i <= end; ++i) {
+      for (int i = start; i <= end; ++i) {
         double x = (i - 0.5) * delta;
         localSum += 1.0 / (1.0 + x * x);
       }
@@ -32,11 +30,11 @@ public class Pi_CS_ThreadsTaskClassDelegateSyncStatement {
   }
 
   private static void execute(int numberOfTasks) {
-    const long n = 1000000000L;
+    const int n = 1000000000;
     const double delta = 1.0 / n;
     long startTimeHundredsOfNanos = System.DateTime.Now.Ticks;
-    long sliceSize = n / numberOfTasks;
-    System.Threading.Thread[] threads = new System.Threading.Thread [ numberOfTasks ];
+    int sliceSize = n / numberOfTasks;
+    System.Threading.Thread[] threads = new System.Threading.Thread[numberOfTasks];
     for (int i = 0; i < numberOfTasks; ++i) {
       Task task = new Task(1 + i * sliceSize ,  (i + 1) * sliceSize , delta);
       threads[i] = new System.Threading.Thread(new System.Threading.ThreadStart(task.execute));

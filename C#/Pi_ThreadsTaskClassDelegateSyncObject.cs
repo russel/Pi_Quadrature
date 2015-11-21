@@ -4,8 +4,6 @@
  *  Copyright © 2009, 2011, 2015  Russel Winder
  */
 
-using static Output;
-
 public class Pi_CS_ThreadsTaskClassDelegateSyncObject {
 
   private class Accumulator {
@@ -15,11 +13,11 @@ public class Pi_CS_ThreadsTaskClassDelegateSyncObject {
   }
 
   private class Task {
-    private readonly long start;
-    private readonly long end;
+    private readonly int start;
+    private readonly int end;
     private readonly double delta;
     private readonly Accumulator accumulator;
-    public Task(long start , long end , double delta , Accumulator accumulator) {
+    public Task(int start , int end , double delta , Accumulator accumulator) {
       this.start = start;
       this.end = end;
       this.delta = delta;
@@ -28,7 +26,7 @@ public class Pi_CS_ThreadsTaskClassDelegateSyncObject {
 
     public void execute() {
       double localSum = 0.0;
-      for (long i = start; i <= end; ++i) {
+      for (int i = start; i <= end; ++i) {
         double x = (i - 0.5) * delta;
         localSum += 1.0 / (1.0 + x * x);
       }
@@ -37,11 +35,11 @@ public class Pi_CS_ThreadsTaskClassDelegateSyncObject {
   }
 
   private static void execute(int numberOfTasks) {
-    const long n = 1000000000L;
+    const int n = 1000000000;
     const double delta = 1.0 / n;
     long startTimeHundredsOfNanos = System.DateTime.Now.Ticks;
-    long sliceSize = n / numberOfTasks;
-    System.Threading.Thread[] threads = new System.Threading.Thread [ numberOfTasks ];
+    int sliceSize = n / numberOfTasks;
+    System.Threading.Thread[] threads = new System.Threading.Thread[numberOfTasks];
     Accumulator accumulator = new Accumulator();
     for (int i = 0; i < numberOfTasks; ++i) {
       Task task = new Task(1 + i * sliceSize ,  (i + 1) * sliceSize , delta , accumulator);
