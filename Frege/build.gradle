@@ -3,14 +3,12 @@ plugins {
 }
 
 repositories {
-  mavenLocal()
-  maven { url "https://oss.sonatype.org/content/groups/public" }
   jcenter()
   mavenCentral()
 }
 
 dependencies {
-  compile 'org.frege-lang:frege:3.23.370-g898bc8c'
+  compile 'org.frege-lang:frege:3.23.401-g7c45277'
 }
 
 defaultTasks 'classes'
@@ -24,5 +22,5 @@ new File("${projectDir}/src/main/frege/").eachFileMatch(~/pi_.*\.fr/) { filename
 }
 
 task wrapper(type:Wrapper) {
-  gradleVersion = '2.8'
+  gradleVersion = '2.9'
 }
