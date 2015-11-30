@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-  compile 'org.frege-lang:frege:3.23.401-g7c45277'
+  compile 'org.frege-lang:frege:3.23.422-ga05a487'
 }
 
 defaultTasks 'classes'
