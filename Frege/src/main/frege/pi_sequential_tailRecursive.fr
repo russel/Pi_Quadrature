@@ -4,7 +4,7 @@
 --
 --  Copyright © 2009–2011, 2013, 2015  Russel Winder
 
-module Pi_Sequential_Iterative where
+module Pi_Sequential_Tail_Recursive where
 
 import Output (out)
 
@@ -15,7 +15,7 @@ piIter n delta accumulator = piIter (n - 1) delta (accumulator + 1.0 / (1.0 + x 
       x = ((fromIntegral n) - 0.5) * delta
 
 main :: IO()
-main = out "Sequential Iterative" (piIter n delta 0.0) n
+main = out "Sequential Tail Recursive" (piIter n delta 0.0) n
        where
          n = 10000000 -- 100 times fewer than Java due to speed issues.
          delta = 1.0 / (fromIntegral n)
