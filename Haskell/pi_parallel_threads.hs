@@ -38,7 +38,7 @@ execute numberOfSlices = do
   let delta = 1.0 / (fromIntegral n)
   let sliceSize = n `div` numberOfSlices
   pi <- spawnWorkersAndSum numberOfSlices delta sliceSize
-  outn "Threads" pi n numberOfSlices
+  outn "Parallel Threads" pi n numberOfSlices
 
 main :: IO()
 main = do
