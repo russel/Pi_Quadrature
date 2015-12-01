@@ -1,10 +1,10 @@
---  Frege implementation of π by Quadrature
+--  Frege implementation of π by Quadrature using a classic tail recursive approach.
 --
 --  Basically the Haskell code, amended as needed.
 --
 --  Copyright © 2009–2011, 2013, 2015  Russel Winder
 
-module Pi_Sequential_Tail_Recursive where
+module Pi_Sequential_TailRecursive where
 
 import Output (out)
 
@@ -15,7 +15,8 @@ piIter n delta accumulator = piIter (n - 1) delta (accumulator + 1.0 / (1.0 + x 
       x = ((fromIntegral n) - 0.5) * delta
 
 main :: IO()
-main = out "Sequential Tail Recursive" (piIter n delta 0.0) n
+main = out "Sequential Tail Recursive" pi n
        where
          n = 10000000 -- 100 times fewer than Java due to speed issues.
          delta = 1.0 / (fromIntegral n)
+         pi = piIter n delta 0.0

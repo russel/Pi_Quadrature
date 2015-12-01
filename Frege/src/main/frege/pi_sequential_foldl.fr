@@ -1,4 +1,4 @@
---  Frege implementation of π by Quadrature
+--  Frege implementation of π by Quadrature using a fold (foldl' in particualr).
 --
 --  Basically the Haskell code, amended as needed.
 --
@@ -15,7 +15,8 @@ f delta t n = t + 1.0 / (1.0 + x * x)
 
 -- NB Must use foldl' to avoid a stack overflow – strictness is required.
 main :: IO()
-main =  out "Sequential Foldl" (4.0 * delta * foldl' (f delta) 0.0 [1..n]) n
+main =  out "Sequential Foldl" pi n
   where
-    n = 10000000 -- 100 times fewer due to speed.
+    n = 10000000 -- 100 times fewer than Java due to speed issues.
     delta = 1.0 / (fromIntegral n)
+    pi = 4.0 * delta * foldl' (f delta) 0.0 [1..n]

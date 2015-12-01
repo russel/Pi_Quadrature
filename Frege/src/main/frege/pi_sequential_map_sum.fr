@@ -1,4 +1,4 @@
---  Frege implementation of π by Quadrature
+--  Frege implementation of π by Quadrature using a map and then a reduce (actually sum).
 --
 --  Basically the Haskell code, amended as needed.
 --
@@ -14,7 +14,8 @@ f delta n = 1.0 / (1.0 + x * x)
     x = ((fromIntegral n) - 0.5) * delta
 
 main :: IO()
-main =  out "Sequential Map Sum" (4.0 * delta * sum (map (f delta) [1..n])) n
+main =  out "Sequential Map Sum" pi n
   where
-    n = 10000000 -- 100 times fewer due to speed.
+    n = 10000000 -- 100 times fewer than Java due to speed issues.
     delta = 1.0 / (fromIntegral n)
+    pi = 4.0 * delta * sum (map (f delta) [1..n])
