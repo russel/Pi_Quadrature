@@ -1,4 +1,4 @@
---  Haskell implementation of π by Quadrature
+--  Haskell implementation of π by Quadrature using a fold (foldr in particular).
 --
 --  Copyright © 2015  Russel Winder
 
@@ -12,7 +12,8 @@ f delta n t = t + 1.0 / (1.0 + x * x)
     x = ((fromIntegral n) - 0.5) * delta
 
 main :: IO()
-main =  out "Sequential Foldr Where" (4.0 * delta * foldr (f delta) 0.0 [1..n]) n
+main =  out "Sequential Foldr" pi n
   where
-    n = 100000000 -- 10 times fewer due to speed.
+    n = 100000000 -- 10 times fewer than C++ for speed reasons.
     delta = 1.0 / (fromIntegral n)
+    pi = 4.0 * delta * foldr (f delta) 0.0 [1..n]

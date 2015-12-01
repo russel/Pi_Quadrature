@@ -23,9 +23,9 @@ piQuadSlice delta sliceSize index = piIter start end delta 0.0
     end =  (index + 1) * sliceSize
 
 execute :: Int -> IO ()
-execute numberOfSlices =  outn "ParMap Batched Iteration Where" pi n numberOfSlices
+execute numberOfSlices =  outn "ParMap Batched Tail Recursion" pi n numberOfSlices
   where
-    n = 100000000 -- 10 times fewer for speed reasons.
+    n = 100000000 -- 10 times fewer than C++ for speed reasons.
     delta = 1.0 / (fromIntegral n)
     sliceSize = n `div` numberOfSlices
     pi = sum (parMap rseq (piQuadSlice delta sliceSize) [0 .. (numberOfSlices - 1)])

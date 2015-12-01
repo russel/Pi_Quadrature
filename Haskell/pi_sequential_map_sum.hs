@@ -1,4 +1,4 @@
---  Haskell implementation of π by Quadrature
+--  Haskell implementation of π by Quadrature using a map and then a reduce (actually sum).
 --
 --  Copyright © 2015  Russel Winder
 
@@ -12,7 +12,8 @@ f delta n = 1.0 / (1.0 + x * x)
     x = ((fromIntegral n) - 0.5) * delta
 
 main :: IO()
-main =  out "Sequential Map Where" (4.0 * delta * sum (map (f delta) [1..n])) n
+main =  out "Sequential Map Sum" pi n
   where
-    n = 100000000 -- 10 times fewer due to speed.
+    n = 100000000 -- 10 times fewer than C++ for speed reasons.
     delta = 1.0 / (fromIntegral n)
+    pi = 4.0 * delta * sum (map (f delta) [1..n])

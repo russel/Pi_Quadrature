@@ -29,9 +29,9 @@ parallelMap f (x : xs) = r `par` r : parallelMap f xs
 parallelMap _ _  = [ ]
 
 execute :: Int -> IO()
-execute numberOfSlices = outn "Parallel Batched Iteration Where" pi n numberOfSlices
+execute numberOfSlices = outn "Parallel Batched Tail Recursion" pi n numberOfSlices
   where
-    n = 100000000 -- 10 times fewer for speed reasons.
+    n = 100000000 -- 10 times fewer than C++ for speed reasons.
     delta = 1.0 / (fromIntegral n)
     sliceSize = n `div` numberOfSlices
     pi = sum (parallelMap (piQuadSlice delta sliceSize) [0 .. (numberOfSlices - 1)])
