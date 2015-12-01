@@ -1,6 +1,7 @@
 --  Output functions for the Frege implementation of π by Quadrature.
 --
---  Basically the Haskell code amended as needed.
+--  Basically the Haskell code amended as needed. There is a move to have the Haskell code work
+--  directly. cf. https://github.com/Frege/frege/issues/236 and https://github.com/Frege/frege/issues/237
 --
 --  Copyright © 2009–2011, 2013–2015  Russel Winder
 
@@ -8,13 +9,16 @@ module Output where
 
 out :: String -> Double -> Int -> IO()
 out banner pi n = do
-  println ("==================== " ++ show banner)
-  startTime <- System.nanoTime()
-  println ("\tπ = " ++ show pi)
-  println ("\titeration count = " ++ show n)
-  endTime <- System.nanoTime()
-  println ("\telapse time = " ++ show ((fromIntegral (endTime - startTime)) / 1e9))
+  putStrLn ("==================== " ++ show banner)
+  startTime <- System.nanoTime ()
+  putStrLn ("\tπ = " ++ show pi)
+  putStrLn ("\titeration count = " ++ show n)
+  endTime <- System.nanoTime ()
+  putStrLn ("\telapse time = " ++ show ((fromIntegral (endTime - startTime)) / 1e9))
 
+native availableProcessors "java.lang.Runtime.getRuntime().availableProcessors()" :: Int
+
+outn :: String -> Double -> Int -> Int -> IO()
 outn banner pi n itemCount = do
   out (banner ++ ": item count: " ++ show itemCount) pi n
-  println ("\tprocessor count = ") -- ++ show Runtime.getRuntime.availableProcessors())
+  putStrLn ("\tprocessor count = " ++ show availableProcessors)
