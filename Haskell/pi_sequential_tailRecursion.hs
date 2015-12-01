@@ -13,7 +13,8 @@ piIter n delta accumulator = piIter (n - 1) delta (accumulator + 1.0 / (1.0 + x 
       x = ((fromIntegral n) - 0.5) * delta
 
 main :: IO()
-main = out "Sequential Iteration Where" (piIter n delta 0.0) n
+main = out "Sequential Tail Recursion Where" pi n
   where
     n = 100000000 -- 10 times fewer for speed reasons.
     delta = 1.0 / (fromIntegral n)
+    pi = piIter n delta 0.0
