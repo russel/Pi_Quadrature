@@ -16,6 +16,6 @@ f delta n = 1.0 / (1.0 + x * x)
 main :: IO()
 main =  out "Sequential Map Sum" pi n
   where
-    n = 10000000 -- 100 times fewer than Java due to speed issues.
+    n = 10000000 -- 100 times fewer than Java for speed reasons.
     delta = 1.0 / (fromIntegral n)
     pi = 4.0 * delta * sum (map (f delta) [1..n])

@@ -17,6 +17,6 @@ piIter n delta accumulator = piIter (n - 1) delta (accumulator + 1.0 / (1.0 + x 
 main :: IO()
 main = out "Sequential Tail Recursive" pi n
        where
-         n = 10000000 -- 100 times fewer than Java due to speed issues.
+         n = 10000000 -- 100 times fewer than Java for speed reasons.
          delta = 1.0 / (fromIntegral n)
          pi = piIter n delta 0.0
