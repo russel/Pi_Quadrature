@@ -10,9 +10,9 @@ repositories {
 
 dependencies {
     compile 'org.codehaus.jcsp:jcsp:1.1-rc5'
-    compile 'org.codehaus.gpars:gpars:1.2.1'
-    compile 'org.codehaus.groovy:groovy-all:2.4.5'
-    compile 'org.functionaljava:functionaljava-java8:4.4'
+    compile 'org.codehaus.gpars:gpars:1.+'
+    compile 'org.codehaus.groovy:groovy-all:2.+'
+    compile 'org.functionaljava:functionaljava-java8:4.+'
 }
 
 sourceCompatibility = 8
@@ -29,5 +29,5 @@ new File("${projectDir}/src/main/java/uk/org/winder/pi_quadrature").eachFileMatc
 }
 
 task wrapper (type:Wrapper) {
-    gradleVersion = '2.8'
+    gradleVersion = '2.10'
 }
