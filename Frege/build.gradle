@@ -8,7 +8,8 @@ repositories {
 }
 
 dependencies {
-  compile 'org.frege-lang:frege:3.23.422-ga05a487'
+  //compile 'org.frege-lang:frege:3.23.422-ga05a487'
+  compile 'org.frege-lang:frege:3.23+'
 }
 
 defaultTasks 'classes'
@@ -22,5 +23,5 @@ new File("${projectDir}/src/main/frege/").eachFileMatch(~/pi_.*\.fr/) { filename
 }
 
 task wrapper(type:Wrapper) {
-  gradleVersion = '2.9'
+  gradleVersion = '2.10'
 }
