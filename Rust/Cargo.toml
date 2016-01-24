@@ -38,9 +38,5 @@ crate-type = ["rlib"]
 [dependencies]
 time = "*"
 num_cpus = "*"
-
-[dependencies.eventual]
-git = "https://github.com/carllerche/eventual"
-
-[dependencies.simple_parallel]
-git = "https://github.com/huonw/simple_parallel.git"
+eventual = "*"
+simple_parallel = "*"
