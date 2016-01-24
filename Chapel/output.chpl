@@ -1,7 +1,7 @@
 /*
  *  Chapel procedures for doing π calculation result output.
  *
- *  Copyright © 2012, 2013, 2015  Russel Winder
+ *  Copyright © 2012, 2013, 2015, 2016  Russel Winder
  */
 
 module Output {
@@ -14,6 +14,6 @@ module Output {
 
   proc output_more(banner:string, pi:real, n:int, elapseTime:real, numberOfTasks:int) {
     output(banner + ", task count: " + numberOfTasks, pi, n, elapseTime);
-    writeln("\tnumber of processors = ", here.numCores);
+    writeln("\tnumber of virtual processors = ", here.maxTaskPar);
   }
 }
