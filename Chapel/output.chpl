@@ -14,6 +14,6 @@ module Output {
 
   proc output_more(banner:string, pi:real, n:int, elapseTime:real, numberOfTasks:int) {
     output(banner + ", task count: " + numberOfTasks, pi, n, elapseTime);
-    writeln("\tnumber of virtual processors = ", here.maxTaskPar);
+    writeln("\tnumber of processing units = ", here.numPUs());
   }
 }
