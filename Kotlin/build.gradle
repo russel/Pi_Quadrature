@@ -1,17 +1,11 @@
-// Until Kotlin Gradle plugin is formally released use the nightly.
-
 buildscript {
-    ext.kotlin_version = '1.0.0-beta-1103'
-    repositories {
-    maven {
-      url 'http://oss.sonatype.org/content/repositories/snapshots'
-    }
+  ext.kotlin_version = '1.0.0'
+  repositories {
     jcenter()
     mavenCentral()
   }
   dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.1-SNAPSHOT'
-      classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
 
@@ -19,32 +13,29 @@ apply plugin: 'kotlin'
 apply plugin: 'eclipse'
 
 repositories {
-  maven {
-    url 'http://oss.sonatype.org/content/repositories/snapshots'
-  }
   jcenter()
   mavenCentral()
 }
 
 dependencies {
-  compile 'org.jetbrains.kotlin:kotlin-stdlib:0.1-SNAPSHOT'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 new File("${projectDir}/src/main/kotlin").eachFileMatch(~/pi_.*\.kt/) { filename ->
-    final root = filename.name.replaceFirst(/\.kt$/, '')
-    final className = 'uk.org.winder.pi_quadrature.' + root
-    task ('run_' + root, type: JavaExec, dependsOn: 'classes') {
-        main = className
-        classpath = sourceSets.main.runtimeClasspath
-    }
+  final root = filename.name.replaceFirst(/\.kt$/, '')
+  final className = 'uk.org.winder.pi_quadrature.' + root
+  task ('run_' + root, type: JavaExec, dependsOn: 'classes') {
+    main = className
+    classpath = sourceSets.main.runtimeClasspath
+  }
 }
 
 task wrapper(type:Wrapper) {
-  gradleVersion = '2.8'
+  gradleVersion = '2.11'
+}
+
+sourceSets {
+  main.java.srcDirs += 'src/main/kotlin'
 }
 
 defaultTasks 'classes'
-sourceSets {
-    main.java.srcDirs += 'src/main/kotlin'
-}
