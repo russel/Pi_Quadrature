@@ -2,28 +2,13 @@
 
 #  Calculation of π using quadrature using the D programming language.
 #
-#  Copyright © 2008–2014 Russel Winder
+#  Copyright © 2008–2015 Russel Winder
 
 import os
 import sys
 sys.path.append('../site_scons')
 
 from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
-
-## DMD 2.059 worked, DMD 2.060 had issues – various problems with threads. GDC on Debian as at
-## 2012-09-06 realizes D 2.056 and barfs on some constructs introduced after that version. LDC compiled
-## from master/HEAD as at 2012-11--11 is D 2.060+changes and works fine. Except for
-## pi_d_threadsGlobalState_array_declarative.d. See http://d.puremagic.com/issues/show_bug.cgi?id=8774. It
-## appears that pi_d_threadsGlobalState_array_declarative.d should never have worked under 2.059 as it was:
-## maps are iterable but lazy, the array needs to be instantiated for the algorithm to work as required.
-##
-##  pi_d_threadsGlobalState_array_iterative.d and pi_d_threadsGlobalState_threadGroup.d fail on DMD 2.060
-##  but worked under 2.059, and work under LDC2.
-##
-## As at 2014-04-21, DMD at version 2.065 works fine. as does LDC compiled from master (794d5d, v2.063.2,
-## LLVM 3.4). GDC 4.8.1 however gives some errors compiling std.parallelism.
-
-## As at 2013-04-21, SCons mainline repository has all the D tools in that work properly :-)
 
 dEnvironment = {
     'dmd': Environment(
@@ -35,14 +20,17 @@ dEnvironment = {
         DFLAGS=['-O3'],
     ),
     'ldc': Environment(
-        # Potentially two ldc2 installed, one in the standard place another in the personal path.
-        ENV = os.environ,
+        # Potentially two ldc2 installed, one in the standard place another in the personal path. Need the environment
+        # for the latter and also to know where the libraries are and add them to the LD_LIBRARY_PATH.
+        ENV=os.environ,
         tools=['ldc', 'link'],
         DFLAGS=['-O', '-release'],
     ),
 #}['dmd']
 #}['gdc']
 }['ldc']
+
+dEnvironment['ENV']['LD_LIBRARY_PATH'] =  dEnvironment['ENV']['HOME'] + '/Built/lib'
 
 outputFunctions = dEnvironment.Object('outputFunctions.d')
 

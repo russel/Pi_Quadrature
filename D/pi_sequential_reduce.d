@@ -2,10 +2,10 @@
  *  A D program to calculate π using quadrature as a sequential reduce of individual expression evaluations
  *  with no manual batching. This is really just here as a comparison against the parallel version.
  *
- *  Copyright © 2011–2015  Russel Winder
+ *  Copyright © 2011–2016  Russel Winder
  */
 
-import std.algorithm: map, reduce;
+import std.algorithm: reduce;
 import std.range: iota;
 
 import core.time: MonoTime;
@@ -13,7 +13,7 @@ import core.time: MonoTime;
 import outputFunctions: output;
 
 int main(immutable string[] args) {
-  immutable n = 1000000000;
+  immutable n = 1_000_000_000;
   immutable delta = 1.0 / n;
   immutable startTime = MonoTime.currTime;
   const f = (double t, int i){

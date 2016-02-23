@@ -1,7 +1,7 @@
 /*
  *  A D program to calculate π using quadrature as a sequential algorithm.
  *
- *  Copyright © 2009–2015  Russel Winder
+ *  Copyright © 2009–2016  Russel Winder
  */
 
 import core.time: MonoTime;
@@ -9,7 +9,7 @@ import core.time: MonoTime;
 import outputFunctions: output;
 
 int main(immutable string[] args) {
-  immutable n = 1000000000;
+  immutable n = 1_000_000_000;
   immutable delta = 1.0 / n;
   immutable startTime = MonoTime.currTime;
   auto sum = 0.0;
