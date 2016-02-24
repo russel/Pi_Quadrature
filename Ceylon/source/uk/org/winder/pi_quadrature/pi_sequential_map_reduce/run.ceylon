@@ -17,5 +17,5 @@ shared void run() {
     return 1.0 / (1.0 + x * x);
   }));
   value elapseTime = (system.nanoseconds - startTime) / 1.0e9;
-  output("pi_sequential_loop", pi, n, elapseTime);
+  output("pi_sequential_map_reduce", pi, n, elapseTime);
 }
