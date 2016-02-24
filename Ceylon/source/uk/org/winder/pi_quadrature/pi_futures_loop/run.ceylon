@@ -11,7 +11,7 @@ import java.util.\ifunction { Supplier }
 import uk.org.winder.pi_quadrature.tools { outputN }
 
 void execute(Integer numberOfTasks) {
-	value n = 100_000_000; // 10 times fewer than Java due to speed issues.
+	value n = 1_000_000_000;
 	value delta = 1.0 / n;
 	value startTime = system.nanoseconds;
 	Integer sliceSize = n / numberOfTasks;
@@ -27,7 +27,7 @@ void execute(Integer numberOfTasks) {
 			return sum;
 		}
 	}
-	value pi = 4.0 * delta * sum({for (f in [for (i in 1..numberOfTasks) CompletableFuture<Float>.supplyAsync(Task(i))]) f.get()});
+	value pi = 4.0 * delta * sum{0.0, for (f in [for (i in 0:numberOfTasks) CompletableFuture<Float>.supplyAsync(Task(i))]) f.get()};
 	value elapseTime = (system.nanoseconds - startTime) / 1.0e9;
 	outputN("pi_futures_loop", pi, n, elapseTime, numberOfTasks);
 }

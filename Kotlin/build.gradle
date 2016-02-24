@@ -31,9 +31,9 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
-new File("${projectDir}/src/main/kotlin").eachFileMatch(~/pi_.*\.kt/) { filename ->
+new File("${projectDir}/src/main/kotlin/uk/org/winder/pi_quadrature").eachFileMatch(~/pi_.*\.kt/) { filename ->
     final root = filename.name.replaceFirst(/\.kt$/, '')
-    final className = 'uk.org.winder.pi_quadrature.' + root
+    final className = 'uk.org.winder.pi_quadrature.' + root.capitalize() + "Kt"
     task ('run_' + root, type: JavaExec, dependsOn: 'classes') {
         main = className
         classpath = sourceSets.main.runtimeClasspath
