@@ -9,7 +9,7 @@ import uk.org.winder.pi_quadrature.tools { output }
 "Calculate π using quadrature realized with a sequential algorithm using a comprehension."
 by("Russel Winder")
 shared void run() {
-	value n = 100_000_000; // 10 times fewer than Java due to speed issues.
+	value n = 1_000_000_000;
 	value delta = 1.0 / n;
 	value startTime = system.nanoseconds;
 	value pi = 4.0 * delta * sum({for (i in 1..n) ((Integer i){

@@ -11,7 +11,7 @@ import java.util.\ifunction { Supplier }
 import uk.org.winder.pi_quadrature.tools { outputN }
 
 void execute(Integer numberOfTasks) {
-  value n = 100_000_000; // 10 times fewer than Java due to speed issues.
+  value n = 1_000_000_000;
   value delta = 1.0 / n;
   value startTime = system.nanoseconds;
   Integer sliceSize = n / numberOfTasks;
