@@ -25,7 +25,7 @@ void execute(Integer numberOfTasks) {
       }).reduce(plus<Float>);
     }
   }
-  value pi = 4.0 * delta * sum({for (f in [for (i in 1..numberOfTasks) CompletableFuture<Float>.supplyAsync(Task(i))]) f.get()});
+  value pi = 4.0 * delta * sum{0.0, for (f in [for (i in 0:numberOfTasks) CompletableFuture<Float>.supplyAsync(Task(i))]) f.get()};
   value elapseTime = (system.nanoseconds - startTime) / 1.0e9;
   outputN("pi_futures_map_reduce", pi, n, elapseTime, numberOfTasks);
 }
