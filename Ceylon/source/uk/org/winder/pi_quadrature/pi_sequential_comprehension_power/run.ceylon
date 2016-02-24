@@ -16,5 +16,5 @@ shared void run() {
 		1.0 / (1.0 + ((i - 0.5) * delta) ^ 2)
 	};
 	value elapseTime = (system.nanoseconds - startTime) / 1.0e9;
-	output("pi_sequential_comprehension", pi, n, elapseTime);
+	output("pi_sequential_comprehension_power", pi, n, elapseTime);
 }

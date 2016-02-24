@@ -1,7 +1,7 @@
 /*
  *  Calculation of π using quadrature realized with a sequential algorithm using a loop.
  *
- *  Copyright © 2012–2014  Russel Winder
+ *  Copyright © 2012–2014, 2016  Russel Winder
  */
 
 import uk.org.winder.pi_quadrature.tools { output }

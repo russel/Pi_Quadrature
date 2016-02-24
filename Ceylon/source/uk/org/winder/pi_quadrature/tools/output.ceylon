@@ -9,6 +9,8 @@ shared void output(String name, Float pi, Integer n, Float elapseTime) {
 	print("\telapse time = ``elapseTime``");
 }
 
+"A function to output stuff and the number of processors."
+by("Russel WInder")
 shared void outputN(String name, Float pi, Integer n, Float elapseTime, Integer numberOfTasks) {
 	output(name + ": number of tasks ``numberOfTasks``", pi, n, elapseTime);
 	print("\tnumber of processors = ``runtime.availableProcessors()``");
