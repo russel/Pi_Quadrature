@@ -15,5 +15,5 @@ fun main(args:Array<String>) {
     t + 1.0 / (1.0 + x * x)
   }
   val elapseTime = (System.nanoTime() - startTimeNanos) / 1e9
-  out("Sequential Reduce", pi, n, elapseTime)
+  out("Sequential Fold", pi, n, elapseTime)
 }
