@@ -1,7 +1,6 @@
 apply plugin: 'scala'
 
 repositories {
-  mavenLocal()
   jcenter()
   mavenCentral()
 }
@@ -21,7 +20,7 @@ new File("${projectDir}/src/main/scala/uk/org/winder/pi_quadrature").eachFileMat
 }
 
 task wrapper (type:Wrapper) {
-    gradleVersion = '2.10'
+    gradleVersion = '2.12'
 }
 
 defaultTasks 'classes'
