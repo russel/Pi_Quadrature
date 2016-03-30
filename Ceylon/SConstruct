@@ -2,7 +2,7 @@
 
 #  Calculation of π using quadrature.
 #
-#  Copyright © 2013–2014  Russel Winder
+#  Copyright © 2013–2014, 2016  Russel Winder
 
 import os
 import sys
@@ -27,7 +27,7 @@ modulesCarDirectory = 'modules/' + moduleName.replace('.', '/') + '/' + version
 
 moduleRoot = modulesCarDirectory + '/' + moduleName + '-' + version
 
-carFile = Command(moduleRoot + '.car', sourceFiles, 'ceylon compile {}'.format(moduleName))
+carFile = ceylonEnvironment.Command(moduleRoot + '.car', sourceFiles, 'ceylon compile {}'.format(moduleName))
 SideEffect([moduleRoot + extension for extension in ('car.sha1', '.src', '.src.sha1')], carFile)
 
 Alias('compile', carFile)
