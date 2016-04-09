@@ -2,19 +2,30 @@
 
 #  Calculation of π using quadrature.
 #
-#  Copyright © 2008–2013 Russel Winder
+#  Copyright © 2008–2013, 2016  Russel Winder
 
 import os
+import subprocess
 import sys
+
 sys.path.append('../site_scons')
 
-from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, createHelp
 
 chapelEnvironment = Environment(tools=['chapel'], ENV=os.environ, CHPLFLAGS=['-O', '--fast'])
 
 for item in Glob('pi_*.chpl'):
     addRunTarget(chapelEnvironment,
                  addCompileTarget(chapelEnvironment.ChapelProgram(item.name.replace('.chpl', ''), [item, 'output.chpl'])))
+
+
+def runAllTargets(target, source, env):
+    for s in source:
+        print('###################################### ' + s.name)
+        assert 0 == subprocess.call((s.name,))
+
+
+Command('runAll', compileTargets, runAllTargets)
 
 Default(compileTargets)
 
