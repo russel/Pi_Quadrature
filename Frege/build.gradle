@@ -8,20 +8,27 @@ repositories {
 }
 
 dependencies {
-  //compile 'org.frege-lang:frege:3.23.422-ga05a487'
-  compile 'org.frege-lang:frege:3.23+'
+  //compile 'org.frege-lang:frege:3.24.+'
+  compile files('/home/users/russel/lib/Java/frege.jar')
+
 }
 
 defaultTasks 'classes'
 
+ext.targets = []
+
 new File("${projectDir}/src/main/frege/").eachFileMatch(~/pi_.*\.fr/) { filename ->
   final className = filename.name.replaceFirst(/\.fr$/, '').replaceFirst(/^p/, 'P').replaceAll(/_([a-z])/){a, b -> "_${b.toUpperCase()}"}
-    task ('run_' + className, type: JavaExec, dependsOn: 'classes') {
-        main = className
-        classpath = sourceSets.main.runtimeClasspath
-    }
+  final targetName = 'run_' + className
+  task (targetName, type: JavaExec, dependsOn: 'classes') {
+    main = className
+    classpath = sourceSets.main.runtimeClasspath
+  }
+  ext.targets << targetName
 }
 
-task wrapper(type:Wrapper) {
-  gradleVersion = '2.10'
+task runAll(dependsOn: ext.targets)
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.12'
 }
