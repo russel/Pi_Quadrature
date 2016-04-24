@@ -3,11 +3,11 @@
 --  Basically the Haskell code amended as needed. There is a move to have the Haskell code work
 --  directly. cf. https://github.com/Frege/frege/issues/236 and https://github.com/Frege/frege/issues/237
 --
---  Copyright © 2009–2011, 2013–2015  Russel Winder
+--  Copyright © 2009–2011, 2013–2016  Russel Winder
 
 module Output where
 
-out :: String -> Double -> Int -> IO()
+out :: String -> Double -> Int -> IO ()
 out banner pi n = do
   putStrLn ("==================== " ++ show banner)
   startTime <- System.nanoTime ()
@@ -16,9 +16,8 @@ out banner pi n = do
   endTime <- System.nanoTime ()
   putStrLn ("\telapse time = " ++ show ((fromIntegral (endTime - startTime)) / 1e9))
 
-native availableProcessors "java.lang.Runtime.getRuntime().availableProcessors()" :: Int
-
-outn :: String -> Double -> Int -> Int -> IO()
+outn :: String -> Double -> Int -> Int -> IO ()
 outn banner pi n itemCount = do
   out (banner ++ ": item count: " ++ show itemCount) pi n
+  availableProcessors <- System.availableProcessors ()
   putStrLn ("\tprocessor count = " ++ show availableProcessors)
