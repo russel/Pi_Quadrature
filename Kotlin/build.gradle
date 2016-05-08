@@ -1,11 +1,10 @@
 buildscript {
-  ext.kotlin_version = '1.0.0'
   repositories {
     jcenter()
     mavenCentral()
   }
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.+"
   }
 }
 
@@ -18,24 +17,28 @@ repositories {
 }
 
 dependencies {
-  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.jetbrains.kotlin:kotlin-stdlib:1.+"
 }
 
+ext.targets = []
 new File("${projectDir}/src/main/kotlin/uk/org/winder/pi_quadrature").eachFileMatch(~/pi_.*\.kt/) { filename ->
   final root = filename.name.replaceFirst(/\.kt$/, '')
   final className = 'uk.org.winder.pi_quadrature.' + root.capitalize() + "Kt"
+  targets << 'run_' + root
   task ('run_' + root, type: JavaExec, dependsOn: 'classes') {
     main = className
     classpath = sourceSets.main.runtimeClasspath
   }
 }
 
+task runAll(dependsOn: ext.targets)
+
 task wrapper(type:Wrapper) {
-  gradleVersion = '2.11'
+  gradleVersion = '2.13'
 }
 
 sourceSets {
   main.java.srcDirs += 'src/main/kotlin'
 }
 
-defaultTasks 'classes'
+defaultTasks 'runAll'
