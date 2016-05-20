@@ -11,7 +11,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, runTargets, addCompileTarget, addRunTarget, createHelp
 
 fortranFlags = ['-O3', '-std=f2008', '-ffree-form', '-pedantic', '-Wall']
 
@@ -34,11 +34,14 @@ def fortranRule(globPattern, compiler='gfortran', fortranflags=fortranFlags, lin
                     F08=compiler, F08FLAGS=fortranflags, FORTRAN=linker, LINKFLAGS=linkflags, LIBPATH=libpath, LIBS=libs)))
 
 fortranRule('pi_sequential*.f08')
-fortranRule('pi_openmp*.f08', fortranflags=fortranFlags + ['-fopenmp'], libs=['gomp'])
+for f in ('pi_doConcurrent*.f08', 'pi_openmp*.f08'):
+    fortranRule(f, fortranflags=fortranFlags + ['-fopenmp'], libs=['gomp'])
 fortranRule('pi_mpi*.f08', compiler='mpif90', linker='mpif90')
-#fortranRule('pi_coarray*.f08', fortranflags=fortranFlags + ['-fcoarray=lib'], linker='mpif90', libs=['caf_mpi'])
+#fortranRule('pi_coarray*.f08', fortranflags=fortranFlags + ['-fcoarray=lib'], compiler='mpif90', linker='mpif90', libs=['caf_mpi'])
 fortranRule('pi_coarray*.f08', fortranflags=fortranFlags + ['-fcoarray=single'])
 
 Default(compileTargets)
+
+Alias('runAll', runTargets)
 
 Help(createHelp())

@@ -1,21 +1,23 @@
 !  Output functions for the Fortran programs to calculate π using quadrature.
 !
-!  Copyright © 2012, 2014  Russel Winder
+!  Copyright © 2012, 2014, 2016  Russel Winder
 
 subroutine out(banner, pi_, n, elapseTime)
-  character (len = 10):: banner
-  integer:: n
-  real (selected_real_kind (p = 15)):: elapseTime, pi_
-  write (*, *) "================================= Fortran ", banner
-  write (*, *) "    π =", pi_
-  write (*, *) "    iteration count =", n
-  write (*, *) "    elapse time =", elapseTime
-endsubroutine out
+  integer, parameter:: dp = kind(0.d0)
+  character(len=*), intent(in):: banner
+  integer, intent(in):: n
+  real(dp), intent(in):: elapseTime, pi_
+  print '(2(a))', "================================= ", banner
+  print '(a, f20.18)', "    π = ", pi_
+  print '(a, i0)', "    iteration count = ", n
+  print '(a, f10.8)', "    elapse time = ", elapseTime
+end subroutine out
 
 subroutine outn(banner, pi_, n, elapseTime, nProcessors)
-  character (len = 10):: banner
-  integer:: n , nProcessors
-  real (selected_real_kind (p = 15)):: elapseTime, pi_
+  integer, parameter:: dp = kind(0.d0)
+  character(len=*), intent(in):: banner
+  integer, intent(in):: n , nProcessors
+  real (dp), intent(in):: elapseTime, pi_
   call out(banner, pi_, n, elapseTime)
-  write (*, *) "    processor count =",  nProcessors
-endsubroutine outn
+  print '(a, i0)', "    processor count = ",  nProcessors
+end subroutine outn
