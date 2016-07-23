@@ -6,7 +6,7 @@
 
 #include <numeric>
 
-#include <boost/python.hpp>
+#include <pybind11/pybind11.h>
 #include <boost/range/irange.hpp>
 
 double process_slice(int const id, int const sliceSize, double const delta) {
@@ -17,6 +17,8 @@ double process_slice(int const id, int const sliceSize, double const delta) {
 		});
 }
 
-BOOST_PYTHON_MODULE(processAll_extension_boost) {
-	boost::python::def("process_slice", process_slice);
+PYBIND11_PLUGIN(processAll_extension_cpp) {
+	pybind11::module m {"processAll_extension_cpp", "The process_slice function bridge."};
+	m.def("process_slice", &process_slice, "Calculate the value over the slice.");
+	return m.ptr();
 }

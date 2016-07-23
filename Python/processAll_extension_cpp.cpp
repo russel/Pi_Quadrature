@@ -10,7 +10,7 @@
 #include <thread>
 #include <vector>
 
-#include <boost/python.hpp>
+#include <pybind11/pybind11.h>
 #include <boost/range/irange.hpp>
 
 double sum_up(long const start, long const end, double const delta) {
@@ -44,7 +44,9 @@ double parallel(long const n, double const delta) {
 		[](double a, std::shared_future<double> b) { return a + b.get();});
 }
 
-BOOST_PYTHON_MODULE(processAll_extension_cpp) {
-	boost::python::def("sequential", sequential);
-	boost::python::def("parallel", parallel);
+PYBIND11_PLUGIN(processAll_extension_cpp) {
+	pybind11::module m {"processAll_extension_cpp", "The parallel and sequential function bridge."};
+	m.def("sequential", &sequential, "Calculate things sequentially.");
+	m.def("parallel", &parallel, "Calculate things in parallel.");
+	return m.ptr();
 }

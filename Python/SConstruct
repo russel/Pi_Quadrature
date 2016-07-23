@@ -19,8 +19,8 @@ os_name, _, os_number, _, _ = os.uname()
 if os_name == 'Darwin':
     cython_command_name = 'cython'
     python_include_path = (
-        # MacPorts location of Python 3.4 header files.
-        '/opt/local/Library/Frameworks/Python.framework/Versions/3.5/include/python3.4m',
+        # MacPorts location of Python 3.5 header files.
+        '/opt/local/Library/Frameworks/Python.framework/Versions/3.5/include/python3.5m',
     )
 elif os_name == 'Linux':
     cython_command_name = 'cython3'
@@ -65,7 +65,7 @@ dEnvironment = {
     'ldc': Environment(
         # LDC is installed from packages for the production version and I compile head of the latest branch.
         # Having this ENV set or not switches between them: not means package.
-        #ENV=os.environ,
+        ENV=os.environ,
         tools=['ldc', 'link'],
         DFLAGS=['-O', '-release'],
         SHLIBPREFIX='',
@@ -101,8 +101,6 @@ for item in Glob('*_library_*.chpl'):
 
 cppExtensionEnvironment = cppLibraryEnvironment.Clone()
 cppExtensionEnvironment.Append(CPPPATH=python_include_path)
-cppExtensionEnvironment.Append(RPATH='./')
-cppExtensionEnvironment.Append(LIBS='-lboost_python3' if is_fedora else '-lboost_python-py35')
-
+cppExtensionEnvironment.Append(CPPPATH='/home/Checkouts/Git/PyBind11/include')
 for item in Glob('*_extension_*.cpp'):
     cppExtensionEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
