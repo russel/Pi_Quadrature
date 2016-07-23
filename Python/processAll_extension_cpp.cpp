@@ -6,6 +6,7 @@
  */
 
 #include <future>
+#include <numeric>
 #include <thread>
 #include <vector>
 

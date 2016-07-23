@@ -9,6 +9,8 @@
 #  Cython and Pyrex need access to the Python headers when compiling the generated C and so are Python
 #  version dependent.
 
+from __future__ import print_function
+
 import os
 from os.path import splitext
 
@@ -18,16 +20,16 @@ if os_name == 'Darwin':
     cython_command_name = 'cython'
     python_include_path = (
         # MacPorts location of Python 3.4 header files.
-        '/opt/local/Library/Frameworks/Python.framework/Versions/3.4/include/python3.4m',
+        '/opt/local/Library/Frameworks/Python.framework/Versions/3.5/include/python3.4m',
     )
 elif os_name == 'Linux':
     cython_command_name = 'cython3'
     python_include_path = (
-        # Debian and Fedora location of Python 3.4 header files.
-        '/usr/include/python3.4m',
+        # Debian and Fedora location of Python 3.5 header files.
+        '/usr/include/python3.5m',
     )
 else:
-    print 'Unknown platform.'
+    print('Unknown platform.')
     Exit(1)
 
 is_fedora = '.fc' in os_number
@@ -52,24 +54,26 @@ cppEnvironment = Environment(
 cppLibraryEnvironment = cppEnvironment.Clone()
 cppLibraryEnvironment.Append(CXXFLAGS='-fPIC')
 
+# NB DMD 2.071.1 has problems with parallelism module.
+# Cannot use GDC on a Debian machine with LDC installed.
 dEnvironment = {
     'dmd': Environment(
-    tools=['dmd', 'link'],
-    DFLAGS=['-O', '-release', '-inline'],
-    SHLIBPREFIX='',
+        tools=['dmd', 'link'],
+        DFLAGS=['-O', '-release', '-inline'],
+        SHLIBPREFIX='',
     ),
     'ldc': Environment(
         # LDC is installed from packages for the production version and I compile head of the latest branch.
         # Having this ENV set or not switches between them: not means package.
-    #ENV=os.environ,
-    tools=['ldc', 'link'],
-    DFLAGS=['-O', '-release', '-inline'],
-    SHLIBPREFIX='',
+        #ENV=os.environ,
+        tools=['ldc', 'link'],
+        DFLAGS=['-O', '-release'],
+        SHLIBPREFIX='',
     ),
     'gdc': Environment(
-    tools=['gdc', 'link'],
-    DFLAGS=['-O3'],
-    SHLIBPREFIX='',
+        tools=['gdc', 'link'],
+        DFLAGS=['-O3'],
+        SHLIBPREFIX='',
     ),
 }[
     #'dmd'
@@ -98,7 +102,7 @@ for item in Glob('*_library_*.chpl'):
 cppExtensionEnvironment = cppLibraryEnvironment.Clone()
 cppExtensionEnvironment.Append(CPPPATH=python_include_path)
 cppExtensionEnvironment.Append(RPATH='./')
-cppExtensionEnvironment.Append(LIBS='-lboost_python3' if is_fedora else '-lboost_python-py34')
+cppExtensionEnvironment.Append(LIBS='-lboost_python3' if is_fedora else '-lboost_python-py35')
 
 for item in Glob('*_extension_*.cpp'):
     cppExtensionEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)

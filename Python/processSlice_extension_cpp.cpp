@@ -4,6 +4,8 @@
  *  Copyright © 2009–2011, 2013–2015  Russel Winder
  */
 
+#include <numeric>
+
 #include <boost/python.hpp>
 #include <boost/range/irange.hpp>
 
