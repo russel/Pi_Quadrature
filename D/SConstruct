@@ -2,7 +2,7 @@
 
 #  Calculation of π using quadrature using the D programming language.
 #
-#  Copyright © 2008–2015 Russel Winder
+#  Copyright © 2008–2016 Russel Winder
 
 import os
 import sys
@@ -20,17 +20,12 @@ dEnvironment = {
         DFLAGS=['-O3'],
     ),
     'ldc': Environment(
-        # Potentially two ldc2 installed, one in the standard place another in the personal path. Need the environment
-        # for the latter and also to know where the libraries are and add them to the LD_LIBRARY_PATH.
-        ENV=os.environ,
         tools=['ldc', 'link'],
         DFLAGS=['-O', '-release'],
     ),
 #}['dmd']
 #}['gdc']
 }['ldc']
-
-dEnvironment['ENV']['LD_LIBRARY_PATH'] =  dEnvironment['ENV']['HOME'] + '/Built/lib'
 
 outputFunctions = dEnvironment.Object('outputFunctions.d')
 
