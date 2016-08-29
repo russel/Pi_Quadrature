@@ -1,5 +1,9 @@
 # -*- mode:python; -*-
 
+#  Calculation of π using quadrature.
+#
+#  Copyright © 2016 Russel Winder
+
 project(
     'π by quadrature in C',
     'c',
