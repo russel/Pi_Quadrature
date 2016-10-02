@@ -1,6 +1,6 @@
 [package]
 name = "π by Quadrature in Rust"
-version = "0.0.1"
+version = "1.0.0"
 authors = ["Russel Winder <russel@winder.org.uk>"]
 
 [[bin]]
@@ -20,10 +20,6 @@ name = "pi_sequential_mapfold"
 path = "src/pi_sequential_mapfold.rs"
 
 [[bin]]
-name = "pi_parallel_eventual_futures_batched"
-path = "src/pi_parallel_eventual_futures_batched.rs"
-
-[[bin]]
 name = "pi_parallel_threads_single_channel_batched"
 path = "src/pi_parallel_threads_single_channel_batched.rs"
 
@@ -38,5 +34,4 @@ crate-type = ["rlib"]
 [dependencies]
 time = "*"
 num_cpus = "*"
-eventual = "*"
-simple_parallel = "*"
+rayon = "*"
