@@ -1,5 +1,5 @@
 /*
- *  Parallel implementation of π by quadrature using Rayon's parallel iterator.
+ *  Parallel implementation of π by quadrature using Rayon's parallel iterator with a batched approach.
  *
  *  Copyright © 2016  Russel Winder
  */
