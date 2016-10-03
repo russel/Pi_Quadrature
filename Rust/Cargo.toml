@@ -27,6 +27,10 @@ path = "src/pi_parallel_threads_single_channel_batched.rs"
 name = "pi_parallel_threads_multiple_channels_batched"
 path = "src/pi_parallel_threads_multiple_channels_batched.rs"
 
+[[bin]]
+name = "pi_parallel_rayon_pariter_batched"
+path = "src/pi_parallel_rayon_pariter_batched.rs"
+
 [lib]
 name = "output"
 crate-type = ["rlib"]
