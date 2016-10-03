@@ -1,7 +1,7 @@
 /*
  *  Sequential implementation of π by quadrature using imperative approach.
  *
- *  Copyright © 2013–2015  Russel Winder
+ *  Copyright © 2013–2016  Russel Winder
  */
 
 extern crate time;
@@ -11,7 +11,7 @@ use time::precise_time_s;
 use output::output;
 
 fn main() {
-    let n = 1000000000u64;
+    let n = 1_000_000_000u64;
     let delta = 1.0 / n as f64;
     let start_time = precise_time_s();
     let mut sum = 0.0f64;
