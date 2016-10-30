@@ -36,7 +36,7 @@ def cppRule(globPattern, compiler='g++', cpppath=[], cxxflags=cppFlags, linkflag
                     os.path.splitext(item.name)[0], [item.name, output],
                     CXX=compiler, CPPPATH=cpppath, CXXFLAGS=cxxflags, LINKFLAGS=['-std=c++14'] + linkflags, LIBPATH=libpath, LIBS=libs)))
 
-cppRule('pi_sequential*.cpp')
+cppRule('pi_sequential_*.cpp')
 cppRule('pi_mpi*.cpp', compiler='mpic++')  # This MPI execution target runs things sequentially.  Use the command "mpirun -np N" to run the code on N processors.
 cppRule('pi_boostMPI*.cpp', compiler='mpic++', libs=['boost_mpi'])  # This MPI execution target runs things sequentially.  Use the command "mpirun -np N" to run the code on N processors.
 cppRule('pi_parallel_thread*.cpp', libs=['pthread'])

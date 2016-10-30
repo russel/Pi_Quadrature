@@ -38,6 +38,7 @@ targets = [
     [['pi_parallel_tbb_reduce_functional.cpp', extra_source], [], [], ['-ltbb']],
     [['pi_parallel_tbb_reduce_imperative.cpp', extra_source], [], [], ['-ltbb']],
     [['pi_parallel_threadsGlobalState.cpp', extra_source], thread_dependencies, [], []],
+    [['pi_sequential_accumulate.cpp', extra_source], [], [], []],
     [['pi_sequential_for.cpp', extra_source], [], [], []],
 ]
 
