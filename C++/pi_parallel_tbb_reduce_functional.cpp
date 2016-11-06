@@ -20,19 +20,19 @@ int main() {
   auto const startTime = std::chrono::steady_clock::now();
   tbb::task_scheduler_init tbb_initializer;
   auto const pi = 4.0 * delta * tbb::parallel_reduce(
-																										 tbb::blocked_range<long>(0, n),
-																										 0.0,
-																										 [=](tbb::blocked_range<long> const & range, double value) -> double {
-																											 // TBB does not support range-based for on ranges :-(
-																											 //for (auto && i : range) {
-																											 for (auto i = range.begin(); i != range.end(); ++i) {
-																												 auto const x = (i - 0.5) * delta;
-																												 value += 1.0 / (1.0 + x * x);
-																											 }
-																											 return value;
-																										 },
-																										 std::plus<double>()
-																										 );
+		tbb::blocked_range<long>(0, n),
+		0.0,
+		[=](tbb::blocked_range<long> const & range, double value) -> double {
+			// TBB does not support range-based for on ranges :-(
+			//for (auto && i : range) {
+			for (auto i = range.begin(); i != range.end(); ++i) {
+				auto const x = (i - 0.5) * delta;
+				value += 1.0 / (1.0 + x * x);
+			}
+			return value;
+		},
+		std::plus<double>()
+	);
   auto const elapseTime = std::chrono::steady_clock::now() - startTime;
   out("TBB Parallel Reduce Functional", pi, n, elapseTime, tbb::task_scheduler_init::default_num_threads(), tbb::task_scheduler_init::default_num_threads());
   return 0;
