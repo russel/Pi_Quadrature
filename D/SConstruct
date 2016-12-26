@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.append('../site_scons')
 
-from executablesupport import compileTargets, addCompileTarget, addRunTarget, createHelp
+from executablesupport import compileTargets, runTargets, addCompileTarget, addRunTarget, createHelp
 
 dEnvironment = {
     'dmd': Environment(
@@ -32,6 +32,8 @@ outputFunctions = dEnvironment.Object('outputFunctions.d')
 for item in Glob('pi_*.d'):
     root = os.path.splitext(item.name)[0]
     addRunTarget(dEnvironment, addCompileTarget(dEnvironment.Program([item, outputFunctions])))
+
+Alias('runAll', runTargets)
 
 Default(compileTargets)
 
