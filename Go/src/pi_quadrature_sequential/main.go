@@ -1,10 +1,10 @@
 //  A Go program to calculate π using quadrature employing a sequential algorithm.
 package main
 
-//  Copyright © 2010–2013, 2015  Russel Winder
+//  Copyright © 2010–2013, 2015, 2017  Russel Winder
 
 import (
-	"russel.org.uk/pi_quadrature_output"
+	"pi_quadrature_output"
 	"time"
 )
 
