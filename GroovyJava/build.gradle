@@ -14,16 +14,17 @@ dependencies {
 }
 
 sourceSets {
-  main {
-    java {
-      srcDir '.'
-      output.classesDir '.'
-    }
-  }
+  main { java { srcDir '.' } }
 }
 
-//clean {
-//  delete fileTree(dir: '.', include: '*.class')
-//}
+clean {
+  delete fileTree(dir: '.', include: '*.class')
+}
 
-defaultTasks 'classes'
+task copyToDot(type: Copy, dependsOn: 'classes') {
+  from 'build/classes/main'
+  include '*.class'
+  into '.'
+}
+
+defaultTasks 'copyToDot'
