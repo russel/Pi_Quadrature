@@ -1,11 +1,10 @@
 //  Calculation of π using quadrature using the Groovy programming language with some Java support.
 //
-//  Copyright © 2015  Russel Winder
+//  Copyright © 2015, 2017  Russel Winder
 
 apply plugin: 'java'
 
 repositories {
-  mavenLocal()
   jcenter()
   mavenCentral()
 }
@@ -23,8 +22,8 @@ sourceSets {
   }
 }
 
-clean {
-  delete fileTree(dir: '.', include: '*.class')
-}
+//clean {
+//  delete fileTree(dir: '.', include: '*.class')
+//}
 
 defaultTasks 'classes'
