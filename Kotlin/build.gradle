@@ -9,7 +9,6 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'eclipse'
 
 repositories {
   jcenter()
@@ -32,10 +31,6 @@ new File("${projectDir}/src/main/kotlin/uk/org/winder/pi_quadrature").eachFileMa
 }
 
 task runAll(dependsOn: ext.targets)
-
-task wrapper(type:Wrapper) {
-  gradleVersion = '2.13'
-}
 
 sourceSets {
   main.java.srcDirs += 'src/main/kotlin'
