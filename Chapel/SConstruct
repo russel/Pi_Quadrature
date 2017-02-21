@@ -12,11 +12,12 @@ sys.path.append('../site_scons')
 
 from executablesupport import compileTargets, addCompileTarget, runTargets, addRunTarget, createHelp
 
-chapelEnvironment = Environment(tools=['chapel'], ENV=os.environ, CHPLFLAGS=['-O', '--fast'])
+chapelEnvironment = Environment(ENV=os.environ)
 
 for item in Glob('pi_*.chpl'):
     addRunTarget(chapelEnvironment,
-                 addCompileTarget(chapelEnvironment.ChapelProgram(item.name.replace('.chpl', ''), [item, 'output.chpl'])))
+                 addCompileTarget(chapelEnvironment.Command(item.name.replace('.chpl', ''), [item, 'output.chpl'], 'chpl -O --fast -o $TARGET $SOURCES')))
+    chapelEnvironment.SideEffect(item.name.replace('.chpl', '_real'), item.name.replace('.chpl', ''))
 
 
 def runAllTargets(target, source, env):
