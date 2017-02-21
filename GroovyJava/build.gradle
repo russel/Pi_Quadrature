@@ -27,8 +27,4 @@ clean {
   delete fileTree(dir: '.', include: '*.class')
 }
 
-task wrapper(type:Wrapper) {
-  gradleVersion = '2.10'
-}
-
 defaultTasks 'classes'
