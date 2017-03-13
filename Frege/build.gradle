@@ -2,8 +2,8 @@ plugins {
   id "org.frege-lang" version "0.8"
 }
 
-//targetCompatibility = 8
-targetCompatibility = 9
+targetCompatibility = 8
+//targetCompatibility = 9
 
 repositories {
   jcenter()
@@ -12,21 +12,19 @@ repositories {
 
 dependencies {
   //compile 'org.frege-lang:frege:3.24+'
-  compile files('/home/users/russel/lib/Java/frege.jar')
+  compile files(System.properties['user.home'] + '/lib/JDK/frege.jar')
 }
 
-defaultTasks 'classes'
-
-ext.targets = []
-
-new File("${projectDir}/src/main/frege/").eachFileMatch(~/pi_.*\.fr/) { filename ->
-  final className = filename.name.replaceFirst(/\.fr$/, '').replaceFirst(/^p/, 'P').replaceAll(/_([a-z])/){a, b -> "_${b.toUpperCase()}"}
+final targets = new File("${projectDir}/src/main/frege").listFiles({it.name.startsWith('pi_') && it.name.endsWith('.fr')} as FileFilter).collect{ file ->
+  final className = file.name.replaceFirst(/\.fr$/, '').replaceFirst(/^p/, 'P').replaceAll(/_([a-z])/){a, b -> "_${b.toUpperCase()}"}
   final targetName = 'run_' + className
   task (targetName, type: JavaExec, dependsOn: 'classes') {
     main = className
     classpath = sourceSets.main.runtimeClasspath
   }
-  ext.targets << targetName
+  targetName
 }
 
-task runAll(dependsOn: ext.targets)
+task runAll(dependsOn: targets)
+
+defaultTasks 'classes'

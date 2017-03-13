@@ -1,0 +1,23 @@
+//  Calculation of π using quadrature using the Ceylon programming language.
+//
+//  Copyright © 2017  Russel Winder
+
+plugins {
+    id 'com.athaydes.ceylon' version '1.3.1'
+}
+
+ceylon {
+    module = 'uk.org.winder.pi_quadrature'
+}
+
+final programList = new File("${projectDir}/source/${ceylon.module.replace('.', '/')}").listFiles({it.name.startsWith('pi_')} as FileFilter).collect{file ->
+  final taskName = 'run_' + file.name
+  task (taskName, type: Exec, dependsOn: 'compileCeylon') {
+    commandLine '/usr/bin/env', 'ceylon', 'run', "--run=${ceylon.module}.${file.name}.run", ceylon.module
+  }
+  taskName
+}
+
+task runAll (dependsOn: programList)
+
+defaultTasks 'compileCeylon'

@@ -6,17 +6,20 @@ repositories {
 }
 
 dependencies {
-  compile 'org.scala-lang:scala-library:2.11.+'
-  compile 'com.typesafe.akka:akka-actor_2.11:+'
+  compile 'org.scala-lang:scala-library:2.12.+'
+  compile 'com.typesafe.akka:akka-actor_2.12:+'
 }
 
-new File("${projectDir}/src/main/scala/uk/org/winder/pi_quadrature").eachFileMatch(~/Pi_.*\.scala/) { filename ->
-    final root = filename.name.replaceFirst(/\.scala$/, '')
-    final className = 'uk.org.winder.pi_quadrature.' + root
-    task ('run_' + root, type: JavaExec, dependsOn: 'classes') {
-        main = className
+final targets = new File("${projectDir}/src/main/scala/uk/org/winder/pi_quadrature").listFiles({it.name.startsWith('Pi_') && it.name.endsWith('.scala')} as FileFilter).collect{ file ->
+    final root = file.name.replaceFirst(/\.scala$/, '')
+    final targetName = 'run_' + root
+    task (targetName, type: JavaExec, dependsOn: 'classes') {
+        main = 'uk.org.winder.pi_quadrature.' + root
         classpath = sourceSets.main.runtimeClasspath
     }
+    targetName
 }
+
+task runAll(dependsOn: targets)
 
 defaultTasks 'classes'

@@ -1,6 +1,8 @@
-apply plugin: 'java'
+//  Calculation of π using quadrature using the Java programming language.
+//
+//  Copyright © 2013–2017  Russel Winder
 
-apply plugin: 'eclipse'
+apply plugin: 'java'
 
 repositories {
     mavenLocal()
@@ -17,13 +19,16 @@ dependencies {
 
 sourceCompatibility = 8
 
-defaultTasks 'classes'
-
-new File("${projectDir}/src/main/java/uk/org/winder/pi_quadrature").eachFileMatch(~/Pi_.*\.java/) { filename ->
-    final root = filename.name.replaceFirst(/\.java$/, '')
-    final className = 'uk.org.winder.pi_quadrature.' + root
-    task ('run_' + root, type: JavaExec, dependsOn: 'classes') {
-        main = className
+final targets = new File("${projectDir}/src/main/java/uk/org/winder/pi_quadrature").listFiles({it.name.startsWith('Pi_') && it.name.endsWith('.java')} as FileFilter).collect{ file ->
+    final root = file.name.replaceFirst(/\.java$/, '')
+    final targetName = 'run_' + root
+    task (targetName, type: JavaExec, dependsOn: 'classes') {
+        main = 'uk.org.winder.pi_quadrature.' + root
         classpath = sourceSets.main.runtimeClasspath
     }
+    targetName
 }
+
+task runAll(dependsOn: targets)
+
+defaultTasks 'classes'
