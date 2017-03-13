@@ -30,7 +30,7 @@ object Pi_Futures_Batched {
         }
         sum
       }
-    val pi = 4.0 * delta * Await.result(Future.reduce(partialSums)(_ + _), Duration.Inf)
+    val pi = 4.0 * delta * Await.result(Future.reduceLeft(partialSums)(_ + _), Duration.Inf)
     val elapseTime = (System.nanoTime - startTimeNanos) / 1e9
     out("Pi_Futures_Batched", pi, n, elapseTime, numberOfWorkers)
   }
