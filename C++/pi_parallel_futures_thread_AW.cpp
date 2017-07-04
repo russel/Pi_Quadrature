@@ -3,12 +3,13 @@
  *
  *  This is a variant of my original by Anthony Williams which then made it into the Just::Thread tests.
  *
- *  Copyright © 2009–2011, 2013, 2014  Russel Winder
+ *  Copyright © 2009–2011, 2013, 2014, 2017  Russel Winder
  */
 
 #include <chrono>
-#include <thread>
+#include <functional>
 #include <future>
+#include <thread>
 
 #include "output.hpp"
 

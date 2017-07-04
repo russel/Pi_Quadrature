@@ -1,10 +1,11 @@
 /*
  *  A C++ program to calculate π using quadrature. This uses tasks and bound threads for parallelism.
  *
- *  Copyright © 2009–2011, 2013, 2014  Russel Winder
+ *  Copyright © 2009–2011, 2013, 2014, 2017  Russel Winder
  */
 
 #include <chrono>
+#include <functional>
 #include <future>
 #include <thread>
 
