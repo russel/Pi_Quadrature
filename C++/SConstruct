@@ -21,10 +21,12 @@ cppEnvironment = Environment(
 )
 
 # Fedora Rawhide packaging does not put symbolic links to the executables into /usr/bin, so we must add the
-# /usr/lib64/openmpi/bin directory to the path.
-fedoraOpenMPIDirectory = '/usr/lib64/openmpi/bin'
-if os.path.exists(fedoraOpenMPIDirectory):
-    cppEnvironment['ENV']['PATH'] += ':{}'.format(fedoraOpenMPIDirectory)
+# /usr/lib64/openmpi/bin directory to the path. Similarly /usr/lib64/openmpi/lib is where the libraries are.
+fedoraOpenMPIDirectory = '/usr/lib64/openmpi'
+fedoraOpenMPIBinDirectory = fedoraOpenMPIDirectory + '/bin'
+fedoraOpenMPILibDirectory = fedoraOpenMPIDirectory + '/lib'
+if os.path.exists(fedoraOpenMPIBinDirectory):
+    cppEnvironment['ENV']['PATH'] += ':{}'.format(fedoraOpenMPIBinDirectory)
 
 output = cppEnvironment.Object('output.cpp', CXXFLAGS=cppFlags)
 
@@ -38,7 +40,7 @@ def cppRule(globPattern, compiler='g++', cpppath=[], cxxflags=cppFlags, linkflag
 
 cppRule('pi_sequential_*.cpp')
 cppRule('pi_mpi*.cpp', compiler='mpic++')  # This MPI execution target runs things sequentially.  Use the command "mpirun -np N" to run the code on N processors.
-cppRule('pi_boostMPI*.cpp', compiler='mpic++', libs=['boost_mpi'])  # This MPI execution target runs things sequentially.  Use the command "mpirun -np N" to run the code on N processors.
+cppRule('pi_boostMPI*.cpp', compiler='mpic++', libpath=['-L'+fedoraOpenMPILibDirectory] if os.path.exists(fedoraOpenMPILibDirectory) else [], libs=['boost_mpi'])  # This MPI execution target runs things sequentially.  Use the command "mpirun -np N" to run the code on N processors.
 cppRule('pi_parallel_thread*.cpp', libs=['pthread'])
 cppRule('pi_parallel_boostThread*.cpp', libs=['boost_thread', 'boost_system'])
 cppRule('pi_parallel_futures*.cpp', libs=['pthread'])
