@@ -1,7 +1,7 @@
 /*
  *  Parallel implementation of π by quadrature using threads and a single channel.
  *
- *  Copyright © 2015, 2016  Russel Winder
+ *  Copyright © 2015–2017  Russel Winder
  */
 
 extern crate output;
@@ -32,7 +32,7 @@ fn execute(number_of_threads:u64) {
     }
     let pi = 4.0 * delta * channels.iter().map(|i| i.1.recv().unwrap()).sum::<f64>();
     let elapse_time = precise_time_s() - start_time;
-    output_n("Parallel Threads Multiple Channels Batched".to_string(), pi, n, elapse_time, number_of_threads)
+    output_n("Parallel Threads Multiple Channels Batched", pi, n, elapse_time, number_of_threads)
 }
 
 fn main() {

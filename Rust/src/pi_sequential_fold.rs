@@ -1,7 +1,7 @@
 /*
  *  Sequential implementation of π by quadrature using imperative approach.
  *
- *  Copyright © 2013–2016  Russel Winder
+ *  Copyright © 2013–2017  Russel Winder
  */
 
 extern crate time;
@@ -19,5 +19,5 @@ fn main() {
         acc + 1.0 / (1.0 + x * x)
     });
     let elapse_time = precise_time_s() - start_time;
-    output("Sequential Fold".to_string(), pi, n, elapse_time)
+    output("Sequential Fold", pi, n, elapse_time)
 }

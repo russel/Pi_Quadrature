@@ -1,7 +1,7 @@
 /*
  *  Sequential implementation of π by quadrature using imperative approach.
  *
- *  Copyright © 2013–2016  Russel Winder
+ *  Copyright © 2013–2017  Russel Winder
  */
 
 extern crate time;
@@ -23,5 +23,5 @@ fn main() {
     }
     let pi = 4.0 * delta * sum;
     let elapse_time = precise_time_s() - start_time;
-    output("Sequential While".to_string(), pi, n, elapse_time)
+    output("Sequential While", pi, n, elapse_time)
 }

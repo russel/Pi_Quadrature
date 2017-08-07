@@ -1,7 +1,7 @@
 /*
  *  Parallel implementation of π by quadrature using Rayon's parallel iterator with a batched approach.
  *
- *  Copyright © 2016  Russel Winder
+ *  Copyright © 2016–2017  Russel Winder
  */
 
 extern crate rayon;
@@ -29,7 +29,7 @@ fn execute(number_of_threads: u64) {
     }).sum();
     let pi = 4.0 * delta * total;
     let elapse_time = precise_time_s() - start_time;
-    output_n("Parallel Rayon ParIter Batched".to_string(), pi, n, elapse_time, number_of_threads)
+    output_n("Parallel Rayon ParIter Batched", pi, n, elapse_time, number_of_threads)
 }
 
 fn main() {
