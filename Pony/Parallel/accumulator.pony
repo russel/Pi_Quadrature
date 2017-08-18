@@ -5,22 +5,22 @@ use "time"
 use "../Output"
 
 actor Accumulator
-    let env: Env
-    let task_count: USize
-    let n: USize
-    let delta: F64
-    let start_time: U64
+	let env: Env
+	let task_count: USize
+	let n: USize
+	let delta: F64
+	let start_time: U64
 	let p: Promise[None]
 
-    new create(env': Env, task_count': USize, n': USize, delta': F64, start_time': U64, p': Promise[None]) =>
+	new create(env': Env, task_count': USize, n': USize, delta': F64, start_time': U64, p': Promise[None]) =>
 		env = env'
-        task_count = task_count'
-        n = n'
-        delta = delta'
-        start_time = start_time'
+		task_count = task_count'
+		n = n'
+		delta = delta'
+		start_time = start_time'
 		p = p'
 
-    be calculateAndReport(a: Array[F64] val) =>
+	be calculateAndReport(a: Array[F64] val) =>
 		try
 			let pi = 4.0 * delta * Iter[F64](a.values()).fold[F64]({(t: F64, x: F64): F64 => t + x}, 0.0)?
 			let elapse_time = (Time.nanos() - start_time).f64() / 1e9
@@ -28,8 +28,8 @@ actor Accumulator
 			p()
 		end
 
-//  Local Variables:
-//  mode: ponylang
-//  indent-tabs-mode: t
-//  tab-width: 4
-//  End:
+//	Local Variables:
+//	mode: ponylang
+//	indent-tabs-mode: t
+//	tab-width: 4
+//	End:
