@@ -18,6 +18,6 @@ func main() {
 		total += 1.0 / (1.0 + x*x)
 	}
 	π := 4.0 * δ * total
-	t_elapse := time.Now().Sub(t_start)
+	t_elapse := time.Since(t_start)
 	output.Out("Sequential", π, n, t_elapse)
 }

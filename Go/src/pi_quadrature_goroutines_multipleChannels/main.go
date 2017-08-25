@@ -5,8 +5,8 @@ package main
 //  Copyright © 2010–2013, 2015, 2017  Russel Winder
 
 import (
-	"runtime"
 	"pi_quadrature_output"
+	"runtime"
 	"time"
 )
 
@@ -42,7 +42,7 @@ func execute(numberOfTasks int) {
 		go calculatePartialSum(i, sliceSize, δ, channels[i])
 	}
 	π := 4.0 * δ * Σ(channels)
-	t_elapse := time.Now().Sub(t_start)
+	t_elapse := time.Since(t_start)
 	output.OutN("Goroutines Multiple Channels", π, n, t_elapse, numberOfTasks)
 }
 

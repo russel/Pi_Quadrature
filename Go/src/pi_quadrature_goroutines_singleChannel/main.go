@@ -40,7 +40,7 @@ func execute(numberOfTasks int) {
 		go calculatePartialSum(i, sliceSize, δ, channel)
 	}
 	π := 4.0 * δ * Σ(channel, numberOfTasks)
-	t_elapse := time.Now().Sub(t_start)
+	t_elapse := time.Since(t_start)
 	output.OutN("Goroutines Single Channel", π, n, t_elapse, numberOfTasks)
 }
 
