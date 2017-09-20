@@ -1,12 +1,7 @@
-# ponyc is not in the standard place, so must use personal paths.
 
-import os
-
-environment = Environment(
-    ENV=os.environ,
-)
-
-for directory in ('Sequential_Loop', 'Sequential_Fold', 'Parallel'):
-    environment.Command(directory + '1', directory + '/main.pony', 'ponyc ' + directory)
+Command('Sequential_Loop1', 'Sequential_Loop/main.pony', 'ponyc --pic Sequential_Loop')
+Command('Sequential_Fold1', 'Sequential_Fold/main.pony', 'ponyc --pic Sequential_Fold')
+Command('Parallel1', Glob('Parallel/*.pony'), 'ponyc --pic Parallel')
 
 Alias('sequential', ['Sequential_Loop1', 'Sequential_Fold1'])
+Alias('parallel', ['Parallel1'])
