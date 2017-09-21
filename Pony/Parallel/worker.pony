@@ -15,14 +15,21 @@ actor Worker
 		result = result'
 
 	be calculate() =>
-		try
-			result.apply(
-				Iter[USize](Range(1 + (id * slice_size), ((id + 1) * slice_size) + 1)).fold[F64]({(t: F64, i: USize): F64 =>
-					let x: F64 = (i.f64() - 0.5) * delta
-					t + (1.0 / (1.0 + (x * x)))
-					}, 0.0)?)
-		end
+		/*
+		result.apply(
+			Iter[USize](Range(1 + (id * slice_size), ((id + 1) * slice_size) + 1)).fold[F64](0.0, {(t: F64, i: USize): F64 =>
+				let x: F64 = (i.f64() - 0.5) * delta
+				t + (1.0 / (1.0 + (x * x)))
+			})
+		)
 		F64(0.0)
+		*/
+		var sum: F64 = 0.0
+		for i in Range(1 + (id * slice_size), ((id + 1) * slice_size) + 1) do
+			let x: F64 = (i.f64() - 0.5) * delta
+			sum = sum + (1.0 / (1.0 + (x * x)))
+		end
+		result.apply(sum)
 
 //	Local Variables:
 //	mode: ponylang

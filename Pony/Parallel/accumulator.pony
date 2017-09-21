@@ -21,12 +21,10 @@ actor Accumulator
 		p = p'
 
 	be calculateAndReport(a: Array[F64] val) =>
-		try
-			let pi = 4.0 * delta * Iter[F64](a.values()).fold[F64]({(t: F64, x: F64): F64 => t + x}, 0.0)?
-			let elapse_time = (Time.nanos() - start_time).f64() / 1e9
-			Output.output(env, "Parallel", pi, n, elapse_time, task_count)
-			p()
-		end
+		let pi = 4.0 * delta * Iter[F64](a.values()).fold[F64](0.0, {(t: F64, x: F64): F64 => t + x})
+		let elapse_time = (Time.nanos() - start_time).f64() / 1e9
+		Output.output(env, "Parallel", pi, n, elapse_time, task_count)
+		p(None)
 
 //	Local Variables:
 //	mode: ponylang

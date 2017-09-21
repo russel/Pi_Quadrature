@@ -4,17 +4,19 @@ use "promises"
 use "time"
 
 actor Main
-	let env: Env
 
-	new create(env': Env) =>
-		env = env'
+	new create(env: Env) =>
 		let main: Main tag = this
-		execute(1)
-			.next[None]({() => main.execute(2)} iso)
-			.next[None]({() => main.execute(8)} iso)
-			.next[None]({() => main.execute(32)} iso)
+		execute(env, 1).next[None]({(x: None) =>
+			main.execute(env, 2).next[None]({(x: None) =>
+				main.execute(env, 8).next[None]({(x: None) =>
+					main.execute(env, 32)
+				} iso)
+			} iso)
+		} iso)
 
-	fun execute(task_count: USize): Promise[None] =>
+
+	fun tag execute(env: Env, task_count: USize): Promise[None] =>
 		let n: USize = 1000000000
 		let delta: F64 = 1.0 / n.f64()
 		let start_time = Time.nanos()
