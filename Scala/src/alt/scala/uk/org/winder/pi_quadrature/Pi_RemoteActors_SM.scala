@@ -27,21 +27,21 @@ class RemoteCalculator(id : Int, sliceSize : Double, delta : Double, acc : Actor
 
 
 class RemoteAccumulator(numberOfActors : Int, delta : Double) extends Actor {
-    alive(9898)
-    register('Accumulator, self)
-    var sum : Double = 0.0
-    def act {
-        Actor.receive {
-            case i : Int =>
-            	for (i <- 0 until numberOfActors) {
-        	    Actor.receive {
-        		    case d : Double =>
-	    		        sum += d.asInstanceOf[Double]
-	      	    }
+	alive(9898)
+	register('Accumulator, self)
+	var sum : Double = 0.0
+	def act {
+		Actor.receive {
+			case i : Int =>
+				for (i <- 0 until numberOfActors) {
+					Actor.receive {
+						case d : Double =>
+							sum += d.asInstanceOf[Double]
+					}
+				}
+				reply(4.0 * sum * delta)
 		}
-	        reply(4.0 * sum * delta)
 	}
-    }
 }
 
 object Pi_RemoteActors_SM {
@@ -61,8 +61,8 @@ object Pi_RemoteActors_SM {
 			calculators(i).start()
 		}
 
-        	/* Receive the final value of pi from the accumulator Actor. */
-        	Actor.receive { case pi : Double => return pi }
+		/* Receive the final value of pi from the accumulator Actor. */
+		Actor.receive { case pi : Double => return pi }
 	}
 
 	def main(args : Array[String]) : Unit = {
@@ -70,12 +70,12 @@ object Pi_RemoteActors_SM {
 		var pi : Double = 0.0
 		var numberOfActors : Int = 0
 		for (powOfTwo <- 0 to 10) {
-		    numberOfActors = (scala.math.pow(2, powOfTwo)).toInt
-    		println("-------------------------------------------------------------")
-    		println("Number of Actors used: " + numberOfActors)
-    		pi = timer.time(calculatePi, numberOfActors, 10)
-	    	println("pi = " + pi)
-	    }
+			numberOfActors = (scala.math.pow(2, powOfTwo)).toInt
+			println("-------------------------------------------------------------")
+			println("Number of Actors used: " + numberOfActors)
+			pi = timer.time(calculatePi, numberOfActors, 10)
+			println("pi = " + pi)
+		}
 	}
 
 }
