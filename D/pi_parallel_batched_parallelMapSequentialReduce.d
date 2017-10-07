@@ -1,11 +1,11 @@
 /*
  *  A D program to calculate π using quadrature as a sequential reduction of parallel maps.
  *
- *  Copyright © 2010–2016  Russel Winder
+ *  Copyright © 2010–2017  Russel Winder
  */
 
-import std.algorithm: reduce;
-import std.parallelism: map, taskPool;
+import std.algorithm: map, reduce;
+import std.parallelism: taskPool;
 import std.range: iota;
 import std.typecons: Tuple, tuple;
 

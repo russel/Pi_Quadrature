@@ -2,7 +2,7 @@
  *  A D program to calculate π using quadrature as a parallel reduce of individual expression evaluations
  *  with no manual batching.
  *
- *  Copyright © 2011–2016  Russel Winder
+ *  Copyright © 2011–2017  Russel Winder
  */
 
 //  This version originally due to David Simcha, stemming from various emails on the various D email lists
@@ -25,7 +25,7 @@ int main() {
     immutable x = (i - 0.5) * delta;
     return delta / (1.0 + x * x);
   }
-  immutable pi = 4.0 * taskPool.reduce!"a + b"(map!getTerm(iota(n)));
+  immutable pi = 4.0 * taskPool.reduce!"a + b"(map!getTerm(iota(1, n + 1)));
   immutable elapseTime = (MonoTime.currTime - startTime).total!"hnsecs" * 100e-9;
   output(__FILE__, pi, n, elapseTime);
   return 0;

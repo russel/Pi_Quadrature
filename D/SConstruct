@@ -2,7 +2,7 @@
 
 #  Calculation of π using quadrature using the D programming language.
 #
-#  Copyright © 2008–2016 Russel Winder
+#  Copyright © 2008–2017  Russel Winder
 
 import os
 import sys
@@ -31,7 +31,7 @@ outputFunctions = dEnvironment.Object('outputFunctions.d')
 
 for item in Glob('pi_*.d'):
     root = os.path.splitext(item.name)[0]
-    addRunTarget(dEnvironment, addCompileTarget(dEnvironment.Program([item, outputFunctions])))
+    addRunTarget(dEnvironment, addCompileTarget(dEnvironment.ProgramAllAtOnce([item, outputFunctions])))
 
 Alias('runAll', runTargets)
 
