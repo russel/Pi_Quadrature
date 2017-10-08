@@ -19,5 +19,5 @@ fn main() {
         1.0 / (1.0 + x * x)
     }).sum::<f64>();
     let elapse_time = precise_time_s() - start_time;
-    output("Sequential Map Fold", pi, n, elapse_time)
+    output("Sequential Map Sum", pi, n, elapse_time)
 }
