@@ -27,11 +27,9 @@ dEnvironment = {
 #}['gdc']
 }['ldc']
 
-outputFunctions = dEnvironment.Object('outputFunctions.d')
-
 for item in Glob('pi_*.d'):
     root = os.path.splitext(item.name)[0]
-    addRunTarget(dEnvironment, addCompileTarget(dEnvironment.ProgramAllAtOnce([item, outputFunctions])))
+    addRunTarget(dEnvironment, addCompileTarget(dEnvironment.ProgramAllAtOnce([item, 'outputFunctions.d'])))
 
 Alias('runAll', runTargets)
 

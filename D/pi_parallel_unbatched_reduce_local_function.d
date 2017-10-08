@@ -18,15 +18,15 @@ import core.time: MonoTime;
 import outputFunctions: output;
 
 int main() {
-  immutable n = 1_000_000_000;
-  immutable delta = 1.0 / n;
-  immutable startTime = MonoTime.currTime;
-  real getTerm(int i) {
-    immutable x = (i - 0.5) * delta;
-    return delta / (1.0 + x * x);
-  }
-  immutable pi = 4.0 * taskPool.reduce!"a + b"(map!getTerm(iota(1, n + 1)));
-  immutable elapseTime = (MonoTime.currTime - startTime).total!"hnsecs" * 100e-9;
-  output(__FILE__, pi, n, elapseTime);
-  return 0;
+	immutable n = 1_000_000_000;
+	immutable delta = 1.0 / n;
+	immutable startTime = MonoTime.currTime;
+	real getTerm(int i) {
+		immutable x = (i - 0.5) * delta;
+		return 1.0 / (1.0 + x * x);
+	}
+	immutable pi = 4.0 * delta * taskPool.reduce!"a + b"(map!getTerm(iota(1, n + 1)));
+	immutable elapseTime = (MonoTime.currTime - startTime).total!"hnsecs" * 100e-9;
+	output(__FILE__, pi, n, elapseTime);
+	return 0;
 }
