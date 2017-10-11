@@ -9,3 +9,5 @@ process*_cython*.c
 /.pydevproject
 *.o
 /build/
+/lextab.py
+/yacctab.py

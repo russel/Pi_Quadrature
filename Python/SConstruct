@@ -2,37 +2,38 @@
 
 #  Calculation of π using quadrature.
 #
-#  Copyright © 2008–2015  Russel Winder
+#  Copyright © 2008–2017  Russel Winder
 
-#  Some of the Python codes rely on extensions written in various languages, natably C, C++, D, Chapel.
+#  Some of the Python codes rely on extensions written in various languages,
+#  notably C, C++, D.
 #
-#  Cython and Pyrex need access to the Python headers when compiling the generated C and so are Python
-#  version dependent.
+#  Cython and Pyrex need access to the Python headers when compiling the
+#  generated C and so are Python version dependent.
 
-from __future__ import print_function
+# Everything here relies on running on Python 3.
 
 import os
 from os.path import splitext
+import sys
 
-os_name, _, os_number, _, _ = os.uname()
+os_name, _, _, _, _ = os.uname()
+major, minor, _, _, _ = sys.version_info
 
 if os_name == 'Darwin':
     cython_command_name = 'cython'
     python_include_path = (
-        # MacPorts location of Python 3.5 header files.
-        '/opt/local/Library/Frameworks/Python.framework/Versions/3.5/include/python3.5m',
+        # MacPorts location of Python header files.
+        '/opt/local/Library/Frameworks/Python.framework/Versions/{0}.{1}/include/python{0}.{1}m'.format(major, minor),
     )
 elif os_name == 'Linux':
     cython_command_name = 'cython3'
     python_include_path = (
-        # Debian and Fedora location of Python 3.5 header files.
-        '/usr/include/python3.5m',
+        # Debian and Fedora location of Python header files.
+        '/usr/include/python{}.{}m'.format(major, minor),
     )
 else:
     print('Unknown platform.')
     Exit(1)
-
-is_fedora = '.fc' in os_number
 
 cythonEnvironment = Environment(
     tools=['gcc', 'gnulink'],
@@ -46,7 +47,7 @@ cythonEnvironment = Environment(
 cppEnvironment = Environment(
     tools=['g++', 'gnulink'],
     CPPPATH=[],
-    CXXFLAGS=['-std=c++14', '-O3', '-Wall', '-Wextra'],
+    CXXFLAGS=['-std=c++17', '-O3', '-Wall', '-Wextra'],
     LINKFLAGS=[],
     SHLIBPREFIX='',
 )
@@ -54,8 +55,6 @@ cppEnvironment = Environment(
 cppLibraryEnvironment = cppEnvironment.Clone()
 cppLibraryEnvironment.Append(CXXFLAGS='-fPIC')
 
-# NB DMD 2.071.1 has problems with parallelism module.
-# Cannot use GDC on a Debian machine with LDC installed.
 dEnvironment = {
     'dmd': Environment(
         tools=['dmd', 'link'],
@@ -63,9 +62,6 @@ dEnvironment = {
         SHLIBPREFIX='',
     ),
     'ldc': Environment(
-        # LDC is installed from packages for the production version and I compile head of the latest branch.
-        # Having this ENV set or not switches between them: not means package.
-        ENV=os.environ,
         tools=['ldc', 'link'],
         DFLAGS=['-O', '-release'],
         SHLIBPREFIX='',
@@ -81,10 +77,6 @@ dEnvironment = {
     #'gdc'
 ]
 
-chapelEnvironment = Environment(
-    ENV=os.environ,
-)
-
 for item in Glob('*.pyx'):
     root, _ = splitext(item.name)
     cythonEnvironment.SharedLibrary(root + '.so', Command(root + '.c', item, '{} $SOURCE'.format(cython_command_name)))
@@ -94,10 +86,6 @@ for item in Glob('*_library_*.cpp'):
 
 for item in Glob('*_library_*.d'):
     dEnvironment.SharedLibrary(splitext(item.name)[0] + '.so', item)
-
-for item in Glob('*_library_*.chpl'):
-    so_name = splitext(item.name)[0]
-    chapelEnvironment.Command(so_name + '.so', item, 'chpl --dynamic --library -o {} $SOURCE'.format(so_name))
 
 cppExtensionEnvironment = cppLibraryEnvironment.Clone()
 cppExtensionEnvironment.Append(CPPPATH=python_include_path)
