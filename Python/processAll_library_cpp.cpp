@@ -1,7 +1,7 @@
 /*
  *  C++ functions to calculate the main loop of π using quadrature.
  *
- *  Copyright © 2009–2011, 2013–2015  Russel Winder
+ *  Copyright © 2009–2011, 2013–2015, 2017  Russel Winder
  */
 
 #include <vector>
@@ -18,7 +18,7 @@ double sequential(int const n, double const delta) {
 	return 4.0 * delta * sum;
 }
 
-// Could use OpenMP or TBB in the following but use a pure C++14 solution to avoid any extra dependencies.
+// Could use OpenMP or TBB in the following but use a pure C++17 solution to avoid any extra dependencies.
 
 extern "C"
 double parallel(int const n, double const delta) {
@@ -33,10 +33,13 @@ double parallel(int const n, double const delta) {
 					auto const x = (i - 0.5) * delta;
 					sum += 1.0 / (1.0 + x * x);
 				}
-			return sum;},
-		i));
+				return sum;
+			},
+			i
+		));
 	}
 	auto const sum = std::accumulate(futures.begin(), futures.end(), 0.0,
-		[](double a, std::shared_future<double>b) { return a + b.get();});
+		[](double a, std::shared_future<double>b){return a + b.get();}
+	);
 	return 4.0 * delta * sum;
 }

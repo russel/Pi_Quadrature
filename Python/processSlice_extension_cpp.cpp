@@ -12,9 +12,9 @@
 double process_slice(int const id, int const sliceSize, double const delta) {
 	auto const r = boost::irange(1 + id * sliceSize, (id + 1) * sliceSize);
 	return std::accumulate(r.begin(), r.end(), 0.0, [=](double t, long i){
-			auto const x = (i - 0.5) * delta;
-			return t + 1.0 / (1.0 + x * x);
-		});
+		auto const x = (i - 0.5) * delta;
+		return t + 1.0 / (1.0 + x * x);
+	});
 }
 
 PYBIND11_PLUGIN(processAll_extension_cpp) {

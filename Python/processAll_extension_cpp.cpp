@@ -2,7 +2,7 @@
  *  C++ functions to calculate π using quadrature employing Boost as needed to create a Python extension
  *  module.
  *
- *  Copyright © 2009–2011, 2013–2015  Russel Winder
+ *  Copyright © 2009–2011, 2013–2015, 2017  Russel Winder
  */
 
 #include <future>
@@ -16,13 +16,13 @@
 double sum_up(long const start, long const end, double const delta) {
 	auto const r = boost::irange(start, end);
 	return std::accumulate(r.begin(), r.end(), 0.0, [=](double t, long i) {
-			auto const x = (i - 0.5) * delta;
-			return t + 1.0 / (1.0 + x * x);
-		});
+		auto const x = (i - 0.5) * delta;
+		return t + 1.0 / (1.0 + x * x);
+	});
 }
 
 double sequential(long const n, double const delta) {
-	return 4.0 * delta * sum_up(1, n, delta);
+	return 4.0 * delta * sum_up(1, n + 1, delta);
 }
 
 double parallel(long const n, double const delta) {
@@ -32,16 +32,13 @@ double parallel(long const n, double const delta) {
 	for (auto i = 0; i < task_count; ++i) {
 		futures.push_back(std::async(
 			std::launch::async,
-			[=](int const id){
-				return sum_up(1 + id * slice_size, (id + 1) * slice_size, delta);
-			},
-			i));
-  }
-	return 4.0 * delta * std::accumulate(
-		futures.begin(),
-		futures.end(),
-		0.0,
-		[](double a, std::shared_future<double> b) { return a + b.get();});
+			[=](int const id){return sum_up(1 + id * slice_size, (id + 1) * slice_size, delta);},
+			i
+		));
+	}
+	return 4.0 * delta * std::accumulate(futures.begin(), futures.end(), 0.0,
+		[](double a, std::shared_future<double> b){return a + b.get();}
+	);
 }
 
 PYBIND11_PLUGIN(processAll_extension_cpp) {
