@@ -9,7 +9,7 @@ from output import out
 from time import time
 
 if __name__ == '__main__':
-    n = 10000000  # 100 times fewer than C due to speed issues.
+    n = 100000000  # 10 times fewer than C due to speed issues.
     delta = 1.0 / n
     startTime = time()
     pi = 4.0 * delta * (lambda i: 1.0 / (1.0 + ((i - 0.5) * delta) ** 2))(arange(n, dtype=double)).sum()
