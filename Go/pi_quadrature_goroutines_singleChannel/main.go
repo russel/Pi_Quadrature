@@ -5,8 +5,8 @@ package main
 //  Copyright © 2010–2013, 2015, 2017  Russel Winder
 
 import (
-	"runtime"
 	"pi_quadrature_output"
+	"runtime"
 	"time"
 )
 
@@ -32,10 +32,10 @@ func Σ(channel chan float64, numberOfTasks int) float64 {
 func execute(numberOfTasks int) {
 	const n = 1000000000
 	const δ = 1.0 / float64(n)
-	t_start := time.Now()
-	runtime.GOMAXPROCS(numberOfTasks)
 	sliceSize := n / numberOfTasks
 	channel := make(chan float64, numberOfTasks)
+	runtime.GOMAXPROCS(numberOfTasks)
+	t_start := time.Now()
 	for i := 0; i < numberOfTasks; i++ {
 		go calculatePartialSum(i, sliceSize, δ, channel)
 	}

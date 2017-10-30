@@ -33,10 +33,10 @@ func Σ(channels []chan float64) float64 {
 func execute(numberOfTasks int) {
 	const n = 1000000000
 	const δ = 1.0 / float64(n)
-	t_start := time.Now()
-	runtime.GOMAXPROCS(numberOfTasks)
 	sliceSize := n / numberOfTasks
 	channels := make([]chan float64, numberOfTasks)
+	runtime.GOMAXPROCS(numberOfTasks)
+	t_start := time.Now()
 	for i := 0; i < len(channels); i++ {
 		channels[i] = make(chan float64)
 		go calculatePartialSum(i, sliceSize, δ, channels[i])
