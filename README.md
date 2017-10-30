@@ -11,7 +11,7 @@ The integral equation:
 
 leads to the following summation as an approximation:
 
-    \pi = \fraction{4}{n} \sum_{i = 1}^{n} \fraction{1}{1 + (\fraction{i - 0.5}{n})^2}
+    \pi \approx \fraction{4}{n} \sum_{i = 1}^{n} \fraction{1}{1 + (\fraction{i - 0.5}{n})^2}
 
 This summation can be partitioned into partial sums that are then summed.  This is an embarrassingly
 parallel, data parallel problem that can check scalability. As well as actual data parallel solutions there
