@@ -1,15 +1,15 @@
 #! /usr/bin/env python3
 
-#  Calculation of π using quadrature. Sequential algorithm using NumPy vectorize.
+#  Calculation of π using quadrature. Sequential algorithm using NumPy.
 #
 #  Copyright © 2017  Russel Winder
 
-from numpy import arange, double
+from numpy import arange, double, int
 from output import out
 from time import time
 
 
-def f(i):
+def f(i: int) -> double:
     x = (i - 0.5) * delta
     return 1.0 / (1.0 + x * x)
 
