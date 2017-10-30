@@ -6,13 +6,13 @@ case is the process of finding the area under a curve using the approximation of
 rectangles and summing the areas of the rectangles.)
 
 The integral equation:
-
-    \fraction{\pi}{4} = \int_{0}^{1}  \fraction{1}{1 + x^2} dx
-
+```tex
+\fraction{\pi}{4} = \int_{0}^{1} \fraction{1}{1 + x^2} dx
+```
 leads to the following summation as an approximation:
-
-    \pi \approx \fraction{4}{n} \sum_{i = 1}^{n} \fraction{1}{1 + (\fraction{i - 0.5}{n})^2}
-
+```tex
+\pi \approx \fraction{4}{n} \sum_{i = 1}^{n} \fraction{1}{1 + (\fraction{i - 0.5}{n})^2}
+```
 This summation can be partitioned into partial sums that are then summed.  This is an embarrassingly
 parallel, data parallel problem that can check scalability. As well as actual data parallel solutions there
 are some simple scatter/gather variants to highlight the use of other tools for concurrency and
