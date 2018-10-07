@@ -1,13 +1,13 @@
 /*
  *  Calculation of π using quadrature realized with map and reduce.
  *
- *  Copyright © 2013–2016  Russel Winder
+ *  Copyright © 2013–2016, 2018  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature
 
 fun main(args:Array<String>) {
-	val n = 1000000000
+	val n = 1_000_000_000
 	val delta = 1.0 / n
 	val startTimeNanos = System.nanoTime()
 	// Need to *not* map all the items to a data structure!

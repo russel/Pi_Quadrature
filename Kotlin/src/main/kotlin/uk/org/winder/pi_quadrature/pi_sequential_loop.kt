@@ -1,13 +1,13 @@
 /*
  *  Calculation of π using quadrature realized with sequential for loop.
  *
- *  Copyright © 2013–2015  Russel Winder
+ *  Copyright © 2013–2015, 2018  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature
 
 fun main(args:Array<String>) {
-	val n = 1000000000
+	val n = 1_000_000_000
 	val delta = 1.0 / n
 	val startTimeNanos = System.nanoTime()
 	var sum = 0.0

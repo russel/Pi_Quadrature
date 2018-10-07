@@ -1,7 +1,7 @@
 /*
- *  Calculation of π using quadrature realized with Java 8 parallel streams.
+ *  Calculation of π using quadrature realized with Java 8 sequential streams.
  *
- *  Copyright © 2013–2016  Russel Winder
+ *  Copyright © 2013–2016, 2018  Russel Winder
  */
 
 package uk.org.winder.pi_quadrature
@@ -9,7 +9,7 @@ package uk.org.winder.pi_quadrature
 import java.util.stream.IntStream
 
 fun main(args:Array<String>) {
-	val n = 1000000000
+	val n = 1_000_000_000
 	val delta = 1.0 / n
 	val startTimeNanos = System.nanoTime()
 	val pi = 4.0 * delta * IntStream.range(1, n).mapToDouble{i ->
