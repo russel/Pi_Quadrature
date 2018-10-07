@@ -1,7 +1,11 @@
 import org.gradle.api.tasks.JavaExec
 
+//buildscript {
+//    ext.kotlin_version = "1.2.70"
+//}
+
 plugins {
-	kotlin("jvm")
+	`kotlin-dsl`
 }
 
 repositories {
@@ -11,6 +15,7 @@ repositories {
 
 dependencies {
 	compile(kotlin("stdlib"))
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:0.30.+")
 }
 
 val targets = file("src/main/kotlin/uk/org/winder/pi_quadrature").listFiles().filter{it.name.endsWith(".kt") && it.name.startsWith("pi_")}.map{
@@ -26,3 +31,5 @@ val targets = file("src/main/kotlin/uk/org/winder/pi_quadrature").listFiles().fi
 task("runAll") {
 	dependsOn(targets)
 }
+
+defaultTasks("runAll")
