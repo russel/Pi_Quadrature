@@ -1,11 +1,8 @@
 /*
  *  Parallel implementation of π by quadrature using threads and a single channel.
  *
- *  Copyright © 2015–2017  Russel Winder
+ *  Copyright © 2015–2017, 2019  Russel Winder
  */
-
-extern crate output;
-extern crate time;
 
 use std::thread;
 use std::sync::mpsc;

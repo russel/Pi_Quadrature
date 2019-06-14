@@ -1,13 +1,12 @@
 /*
  *  Output functions for the Rust realizations of  π by quadrature.
  *
- *  Copyright © 2013–2017  Russel Winder
+ *  Copyright © 2013–2017, 2019  Russel Winder
  */
 
 #![crate_name = "output"]
 
-// std::os::num_cpus has been removed from Rust, use the num_cpus package instead.
-extern crate num_cpus;
+use num_cpus;
 
 pub fn output(banner: &str, pi: f64, n: u64, elapse_time: f64) {
     println!("======================== {}", banner);

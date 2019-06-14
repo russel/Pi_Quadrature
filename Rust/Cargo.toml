@@ -1,7 +1,8 @@
 [package]
-name = "π by Quadrature in Rust"
+name = "pi_quadrature_rust"
 version = "1.0.0"
 authors = ["Russel Winder <russel@winder.org.uk>"]
+edition = "2018"
 
 [lib]
 name = "output"

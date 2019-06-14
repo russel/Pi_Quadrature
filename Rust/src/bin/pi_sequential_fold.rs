@@ -1,11 +1,8 @@
 /*
  *  Sequential implementation of π by quadrature using imperative approach.
  *
- *  Copyright © 2013–2017  Russel Winder
+ *  Copyright © 2013–2017, 2019  Russel Winder
  */
-
-extern crate time;
-extern crate output;
 
 use time::precise_time_s;
 use output::output;
