@@ -1,7 +1,7 @@
 /*
  *  Chapel procedures for doing π calculation result output.
  *
- *  Copyright © 2012, 2013, 2015, 2016  Russel Winder
+ *  Copyright © 2012, 2013, 2015, 2016, 2020  Russel Winder
  */
 
 module Output {
@@ -13,7 +13,7 @@ module Output {
   }
 
   proc output_more(banner:string, pi:real, n:int, elapseTime:real, numberOfTasks:int) {
-    output(banner + ", task count: " + numberOfTasks, pi, n, elapseTime);
+    output(banner + ", task count: " + (numberOfTasks: string), pi, n, elapseTime);
     writeln("\tnumber of processing units = ", here.numPUs());
   }
 }
